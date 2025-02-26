@@ -1,0 +1,74 @@
+{% extends "LuccaThemeAngleBundle:SubLayout:page.html.twig" %}
+{% trans_default_domain 'LuccaContentBundle' %}
+
+{% block menuActive_tools %} class="active" {% endblock %}
+
+{% block lucca_title %}
+    <title>{{ 'setting.general.app.name'| setting }} | {{ page.name }}</title>
+{% endblock lucca_title %}
+
+{% block lucca_header %}
+    <b>{{ page.name }}</b>
+{% endblock lucca_header %}
+
+
+{% block lucca_page %}
+
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+
+            <div class="card card-default card-a4">
+                <div class="card-header">
+                    {{ 'entity.page'|transchoice(1) }} - <b>{{ page.name }}</b>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        {#-- Main Area --#}
+                        <div class="row margin-bottom-30">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                {{ page.content|raw }}
+                            </div>
+                        </div>
+                        {#-- End - Main Area --#}
+
+                        {#-- medias Area --#}
+                        <div class="mb-3 row">
+                            {% for media in page.mediasLinked %}
+                                {% if media %}
+                                    <div class="col-lg-3 col-md-3 col-sm-4">
+                                        <a href="{{ path('lucca_media_show', { 'p_fileName': media.nameCanonical }) }}"
+                                           class="link-file" target="_blank">
+                                            <i class="fas fa-file-pdf fa-3x"></i> {{ media.name }}
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {#-- End - medias Area --#}
+
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_core_page_tools') }}"
+                           title="{{ 'link.tools'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <a class="btn btn-info btn-lg"
+                           href="{{ path('lucca_core_page_show_print', { 'slug': page.slug }) }}"
+                           title="{{ 'link.print'|trans }}"><i class="fa fa-print"></i></a>
+
+                        {% if app.user and is_granted("ROLE_ADMIN") %}
+                            <aside class="div-admin">
+                                <div class="badge badge-warning label-admin">{{ 'badge.admin'|trans({}, 'LuccaCoreBundle') }}</div>
+
+                                <a class="btn btn-warning btn-lg pull-right" title="{{ 'link.edit'|trans }}"
+                                   href="{{ path('lucca_page_edit', { 'id': page.id }) }}">
+                                    <i class="fas fa-pencil-alt"></i></a>
+                            </aside>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock lucca_page %}
+

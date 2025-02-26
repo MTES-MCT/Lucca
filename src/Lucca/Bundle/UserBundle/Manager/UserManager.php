@@ -15,7 +15,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use Lucca\Bundle\UserBundle\Entity\User;
-use Lucca\Bundle\UserBundle\Utils\Canonalizer;
+use Lucca\Bundle\CoreBundle\Utils\Canonalizer;
 
 readonly class UserManager
 {

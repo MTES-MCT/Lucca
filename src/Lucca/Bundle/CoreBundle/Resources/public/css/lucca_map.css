@@ -1,0 +1,162 @@
+/**********************************
+ * Google maps
+ **********************************/
+/**********************************
+ * Open open folder backgrounds :
+ *          icon : #2e80e7
+ *          text : #5d9bec
+ * Open closed folder backgrounds :
+ *          icon : #2796be
+ *          text : #33b7e5
+ * Open minute backgrounds :
+ *          icon : #e34c4a
+ *          text : #e27474
+ * Open control backgrounds :
+ *          icon : #f9902c
+ *          text : #f4b382
+ */
+
+/** General **/
+#js-google-map {
+    min-height: 650px;
+    height: 100%;
+}
+
+.filters{
+    line-height: 3rem;
+}
+
+.js-filters {
+    white-space: nowrap;
+}
+
+.js-filters, .js-search {
+    cursor: pointer;
+}
+
+.filters span {
+    padding: 0.10rem !important;
+    padding-right: 0.5rem !important;
+    padding-left: 1.2rem !important;
+    border-radius: 10px;
+    margin-left: -20px;
+    z-index: 10;
+    position: relative;
+}
+
+.filters em {
+    min-width: 2.1rem;
+    text-align: center;
+    border-radius: 15px;
+    z-index: 100;
+    position: relative;
+}
+
+/** Filters **/
+#filter-minutesSpotted span {
+    background-color: #f4b382;
+}
+
+#filter-minutesSpotted em, .pellet-minutesSpotted {
+    background-color: #f9902c;
+}
+
+#filter-foldersOpen span {
+    background-color: #5d9bec;
+}
+
+#filter-foldersOpen em, .pellet-foldersOpen {
+    background-color: #2e80e7;
+}
+
+#filter-minutesClosedRegular span {
+    background-color: #83c983;
+}
+
+#filter-minutesClosedRegular em, .pellet-minutesClosedRegular {
+    background-color: #49c14a;
+}
+
+#filter-minutesClosedOther span {
+    background-color: #afafaf;
+}
+
+#filter-minutesClosedOther em, .pellet-minutesClosedOther {
+    background-color: #878787;
+}
+
+#filter-controls span {
+    background-color: #a04100;
+}
+
+#filter-controls em, .pellet-controls {
+    background-color: #5b2500;
+}
+
+#filter-decisions span {
+    background-color: #3a81a0;
+}
+
+#filter-decisions em, .pellet-decisions {
+    background-color: #25506d;
+}
+
+#filter-folders span {
+    background-color: #e27474;
+}
+
+#filter-folders em, .pellet-folders {
+    background-color: #e34c4a;
+}
+
+#filter-updates span {
+    background-color: #5bc1ad;
+}
+
+#filter-updates em, .pellet-updates {
+    background-color: #00a585;
+}
+
+.pellet {
+    border-radius: 25px;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* Researches areas and map */
+#searchAddress,.blue , #js-google-map, #result-panel {
+    border: solid #33b7e5 1px;
+}
+
+#js-google-map {
+    border-radius: 5px;
+}
+
+.blue, #result-panel > .card-header {
+    background-color: #33b7e5;
+}
+
+.js-searchResults{
+    max-height: 75vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+/** Hover */
+.js-searchResults > .row:hover{
+    font-weight: 900;
+}
+
+/** General **/
+.mapModal > .modal-dialog {
+    max-width: 35vw;
+}
+.mapModal #js-google-map {
+    min-height: 570px;
+    height: 100%;
+}
+
+/** General **/
+.mapMinute {
+    min-height: 65px !important;
+}

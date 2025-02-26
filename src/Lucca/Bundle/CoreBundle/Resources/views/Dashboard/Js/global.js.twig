@@ -1,0 +1,97 @@
+var map;
+
+{% if displayResults == "true" %}
+var displayResults = true;
+{% else %}
+var displayResults = false;
+{% endif %}
+
+var openedIW = null;
+
+var maxZoomCluster = 15;
+
+var clusters = [];
+
+var datas = [];
+datas['minutesClosedOther'] = [];
+datas['minutesClosedRegular'] = [];
+datas['minutesSpotted'] = [];
+datas['decisions'] = [];
+datas['controls'] = [];
+datas['updates'] = [];
+datas['folders'] = [];
+
+function initMap() {
+
+    /** Config came from the file lucca_config_map.js */
+    map = new google.maps.Map(document.getElementById('js-google-map'), {
+        {#Center on France#}
+        center: {lat: {{ 'setting.map.lat.name'|setting }}, lng: {{ 'setting.map.lon.name'|setting }} },
+        zoom: 10,
+        styles: config,
+        streetViewControl: false,
+    });
+    {% if displayResults == "true" %}
+    map.addListener('rightclick', function (e) {
+        createFolder(e.latLng);
+    });
+    {% endif %}
+
+    var listenerRunning = false;
+
+    /** Use tilesloaded and not zoom_changed because cluster on click trigger a zoom change and it cause bug because we suppresse markers */
+    map.addListener("tilesloaded", function (e) {
+
+        if (!listenerRunning) {
+            listenerRunning = true;
+            /** Check the state of all buttons */
+            for (var key in datas) {
+                if (document.getElementById("filter-" + key).style.opacity === "1") {
+                    if (datas[key].length > 0)
+                        cleanMarkers(key);
+                    displayMarkers("filter-" + key);
+                }
+            }
+            listenerRunning = false;
+        }
+    });
+
+    /** Use tilesloaded and not zoom_changed because cluster on click trigger a zoom change and it cause bug because we suppresse markers */
+    map.addListener("dragEnd", function (e) {
+        if (!listenerRunning) {
+            listenerRunning = true;
+
+            /** Check the state of all buttons */
+            for (var key in datas) {
+                if (document.getElementById("filter-" + key).style.opacity === "1") {
+                    if (datas[key].length > 0)
+                        cleanMarkers(key);
+                    displayMarkers("filter-" + key);
+                }
+            }
+            listenerRunning = false;
+        }
+    });
+}
+{#-- Create all markers with Google Map API --#}
+
+/******************************* Priority IV - Markers for Folder  *************************************************/
+{% include '@LuccaCore/Dashboard/Js/folder.js.twig' with {'adherentId': adherentId } %}
+
+/******************************* Priority III - Markers for Updates  *************************************************/
+{% include '@LuccaCore/Dashboard/Js/updates.js.twig' with {'adherentId': adherentId } %}
+
+/******************************* Priority III - Markers for Control  *************************************************/
+{% include '@LuccaCore/Dashboard/Js/control.js.twig' with {'adherentId': adherentId } %}
+
+/******************************* Priority II - Markers for Decision  *************************************************/
+{% include '@LuccaCore/Dashboard/Js/decision.js.twig' with {'adherentId': adherentId } %}
+
+/******************************* Priority II - Markers for Minute open  *************************************************/
+{% include '@LuccaCore/Dashboard/Js/minutesSpotted.js.twig' with {'adherentId': adherentId } %}
+
+/******************************* Priority I - Markers for Minute closed regular  *************************************************/
+{% include '@LuccaCore/Dashboard/Js/minuteClosedRegular.js.twig' with {'adherentId': adherentId } %}
+
+/******************************* Priority I - Markers for Minute closed other  *************************************************/
+{% include '@LuccaCore/Dashboard/Js/minuteClosedOther.js.twig' with {'adherentId': adherentId } %}
