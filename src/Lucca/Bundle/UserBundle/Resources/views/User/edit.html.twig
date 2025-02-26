@@ -1,0 +1,76 @@
+{% extends 'LuccaThemeAngleBundle:SubLayout:edit.html.twig' %}
+{% trans_default_domain 'LuccaUserBundle' %}
+
+{% set param_entity='entity.user'|transchoice(1) %}
+{% set param_entities='entity.user'|transchoice(2) %}
+
+{% block menuActive_user %}class="active"{% endblock menuActive_user %}
+
+
+{% block lucca_panels %}
+
+    {{ form_start(edit_form) }}
+    {{ form_errors(edit_form) }}
+    <div class="row">
+
+        {#-- Panel - main --#}
+        <div class="col-6">
+            <div class="card card-default">
+                <div class="card-header">
+                    {{ 'title.edit'|trans({}, 'LuccaThemeAngleBundle') }} - <b>{{ user.name }}</b>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <div class="col-12">
+                            {{ form_row(edit_form.username) }}
+                            {{ form_row(edit_form.email) }}
+                            {{ form_row(edit_form.enabled) }}
+                            {{ form_row(edit_form.groups) }}
+                            {{ form_row(edit_form.name) }}
+
+                            <a href="{{ path('lucca_user_show', { 'id': user.id }) }}"
+                               class="btn btn-secondary btn-lg" title="{{ 'link.show'|trans }}">
+                                <i class="fa fa-eye"></i></a>
+
+                            <button type="submit" class="btn btn-warning btn-lg" title="{{ 'link.edit'|trans }}">
+                                <i class="fa fa-check"></i></button>
+
+                            <a class="btn btn-danger btn-lg pull-right"
+                               data-toggle="modal" data-target=".delWin" title="{{ 'link.delete'|trans }}">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {#-- End Panel - main --#}
+
+        {#-- Panel - password --#}
+        <div class="col-6">
+            <div class="card card-default">
+                <div class="card-header"></div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        {{ form_row(edit_form.plainPassword) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Panel - password --#}
+    </div>
+
+    {{ form_rest(edit_form) }}
+    {{ form_end(edit_form) }}
+
+
+{% endblock lucca_panels %}
+
+{% block lucca_js %}
+    {% include 'LuccaThemeAngleBundle:Modal:delete.html.twig' with {'id': user.name, 'name': user.name, 'delForm': delete_form} %}
+
+    {{ parent() }}
+{% endblock lucca_js %}

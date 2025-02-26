@@ -19,6 +19,9 @@ security:
 
     # https://symfony.com/doc/current/security.html#c-encoding-passwords
     password_hashers:
+        # auto hasher with default options for the User class (and children)
+        Lucca\Bundle\UserBundle\Entity\User: 'auto'
+
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
     firewalls:
