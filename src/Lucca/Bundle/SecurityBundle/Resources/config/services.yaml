@@ -1,0 +1,75 @@
+services:
+    #################################################################
+    ## Controllers as service - autowire
+    ## Be careful about this syntax
+    #################################################################
+
+    Lucca\Bundle\SecurityBundle\Controller\:
+        resource: '../../Controller/'
+        autowire: true
+        autoconfigure: true
+        tags: [ 'controller.service_arguments' ]
+
+    #################################################################
+    ## Command
+    #################################################################
+
+    ## Command - Unban ip
+    lucca.security.command.unban:
+        class: Lucca\Bundle\SecurityBundle\Command\UnbanCommand
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@lucca.security.manager.login_attempt'
+        tags:
+            - { name: 'console.command', command: 'lucca:security:unban' }
+
+    #################################################################
+    ## Authenticator
+    #################################################################
+
+    ## Authenticator - User authenticator to manage login action
+    lucca.security.authenticator.simple:
+        class: Lucca\Bundle\SecurityBundle\Authenticator\SimpleAuthenticator
+        decoration_inner_name: "lucca.admin.authenticator"
+        public: true
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@router"
+            - "@security.csrf.token_manager"
+            - "@parameter_bag"
+            - "@security.user_password_hasher"
+            - "@lucca.security.manager.login_attempt"
+
+    #################################################################
+    ## Security
+    #################################################################
+
+    ## Listen every request - accept request if no failure LoginAttempt
+    lucca.security.request_listener:
+        class: Lucca\Bundle\SecurityBundle\EventListener\RequestListener
+        arguments:
+            - "@parameter_bag"
+            - "@doctrine.orm.entity_manager"
+            - "@router.default"
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
+
+    ## Manager - LoginAttempt
+    Lucca\Bundle\SecurityBundle\Manager\LoginAttemptManager:
+        autowire: true
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@parameter_bag"
+
+    ## Alias - UserManager
+    lucca.security.manager.login_attempt: '@Lucca\Bundle\SecurityBundle\Manager\LoginAttemptManager'
+
+    #################################################################
+    ## Access denied listener
+    #################################################################
+
+    ## Manager - LoginAttempt
+    lucca.security.accessdenied_listener:
+        class: Lucca\Bundle\SecurityBundle\EventListener\AccessDeniedHandler
+        tags:
+            - { name: kernel.event_listener, event: kernel.response }

@@ -18,4 +18,5 @@ return [
 
     /** Lucca Bundles */
     Lucca\Bundle\UserBundle\LuccaUserBundle::class => ['all' => true],
+    Lucca\Bundle\SecurityBundle\LuccaSecurityBundle::class => ['all' => true],
 ];

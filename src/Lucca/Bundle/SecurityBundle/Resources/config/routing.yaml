@@ -1,0 +1,11 @@
+# LuccaSecurityBundle Routing - basic
+lucca_security_bundle_basic:
+    resource: "@LuccaSecurityBundle/Controller"
+    type: attribute
+    prefix: /
+
+# LuccaSecurityBundle Routing - admin
+lucca_security_bundle_admin:
+    resource: "@LuccaSecurityBundle/Controller/Admin"
+    type: attribute
+    prefix: /back-office

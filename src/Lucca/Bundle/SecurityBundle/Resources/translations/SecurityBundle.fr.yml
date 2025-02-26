@@ -1,0 +1,66 @@
+####################################
+## Domain : SecurityBundle
+## Lang : FR
+####################################
+
+###############
+## Entity
+###############
+entity:
+    loginAttempt: "Tentative de login"
+
+###############
+## Label
+###############
+label:
+    requestIp: "Ip (requête)"
+    clientIps: "Liste des ips"
+    requestUri: "Uri (requête)"
+    requestedAt: "Date de la requête"
+    username: "Nom d'utilisateur"
+    controllerAsked: "Contrôleur symfony"
+    firewall: "Pare-feu symfony"
+    agent: "Agent web"
+    host: "Hôte"
+    system: "Système"
+    software: "Logiciel"
+    address: "Adresse ip"
+    port: "Port"
+    addressRemote: "Adresse ip distante"
+    portRemote: "Port distant"
+    requestTime: "Date de la requête (int)"
+    isCleared: "Tentative validée"
+    actions: "Actions"
+
+
+###############
+## Page - Ban
+###############
+ban:
+    title: "Ip bannie"
+    description: "Votre ip a été bannie."
+    warning: "Vous avez effectué plus de %maxLoginAttempts% tentatives de connexion ratée. Vous ne pouvez plus accéder à l'application en ce moment."
+    contact: "Si vos tentatives sont légitimes, vous pouvez contacter votre responsable logiciel ou la société %company%."
+    altLogo: "Vous êtes bannis"
+
+
+###############
+## Parameters
+###############
+parameters:
+    title: "Module - Sécurité"
+    seeList: "Voir la liste"
+
+###############
+## Link
+###############
+link:
+    parameter: "Retour aux paramètres"
+    reducePanel: "Réduire le panneau"
+    closePanel: "Fermer le panneau"
+    
+    loginAttempt:
+        show: "Visualiser la tentative de login"
+        delete: "Supprimer la tentative de login"
+        approveIp: "Approuver l'ip de la tentative de login"
+        backList: "Retour à la liste des tentatives de login"

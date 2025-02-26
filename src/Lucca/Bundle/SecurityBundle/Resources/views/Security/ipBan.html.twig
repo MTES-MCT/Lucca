@@ -1,0 +1,40 @@
+{#-- Extends view --#}
+{% extends '@NwThemeColor/Layout/login.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'SecurityBundle' %}
+
+{% block theme_title %}
+    {{ 'meta.project.name'|trans({}, 'CoreBundle') }} | {{ 'ban.title'|trans }}
+{% endblock %}
+
+
+{% block theme_loginForm %}
+
+    <div class="row mt-5">
+        <div class="col">
+            <h3 class="ban-title">{{ 'ban.title'|trans }}</h3>
+            <h3 class="ban-subtitle">{{ 'ban.description'|trans }}</h3>
+
+            <p class="ban-text">
+                <b>{{ 'ban.warning'|trans({
+                        '%maxLoginAttempts%': maxLoginAttempts
+                    }) }}</b>
+            </p>
+
+            <hr>
+
+            <p class="ban-text">
+                {{ 'ban.contact'|trans({
+                    '%company%': 'meta.owner.name'|trans({}, 'CoreBundle')
+                }) }}
+            </p>
+
+            <img src="{{ asset('assets/img/banned.png') }}" alt="{{ 'ban.altLogo'|trans }}"
+                 class="mt-2 img-fluid img-responsive">
+        </div>
+    </div>
+
+{% endblock theme_loginForm %}
+
+

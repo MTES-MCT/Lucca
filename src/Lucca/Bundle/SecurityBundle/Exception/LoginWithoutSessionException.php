@@ -8,12 +8,10 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace App;
+namespace Lucca\Bundle\SecurityBundle\Exception;
 
-use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
-use Symfony\Component\HttpKernel\Kernel as BaseKernel;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
-class Kernel extends BaseKernel
+class LoginWithoutSessionException extends Exception
 {
-    use MicroKernelTrait;
 }

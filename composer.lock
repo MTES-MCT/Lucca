@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c5b5cce87fc4fecea4cadf7c982ebb9e",
+    "content-hash": "3480318f828d2143e140f45c8957eb54",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -1281,6 +1281,72 @@
                 }
             ],
             "time": "2024-12-27T00:36:43+00:00"
+        },
+        {
+            "name": "friendsofsymfony/jsrouting-bundle",
+            "version": "3.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git",
+                "reference": "af2ee3a5406a3b57dfe1a0c010d2a29c2fdbfeed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/af2ee3a5406a3b57dfe1a0c010d2a29c2fdbfeed",
+                "reference": "af2ee3a5406a3b57dfe1a0c010d2a29c2fdbfeed",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0",
+                "symfony/console": "^5.4|^6.0|^7.0",
+                "symfony/framework-bundle": "^5.4|^6.0|^7.0",
+                "symfony/serializer": "^5.4|^6.0.1|^7.0",
+                "willdurand/jsonp-callback-validator": "~1.1|^2.0"
+            },
+            "require-dev": {
+                "symfony/expression-language": "^5.4|^6.0|^7.0",
+                "symfony/phpunit-bridge": "^5.4|^6.0|^7.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "FOS\\JsRoutingBundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "William Durand",
+                    "email": "will+git@drnd.me"
+                },
+                {
+                    "name": "FriendsOfSymfony Community",
+                    "homepage": "https://github.com/friendsofsymfony/FOSJsRoutingBundle/contributors"
+                }
+            ],
+            "description": "A pretty nice way to expose your Symfony routing to client applications.",
+            "homepage": "http://friendsofsymfony.github.com",
+            "keywords": [
+                "Js Routing",
+                "javascript",
+                "routing"
+            ],
+            "support": {
+                "issues": "https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/issues",
+                "source": "https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/tree/3.5.2"
+            },
+            "time": "2024-11-26T15:26:56+00:00"
         },
         {
             "name": "friendsofsymfony/user-bundle",
@@ -4630,6 +4696,76 @@
             "time": "2025-01-27T11:08:17+00:00"
         },
         {
+            "name": "symfony/rate-limiter",
+            "version": "v7.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/rate-limiter.git",
+                "reference": "bb6b14ee6c1c4d2722a30d46fb92714943526804"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/rate-limiter/zipball/bb6b14ee6c1c4d2722a30d46fb92714943526804",
+                "reference": "bb6b14ee6c1c4d2722a30d46fb92714943526804",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2",
+                "symfony/options-resolver": "^6.4|^7.0"
+            },
+            "require-dev": {
+                "psr/cache": "^1.0|^2.0|^3.0",
+                "symfony/lock": "^6.4|^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\RateLimiter\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Wouter de Jong",
+                    "email": "wouter@wouterj.nl"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Provides a Token Bucket implementation to rate limit input and output in your application",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "limiter",
+                "rate-limiter"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/rate-limiter/tree/v7.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2024-11-09T09:29:03+00:00"
+        },
+        {
             "name": "symfony/routing",
             "version": "v7.2.3",
             "source": {
@@ -6318,6 +6454,49 @@
                 }
             ],
             "time": "2025-02-13T08:34:43+00:00"
+        },
+        {
+            "name": "willdurand/jsonp-callback-validator",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/willdurand/JsonpCallbackValidator.git",
+                "reference": "738c36e91d4d7e0ff0cac145f77057e0fb88526e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/willdurand/JsonpCallbackValidator/zipball/738c36e91d4d7e0ff0cac145f77057e0fb88526e",
+                "reference": "738c36e91d4d7e0ff0cac145f77057e0fb88526e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "JsonpCallbackValidator": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "William Durand",
+                    "email": "will+git@drnd.me"
+                }
+            ],
+            "description": "JSONP callback validator.",
+            "support": {
+                "issues": "https://github.com/willdurand/JsonpCallbackValidator/issues",
+                "source": "https://github.com/willdurand/JsonpCallbackValidator/tree/v2.0.0"
+            },
+            "time": "2022-01-30T20:33:09+00:00"
         }
     ],
     "packages-dev": [
@@ -6801,6 +6980,7 @@
     "prefer-lowest": false,
     "platform": {
         "php": ">=8.2",
+        "ext-intl": "*",
         "ext-xml": "*"
     },
     "platform-dev": {},

@@ -2,59 +2,8 @@
 ## Lucca
 #######################################
 
-## LuccaMediaBundle Routing
-lucca_media:
-    resource: "@LuccaMediaBundle/Resources/config/routing.yml"
-    prefix:   /
-
-## LuccaSecurityBundle Routing
-lucca_security:
-    resource: "@LuccaSecurityBundle/Resources/config/routing.yml"
-    prefix:   /
-
-## LuccaCoreBundle Routing
-lucca_core:
-    resource: "@LuccaCoreBundle/Resources/config/routing.yml"
-    prefix:   /
-
-## LuccaUserBundle Routing
-lucca_user:
-    resource: "@LuccaUserBundle/Resources/config/routing.yml"
-    prefix:   /
-
-## LuccaThemeAngleBundle Routing
-lucca_theme_angle:
-    resource: "@LuccaThemeAngleBundle/Resources/config/routing.yml"
-    prefix:   /
-
-## LuccaThemeUnifyBundle Routing
-lucca_theme_unify:
-    resource: "@LuccaThemeUnifyBundle/Resources/config/routing.yml"
-    prefix:   /
-
-## LuccaAdherentBundle Routing
-lucca_adherent:
-    resource: "@LuccaAdherentBundle/Resources/config/routing.yml"
-    prefix:   /
-
-## LuccaContentBundle Routing
-lucca_content:
-    resource: "@LuccaContentBundle/Resources/config/routing.yml"
-    prefix:   /
-
-## LuccaMinuteBundle Routing
-lucca_minute:
-    resource: "@LuccaMinuteBundle/Resources/config/routing.yml"
-    prefix:   /
-
-## LuccaParameterBundle Routing
-lucca_location:
-    resource: "@LuccaParameterBundle/Resources/config/routing.yml"
-    prefix:   /
-
-## LuccaChecklistBundle Routing
-lucca_checklist:
-    resource: "@LuccaChecklistBundle/Resources/config/routing.yml"
+LuccaSecurityBundle:
+    resource: "@LuccaSecurityBundle/Resources/config/routing.yaml"
     prefix:   /
 
 ## LuccaLogBundle Routing

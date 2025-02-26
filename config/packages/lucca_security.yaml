@@ -1,0 +1,7 @@
+lucca_security:
+    type: form
+    default_url_after_login: '%env(DEFAULT_URL_AFTER_LOGIN)%'
+
+    protection:
+        period_max_in_min: 15
+        max_login_attempts: 5
