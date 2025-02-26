@@ -86,6 +86,7 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
         if (!$request->hasSession() || !$request->getSession() instanceof SessionInterface) {
             throw new LoginWithoutSessionException("Request cannot have session - fix this if you want to perform login action");
         }
+
         /**
          * Create a new Passport to transport these data
          *
@@ -136,7 +137,7 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
          * @var User $user
          */
         $user = $token->getUser();
-        $user->setLastConnectionAt(new \DateTime('now'));
+        $user->setLastLogin(new \DateTime('now'));
 
         $this->em->persist($token->getUser());
         $this->em->flush();
@@ -149,8 +150,9 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
         $session->set(SecurityRequestAttributes::LAST_USERNAME, $user->getEmail());
 
         /** Redirect to the last page visited before login */
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName))
+        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
+        }
 
         return new RedirectResponse($this->urlGenerator->generate($this->routeAfterLogin));
     }

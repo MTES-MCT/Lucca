@@ -23,10 +23,10 @@ class GroupFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $groups = [
-            ['name' => 'Super Admin', 'displayed' => false, 'role' => 'ROLE_SUPER_ADMIN'],
-            ['name' => 'Admin', 'displayed' => true, 'role' => 'ROLE_ADMIN'],
-            ['name' => 'Lucca', 'displayed' => true, 'role' => 'ROLE_LUCCA'],
-            ['name' => 'Visu', 'displayed' => true, 'role' => 'ROLE_VISU'],
+            ['name' => 'Super Admin', 'displayed' => false, 'role' => ['ROLE_SUPER_ADMIN']],
+            ['name' => 'Admin', 'displayed' => true, 'role' => ['ROLE_ADMIN']],
+            ['name' => 'Lucca', 'displayed' => true, 'role' => ['ROLE_LUCCA']],
+            ['name' => 'Visu', 'displayed' => true, 'role' => ['ROLE_VISU']],
         ];
 
         foreach ($groups as $group) {

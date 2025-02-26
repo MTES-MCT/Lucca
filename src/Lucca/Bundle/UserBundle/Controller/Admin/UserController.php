@@ -16,10 +16,10 @@ use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use FOS\UserBundle\Doctrine\UserManager;
 
 use Lucca\Bundle\UserBundle\Entity\User;
 use Lucca\Bundle\UserBundle\Form\UserType;
+use Lucca\Bundle\UserBundle\Manager\UserManager;
 
 #[Route(path: '/user')]
 #[IsGranted('ROLE_ADMIN')]

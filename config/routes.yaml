@@ -6,31 +6,6 @@ LuccaSecurityBundle:
     resource: "@LuccaSecurityBundle/Resources/config/routing.yaml"
     prefix:   /
 
-## LuccaLogBundle Routing
-lucca_log:
-    resource: "@LuccaLogBundle/Resources/config/routing.yml"
+LuccaUserBundle:
+    resource: "@LuccaUserBundle/Resources/config/routing.yaml"
     prefix:   /
-
-## LuccaSettingBundle Routing
-lucca_setting:
-    resource: "@LuccaSettingBundle/Resources/config/routing.yml"
-    prefix:   /
-
-## LuccaModelBundle Routing
-lucca_model:
-    resource: "@LuccaModelBundle/Resources/config/routing.yml"
-    prefix:   /
-
-#######################################
-## Lucca - Extra bundles
-#######################################
-
-## SgDatatablesBundle Routing
-sg_datatables_bundle:
-    resource: "@SgDatatablesBundle/Controller/"
-    type:     annotation
-    prefix:   /sg
-
-## FOSJsRoutingBundle Routing
-fos_js_routing:
-    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

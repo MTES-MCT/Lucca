@@ -21,7 +21,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Lucca\Bundle\UserBundle\Repository\UserRepository;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'constraint.unique.email', errorPath: 'email')]
+#[UniqueEntity(fields: ['email_canonical'], message: 'constraint.unique.user.email', errorPath: 'email')]
+#[UniqueEntity(fields: ['username_canonical'], message: 'constraint.unique.user.username', errorPath: 'username')]
+#[UniqueEntity(fields: ['confirmation_token'])]
 #[ORM\Table(name: 'lucca_user')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -49,7 +51,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(max: 180, maxMessage: 'constraint.length.max')]
     private string $username;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(name: 'username_canonical', length: 180, unique: true)]
     #[Assert\Length(max: 180, maxMessage: 'constraint.length.max')]
     private string $usernameCanonical;
 
@@ -57,7 +59,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(max: 180, maxMessage: 'constraint.length.max')]
     private string $email;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(name: 'email_canonical', length: 180, unique: true)]
     #[Assert\Length(max: 180, maxMessage: 'constraint.length.max')]
     private string $emailCanonical;
 
@@ -81,23 +83,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Plain password. Used for model validation. Must not be persisted.
      */
-    #[ORM\Column]
-    private string $plainPassword;
+    private ?string $plainPassword;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'last_login', type: 'datetime', nullable: true)]
     private ?DateTime $lastLogin = null;
 
     /**
      * Random string sent to the user email address in order to verify it.
      */
-    #[ORM\Column(length: 180, nullable: true)]
+    #[ORM\Column(name: 'confirmation_token', length: 180, unique: true, nullable: true)]
     private ?string $confirmationToken = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'password_requested_at', type: 'datetime', nullable: true)]
     private ?DateTime $passwordRequestedAt = null;
 
-    #[ORM\Column(type: 'json')]
-    private array $roles = [];
+    // 65535 is the maximum length of a TEXT field in MySQL
+    #[ORM\Column(type: Types::TEXT, length: 65535, options: ['comment' => '(DC2Type:array)'])]
+    private string $roles = '';
 
     /************************************************************************ Custom functions ************************************************************************/
 
@@ -121,26 +123,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return in_array(strtoupper($role), $this->getRoles(), true);
     }
 
-    public function addRole(string $role): User
+    public function addRole(string $role): self
     {
-        $this->roles[] = $role;
+        $roles = unserialize($this->roles);
+        $roles[] = $role;
+
+        $this->roles = serialize(array_unique($roles));
 
         return $this;
     }
 
-    public function removeRole(string $role): User
+    public function removeRole(string $role): self
     {
-        if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
-            unset($this->roles[$key]);
-            $this->roles = array_values($this->roles);
+        $roles = unserialize($this->roles);
+        if (false !== $key = array_search(strtoupper($role), $roles, true)) {
+            unset($roles[$key]);
         }
+
+        $this->roles = serialize(array_unique($roles));
 
         return $this;
     }
 
     public function getRoles(): array
     {
-        $roles = $this->roles;
+        $roles = unserialize($this->roles);
 
         /** Add each role contained in Group entities on this list */
         foreach ($this->getGroups() as $group) {
@@ -151,6 +158,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $roles[] = static::ROLE_DEFAULT;
 
         return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = serialize($roles);
+
+        return $this;
     }
 
     /**
@@ -301,12 +315,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPlainPassword(): string
+    public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
 
-    public function setPlainPassword(string $plainPassword): self
+    public function setPlainPassword(?string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
 
@@ -345,13 +359,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPasswordRequestedAt(?DateTime $passwordRequestedAt): self
     {
         $this->passwordRequestedAt = $passwordRequestedAt;
-
-        return $this;
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
 
         return $this;
     }

@@ -12,11 +12,13 @@ namespace Lucca\Bundle\UserBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Lucca\Bundle\UserBundle\Repository\GroupRepository;
 
 #[ORM\Entity(repositoryClass: GroupRepository::class)]
+#[UniqueEntity(fields: ['name'], message: 'constraint.unique.group.name', errorPath: 'name')]
 #[ORM\Table(name: 'lucca_user_group')]
 class Group
 {
@@ -25,12 +27,12 @@ class Group
     #[ORM\GeneratedValue]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
-    private ?string $name = null;
+    #[ORM\Column(length: 180, unique: true)]
+    #[Assert\Length(min: 2, max: 180, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
+    private string $name;
 
-    #[ORM\Column(type: 'json')]
-    private array $roles = [];
+    #[ORM\Column(type: Types::TEXT, options: ['comment' => '(DC2Type:array)'])]
+    private string $roles = '';
 
     #[ORM\Column(type: Types::BOOLEAN)]
     #[Assert\NotNull(message: 'constraint.not_null')]
@@ -41,36 +43,39 @@ class Group
 
     public function hasRole(string $role): bool
     {
-        return in_array(strtoupper($role), $this->roles, true);
+        return in_array(strtoupper($role), $this->getRoles(), true);
     }
 
     public function addRole(string $role): self
     {
-        if (!$this->hasRole($role)) {
-            $this->roles[] = strtoupper($role);
-        }
+        $roles = unserialize($this->roles);
+        $roles[] = $role;
+
+        $this->roles = serialize(array_unique($roles));
 
         return $this;
     }
 
     public function removeRole(string $role): self
     {
-        if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
-            unset($this->roles[$key]);
-            $this->roles = array_values($this->roles);
+        $roles = unserialize($this->roles);
+        if (false !== $key = array_search(strtoupper($role), $roles, true)) {
+            unset($roles[$key]);
         }
+
+        $this->roles = serialize(array_unique($roles));
 
         return $this;
     }
 
-    public function getRoles(): ?array
+    public function getRoles(): array
     {
-        return $this->roles;
+        return unserialize($this->roles);
     }
 
     public function setRoles(array $roles): self
     {
-        $this->roles = $roles;
+        $this->roles = serialize($roles);
 
         return $this;
     }
@@ -90,12 +95,12 @@ class Group
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(?string $name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 
