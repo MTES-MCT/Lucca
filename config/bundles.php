@@ -13,6 +13,7 @@ return [
 
     /** Extra Bundles */
     Knp\Bundle\SnappyBundle\KnpSnappyBundle::class => ['all' => true],
+    FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
     FOS\UserBundle\FOSUserBundle::class => ['all' => true],
 
     /** Lucca Bundles */
