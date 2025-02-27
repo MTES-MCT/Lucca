@@ -1,0 +1,12 @@
+## LuccaLogBundle Admin
+lucca_log_bundle_admin:
+    resource: "@LuccaLogBundle/Controller/Admin"
+    type:     attribute
+    prefix:   /back-office
+    
+## LuccaLogBundle Routing - Api
+lucca_api_logt_bundle:
+    resource: "@LuccaLogBundle/Controller/Api"
+    type: attribute
+    prefix: /api
+

@@ -1,4 +1,4 @@
-{% extends "LuccaThemeAngleBundle:Layout:angleLayout.html.twig" %}
+{% extends "@LuccaThemeStreamDashboardUiKit/Layout/layout.html.twig" %}
 {% trans_default_domain 'LuccaUserBundle' %}
 
 {% set param_entity='entity.user'|transchoice(1) %}
@@ -49,7 +49,7 @@
                             <tr>
                                 <th>{{ 'label.enabled'|trans }}</th>
                                 <td>{% if user.enabled %}<i class="fa fa-check"></i>{% else %}<i
-                                            class="fas fa-times"></i>{% endif %} </td>
+                                        class="fas fa-times"></i>{% endif %} </td>
                             </tr>
 
                             </tbody>
@@ -60,8 +60,8 @@
 
                         {# TODO Update profile user with adherent view #}
                         {#<a class="btn btn-info btn-lg"#}
-                           {#href="{{ path('fos_user_profile_edit') }}"#}
-                           {#title="{{ 'link.edit'|trans }}"><i class="fas fa-pencil-alt"></i></a>#}
+                        {#href="{{ path('fos_user_profile_edit') }}"#}
+                        {#title="{{ 'link.edit'|trans }}"><i class="fas fa-pencil-alt"></i></a>#}
 
                         <a class="btn btn-warning btn-lg pull-right"
                            href="{{ path('fos_user_change_password') }}"

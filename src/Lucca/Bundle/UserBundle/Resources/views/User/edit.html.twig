@@ -1,4 +1,4 @@
-{% extends 'LuccaThemeAngleBundle:SubLayout:edit.html.twig' %}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig' %}
 {% trans_default_domain 'LuccaUserBundle' %}
 
 {% set param_entity='entity.user'|transchoice(1) %}
@@ -17,7 +17,7 @@
         <div class="col-6">
             <div class="card card-default">
                 <div class="card-header">
-                    {{ 'title.edit'|trans({}, 'LuccaThemeAngleBundle') }} - <b>{{ user.name }}</b>
+                    {{ 'title.edit'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ user.name }}</b>
                 </div>
 
                 <div class="card-wrapper">
@@ -70,7 +70,7 @@
 {% endblock lucca_panels %}
 
 {% block lucca_js %}
-    {% include 'LuccaThemeAngleBundle:Modal:delete.html.twig' with {'id': user.name, 'name': user.name, 'delForm': delete_form} %}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': user.name, 'name': user.name, 'delForm': delete_form} %}
 
     {{ parent() }}
 {% endblock lucca_js %}

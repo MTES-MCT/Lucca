@@ -1,136 +1,157 @@
 {#-- Extends view --#}
-{% extends '@NwThemeColor/SubLayout/show.html.twig' %}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
 
 {#-- Translation domain --#}
-{% trans_default_domain 'SecurityBundle' %}
+{% trans_default_domain 'LuccaSecurityBundle' %}
 
 {#-- Parameters --#}
-{% set param_entity='entity.loginAttempt'|trans %}
-{% set menuActive = "ma_adm_parameter" %}
+{% set param_entity='entity.loginAttempt'|transchoice(1) %}
+{% set param_entities='entity.loginAttempt'|transchoice(2) %}
+{% block menuActive_parameter %} class="active"{% endblock %}
 
 
-{% block theme_title_name %}
-    <h2>{{ param_entity }} - <b>{{ loginAttempt.id }}</b></h2>
-{% endblock theme_title_name %}
+{% block lucca_title_name %}
+    <h2>{{ param_entity }} - <b>{{ loginAttempt.requestIp }}</b></h2>
+{% endblock lucca_title_name %}
 
 
-{% block theme_page %}
+{% block lucca_panels %}
 
-    {#Panel - main#}
-    <div class="col-lg-6 col-12">
-        <div class="panel panel-inverse float-e-margins">
-            <div class="panel-heading">
-                <h5><i class="fas fa-book-dead"></i> {{ param_entity }} </h5>
-            </div>
+    <div class="row">
+        {# Panel - main #}
+        <div class="col-sm-5 col-12">
+            <div class="card card-default">
+                <div class="card-header">
+                    <a class="collapse-link" title="{{ 'link.reducePanel'|trans }}">
+                        <h5><i class="fas fa-book-dead"></i> {{ param_entity }} </h5>
+                    </a>
+                </div>
 
-            <div class="panel-body">
+                <div class="card-wrapper">
+                    <div class="card-body">
 
-                <table class="table table-striped table-hover">
-                    <tbody>
-                    <tr>
-                        <th><i class="fas fa-book-dead"></i> {{ 'label.requestIp'|trans }}</th>
-                        <td>{{ loginAttempt.requestIp }}</td>
-                    </tr>
-                    <tr>
-                        <th>{{ 'label.requestUri'|trans }}</th>
-                        <td>{{ loginAttempt.requestUri }}</td>
-                    </tr>
-                    <tr>
-                        <th>{{ 'label.requestedAt'|trans }}</th>
-                        <td>{{ loginAttempt.requestedAt|date('d/m/Y H:i:s') }}</td>
-                    </tr>
-                    <tr>
-                        <th>{{ 'label.username'|trans }}</th>
-                        <td>{{ loginAttempt.username }}</td>
-                    </tr>
-                    <tr>
-                        <th>{{ 'label.address'|trans }}</th>
-                        <td>
-                            <b>{{ loginAttempt.address }}</b><br>
-                            <i class="fas fa-spider"></i> {{ loginAttempt.port }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>{{ 'label.addressRemote'|trans }}</th>
-                        <td>
-                            <b>{{ loginAttempt.addressRemote }}</b><br>
-                            <i class="fas fa-spider"></i> {{ loginAttempt.portRemote }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>{{ 'label.isCleared'|trans }}</th>
-                        <td>{{ loginAttempt.isCleared|boolean }}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div> {#End Panel - main#}
+                        <table class="table table-striped table-hover">
+                            <tbody>
+                            <tr>
+                                <th><i class="fas fa-book-dead"></i> {{ 'label.requestIp'|trans }}</th>
+                                <td>{{ loginAttempt.requestIp }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.requestUri'|trans }}</th>
+                                <td>{{ loginAttempt.requestUri }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.requestedAt'|trans }}</th>
+                                <td>{{ loginAttempt.requestedAt|date('d/m/Y H:i:s') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.username'|trans }}</th>
+                                <td>{{ loginAttempt.username }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.address'|trans }}</th>
+                                <td>
+                                    <b>{{ loginAttempt.address }}</b><br>
+                                    <i class="fas fa-spider"></i> {{ loginAttempt.port }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.addressRemote'|trans }}</th>
+                                <td>
+                                    <b>{{ loginAttempt.addressRemote }}</b><br>
+                                    <i class="fas fa-spider"></i> {{ loginAttempt.portRemote }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.isCleared'|trans }}</th>
+                                <td>{{ loginAttempt.isCleared|boolean }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
 
-    {#Panel - second#}
-    <div class="col-lg-6 col-12">
-        <div class="panel panel-inverse float-e-margins">
-            <div class="panel-heading">
-                <h5><i class="fas fa-book-dead"></i> {{ param_entity }} </h5>
-            </div>
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_security_login_attempt_index') }}"
+                           title="{{ 'link.loginAttempt.backList'|trans }}"><i class="fa fa-reply"></i></a>
 
-            <div class="panel-body">
+                        {% if not loginAttempt.isCleared %}
+                            <a class="btn btn-primary btn-lg"
+                               href="{{ path('lucca_security_login_attempt_approve_ip', { 'id': loginAttempt.id }) }}"
+                               title="{{ 'link.loginAttempt.approveIp'|trans }}"><i class="fas fa-broom"></i></a>
+                        {% endif %}
 
-                <table class="table table-striped table-hover">
-                    <tbody>
-                    <tr>
-                        <th><i class="fas fa-book-dead"></i> {{ 'label.clientIps'|trans }}</th>
-                        <td>
-                            {% for ip in loginAttempt.clientIps %}
-                                {{ ip }}
-                            {% endfor %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>{{ 'label.controllerAsked'|trans }}</th>
-                        <td>{{ loginAttempt.controllerAsked }}</td>
-                    </tr>
-                    <tr>
-                        <th>{{ 'label.firewall'|trans }}</th>
-                        <td>{{ loginAttempt.firewall }}</td>
-                    </tr>
-                    <tr>
-                        <th>{{ 'label.agent'|trans }}</th>
-                        <td>{{ loginAttempt.agent }}</td>
-                    </tr>
-                    <tr>
-                        <th>{{ 'label.host'|trans }}</th>
-                        <td>{{ loginAttempt.host }}</td>
-                    </tr>
-                    <tr>
-                        <th>{{ 'label.system'|trans }}</th>
-                        <td>{{ loginAttempt.system }}</td>
-                    </tr>
-                    <tr>
-                        <th>{{ 'label.software'|trans }}</th>
-                        <td>{{ loginAttempt.software }}</td>
-                    </tr>
-                    <tr>
-                        <th>{{ 'label.requestTime'|trans }}</th>
-                        <td>{{ loginAttempt.requestTime }}</td>
-                    </tr>
-                    </tbody>
-                </table>
+                        {% if app.user and is_granted("ROLE_SUPER_ADMIN") %}
+                            <a class="btn btn-danger btn-lg float-right" data-toggle="modal"
+                               data-target=".delWin" title="{{ 'link.loginAttempt.delete'|trans }}">
+                                <i class="fa fa-trash-alt"></i>
+                            </a>
+
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
-    </div> {#End Panel - second#}
+        {# End Panel - main #}
 
-    {#Panel - buttons#}
-    <div class="col-lg-6 col-12">
-        <a class="btn btn-default btn-lg" href="{{ path('lucca_security_loginAttempt_index') }}"
-           title="{{ 'link.loginAttempt.backList'|trans }}"><i class="fas fa-reply"></i></a>
+        {# Panel - second #}
+        <div class="col-sm-5 col-12">
+            <div class="card card-default">
+                <div class="card-header">
+                    <a class="collapse-link" title="{{ 'link.reducePanel'|trans }}">
+                        <h5><i class="fas fa-book-dead"></i> {{ param_entity }} </h5>
+                    </a>
+                </div>
 
-        {% if not loginAttempt.isCleared %}
-            <a class="btn btn-primary btn-lg"
-               href="{{ path('lucca_security_loginAttempt_approve_ip', { 'id': loginAttempt.id }) }}"
-               title="{{ 'link.loginAttempt.approveIp'|trans }}"><i class="fas fa-broom"></i></a>
-        {% endif %}
-    </div> {#End Panel - buttons#}
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <table class="table table-striped table-hover">
+                            <tbody>
+                            <tr>
+                                <th><i class="fas fa-book-dead"></i> {{ 'label.clientIps'|trans }}</th>
+                                <td>
+                                    {% for ip in loginAttempt.clientIps %}
+                                        {{ ip }}
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.controllerAsked'|trans }}</th>
+                                <td>{{ loginAttempt.controllerAsked }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.firewall'|trans }}</th>
+                                <td>{{ loginAttempt.firewall }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.agent'|trans }}</th>
+                                <td>{{ loginAttempt.agent }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.host'|trans }}</th>
+                                <td>{{ loginAttempt.host }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.system'|trans }}</th>
+                                <td>{{ loginAttempt.system }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.software'|trans }}</th>
+                                <td>{{ loginAttempt.software }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.requestTime'|trans }}</th>
+                                <td>{{ loginAttempt.requestTime }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {# End Panel - second #}
+    </div>
 
-{% endblock theme_page %}
+{% endblock lucca_panels %}
 
+{% block lucca_js %}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': loginAttempt.requestIp, 'name': loginAttempt.requestIp, 'delForm': delete_form} %}
+    {{ parent() }}
+{% endblock lucca_js %}

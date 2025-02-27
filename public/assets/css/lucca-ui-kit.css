@@ -1,0 +1,294 @@
+/************************************************************
+ * Generic class
+ ************************************************************/
+
+/********************
+ * Height
+ ********************/
+.mh50 {
+    max-height: 50px;
+}
+
+.mh100 {
+    max-height: 100px;
+}
+
+.mh200 {
+    max-height: 200px;
+}
+
+.h35 {
+    height: 35px;
+}
+
+.mt80 {
+    margin-top: 80px;
+}
+
+.mt50 {
+    margin-top: 50px;
+}
+
+.mt15 {
+    margin-top: 15px;
+}
+
+.mb100 {
+    margin-bottom: 100px;
+}
+
+.mb50 {
+    margin-bottom: 50px;
+}
+
+.mb25 {
+    margin-bottom: 25px;
+}
+
+.mr15 {
+    margin-right: 15px;
+}
+
+.pt150 {
+    padding-top: 150px;
+}
+
+.pt80 {
+    padding-top: 80px;
+}
+
+.pt50 {
+    padding-top: 50px;
+}
+
+.pt15 {
+    padding-top: 15px;
+}
+
+/************************************************************
+ * Custom class
+ ************************************************************/
+/********************
+ * Global
+ ********************/
+pre {
+    white-space: pre-wrap;
+}
+
+.hr-big {
+    border-top-width: 15px;
+}
+
+.labels-hidden label {
+    display: none;
+}
+
+textarea {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.control-label.required:after {
+    content: '*';
+    color: #f4ac5d;
+    font-size: 1.1em;
+}
+
+.bool-inline .radio,
+.bool-inline .checkbox {
+    display: inline-block;
+    margin-right: 30px;
+}
+
+.hr-table {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.bordered {
+    border: 2px solid #e1e1e1;
+}
+
+.purchase {
+    border-bottom-width: 2px;
+    background: rgba(255, 255, 255, 0.65);
+}
+
+.wrapper {
+    background: url("../img/wallpaper-wall.jpg");
+}
+
+/********************
+ * Link
+ ********************/
+.link-file:hover {
+    -webkit-transition: 1s; /* Safari */
+    transition: 1s;
+}
+
+/********************
+ * Media
+ ********************/
+.logo-header {
+    max-height: 120px;
+    max-width: 200px;
+}
+
+a .logo-header:hover {
+    background: #eee;
+    padding: 5px;
+}
+
+.media-show {
+    max-width: 100%;
+    max-height: 300px;
+    margin: 10px;
+}
+
+.media-thumbnail {
+    max-width: 200px;
+    max-height: 200px;
+    margin: 10px auto;
+    background: lightgrey;
+}
+
+/********************
+ * List
+ ********************/
+.page-list li {
+    line-height: 2;
+    width: 100%;
+    font-size: 1.2em;
+}
+
+.page-list li a,
+.page-list li span {
+    display: block;
+    margin-bottom: 15px;
+    padding-left: 10px;
+}
+
+.page-list li a:hover,
+.page-list li span:hover {
+    padding-left: 20px;
+    text-decoration: none;
+    font-weight: bold
+}
+
+/********************
+ * Footer
+ ********************/
+.footer-light {
+    background-color: #d0d0d0;
+}
+
+.footer-v1 .footer-logo {
+    min-height: 250px;
+    height: 200px;
+    width: 100%;
+    background: url("../logo/lucca-monochrome.png") no-repeat right top;
+    background-size: 20em;
+    background-origin: content-box;
+
+    display: inline;
+    position: absolute;
+    opacity: 0.5;
+}
+
+.footer-v1 .footer {
+    padding: 20px 0;
+}
+
+.footer-v1 .copyright {
+    padding: auto;
+}
+
+/********************
+ * Column
+ ********************/
+.column-title {
+    min-height: 70px;
+    display: flex;
+    margin-bottom: 30px;
+}
+
+.column-title h2 {
+    margin: auto 0;
+}
+
+.column {
+    border-left: 3px solid;
+}
+
+/********************
+ * Color
+ ********************/
+.btn-u {
+    background-color: #2B7D7C;
+}
+
+.column-title h2,
+.page-list li a:hover,
+.page-list li span:hover,
+.footer-v1 .link-list a:hover,
+.footer-v1 .link-list a:active,
+a,
+a:hover,
+.container h2,
+.link-file {
+    color: #2B7D7C;
+}
+
+.column:hover,
+.headline h2,
+.headline h3,
+.headline h4 {
+    border-color: #2B7D7C;
+}
+
+.purchase {
+    border-color: #F6BF49;
+}
+
+::selection,
+.btn-u:hover {
+    background-color: #F6BF49;
+}
+
+.link-file:hover {
+    color: #F6BF49;
+}
+
+/********************
+ * Title
+ ********************/
+.main-title {
+    font-size: 3em;
+}
+
+/********************
+ * Admin
+ ********************/
+.div-admin {
+    display: inline-block;
+    border: 1px dashed #f0ad4e;
+    padding: 5px;
+    margin: 5px;
+    float: right;
+}
+
+.label-admin {
+    position: relative;
+    float: right;
+    top: -15px;
+    right: -10px;
+    display: inline;
+    margin-bottom: 5px;
+}
+
+/********************
+ * Error
+ ********************/
+.error-height {
+    min-height: 15em;
+}

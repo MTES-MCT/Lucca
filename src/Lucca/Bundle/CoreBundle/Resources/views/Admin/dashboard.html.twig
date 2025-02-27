@@ -1,4 +1,4 @@
-{% extends "LuccaThemeAngleBundle:Layout:angleLayout.html.twig" %}
+{% extends "@LuccaThemeStreamDashboardUiKit/Layout/layout.html.twig" %}
 {% trans_default_domain 'LuccaCoreBundle' %}
 
 {% block menuActive_admin_dashboard %} class="active" {% endblock %}
@@ -107,11 +107,11 @@
     {{ parent() }}
 
     <link href="{{ asset('bundles/luccacore/css/lucca_map.css') }}" rel="stylesheet">
-    <link href="{{ asset('bundles/luccathemeangle/plugins/pace/paceMap.css') }}" rel="stylesheet">
+    <link href="{{ asset('plugins/pace/paceMap.css') }}" rel="stylesheet">
     {#-- Plugin sweet alert 2 --#}
     <link href="{{ asset('plugins/sweetalert2/sweetalert2.css') }}" rel="stylesheet">
     {#-- Plugin datepicker --#}
-    <link href="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
+    <link href="{{ asset('plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
           rel="stylesheet">
 
     {#Specific rules only used in this page#}
@@ -129,12 +129,12 @@
 
     <script src="{{ asset('bundles/luccacore/js/lucca_config_map.js') }}"></script>
     <script src="{{ asset('bundles/luccacore/js/lucca_map.js') }}"></script>
-    <script src="{{ asset('bundles/luccathemeangle/plugins/pace/pace.min.js') }}"></script>
+    <script src="{{ asset('plugins/pace/pace.min.js') }}"></script>
     {#-- Plugin sweet alert 2 --#}
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.js') }}"></script>
     {#-- Plugin datepicker --#}
-    <script src="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js') }}"></script>
-    <script src="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/lang/bootstrap-datepicker.fr.js') }}"></script>
+    <script src="{{ asset('plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('plugins/bootstrap-datepicker/lang/bootstrap-datepicker.fr.js') }}"></script>
 
     {#Datepicker#}
     <script>
@@ -146,23 +146,23 @@
     {#-- End --#}
 
     {#-- Plugin - Google maps --#}
-{#    {% if 'setting.map.mapActive.name'|setting == true %}#}
-{#        <script src="https://maps.googleapis.com/maps/api/js?key={{ 'setting.map.mapKey.name'|setting }}&callback=initMap"#}
-{#                async defer></script>#}
+    {% if 'setting.map.mapActive.name'|setting == true %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ 'setting.map.mapKey.name'|setting }}&callback=initMap"
+                async defer></script>
 
-{#        <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>#}
+        <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
 
-{#        <script>#}
+        <script>
 
-{#            /** Contain all code to init map and create marker that need to be done in twig */#}
-{#            {% include '@LuccaCore/Dashboard/Js/global.js.twig' with {'adherentId': adherentId, 'displayResults': 'true' } %}#}
+            /** Contain all code to init map and create marker that need to be done in twig */
+            {% include '@LuccaCore/Dashboard/Js/global.js.twig' with {'adherentId': adherentId, 'displayResults': 'true' } %}
 
-{#        </script>#}
-{#    {% endif %}#}
+        </script>
+    {% endif %}
 
     {#-- Plugin - chartJs --#}
-    <script src="{{ asset('bundles/luccathemeangle/plugins/chartJs/chart.min.js') }}"></script>
-    <script src="{{ asset('bundles/luccathemeangle/plugins/chartJs/chartjs-plugin-datalabels.min.js') }}"></script>
+    <script src="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/chart.js/dist/chart.min.js') }}"></script>
+    <script src="{{ asset('plugins/chartJs/chartjs-plugin-datalabels.min.js') }}"></script>
 
     <script>
         {% include '@LuccaMinute/Statistics/Js/historic-chart.js.twig' with {'stories': stories } %}
