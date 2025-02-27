@@ -1,0 +1,21 @@
+/*!
+ * Copyright (c) 2025. Numeric Wave
+ *
+ * Afero General Public License (AGPL) v3
+ *
+ * For more information, please refer to the LICENSE file at the root of the project.
+ */
+
+//
+// Indicators Themes
+//
+
+.u-indicator--primary-lightest {
+  background-color: rgba($primary, .1);
+  color: $primary;
+}
+
+.u-indicator--success-lightest {
+  background-color: rgba($secondary, .1);
+  color: $secondary;
+}

@@ -1,0 +1,27 @@
+/*!
+ * Copyright (c) 2025. Numeric Wave
+ *
+ * Afero General Public License (AGPL) v3
+ *
+ * For more information, please refer to the LICENSE file at the root of the project.
+ */
+
+//
+// Content Centered
+//
+
+// mixing for centering contents
+@mixin content-centered($hs-horizontal: true, $hs-vertical: true) {
+  position: absolute;
+  @if ($hs-horizontal and $hs-vertical) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  } @else if ($hs-horizontal) {
+    left: 50%;
+    transform: translate(-50%, 0);
+  } @else if ($hs-vertical) {
+    top: 50%;
+    transform: translate(0, -50%);
+  }
+}

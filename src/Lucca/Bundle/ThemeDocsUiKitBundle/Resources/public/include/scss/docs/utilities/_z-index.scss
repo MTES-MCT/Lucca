@@ -1,0 +1,23 @@
+/*!
+ * Copyright (c) 2025. Numeric Wave
+ *
+ * Afero General Public License (AGPL) v3
+ *
+ * For more information, please refer to the LICENSE file at the root of the project.
+ */
+
+/*------------------------------------
+  Z-index
+------------------------------------*/
+
+.z-index {
+  &-1 {
+    z-index: 1;
+  }
+  &-2 {
+    z-index: 2;
+  }
+  &-3 {
+    z-index: 3;
+  }
+}

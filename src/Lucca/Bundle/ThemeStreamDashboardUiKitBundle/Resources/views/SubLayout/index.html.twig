@@ -1,0 +1,65 @@
+{% extends "LuccaThemeStreamDashboardUiKit:Layout:layout.html.twig" %}
+{% trans_default_domain 'LuccaThemeStreamDashboardUiKit' %}
+
+{% set param_topbar='gray-bg' %}
+
+{% block lucca_title %}
+    <title>{{ 'setting.general.app.name'| setting }} | {{ param_entity }} - {{ 'title.index'|trans }}</title>
+{% endblock lucca_title %}
+
+{% block lucca_header %}
+    {{ param_entities }}
+{% endblock lucca_header %}
+
+{% block lucca_page %}
+
+    {% include 'LuccaThemeStreamDashboardUiKit:Flash:flashes.html.twig' %}
+
+    {#-- Panel - main --#}
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+        <div class="card card-default">
+            <div class="card-header">
+                <a class="float-right" href="#" data-tool="card-collapse" data-toggle="tooltip" title="Collapse card">
+                    <em class="fa fa-minus"></em>
+                </a>
+                <div class="card-title">
+                    {% block lucca_card_title %}
+                        {{ 'title.manage'|trans }} - <b>{{ param_entities }}</b>
+                    {% endblock lucca_card_title %}
+                </div>
+            </div>
+
+            <div class="card-wrapper collapse show">
+                <div class="card-body">
+                    <div class="col-12">
+                        {% block lucca_list %} {% endblock lucca_list %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#-- End Panel - main --#}
+{% endblock lucca_page %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    {#-- Plugin - DataTables --#}
+    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/datatables.css.html.twig" %}
+
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    {#-- Plugin - DataTables --#}
+    {% include "LuccaThemeStreamDashboardUiKit:Plugins:datatables.js.html.twig" with { 'params' :
+        { 'id_datatable': '.dataTables', 'pageLength': 10 }
+    } %}
+
+    <script src="{{ asset('bundles/sgdatatables/js/pipeline.js') }}"></script>
+
+{% endblock lucca_js %}

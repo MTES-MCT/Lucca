@@ -1,0 +1,32 @@
+/*!
+ * Copyright (c) 2025. Numeric Wave
+ *
+ * Afero General Public License (AGPL) v3
+ *
+ * For more information, please refer to the LICENSE file at the root of the project.
+ */
+
+//
+// Tables
+//
+
+.table {
+  th,
+  td {
+    vertical-align: middle;
+  }
+
+  th {
+    font-weight: $table-th-font-weight;
+    color: $table-th-color;
+    border-top: none;
+  }
+
+  thead th {
+    border-bottom-width: $table-border-width;
+  }
+
+  tbody + tbody {
+    border-top-width: $table-border-width;
+  }
+}

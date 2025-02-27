@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+{% trans_default_domain 'ThemeDocsUiKitBundle' %}
+
+{#<!--[if IE 8]>#}
+{#<html lang="{{ app.request.locale }}" class="ie8"> <![endif]-->#}
+{#<!--[if IE 9]>#}
+{#<html lang="{{ app.request.locale }}" class="ie9"> <![endif]-->#}
+{#<!--[if !IE]><!-->#}
+{#<html lang="{{ app.request.locale }}"> <!--<![endif]-->#}
+{#<head>#}
+
+
+
+{#-- JS Global Compulsory --#}
+{#{% block lucca_js_global %}#}
+{#    <script src="{{ asset('bundles/luccathemedocsuikit/vendor/jquery/dist/jquery.min.js') }}"></script>#}
+{#    <script src="{{ asset('bundles/luccathemedocsuikit/vendor/jquery-migrate/dist/jquery-migrate.min.js') }}"></script>#}
+{#    <script src="{{ asset('bundles/luccathemedocsuikit/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>#}
+{#{% endblock lucca_js_global %}#}
+
+{#-- JS Implementing Vendor --#}
+{#{% block lucca_js_plugin %}#}
+{#    <script src="{{ asset('bundles/luccathemeDocsUiKit/vendor/back-to-top.js') }}"></script>#}
+{#    <script src="{{ asset('bundles/luccathemeDocsUiKit/vendor/smoothScroll.js') }}"></script>#}
+{#    <script src="{{ asset('bundles/luccathemeDocsUiKit/vendor/parallax-slider/js/modernizr.js') }}"></script>#}
+{#    <script src="{{ asset('bundles/luccathemeDocsUiKit/vendor/parallax-slider/js/jquery.cslider.js') }}"></script>#}
+{#{% endblock lucca_js_plugin %}#}
+
+{#-- JS Customization --#}
+{#<script src="{{ asset('bundles/luccathemeunify/js/custom.js') }}"></script>#}
+{#<script src="{{ asset('bundles/luccathemeunify/js/app.js') }}"></script>#}
+
+{# JS Page Level #}
+{#{% block lucca_js_page %}#}
+{#    <script type="text/javascript">#}
+{#        jQuery(document).ready(function () {#}
+{#            App.init();#}
+{#        });#}
+{#    </script>#}
+{#{% endblock lucca_js_page %}#}
+
+{#<script src="{{ asset('bundles/luccathemeDocsUiKit/js/analytics.js') }}"></script>#}
+
+{#<!--[if lt IE 9]>#}
+{#<script src="{{ asset('bundles/luccathemeDocsUiKit/vendor/respond.js') }}"></script>#}
+{#<script src="{{ asset('bundles/luccathemeDocsUiKit/vendor/html5shiv.js') }}"></script>#}
+{#<script src="{{ asset('bundles/themeDocsUiKit/vendor/placeholder-IE-fixes.js') }}"></script>#}
+{#<![endif]-->#}
+
+{#</body>#}
+{#</html>#}
+
+<html lang="{{ app.request.locale }}">
+<head>
+    {#-- Title --#}
+    {% block lucca_title %}
+        <title> {{ 'setting.general.app.name'| setting }} | {{ 'meta.website'|trans }}</title>
+    {% endblock lucca_title %}
+
+    {#-- Meta --#}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {#-- Favicon --#}
+    {% block lucca_favicon %}
+        <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}"/>
+    {% endblock lucca_favicon %}
+
+    <!--  Meta tags -->
+    {% block lucca_meta %}
+        <meta name="description" content="{{ 'meta.description'|trans }}">
+        <meta name="author" content="{{ 'meta.author'|trans }}">
+    {% endblock lucca_meta %}
+
+    {#-- Web Fonts --#}
+    {% block lucca_fonts %}
+    {% endblock lucca_fonts %}
+
+
+    {#-- CSS Global Compulsory --#}
+    {% block lucca_css_global %}
+        <!-- CSS Template -->
+        <link rel="stylesheet" href="{{ asset('bundles/luccathemedocsuikit/css/theme.css') }}">
+
+    {% endblock lucca_css_global %}
+
+
+
+    {#-- CSS Header and Footer --#}
+    {% block lucca_css_head_foot %}
+        <!-- CSS Implementing Plugins -->
+        <link href="{{ asset('bundles/luccathemedocsuikit/vendor/font-awesome/css/fontawesome-all.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('bundles/luccathemedocsuikit/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css') }}">
+    {% endblock lucca_css_head_foot %}
+
+    {#-- Tracking scripts --#}
+    {% include "@LuccaThemeStreamDashboardUiKit/Tracking/google_analytics.js.html.twig" %}
+
+{#-- CSS Implementing Plugins --#}
+        {% block lucca_css_plugins %}
+
+        {% endblock lucca_css_plugins %}
+
+{#-- CSS Theme --#}
+        {% block lucca_css_theme %}
+
+        {% endblock lucca_css_theme %}
+
+{#-- CSS Customization --#}
+    <link rel="stylesheet" href="{{ asset('assets/css/lucca-ui-kit.css') }}">
+</head>
+
+<body>
+<!-- Header -->
+<header class="duik-header">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary position-absolute left-0 right-0 flex-nowrap z-index-3">
+        <div class="container">
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                    <li class="nav-item ml-lg-6 mb-2 mb-lg-0">
+                        {% if true or app.user and is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <a href="{{ path('lucca_core_dashboard') }}" class="btn btn-outline-primary mb-2 mr-2">
+                                <i class="fa fa-user"></i> {{ 'header.mySpace'|trans }}
+                            </a>
+                        {% else %}
+                            <a href="{{ path('fos_user_security_login') }}" class="btn btn-outline-primary mb-2 mr-2" >
+                                <i class="fa fa-user"></i>{{ 'header.login'|trans }}
+                            </a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+</header>
+<!-- End Header -->
+
+<!-- Promo Section -->
+<section class="duik-promo bg-primary text-center">
+    <div class="container duik-promo-container">
+        <div class="d-flex justify-content-center position-relative mh-20rem py-11">
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                <div class="animated fadeInLeft">
+                    <a href={{ 'setting.general.urlGouv.name'|setting }}>
+                        <img src="{{ asset('assets/' ~ 'setting.general.departement.name'|setting ~ '/prefecture.jpg') }}"
+                             class="img-responsive logo-header" alt="{{ 'header.prefecture'|trans }}">
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-3 col-sm-4 col-xs-12">
+                <div class="text-center animated fadeInLeft">
+                    <h1 class="main-title">
+                        {{ 'setting.general.app.name'| setting }}<br>
+                        <small>{{ 'setting.general.catchphrase1.name'|setting }}</small><br>
+                        <small>{{ 'setting.general.catchphrase2.name'|setting }}</small>
+                    </h1>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                <div class="animated fadeInRight">
+                    {% if 'setting.general.app.name'| setting != '-' %}
+                    <a href="{{ path('lucca_content_dashboard') }}">
+                        <img src="{{ asset('setting.general.logo.name'|setting) }}"
+                             class="img-responsive logo-header" alt="{{ 'setting.general.app.name'| setting }}">
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SVG BG -->
+    <svg class="position-absolute bottom-0 left-0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1920 323" enable-background="new 0 0 1920 323" xml:space="preserve">
+      <polygon fill="#ffffff" style="fill-opacity: .05;" points="-0.5,322.5 -0.5,121.5 658.3,212.3 "></polygon>
+        <polygon fill="#ffffff" style="fill-opacity: .1;" points="-2,323 1920,323 1920,-1 "></polygon>
+    </svg>
+    <!-- End SVG BG -->
+</section>
+{#<!-- End Promo Section -->#}
+
+<!-- Icon Blocks -->
+<div class="container z-index-2 position-relative">
+{#    <section class="duik-icon-block duik-icon-block--pull2top rounded">#}
+{#        <div class="row no-gutters">#}
+{#            <div class="col-md border-bottom border-md-bottom-0">#}
+{#                <div class="duik-icon-block__item">#}
+{#                    <svg class="duik-icon-svg-primary duik-icon-svg-3x mb-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>#}
+
+{#                    <h4 class="h5 mb-2">#}
+{#                        <a class="link-dark" href="#">FAQ</a>#}
+{#                    </h4>#}
+{#                    <span>You have frequent questions, <br> we have the answers</span>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-md border-md-left border-bottom border-md-bottom-0">#}
+{#                <div class="duik-icon-block__item">#}
+{#                    <svg class="duik-icon-svg-primary duik-icon-svg-3x mb-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>#}
+
+{#                    <h4 class="h5 mb-2">#}
+{#                        <a class="link-dark" href="#">Support Ticket</a>#}
+{#                    </h4>#}
+{#                    <span>Can't find what you are <br> looking for - Submit a ticket</span>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-md border-md-left">#}
+{#                <div class="duik-icon-block__item">#}
+{#                    <svg class="duik-icon-svg-primary duik-icon-svg-3x mb-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>#}
+
+{#                    <h4 class="h5 mb-2">#}
+{#                        <a class="link-dark" href="#">Community</a>#}
+{#                    </h4>#}
+{#                    <span>Ask any questions from <br> expert community members</span>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </section>#}
+</div>
+<!-- End Icon Blocks -->
+
+<main>
+
+    <!-- Section -->
+    <section class="py-11">
+        <div class="container">
+            {% block lucca_page %}
+            {% endblock lucca_page %}
+        </div>
+    </section>
+    <!-- End Community Help -->
+</main>
+
+<!-- Footer -->
+<footer class="bg-dark font-weight-light text-white-55 pt-11 pb-5">
+    <div class="container footer-v1">
+        <div class="row margin-bottom-15 footer-light">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="text-center animated fadeInLeft">
+                    <h3>{{ ('footer.' ~ 'setting.general.departement.name'| setting ~ '.title')|trans }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-md-between mt-4">
+            {{ render(controller("LuccaContentBundle:Render:footer")) }}
+        </div>
+        <hr class="my-5 opacity-10">
+        <div class="row">
+            <div class="col-md-7">
+                <p class="small font-weight-light mb-0">
+                    <span>&copy; 2017 - {{ 'now'|date('Y') }} | {{ 'meta.lucca_long'|trans }}</span>
+                </p>
+            </div>
+            <ul class="list-inline mb-0">
+                <li class="list-inline-item mr-1 mr-xl-2">
+                    <a href="{{ path('lucca_content_privacy_policy') }}">{{ 'footer.privacyPolicy'|trans }}</a>
+                </li>
+                <li class="list-inline-item mx-1 mx-xl-2">
+                    <a href="{{ path('lucca_content_terms_service') }}">{{ 'footer.termsService'|trans }}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</footer>
+<!-- End Footer -->
+
+<!-- Go to Top -->
+<a class="js-go-to duik-go-to" href="javascript:;">
+    <span class="fa fa-arrow-up duik-go-to__inner"></span>
+</a>
+<!-- End Go to Top -->
+
+<!-- JS Global Compulsory -->
+<script src="{{ asset('bundles/luccathemedocsuikit/vendor/jquery/dist/jquery.min.js') }}"></script>
+<script src="{{ asset('bundles/luccathemedocsuikit/vendor/jquery-migrate/dist/jquery-migrate.min.js') }}"></script>
+<script src="{{ asset('bundles/luccathemedocsuikit/vendor/popper.js/dist/umd/popper.min.js') }}"></script>
+<script src="{{ asset('bundles/luccathemedocsuikit/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
+<!-- JS Implementing Plugins -->
+<script src="{{ asset('bundles/luccathemedocsuikit/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js') }}"></script>
+
+<!-- JS -->
+{#<script src="assets/js/main.js') }}"></script>#}
+</body>
+</html>

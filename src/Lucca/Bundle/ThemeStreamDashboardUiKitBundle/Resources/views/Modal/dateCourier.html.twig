@@ -1,0 +1,46 @@
+{% trans_default_domain 'LuccaThemeStreamDashboardUiKit' %}
+
+
+<div id="{{ id }}" class="modal inmodal fade dateCourierWin" tabindex="-1" role="dialog"
+     aria-labelledby="modal-dateCourier"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content animated flipInY">
+
+            <div class="modal-header">
+                <h5 class="modal-title"><b>{{ 'modal.dateCourier.confirm'|trans }}</b></h5>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p>{{ 'modal.dateCourier.message'|trans }}</p>
+                <p><strong>{{ 'modal.dateCourier.element'|trans }}</strong> - {{ name }}</p>
+
+                <div class="text-success">
+                    {{ 'modal.dateCourier.courier_print_after'|trans }}<br>
+                    {{ 'modal.dateCourier.courier_not_updated_after'|trans }}
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <a id="jsm-{{ id }}" class="btn btn-success btn-sm btn-labeled" href="{{ link }}"
+                   title="{{ 'link.dateCourier'|trans }}">
+                    <span class="btn-label"><i class="fas fa-check-double"></i> </span> {{ 'link.dateCourier'|trans }}
+                </a>
+
+                <a class="btn btn-sm btn-secondary" data-dismiss="modal"> {{ 'link.close'|trans }} </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    {#-- Special trick - force refresh to main page to update all data when return on this page after download pdf --#}
+    $("#jsm-{{ id }}").click(function (e) {
+        location.href = "{{ path('lucca_minute_show', {'id': minute.id}) }}";
+    });
+</script>

@@ -1,0 +1,41 @@
+/*
+ * Copyright (c) 2025. Numeric Wave
+ *
+ * Afero General Public License (AGPL) v3
+ *
+ * For more information, please refer to the LICENSE file at the root of the project.
+ */
+
+define(function () {
+  // French
+  return {
+    errorLoading: function () {
+      return 'Les résultats ne peuvent pas être chargés.';
+    },
+    inputTooLong: function (args) {
+      var overChars = args.input.length - args.maximum;
+
+      return 'Supprimez ' + overChars + ' caractère' +
+        (overChars > 1) ? 's' : '';
+    },
+    inputTooShort: function (args) {
+      var remainingChars = args.minimum - args.input.length;
+
+      return 'Saisissez au moins ' + remainingChars + ' caractère' +
+        (remainingChars > 1) ? 's' : '';
+    },
+    loadingMore: function () {
+      return 'Chargement de résultats supplémentaires…';
+    },
+    maximumSelected: function (args) {
+      return 'Vous pouvez seulement sélectionner ' + args.maximum +
+        ' élément' + (args.maximum > 1) ? 's' : '';
+    },
+    noResults: function () {
+      return 'Aucun résultat trouvé';
+    },
+    searching: function () {
+      return 'Recherche en cours…';
+    }
+  };
+});

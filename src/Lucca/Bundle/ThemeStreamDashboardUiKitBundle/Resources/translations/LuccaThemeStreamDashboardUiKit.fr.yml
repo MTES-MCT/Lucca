@@ -1,0 +1,129 @@
+#####################################################
+## Lucca Theme Angle Bundle
+#####################################################
+
+########################
+# Meta
+########################
+meta:
+    lucca: "Lucca"
+    lucca_long: "Lucca - Application de lutte contre la cabanisation"
+    website: "Site web"
+    description: "Lucca est une application pour vous aider dans les dossiers contre la cabanisation."
+    keywords: "lucca, cabanisation, administratif, ddtm"
+    company:
+        project: 'Lucca'
+
+########################
+# Menu
+########################
+menu:
+    main: "Menu Général"
+    public: "Partie publique"
+    admin: "Administrateur"
+    super_admin: "Super Admin"
+
+    dashboard: "Tableau de bord"
+    map: "Carte"
+    website: "Site web"
+    user: "Utilisateur"
+    profile: "Profil utilisateur"
+    logout: "Déconnexion"
+    changePassword: "Changement mot de passe"
+    group: "Groupe"
+    permissions: "Permissions"
+    content: "Contenu"
+    area: "Zone"
+    subarea: "Sous zone"
+    page: "Page"
+    parameters: "Paramètres"
+    location: "Localisation"
+    town: "Commune"
+    intercommunal: "Intercommunalité"
+    partner: "Partenaire"
+    service: "Service état"
+    adherent: "Adhérent"
+    minute: "Dossiers"
+    folder: "Procès verbaux"
+    tag: "Mot clé"
+    natinf: "Natinf"
+    statistics: "Statistiques"
+    tribunal: "Tribunal"
+    sadmin: "S. Admin"
+    tools: "Fiches outils"
+    filemanager: "Medias"
+    myAgent: "Mes agents"
+    model: "Modèles de documents"
+    mayorLetter: "Courrier de rattachement"
+
+########################
+# Label
+########################
+company:
+    name: "Numeric Wave"
+    lucca: "Lucca"
+    version: "v3.3.19"
+
+title:
+    manage: "Gestion"
+    index: "Index"
+    show: "Visualiser"
+    edit: "Modifier"
+    new: "Nouveau"
+    browser: "Navigateur"
+    filters: "Filtres de recherche"
+    results: "Résultats de la recherche"
+
+label:
+    hello: "Salut"
+
+########################
+# Badge
+########################
+badge:
+    sa: "SA"
+    admin: "A"
+    new: "Nouveau"
+
+########################
+# Modal
+########################
+modal:
+    delete:
+        confirm: "Confirmation de suppression"
+        message: "Etes vous sur de vouloir supprimer cet objet :"
+        element: "Objet"
+        delete: "Supprimer"
+    fence:
+        confirm: "Confirmation de clôture"
+        message: "Etes vous sur de vouloir clôturer ce PV :"
+        element: "PV"
+        delete: "Supprimer"
+        folder_not_updated_after: "Le procès verbal ne pourra plus être modifié après sa clôture"
+        folder_print_after: "Le procès verbal pourra être imprimé après sa clôture."
+
+    dateCourier:
+        confirm: "Confirmation de l'horodatage"
+        message: "Etes vous sur de vouloir horodater le courrier à la date du jour  ?"
+        element: "Courrier"
+        delete: "Supprimer"
+        courier_not_updated_after: "ATTENTION : Le courrier ne pourra plus être modifié après sa clôture."
+        courier_print_after: "Le courrier pourra être imprimé après sa clôture."
+
+    open:
+        confirm: "Confirmation de réouverture"
+        message: "Etes vous sur de vouloir réouvrir ce PV :"
+        element: "PV"
+        no_rollback: "ATTENTION: Cette action est irreversible."
+
+
+########################
+# Link
+########################
+link:
+    close: "Fermer"
+    delete: "Supprimer"
+    fence: "Clôturer"
+    dateCourier: "Dater le courier"
+    open: "Rouvrir"
+

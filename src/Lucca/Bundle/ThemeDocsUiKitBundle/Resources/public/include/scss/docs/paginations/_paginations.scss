@@ -1,0 +1,34 @@
+/*!
+ * Copyright (c) 2025. Numeric Wave
+ *
+ * Afero General Public License (AGPL) v3
+ *
+ * For more information, please refer to the LICENSE file at the root of the project.
+ */
+
+/*------------------------------------
+  Paginations
+------------------------------------*/
+
+.page {
+  &-item {
+    & + & {
+      margin-left: $pagination-item-margin-x;
+    }
+  }
+
+  &-link {
+    min-width: $pagination-min-width;
+    text-align: center;
+    @if $enable-rounded {
+      border-radius: $border-radius;
+    }
+    transition: $pagination-transition;
+
+    &.active {
+      background-color: $primary;
+      color: $white;
+      border-color: $primary;
+    }
+  }
+}

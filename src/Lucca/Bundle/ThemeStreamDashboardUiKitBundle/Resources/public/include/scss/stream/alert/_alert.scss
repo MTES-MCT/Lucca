@@ -1,0 +1,59 @@
+/*!
+ * Copyright (c) 2025. Numeric Wave
+ *
+ * Afero General Public License (AGPL) v3
+ *
+ * For more information, please refer to the LICENSE file at the root of the project.
+ */
+
+//
+// Alert
+//
+
+.alert {
+  display: flex;
+  align-items: center;
+
+  &-icon {
+    font-size: 1.25rem;
+    display: inline-block;
+    margin-top: 1px;
+  }
+
+  &-light {
+    color: $dark;
+  }
+}
+
+// Soft
+.alert-soft {
+  &-primary {
+    color: $primary;
+    border-color: transparent;
+  }
+
+  &-secondary {
+    color: $secondary;
+    border-color: transparent;
+  }
+
+  &-success {
+    color: $success;
+    border-color: transparent;
+  }
+
+  &-warning {
+    color: $warning;
+    border-color: transparent;
+  }
+
+  &-danger {
+    color: $danger;
+    border-color: transparent;
+  }
+
+  &-info {
+    color: $info;
+    border-color: transparent;
+  }
+}

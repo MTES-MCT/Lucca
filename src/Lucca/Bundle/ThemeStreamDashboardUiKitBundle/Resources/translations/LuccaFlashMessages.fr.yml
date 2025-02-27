@@ -1,0 +1,26 @@
+###############
+## Label
+###############
+danger: "Attention !"
+warning: "Attention"
+info: "Information"
+success: "Succès"
+
+###############
+## Flashes message
+###############
+flashes:
+    created_successfully: "L'objet a bien été créé"
+    updated_successfully: "L'objet a bien été modifié"
+    deleted_successfully: "L'objet a bien été supprimé"
+    toggled_successfully: "L'objet a bien été activé / désactivé"
+
+    updating:
+        new_updating: "Un nouveau dossier d'actualisation a été créée !"
+
+    closure:
+        closed_successfully: "Le dossier a été clôturé avec succès."
+        open_successfully: "Le dossier a été ré-ouvert."
+
+    admin:
+        init_data: "Data are initialized !"

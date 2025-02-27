@@ -1,0 +1,40 @@
+{#-- --
+ # Twig macro - display button info to display help text
+ --#}
+{% macro buttonInfoHelp(text) %}
+
+    {#--  HTML to display button help and display specific text  --#}
+    <button type="button" class="btn btn-secondary btn-xs float-right" data-toggle="tooltip" data-html="true"
+            title='<div class="text-warning">{{ text }}</div>'>
+        <i class="fas fa-info-circle"></i>
+    </button>
+    {#--  End HTML  --#}
+
+{% endmacro %}
+
+{#-- --
+ # Twig macro - display button info to display help text - Light version
+ --#}
+{% macro buttonInfoHelpLight(text) %}
+
+    {#--  HTML to display button help and display specific text  --#}
+    <button type="button" class="btn btn-secondary btn-md float-right" data-toggle="tooltip" data-html="true"
+            title='{{ text }}'>
+        <i class="fas fa-info-circle"></i>
+    </button>
+    {#--  End HTML  --#}
+
+{% endmacro %}
+
+{#-- --
+ # Twig macro - display icon info to display help text
+ --#}
+{% macro iconInfoHelp(text) %}
+
+    {#--  HTML to display button help and display specific text  --#}
+    <i class="fas fa-info-circle" data-toggle="tooltip" data-html="true" title='
+        <div class="text-warning">{{ text }}</div> '>
+    </i>
+    {#--  End HTML  --#}
+
+{% endmacro %}

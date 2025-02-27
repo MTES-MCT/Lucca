@@ -1,0 +1,23 @@
+/*!
+ * Copyright (c) 2025. Numeric Wave
+ *
+ * Afero General Public License (AGPL) v3
+ *
+ * For more information, please refer to the LICENSE file at the root of the project.
+ */
+
+//
+// Apps
+//
+
+.u-apps {
+  transition: background-color .2s ease-in;
+  padding: .75rem;
+  color: $gray-600;
+
+  &:hover,
+  &.active {
+    color: $dark;
+    background-color: $gray-200;
+  }
+}

@@ -1,0 +1,30 @@
+/*!
+ * Copyright (c) 2025. Numeric Wave
+ *
+ * Afero General Public License (AGPL) v3
+ *
+ * For more information, please refer to the LICENSE file at the root of the project.
+ */
+
+/*------------------------------------
+  Stand Alone Icon Block
+------------------------------------*/
+
+.duik-icon-block {
+  text-align: center;
+  background-color: $white;
+  box-shadow: 0 20px 25px -12px rgba($black, .09);
+
+  &--pull2top {
+    margin-top: -7rem;
+  }
+
+  &__item {
+    padding: {
+      top: 5rem;
+      bottom: 5rem;
+      left: 1rem;
+      right: 1rem;
+    }
+  }
+}

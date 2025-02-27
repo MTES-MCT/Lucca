@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html lang="{{ app.request.locale }}">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% trans_default_domain 'LuccaThemeStreamDashboardUiKit' %}
+
+    {#-- Title --#}
+    <title>
+        {{ 'setting.general.app.name'| setting }} |
+
+        {% block lucca_title %}
+            {{ 'meta.website'|trans }}
+        {% endblock lucca_title %}
+    </title>
+
+    <link href="{{ pdf_asset }}{{ asset('plugins/bootstrap-v3/dist/css/bootstrap.css') }}" rel="stylesheet"
+          type="text/css">
+    <link href="{{ pdf_asset }}{{ asset('assets/css/lucca-angle.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ pdf_asset }}{{ asset('assets/css/lucca-print.css') }}" rel="stylesheet" type="text/css">
+
+    {% block lucca_css %}
+
+    {% endblock lucca_css %}
+</head>
+<header>
+    {% block lucca_print_header %}
+
+    {% endblock lucca_print_header %}
+</header>
+<body>
+
+{% block lucca_print %}
+
+{% endblock lucca_print %}
+
+</body>
+<footer>
+    {% block lucca_print_footer %}
+
+    {% endblock lucca_print_footer %}
+</footer>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+{% trans_default_domain 'LuccaThemeStreamDashboardUiKit' %}
+
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+
+    <title>Lucca</title>
+
+    <link href="{{ pdf_asset }}{{ asset('plugins/bootstrap/dist/css/bootstrap.css') }}" rel="stylesheet"
+          type="text/css">
+    <link href="{{ pdf_asset }}{{ asset('assets/css/lucca-angle.css') }}" rel="stylesheet" type="text/css">
+
+    <style>
+        body,
+        .footer-print {
+            background: white;
+        }
+
+        .footer-print {
+            margin: 5px 20px;
+        }
+
+        .hr-footer {
+            border: 1px solid lightgrey;
+        }
+    </style>
+
+    <script>
+        {# page counter #}
+        function subst() {
+            var vars = {};
+            var x = document.location.search.substring(1).split('&');
+            for (var i in x) {
+                var z = x[i].split('=', 2);
+                vars[z[0]] = unescape(z[1]);
+            }
+            var x = ['topage', 'page'];
+            for (var i in x) {
+                var y = document.getElementsByClassName(x[i]);
+                for (var j = 0; j < y.length; ++j) y[j].textContent = vars[x[i]];
+            }
+        }
+    </script>
+</head>
+<body onload="subst()">
+
+<div class="row footer-print">
+    <div class="col-12">
+        <hr class="hr-footer">
+
+        {#<div class="float-left">#}
+        {#&copy; {{ 'meta.lucca_long'|trans }} {{ "now"|date("Y") }}#}
+        {#</div>#}
+
+        <div class="float-right">
+            <span class="page"></span>/<span class="topage"></span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+{% trans_default_domain 'LuccaThemeStreamDashboardUiKit' %}
+
+<html lang="{{ app.request.locale }}" class="no-js') }}">
+<!-- Head -->
+<head>
+
+    {#-- Title --#}
+    {% block lucca_title %}
+        <title> {{ 'setting.general.app.name'| setting }} | {{ 'meta.website'|trans }}</title>
+    {% endblock lucca_title %}
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    {#-- Favicon --#}
+    {% block lucca_favicon %}
+        <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}"/>
+    {% endblock lucca_favicon %}
+
+    {% block lucca_meta %}
+        <meta name="description" content="{{ 'meta.description'|trans }}">
+        <meta name="keywords" content="{{ 'meta.keywords'|trans }}">
+    {% endblock lucca_meta %}
+
+    {#-- Css --#}
+    {% block lucca_css %}
+        <!-- Components Vendor Styles -->
+        <link rel="stylesheet"
+              href="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/font-awesome/css/all.min.css') }}">
+        <link rel="stylesheet"
+              href="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css') }}">
+
+        {#Media collection dropzone css#}
+        <link href="{{ asset('bundles/luccamedia/plugins/dropzone/dist/dropzone.css') }}" rel="stylesheet"
+              type="text/css">
+
+        {#-- Plugin sweet alert 2 --#}
+        <link href="{{ asset('plugins/sweetalert2/sweetalert2.css') }}" rel="stylesheet">
+    {% endblock lucca_css %}
+
+    <!-- Theme Styles -->
+    <link rel="stylesheet" href="{{ asset('bundles/luccathemestreamdashboarduikit/css/theme.css') }}">
+
+    {% block lucca_js_head %}
+        {#Careful -- Load Jquery for on page script#}
+        <script src="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/jquery/dist/jquery.min.js') }}"></script>
+        {#-- Jquery loaded on head template - MediaBundle require it --#}
+        <script src="{{ asset('plugins/symfony-collection/jquery.collection.js') }}"></script>
+        <script src="{{ asset('plugins/symfony-collection/jquery.collection.js') }}"></script>
+    {% endblock lucca_js_head %}
+
+    {## Media collection dropzone script#}
+    <script src="{{ asset('bundles/luccamedia/plugins/dropzone/dist/dropzone.js') }}"></script>
+
+    {#-- Plugin - Toastr --#}
+    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+
+    {#Media update and remove script#}
+    <script>
+        {% include "@LuccaMedia/Media/Js/lucca_upload_files.js.twig" %}
+    </script>
+
+    {#-- Tracking scripts --#}
+    {% include "@LuccaThemeStreamDashboardUiKit/Tracking/google_analytics.js.html.twig" %}
+
+    {#-- Css - MediaBundle --#}
+    {% include "@LuccaMedia/Css/media.html.twig" %}
+
+    {#TODO: check is ok#}
+    {#Use setting to change the color of the top bar#}
+    {% if 'setting.general.colorL.name'|setting and 'setting.general.colorR.name'|setting %}
+        <style>
+            .topnavbar {
+                background-image: linear-gradient(to right,
+                {{'setting.general.colorL.name'|setting }} 0%,
+                {{'setting.general.colorR.name'|setting }} 100%);
+            }
+        </style>
+    {% endif %}
+
+</head>
+<!-- End Head -->
+
+<body>
+<!-- Header (Topbar) -->
+<header class="u-header topnavbar">
+
+    <div class="u-header-left">
+        <a class="u-header-logo" href="{{ path('lucca_core_dashboard') }}">
+            <img class="u-logo-desktop" src="{{ asset('setting.general.logo.name'|setting) }}" width="100" alt="{{ 'setting.general.app.name'| setting }}">
+            <img class="img-fluid u-logo-mobile" src="{{ asset('setting.general.logo.name'|setting) }}" width="50" alt="{{ 'setting.general.app.name'| setting }}">
+        </a>
+    </div>
+
+    {#-- Button used to collapse the left sidebar --#}
+    <div class="u-header-middle">
+        <a class="js-sidebar-invoker u-sidebar-invoker" href="#"
+           data-is-close-all-except-this="true"
+           data-target="#sidebar">
+            <i class="fa fa-bars u-sidebar-invoker__icon--open"></i>
+            <i class="fa fa-times u-sidebar-invoker__icon--close"></i>
+        </a>
+
+        <!-- User Profile -->
+        <div class="dropdown ml-2">
+            <a class="link-muted d-flex align-items-center" href="#" role="button" id="dropdownMenuLink"
+               aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">
+                <i class="far fas fa-user-cog text-muted mr-3"></i>
+                <span class="text-dark d-none d-sm-inline-block">{{ 'menu.profile'|trans }}<small
+                            class="fa fa-angle-down text-muted ml-1"></small>
+                        </span>
+            </a>
+
+            <div class="dropdown-menu dropdown-menu-left border-0 py-0 mt-3" aria-labelledby="dropdownMenuLink"
+                 style="width: 260px;">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-4">
+                                {#-- Profile --#}
+                                <a class="d-flex align-items-center link-dark"
+                                   href="{{ path('lucca_adherent_profile_show') }}">
+                                    <span class="h3 mb-0"><i
+                                                class="far fa-address-card text-muted mr-3"></i></span> {{ 'menu.profile'|trans }}
+                                </a>
+                            </li>
+                            <li class="mb-4">
+                                {#-- Password --#}
+                                {#TODO: fix icon#}
+                                <a class="d-flex align-items-center link-dark"
+                                   href="{{ path('fos_user_change_password') }}">
+                                    <span class="h3 mb-0"><i
+                                                class="far fa-keys text-muted mr-3"></i></span> {{ 'menu.changePassword'|trans }}
+                                </a>
+                            </li>
+                            <li>
+                                {#-- Logout --#}
+                                <a class="d-flex align-items-center link-dark "
+                                   href="{{ path('fos_user_security_logout') }}">
+                                    <span class="h3 mb-0"><i
+                                                class="far fa-share-square text-muted mr-3"></i></span> {{ 'menu.logout'|trans }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- End User Profile -->
+
+    </div>
+
+    <div class="u-header-right">
+
+        {#TODO: add fullscreen btn ?#}
+    </div>
+</header>
+<!-- End Header (Topbar) -->
+
+<main class="u-main" role="main">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="u-sidebar">
+        <div class="u-sidebar-inner">
+            <header class="u-sidebar-header">
+                <a class="u-sidebar-logo" href="{{ path('lucca_core_dashboard') }}">
+                    <img class="img-fluid" src="{{ asset('setting.general.logo.name'|setting) }}"
+                         alt="{{ 'setting.general.app.name'| setting }}">
+                </a>
+            </header>
+
+            <nav class="u-sidebar-nav">
+                <ul class="u-sidebar-nav-menu u-sidebar-nav-menu--top-level">
+
+                    {#-- Menu - Public --#}
+                    <li class="u-sidebar-nav-menu__item">
+                        <span class="u-sidebar-nav-menu__item-title">{{ 'menu.public'|trans }}</span>
+                    </li>
+
+                    <li class="u-sidebar-nav-menu__item">
+                        <a class="u-sidebar-nav-menu__link" href="{{ path('lucca_content_dashboard') }}"
+                           title="{{ 'menu.website'|trans }}">
+                            <i class="far fa-star u-sidebar-nav-menu__item-icon"></i>
+                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.website'|trans }}</span>
+                        </a>
+                    </li>
+                    {#-- End Menu - Public --#}
+
+
+                    {#-- Menu - Main --#}
+                    <li class="u-sidebar-nav-menu__item">
+                        <span class="u-sidebar-nav-menu__item-title">{{ 'menu.main'|trans }}</span>
+                    </li>
+
+                    <li class="u-sidebar-nav-menu__item">
+                        <a class="u-sidebar-nav-menu__link {% block menuActive_dashboard %}{% endblock %}"
+                           href="{{ path('lucca_core_dashboard') }}" title="{{ 'menu.dashboard'|trans }}">
+                            <i class="fas fa-tachometer-alt u-sidebar-nav-menu__item-icon"></i>
+                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.dashboard'|trans }}</span>
+                        </a>
+                    </li>
+                    {#-- End Menu - Main --#}
+
+                    {#-- Menu - Map --#}
+                    <li class="u-sidebar-nav-menu__item">
+                        <a class="u-sidebar-nav-menu__link {% block menuActive_map %}{% endblock %}"
+                           href="{{ path('lucca_core_map') }}" title="{{ 'menu.map'|trans }}">
+                            <i class="fas fa-map-marked-alt u-sidebar-nav-menu__item-icon"></i>
+                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.map'|trans }}</span>
+                        </a>
+                    </li>
+                    {#-- End Menu - Map --#}
+
+                    {#-- Menu - Minute --#}
+                    <li class="u-sidebar-nav-menu__item">
+                        <a class="u-sidebar-nav-menu__link {% block menuActive_minute %}{% endblock %}"
+                           href="{{ path('lucca_minute_index') }}" title="{{ 'menu.minute'|trans }}">
+                            <i class="fas fa-layer-group u-sidebar-nav-menu__item-icon"></i>
+                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.minute'|trans }}</span>
+                        </a>
+                    </li>
+                    {#-- End Menu - Minute --#}
+
+
+                    {#-- Menu - Folder --#}
+                    <li class="u-sidebar-nav-menu__item">
+                        <a class="u-sidebar-nav-menu__link {% block menuActive_folder %}{% endblock %}"
+                           href="{{ path('lucca_folder_dashboard') }}" title="{{ 'menu.folder'|trans }}">
+                            <i class="fas fa-file-contract u-sidebar-nav-menu__item-icon"></i>
+                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.folder'|trans }}</span>
+                        </a>
+                    </li>
+                    {#-- End Menu - Folder --#}
+
+                    {#-- Menu - Mayor Letter --#}
+                    {% if 'setting.module.mayorletter.name'|setting
+                        and app.user|isCountryAgent %}
+                        <li class="u-sidebar-nav-menu__item">
+                            <a class="u-sidebar-nav-menu__link {% block menuActive_mayorLetter %}{% endblock %}"
+                               href="{{ path('lucca_mayor_letter_edit') }}" title="{{ 'menu.mayorLetter'|trans }}">
+                                <i class="fas fa-envelope-open u-sidebar-nav-menu__item-icon"></i>
+                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.mayorLetter'|trans }}</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {#-- End Menu - Mayor Letter --#}
+
+                    {#-- Menu - MyAgent --#}
+                    <li class="u-sidebar-nav-menu__item">
+                        <a class="u-sidebar-nav-menu__link {% block menuActive_myAgent %}{% endblock %}"
+                           href="{{ path('lucca_myagent_index') }}" title="{{ 'menu.myAgent'|trans }}">
+                            <i class="fa fa-user u-sidebar-nav-menu__item-icon"></i>
+                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.myAgent'|trans }}</span>
+                        </a>
+                    </li>
+                    {#-- End Menu - MyAgent --#}
+
+                    {#-- Menu - Tools --#}
+                    <li class="u-sidebar-nav-menu__item">
+                        <a class="u-sidebar-nav-menu__link {% block menuActive_tools %}{% endblock %}"
+                           href="{{ path('lucca_core_page_tools') }}" title="{{ 'menu.tools'|trans }}">
+                            <i class="fas fa-wrench u-sidebar-nav-menu__item-icon"></i>
+                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.tools'|trans }}</span>
+                        </a>
+                    </li>
+                    {#-- End Menu - Tools --#}
+
+                    {#-- Menu - Natinf --#}
+                    <li class="u-sidebar-nav-menu__item">
+                        <a class="u-sidebar-nav-menu__link {% block menuActive_natinf %}{% endblock %}"
+                           href="{{ path('lucca_natinf_index') }}" title="{{ 'menu.natinf'|trans }}">
+                            <i class="fa fa-puzzle-piece u-sidebar-nav-menu__item-icon"></i>
+                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.natinf'|trans }}</span>
+                        </a>
+                    </li>
+                    {#-- End Menu - Natinf --#}
+
+                    {% if app.user and is_granted("ROLE_ADMIN") %}
+                        <li class="u-sidebar-nav-menu__item">
+                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.admin'|trans }}</span>
+                            <span class="badge badge-warning badge-xs float-right">{{ 'badge.admin'|trans }}</span>
+                        </li>
+
+                        {#-- Menu - Dashboard Admin --#}
+                        {% if 'setting.module.dashboardAdmin.name'|setting == true
+                            and app.user|isCountryAgent %}
+                            <li class="u-sidebar-nav-menu__item">
+                                <a class="u-sidebar-nav-menu__link {% block menuActive_admin_dashboard %}{% endblock %}"
+                                   href="{{ path('lucca_admin_dashboard') }}" title="{{ 'menu.dashboard'|trans }}">
+                                    <i class="fa fa-tachometer-alt u-sidebar-nav-menu__item-icon"></i>
+                                    <span class="u-sidebar-nav-menu__item-title">{{ 'menu.dashboard'|trans }}</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {#-- End Menu - Dashboard Admin --#}
+
+                        {#-- Menu - Model --#}
+                        <li class="u-sidebar-nav-menu__item">
+                            <a class="u-sidebar-nav-menu__link {% block menuActive_model %}{% endblock %}"
+                               href="{{ path('lucca_model_index') }}" title="{{ 'menu.model'|trans }}">
+                                <i class="fa fa-file-invoice u-sidebar-nav-menu__item-icon"></i>
+                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.model'|trans }}</span>
+                            </a>
+                        </li>
+                        {#-- End Menu - Model --#}
+
+
+
+
+                        {#-- Menu - Content --#}
+                        <li class="u-sidebar-nav-menu__item {% if block("menuActive_area") or block("menuActive_subarea") or block("menuActive_page") %}u-sidebar-nav--opened{% endif %}">
+                            <a class="u-sidebar-nav-menu__link" href="#subMenuContent" data-target="#subMenuContent"
+                               title="{{ 'menu.content'|trans }}">
+                                <i class="far fa-copy u-sidebar-nav-menu__item-icon"></i>
+                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.content'|trans }}</span>
+                                <span class="u-sidebar-nav-menu__indicator"></span>
+                            </a>
+
+                            <ul id="subMenuContent" class="u-sidebar-nav-menu u-sidebar-nav-menu--second-level"
+                                style="display: {% if block("menuActive_area") or block("menuActive_subarea") or block("menuActive_page") %}block{% else %}none{% endif %};">
+                                <!-- Components -->
+                                <li class="u-sidebar-nav-menu__item">
+                                    <a class="u-sidebar-nav-menu__link {% block menuActive_page %}{% endblock %}"
+                                       href="{{ path('lucca_page_index') }}" title="{{ 'menu.page'|trans }}">
+                                        <span class="u-sidebar-nav-menu__item-title">{{ 'menu.page'|trans }}</span>
+                                    </a>
+                                </li>
+                                <li class="u-sidebar-nav-menu__item">
+                                    <a class="u-sidebar-nav-menu__link {% block menuActive_subarea %}{% endblock %}"
+                                       href="{{ path('lucca_subarea_index') }}" title="{{ 'menu.subarea'|trans }}">
+                                        <span class="u-sidebar-nav-menu__item-title">{{ 'menu.subarea'|trans }}</span>
+                                    </a>
+                                </li>
+                                <li class="u-sidebar-nav-menu__item">
+                                    <a class="u-sidebar-nav-menu__link {% block menuActive_area %}{% endblock %}"
+                                       href="{{ path('lucca_area_index') }}" title="{{ 'menu.area'|trans }}">
+                                        <span class="u-sidebar-nav-menu__item-title">{{ 'menu.area'|trans }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        {#-- End Menu - Content --#}
+
+                        {#-- Menu - Adherent --#}
+                        <li class="u-sidebar-nav-menu__item">
+                            <a class="u-sidebar-nav-menu__link {% block menuActive_adherent %}{% endblock %}"
+                               href="{{ path('lucca_adherent_index') }}" title="{{ 'menu.adherent'|trans }}">
+                                <i class="far fa-user u-sidebar-nav-menu__item-icon"></i>
+                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.adherent'|trans }}</span>
+                            </a>
+                        </li>
+                        {#-- End Menu - Adherent --#}
+
+                        {#-- Menu - Statistics --#}
+                        <li class="u-sidebar-nav-menu__item">
+                            <a class="u-sidebar-nav-menu__link {% block menuActive_statistics %}{% endblock %}"
+                               href="{{ path('lucca_core_statistics') }}" title="{{ 'menu.statistics'|trans }}">
+                                <i class="far fa-chart-bar u-sidebar-nav-menu__item-icon"></i>
+                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.statistics'|trans }}</span>
+                            </a>
+                        </li>
+                        {#-- End Menu - Statistics --#}
+
+                        {#-- Menu - Parameters --#}
+                        <li class="u-sidebar-nav-menu__item">
+                            <a class="u-sidebar-nav-menu__link {% block menuActive_parameter %}{% endblock %}"
+                               href="{{ path('lucca_core_parameter') }}" title="{{ 'menu.parameters'|trans }}">
+                                <i class="fas fa-wrench u-sidebar-nav-menu__item-icon"></i>
+                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.parameters'|trans }}</span>
+                            </a>
+                        </li>
+                        {#-- End Menu - Parameters --#}
+                    {% endif %}
+
+                    {% if app.user and is_granted("ROLE_SUPER_ADMIN") %}
+                        <li class="u-sidebar-nav-menu__item">
+                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.super_admin'|trans }}</span>
+                            <span class="badge badge-danger badge-xs float-right">{{ 'badge.sa'|trans }}</span>
+                        </li>
+
+                        {#-- Menu - Permission --#}
+                        <li class="u-sidebar-nav-menu__item {% if block("menuActive_user") or block("menuActive_group") %}u-sidebar-nav--opened{% endif %}">
+                            <a class="u-sidebar-nav-menu__link" href="#subMenuPermission"
+                               data-target="#subMenuPermission" title="{{ 'menu.permissions'|trans }}">
+                                <i class="fas fa-shield-alt u-sidebar-nav-menu__item-icon"></i>
+                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.permissions'|trans }}</span>
+                                <span class="u-sidebar-nav-menu__indicator"></span>
+                            </a>
+
+                            <ul id="subMenuPermission" class="u-sidebar-nav-menu u-sidebar-nav-menu--second-level"
+                                style="display: {% if block("menuActive_user") or block("menuActive_group") %}block{% else %}none{% endif %};">
+                                <!-- Components -->
+                                <li class="u-sidebar-nav-menu__item">
+                                    <a class="u-sidebar-nav-menu__link {% block menuActive_user %}{% endblock %}"
+                                       href="{{ path('lucca_user_index') }}" title="{{ 'menu.user'|trans }}">
+                                        <span class="u-sidebar-nav-menu__item-title">{{ 'menu.user'|trans }}</span>
+                                    </a>
+                                </li>
+                                <li class="u-sidebar-nav-menu__item">
+                                    <a class="u-sidebar-nav-menu__link {% block menuActive_group %}{% endblock %}"
+                                       href="{{ path('fos_user_group_list') }}" title="{{ 'menu.group'|trans }}">
+                                        <span class="u-sidebar-nav-menu__item-title">{{ 'menu.group'|trans }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        {#-- End Menu - Permission --#}
+                    {% endif %}
+
+                    {#-- Menu - Help --#}
+
+                    {#-- End - Menu --#}
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <!-- End Sidebar -->
+
+
+    <div class="u-content">
+        <header class="card-header d-md-flex align-items-center">
+            <h2 class="h3 card-header-title">
+                {% block lucca_header %}
+
+                {% endblock lucca_header %}
+            </h2>
+            <ul id="overallIncomeTabsControl" class="nav nav-tabs card-header-tabs ml-md-auto mt-3 mt-md-0">
+                <li class="nav-item mr-4">
+                    {% block lucca_header_badge %}
+                        <div class="px-2 badge badge-primary">{{ 'company.version'|trans }}</div>
+                    {% endblock lucca_header_badge %}
+                </li>
+            </ul>
+        </header>
+        <div class="u-body">
+
+            {% block lucca_page %}
+
+            {% endblock lucca_page %}
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="u-footer d-md-flex align-items-md-center text-center text-md-left text-muted text-muted">
+            <p class="h5 mb-0 ml-auto">
+                <span>&copy; 2017 - {{ 'now'|date('Y') }} | {{ 'meta.lucca_long'|trans }}</span>
+            </p>
+        </footer>
+        <!-- End Footer -->
+    </div>
+</main>
+
+{% block lucca_js %}
+    <!-- Global Vendor -->
+    <script src="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/jquery-migrate/jquery-migrate.min.js') }}"></script>
+    <script src="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/popper.js/dist/umd/popper.min.js') }}"></script>
+    <script src="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/bootstrap/bootstrap.min.js') }}"></script>
+
+    <!-- Plugins -->
+    <script src="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js') }}"></script>
+    <script src="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/chart.js/dist/Chart.min.js') }}"></script>
+
+    <!-- Initialization  -->
+    <script src="{{ asset('bundles/luccathemestreamdashboarduikit/js/sidebar-nav.js') }}"></script>
+    <script src="{{ asset('bundles/luccathemestreamdashboarduikit/js/dashboard-page-scripts.js') }}"></script>
+{% endblock lucca_js %}
+
+<script src="{{ asset('bundles/luccathemestreamdashboarduikit/js/main.js') }}"></script>
+</body>
+</html>

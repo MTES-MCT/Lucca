@@ -1,0 +1,111 @@
+{#-- --
+-- Plugin - Summernote
+-- basic plugin load into theme
+-- param :
+--      height : (default : 150)
+-- --#}
+
+{#-- Plugin - Summernote --#}
+<script src="{{ asset('plugins/summernote/summernote-bs4.js') }}"></script>
+<script src="{{ asset('plugins/summernote/lang/summernote-fr-FR.js') }}"></script>
+
+{% if height is not defined %}
+    {% set param_height = 500 %}
+{% else %}
+    {% set param_height = height %}
+{% endif %}
+
+<script>
+    toastr.options = {
+        "closeButton": true, "debug": false, "progressBar": true, "preventDuplicates": true,
+        "positionClass": "toast-top-center", "onclick": null,
+        "showDuration": "400", "hideDuration": "1000", "timeOut": "4000", "extendedTimeOut": "1000",
+        "showEasing": "swing", "hideEasing": "linear", "showMethod": "fadeIn", "hideMethod": "fadeOut"
+    };
+
+    /**
+     * Functions used to overide the wysiwyg plugin
+     *
+     * @author Jeremy <jeremy.coutellec@numeric-wave.eu>
+     */
+    let wysiwyg = {
+
+        sRoot: 'summernote',
+        sRootTag: '.summernote', // Here the id of your wysiwyg
+
+        /**
+         * Initiate object
+         * @private
+         */
+        _init: function () {
+
+            /** Init variables */
+            let self = this;
+
+            /** Init listeners */
+            this._addListeners();
+        },
+
+        /**
+         * Add all listener for each fields
+         *
+         * @private
+         */
+        _addListeners: function () {
+            let self = this;
+            $(document).ready(function () {
+                var summernote = $('.summernote').summernote({
+                    height: {{ param_height }},
+                    {% if toolbar is defined %}
+                    toolbar: {{ toolbar|json_encode|raw }},
+                    {% endif %}
+                    lang: 'fr-FR',
+                    callbacks: {
+                        onImageUpload: function (files) {
+                            self.uploadImageContent(files[0], summernote);
+                        },
+                    }
+                });
+            });
+        },
+
+        /**
+         * Upload image async
+         *
+         * @private
+         */
+        uploadImageContent: function (image, editor) {
+            var data = new FormData();
+            data.append(image.name, image);
+            {% if isPublic is defined %}
+            data.append('public', true);
+            {% endif %}
+            // Send files to the server
+            $.ajax({
+                type: "POST",
+                url: Routing.generate('lucca_media_api_upload_files') + '?uploadMedia=true',
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    console.log(response);
+                    for (let index = 0; index < response.length; index++) {
+                        // Show a toast alert if files are uploaded or not
+                        if (response[index].isUploaded) {
+                            var imageHtml = $('<img>').attr({
+                                src: response[index].url,
+                                width: response[index].size,
+                                height: response[index].size
+                            })
+                            $(editor).summernote("insertNode", imageHtml[0]);
+                            toastr.success("{{ 'message.media.successUpload'|trans({}, 'LuccaMediaBundle')|e('js') }}", "{{ 'message.media.titleUpload'|trans({}, 'LuccaMediaBundle')|e('js') }}");
+                        } else
+                            toastr.error("{{ 'message.media.failedUpload'|trans({}, 'LuccaMediaBundle')|e('js') }}", "{{ 'message.media.titleUpload'|trans({}, 'LuccaMediaBundle')|e('js') }}");
+                    }
+                }
+            });
+        }
+    };
+    wysiwyg._init();
+</script>

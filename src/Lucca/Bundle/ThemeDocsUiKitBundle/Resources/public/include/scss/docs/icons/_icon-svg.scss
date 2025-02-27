@@ -1,0 +1,26 @@
+/*!
+ * Copyright (c) 2025. Numeric Wave
+ *
+ * Afero General Public License (AGPL) v3
+ *
+ * For more information, please refer to the LICENSE file at the root of the project.
+ */
+
+/*------------------------------------
+  SVG Icons
+------------------------------------*/
+
+// Sizes
+@for $i from 1 through 4 {
+  .duik-icon-svg-#{$i}x {
+    width: $font-size-base * $i;
+    height: auto;
+  }
+}
+
+// Colors
+@each $color, $value in $theme-colors {
+  .duik-icon-svg-#{$color} {
+    stroke: #{$value};
+  }
+}
