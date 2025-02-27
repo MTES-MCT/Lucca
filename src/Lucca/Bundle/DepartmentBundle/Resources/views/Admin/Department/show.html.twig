@@ -1,0 +1,62 @@
+{#-- Extends view --#}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'DepartmentBundle' %}
+
+{#-- Parameters --#}
+{% set param_entity='label.department'|trans %}
+{% set menuActive = "ma_adm_department" %}
+
+
+{% block lucca_panels %}
+
+    {% include "@LuccaDepartment/Embed/Department/_panel-department.html.twig" with {'department': department} %}
+    <div class="col-12 pb-3">
+        <a class="btn btn-default btn-lg" href="{{ path('lucca_department_admin_index') }}"
+           title="{{ 'link.department.backList'|trans }}"><i class="fas fa-reply"></i></a>
+
+        {% if app.user and is_granted("ROLE_DEPARTMENT_WRITE") %}
+            <a class="btn btn-warning btn-lg"
+               href="{{ path('lucca_department_admin_edit', { 'id': department.id }) }}"
+               title="{{ 'link.department.edit'|trans }}"><i class="fas fa-pencil-alt"></i></a>
+
+        {% endif %}
+
+        {% if app.user and (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_DEPARTMENT_TOTAL")) %}
+            {% if department.enable %}
+                <a href="{{ path('lucca_department_admin_disable', { 'id': department.id }) }}"
+                   class="btn btn-primary btn-lg float-right" title="{{ 'link.department.disable'|trans }}">
+                    <i class="fas fa-toggle-on" aria-hidden="true"></i>
+                </a>
+            {% else %}
+                <a class="btn btn-danger btn-lg float-right" data-bs-toggle="modal"
+                   data-bs-target=".delWin" title="{{ 'link.user.delete'|trans }}">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+
+                {% include '@NwThemeColor/Modal/formDelete.html.twig' with {
+                    'name': department.name,
+                    'delForm': delete_form
+                } %}
+
+                <a href="{{ path('lucca_department_admin_enable', { 'id': department.id }) }}"
+                   class="btn btn-danger btn-lg float-right mr-1" title="{{ 'link.user.enable'|trans }}">
+                    <i class="fas fa-toggle-off" aria-hidden="true"></i>
+                </a>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock lucca_panels %}
+
+{% block lucca_css %}
+{{ parent() }}
+
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+{{ parent() }}
+{% endblock lucca_js %}
+
+

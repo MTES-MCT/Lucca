@@ -1,0 +1,43 @@
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig' %}
+{#-- Translation domain --#}
+{% trans_default_domain 'DepartmentBundle' %}
+
+{#-- Parameters --#}
+{% set param_entity='label.department'|trans %}
+{% set menuActive = "ma_adm_department" %}
+
+{% block lucca_panels %}
+
+    {% embed '@LuccaDepartment/Embed/Department/_form-department.html.twig' with {'form': form} %}
+
+        {% trans_default_domain 'DepartmentBundle' %}
+
+        {% block theme_embed_buttons_department %}
+            <a class="btn btn-default btn-lg" href="{{ path('lucca_department_admin_index') }}"
+               title="{{ 'link.department.backList'|trans }}"><i class="fas fa-reply"></i></a>
+            <button type="submit" class="btn btn-primary btn-lg" id="btn-submit"
+                    title="{{ 'link.department.create'|trans }}"><i class="fas fa-check"></i></button>
+        {% endblock %}
+
+    {% endembed %}
+
+    {#-- Translation domain embed --#}
+    {% trans_default_domain 'DepartmentBundle' %}
+
+{% endblock lucca_panels %}
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    {#-- Plugin - Summernote --#}
+    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/summernote.css.html.twig" %}
+{% endblock lucca_css %}
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    {#-- Plugin - Summernote --#}
+    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/summernote.js.html.twig" %}
+
+{% endblock lucca_js %}
+

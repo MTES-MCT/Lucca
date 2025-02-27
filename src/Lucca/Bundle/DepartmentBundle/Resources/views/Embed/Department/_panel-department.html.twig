@@ -1,0 +1,34 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'DepartmentBundle' %}
+
+
+{#-- View embed --#}
+<div class="panel panel-inverse float-e-margins">
+    <div class="panel-heading">
+        <h5>{{ 'label.department'|trans }} </h5>
+    </div>
+
+    <div class="panel-body">
+
+        <table class="table table-striped table-hover">
+            <tbody>
+            <tr>
+                <th>{{ 'label.code'|trans }}</th>
+                <td>{{ department.code }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'label.name'|trans }}</th>
+                <td>{{ department.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'label.comment'|trans }}</th>
+                <td>
+                    <div>{{ department.comment | raw }}</div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+{#-- End - View embed --#}

@@ -1,0 +1,34 @@
+lucca_any_adherent_bundle:
+    resource: "@LuccaDepartmentBundle/Controller"
+    type: attribute
+    prefix: /
+
+## LuccaDepartmentBundle Controllers - ddt
+lucca_adherent_bundle_ddt:
+    resource: "@LuccaDepartmentBundle/Controller/Ddt"
+    type: attribute
+    prefix: /ddt
+
+## LuccaDepartmentBundle Controllers - Sdis
+lucca_adherent_bundle_sdis:
+    resource: "@LuccaDepartmentBundle/Controller/Sdis"
+    type: attribute
+    prefix: /sdis
+
+## LuccaDepartmentBundle Controllers - Hall
+lucca_adherent_bundle_hall:
+    resource: "@LuccaDepartmentBundle/Controller/Hall"
+    type: attribute
+    prefix: /hall
+
+## LuccaDepartmentBundle Controllers - Admin
+lucca_adherent_bundle_admin:
+    resource: "@LuccaDepartmentBundle/Controller/Admin"
+    type: attribute
+    prefix: /admin
+
+## LuccaDepartmentBundle Controllers - API
+lucca_adherent_bundle_api:
+    resource: "@LuccaDepartmentBundle/Controller/Api"
+    type: attribute
+    prefix: /api

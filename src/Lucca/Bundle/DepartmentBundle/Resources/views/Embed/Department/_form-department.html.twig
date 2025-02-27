@@ -1,0 +1,40 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'DepartmentBundle' %}
+
+{#-- View embed --#}
+<div class="col-12">
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+
+        {#-- Panel - main --#}
+        <div class="col-sm-12 col-md-5">
+            <div class="panel panel-inverse float-e-margins">
+                <div class="panel-heading">
+                    <h5>{{ 'label.department'|trans }} </h5>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        {{ form_row(form.code) }}
+                        {{ form_row(form.name) }}
+                        {{ form_row(form.comment) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Panel - main --#}
+
+        <div class="col-md-12 col-12 pb-3 px-0">
+            {#-- Block embed --#}
+            {% block theme_embed_buttons_department %}
+
+            {% endblock %}
+        </div>
+    </div>
+
+    {#-- End - View embed --#}
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+</div>

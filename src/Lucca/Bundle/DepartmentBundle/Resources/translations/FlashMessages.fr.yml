@@ -1,0 +1,15 @@
+####################################
+## Domain : FlashMessages
+## Lang : FR
+####################################
+flash:
+    department:
+        update:
+            success: 'Département mis à jour'
+            error: 'Erreur lors de la mise à jour du département'
+        create:
+            success: 'Département créé'
+            error: 'Erreur lors de la création du département'
+        deleted:
+            success: 'Département supprimé'
+            error: 'Erreur lors de la suppression du département'
