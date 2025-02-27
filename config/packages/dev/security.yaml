@@ -1,0 +1,13 @@
+######################################################
+## Dev env
+## Override security with cas authentication
+######################################################
+security:
+    firewalls:
+
+        # Main firewall
+        main:
+            # configure the maximum login attempts (per minute)
+            login_throttling:
+                max_attempts: 5
+                interval: '15 minutes'

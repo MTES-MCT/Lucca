@@ -1,0 +1,94 @@
+{% extends "LuccaThemeAngleBundle:Layout:angleLayout.html.twig" %}
+{% trans_default_domain 'LuccaCoreBundle' %}
+
+{% block menuActive_sadmin %} class="active" {% endblock %}
+
+{% block lucca_title %}
+    <title>{{ 'setting.general.app.name'| setting }} | {{ 'title.parameter'|trans }}</title>
+{% endblock lucca_title %}
+
+{% block lucca_header %}
+    {{ 'title.sadmin'|trans }}
+{% endblock lucca_header %}
+
+
+{% block lucca_page %}
+
+    {% include 'LuccaThemeAngleBundle:Flash:flashes.html.twig' %}
+
+    {#-- Main Area --#}
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <h2>{{ 'sadmin.title.init_data'|trans }}</h2>
+        </div>
+
+        {#-- Init - Proposals --#}
+        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-3">
+            <div class="card card-default">
+                <div class="card-wrapper text-center">
+                    <div class="card-body">
+                        <a href="{{ path('lucca_sadmin_init_data') }}" class="link-unstyled text-warning">
+                            <em class="fa fa-5x fa-fire mb-lg"></em>
+                            <br>
+                            <span class="h4">{{ 'sadmin.init.proposals'|trans }}</span>
+                            <br>
+                            <small class="text-muted">{{ 'sadmin.init.proposals_help'|trans }}</small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Init - Proposals --#}
+
+        {#-- Init - Enable all params --#}
+        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-3">
+            <div class="card card-default">
+                <div class="card-wrapper text-center">
+                    <div class="card-body">
+                        <a href="{{ path('lucca_sadmin_enabled_all_parameters') }}" class="link-unstyled text-info">
+                            <em class="fa fa-5x fa-fire mb-lg"></em>
+                            <br>
+                            <span class="h4">{{ 'sadmin.init.enable_all_params'|trans }}</span>
+                            <br>
+                            <small class="text-muted">{{ 'sadmin.init.enable_all_params_help'|trans }}</small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Init - Enable all params  --#}
+
+        {#-- Init - Enable all params --#}
+        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-3">
+            <div class="card card-default">
+                <div class="card-wrapper text-center">
+                    <div class="card-body">
+                        <a href="{{ path('lucca_sadmin_transform_minute_v1_into_v2') }}" class="link-unstyled text-primary">
+                            <em class="fa fa-5x fa-fire mb-lg"></em>
+                            <br>
+                            <span class="h4">{{ 'sadmin.init.transform_minute_v1_into_v2'|trans }}</span>
+                            <br>
+                            <small class="text-muted">{{ 'sadmin.init.transform_minute_v1_into_v2_help'|trans }}</small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Init - Enable all params  --#}
+    </div>
+    {#-- End - Main Area --#}
+
+    {#-- Log Area --#}
+    {% if log %}
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <pre>
+                    {{ log|raw }}
+                </pre>
+            </div>
+        </div>
+    {% endif %}
+    {#-- End - Log Area --#}
+
+{% endblock lucca_page %}
+

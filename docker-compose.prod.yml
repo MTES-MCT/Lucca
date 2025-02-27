@@ -1,0 +1,30 @@
+services:
+  php:
+    container_name: php_lucca_prod
+    networks:
+      - lucca-network
+    environment:
+      APP_SECRET: ${APP_SECRET}
+      MYSQL_HOST: db_lucca_prod
+      PHP_LISTENNING: 9000
+
+  caddy:
+    container_name: caddy_lucca_prod
+    networks:
+      - lucca-network
+    environment:
+      FASTCGI_PHP: php:9000
+    volumes:
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
+
+  ###> doctrine/doctrine-bundle ###
+  db:
+    container_name: db_lucca_prod
+    image: mariadb:${MYSQL_VERSION}-noble-rc
+    networks:
+      - lucca-network
+
+  ###< doctrine/doctrine-bundle ###
+
+networks:
+  lucca-network:

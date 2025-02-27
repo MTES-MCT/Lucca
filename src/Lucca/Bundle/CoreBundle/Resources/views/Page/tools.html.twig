@@ -1,0 +1,68 @@
+{% extends "LuccaThemeAngleBundle:Layout:angleLayout.html.twig" %}
+{% trans_default_domain 'LuccaCoreBundle' %}
+
+{% block menuActive_tools %} class="active" {% endblock %}
+
+{% block lucca_title %}
+    <title>{{ 'setting.general.app.name'| setting }} | {{ 'title.tools'|trans }}</title>
+{% endblock lucca_title %}
+
+{% block lucca_header %}
+    {{ 'title.tools'|trans }}
+{% endblock lucca_header %}
+
+
+{% block lucca_page %}
+
+    {#-- Main Area --#}
+    <div class="row">
+
+        {% if area %}
+            {% for subarea in area.subareas %}
+                <div class="{{ subarea.width }}">
+
+                    <div class="card card-default">
+                        <div class="card-header">
+                            <div class="card-title">{{ subarea.title }}</div>
+                        </div>
+
+                        <div class="list-group">
+                            {% for page in subarea.pages %}
+                                <div class="list-group-item">
+                                    <div class="media">
+                                        <div class="align-self-start mr-2">
+                                            <span class="fa-stack">
+                                                <em class="fa fa-circle fa-stack-2x"
+                                                    style="color: {{ subarea.color }};"></em>
+                                                <em class="{{ page.icon }} fa-stack-1x fa-inverse text-white"></em>
+                                            </span>
+                                        </div>
+
+                                        <div class="media-body">
+                                            <p class="mb-1">
+                                                <a href="{{ path('lucca_core_page_show', { 'slug': page.slug}) }}"
+                                                   class="m0">{{ page.link }}</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    {#-- End - Main Area --#}
+
+{% endblock lucca_page %}
+
+{% block lucca_css %}
+    {{ parent() }}
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+{% endblock lucca_js %}

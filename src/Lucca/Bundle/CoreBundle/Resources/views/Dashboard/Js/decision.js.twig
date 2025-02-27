@@ -1,0 +1,90 @@
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+function createMarkersDecisions() {
+
+    /** Get coords of the border of the map */
+    var bds = map.getBounds();
+
+    let typeMarker = "decisions";
+
+    var request = $.ajax({
+        url: Routing.generate('lucca_get_decisions'),
+        data: {
+            displayResults: displayResults,
+            adherent: {% if adherentId %}{{ adherentId }}{% else %}null{% endif %},
+            minLat: bds.getSouthWest().lat(),
+            minLon: bds.getSouthWest().lng(),
+            maxLat: bds.getNorthEast().lat(),
+            maxLon: bds.getNorthEast().lng()
+            {% if dateStart is defined %}
+            ,
+            dateStart: "{{ dateStart | date('d/m/Y') }}",
+            dateEnd: "{{ dateEnd | date('d/m/Y') }}"
+            {% endif %}
+        },
+        success: function (response) {
+            let res = JSON.parse(response);
+            let typeMarker = "decisions";
+
+            for (let i = 0; i < res.length; i++) {
+                latLng = new google.maps.LatLng(res[i]['lat'], res[i]['lon']);
+                iconBase = '{{ asset('assets/img/Pins/png/decision.png') }}';
+                num = res[i]['id'].toString();
+                var markerD = createMarker(num, iconBase, latLng);
+
+                /** Create infos popup */
+                var appeal = "";
+                if (res[i]['appeal'] === true) {
+                    appeal = "{{ 'label.appeal' | trans }}";
+                }
+
+                htmlInfos = generateHtmlInfos(
+                    res[i]['minuteNum'],
+                    "{{ path('lucca_minute_show', { 'id': 'minute.id', '_fragment' : 'control-decision.id'}) }}"
+                        .replace('minute.id', res[i]['minuteId']).replace('decision.id', res[i]['id']),
+                    [
+                        "Parcelle : " + res[i]['parcel'],
+                        "Date audience : " + res[i]['TCdateHearing'],
+                        "Type décision : " + res[i]['TCstatusDecision'],
+                        appeal
+                    ]
+                );
+                if (displayResults) {
+                    let mtnAstreites = "";
+                    if (res[i]['amountPenaltyDaily'] !== "") {
+                        mtnAstreites = "Montant astreinte : " + res[i]['amountPenaltyDaily'] + " €";
+                    }
+
+                    htmlInfos2 = generateHtmlInfos(
+                        res[i]['minuteNum'],
+                        "{{ path('lucca_minute_show', { 'id': 'minute.id', '_fragment' : 'control-decision.id'}) }}"
+                            .replace('minute.id', res[i]['minuteId']).replace('decision.id', res[i]['id']),
+                        [
+                            "Parcelle : " + res[i]['parcel'],
+                            "Date audience : " + res[i]['TCdateHearing'],
+                            "Type décision : " + res[i]['TCstatusDecision'],
+                            mtnAstreites,
+                            appeal,
+                            "Date dernier PV réactualisation : " + res[i]['date'],
+                            res[i]['state']
+                        ]
+                    );
+                    createInfoWindow(res[i]['id'], markerD, htmlInfos, htmlInfos2);
+                } else {
+                    createInfoWindow(res[i]['id'], markerD, htmlInfos);
+                }
+                /** End popup */
+
+                datas[typeMarker].push(markerD);
+            }
+
+            clusters[typeMarker] = new MarkerClusterer(map, datas[typeMarker], {
+                imagePath: "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
+                maxZoom: maxZoomCluster,
+                ignoreHidden: true,
+            });
+        },
+        error: function (response) {
+        }
+    });
+}

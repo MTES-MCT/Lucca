@@ -1,0 +1,16 @@
+####################################
+## LuccaCoreBundle
+####################################
+
+constraint:
+    not_null: "Cette valeur '{{ value }}' ne doit pas être nulle."
+    type: "Cette valeur '{{ value }}' doit être de type {{ type }}."
+    datetime: "Cette valeur '{{ value }}' doit être de type {{ type }}."
+    length:
+        min: "Cette valeur '{{ value }}' doit avoir au moins {{ limit }} caractères."
+        max: "Cette valeur '{{ value }}' doit avoir au plus {{ limit }} caractères."
+
+    date:
+        range:
+            min: "Cette date '{{ value }}' doit avoir au supérieure à {{ limit }}."
+            max: "Cette date '{{ value }}' doit avoir au inférieure à {{ limit }}."

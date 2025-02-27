@@ -1,0 +1,54 @@
+{% extends "LuccaThemeAngleBundle:Layout:angleLayout.html.twig" %}
+
+{% trans_default_domain 'LuccaCoreBundle' %}
+
+{% block menuActive_map %} class="active" {% endblock %}
+
+{% block lucca_title %}
+    <title>{{ 'setting.general.app.name'| setting }} | {{ 'title.map'|trans }}</title>
+{% endblock lucca_title %}
+
+{% block lucca_header %}
+    {{ 'title.map'|trans }}
+{% endblock lucca_header %}
+
+
+{% block lucca_page %}
+
+    <div class="row">
+        {#-- Map --#}
+        <div class="col-lg-12 col-sm-12">
+            {% include '@LuccaCore/Dashboard/panel-map.html.twig' %}
+        </div> {#-- End - Map --#}
+    </div>
+
+{% endblock lucca_page %}
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    <link href="{{ asset('bundles/luccacore/css/lucca_map.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/luccathemeangle/plugins/pace/paceMap.css') }}" rel="stylesheet">
+{% endblock lucca_css %}
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script src="{{ asset('bundles/luccacore/js/lucca_config_map.js') }}"></script>
+    <script src="{{ asset('bundles/luccacore/js/lucca_map.js') }}"></script>
+{#    <script src="{{ asset('bundles/luccathemeangle/plugins/pace/pace.min.js') }}"></script>#}
+    {#-- Plugin sweet alert 2 --#}
+    <script src="{{ asset('plugins/sweetalert2/sweetalert2.js') }}"></script>
+    {#-- Plugin - Google maps --#}
+{#    {% if 'setting.map.mapActive.name'|setting == true %}#}
+{#        <script src="https://maps.googleapis.com/maps/api/js?key={{ 'setting.map.mapKey.name'|setting }}&callback=initMap"#}
+{#                async defer></script>#}
+
+{#        <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>#}
+
+{#        <script>#}
+{#            /** Contain all code to init map and creta marker that need to be done in twig */#}
+{#            {% include '@LuccaCore/Dashboard/Js/global.js.twig' with {'adherentId': adherentId, 'displayResults': 'false' } %}#}
+{#        </script>#}
+{#    {% endif %}#}
+{% endblock lucca_js %}

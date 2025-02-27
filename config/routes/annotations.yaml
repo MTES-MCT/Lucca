@@ -1,0 +1,9 @@
+## Load Kernel route
+kernel:
+    resource: ../../src/Kernel.php
+    type: attribute
+
+## Load defaults routes for each Controller
+controllers:
+    resource: ../../src/*/*/Controller/
+    type: attribute

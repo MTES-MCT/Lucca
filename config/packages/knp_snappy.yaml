@@ -1,0 +1,15 @@
+# KnpSnappyBundle Configuration
+knp_snappy:
+    temporary_folder: "%env(resolve:LUCCA_SNAPPY_FOLDER)%"
+    
+    pdf:
+        enabled: true
+        binary: '%env(WKHTMLTOPDF_PATH)%'
+        options:
+            enable-local-file-access: true
+
+    image:
+        enabled:    true
+        binary:     '%env(WKHTMLTOIMAGE_PATH)%'
+        options:
+            enable-local-file-access: true

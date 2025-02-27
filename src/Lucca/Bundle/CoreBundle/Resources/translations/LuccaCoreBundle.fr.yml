@@ -1,0 +1,130 @@
+###############
+## Entity
+###############
+entity:
+    user: "Utilisateur"
+    group: "Groupe"
+    area: "Zone"
+    subarea: "Sous zone"
+    page: "Page"
+
+###############
+## Title
+###############
+title:
+    dashboard: "Tableau de bord"
+    map: "Carte"
+    filterBy: "Filtrer par :"
+    parameter: "Liste des paramètres"
+    natinf: "Liste des natinfs et des mots clés"
+    service: "Les services propres aux adhérents"
+    others: "Autres paramètres"
+    sadmin: "Zone S. Admin"
+    open_minute: "Dossiers ouverts"
+    close_minute: "Dossiers clôturés"
+    contact: "Coordonnées de la DDT"
+    statistics: "Statistiques"
+    tools: "Fiches outils de l'application"
+    results: "Résultat(s) de recherche :"
+
+###############
+## Label
+###############
+company:
+    lucca: "Lucca"
+    website: "https://cabanisation66.fr"
+
+label:
+    actions: "Actions"
+    natinf: "Natinf"
+    town: "Commune"
+    intercommunal: "Intercommunauté"
+    partner: "Partenaire"
+    service: "Service de l'état"
+    tag: "Mot clé"
+    tribunal: "Tribunal"
+    see_list: "Voir la liste complète"
+    seeDetails: "Voir le détail"
+    checklist: "Liste mnémotechnique"
+    overall: "Statistiques sur les dossiers (Graph)"
+    log: "Log"
+    loginAttempt: "Tentative de login"
+    media: "Media"
+    setting: "Paramètres d'application"
+
+    filters:
+        minutesSpotted: "Signalement"
+        openFolders: "Dossiers ouverts"
+        minutesClosedRegular: "Dossiers clôturés - regularisés"
+        minutesClosedOther: "Dossiers clôturés - autres"
+        control: "Contrôle"
+        decision: "Decisions de justice"
+        folder: "Procès verbaux"
+        updates: "Actualisation"
+    search:
+        address: "Rechercher une adresse"
+    period: 'Période :'
+    to: 'au'
+    totalUnclosed: 'Dossiers actifs'
+    totalClosed: 'Dossiers cloturés'
+    selectedPeriod: 'Période sélectionnée'
+    minutes: 'Statistiques sur les dossiers (Tableau)'
+    total: 'Dossiers'
+    ascertainment: "Rapports"
+
+badge:
+    sa: "SAdmin"
+    admin: "Admin"
+
+text:
+    noFoldersFound: "Aucun dossier trouvé !"
+    createFolderGeolocalized: "Voulez vous créer un dossier ici : "
+
+###############
+## Link
+###############
+link:
+    show: "Visualiser"
+    edit: "Modifier"
+    new: "Nouveau"
+    reducePanel: "Réduire le panneau"
+    closePanel: "Fermer le panneau"
+    back: "Retour"
+    delete: "Supprimer"
+    print: "Imprimer"
+    enable: "Activer"
+    disable: "Désactiver"
+    search: 'Rechercher'
+
+
+###############
+## Sadmin
+###############
+sadmin:
+    title:
+        init_data: "Initialisation data"
+
+    init:
+        proposals: "Init. phrases mots clés"
+        proposals_help: "Définit des phrases factices pour les mots clés"
+        enable_all_params: "Activer tous les params"
+        enable_all_params_help: "Mets tous les statuts sur actif"
+        transform_minute_v1_into_v2: "Transformer Dossier"
+        transform_minute_v1_into_v2_help: "Renommer la colonne lucca_control.agent_attendant avant de Transformer tous les dossiers de la v1 en v2"
+
+###############
+## Sadmin
+###############
+media:
+    remove: "Supprimer"
+    add: "Ajouter"
+    eraser: "Effacer"
+    manager: "Utiliser le manager"
+
+###############
+## Stats
+###############
+statistics:
+    text: 'Les statistiques présentes sur cette page sont triées en fonction des filtres suivants :'
+    title: 'Résumé des filtres sélectionnés'
+    noFilters: 'Aucun filtres sélectionnés'

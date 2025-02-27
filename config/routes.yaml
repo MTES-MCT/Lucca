@@ -1,0 +1,11 @@
+#######################################
+## Lucca
+#######################################
+
+LuccaSecurityBundle:
+    resource: "@LuccaSecurityBundle/Resources/config/routing.yaml"
+    prefix:   /
+
+LuccaUserBundle:
+    resource: "@LuccaUserBundle/Resources/config/routing.yaml"
+    prefix:   /

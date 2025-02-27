@@ -1,0 +1,69 @@
+{% extends 'LuccaThemeAngleBundle:SubLayout:show.html.twig' %}
+{% trans_default_domain 'LuccaUserBundle' %}
+
+{% set param_entity='entity.group'|transchoice(1) %}
+{% set param_entities='entity.group'|transchoice(2) %}
+
+{% block menuActive_group %}class="active"{% endblock menuActive_group %}
+
+
+{% block lucca_panels %}
+
+    {#-- Panel - main --#}
+    <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+
+        <div class="card card-default">
+            <div class="card-header">
+                {{ 'title.show'|trans({}, 'LuccaThemeAngleBundle') }} - <b>{{ group.name }}</b>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+                    <div class="col-12">
+                        <table class="table table-striped table-hover">
+                            <tbody>
+                            <tr>
+                                <th>{{ 'label.name'|trans }}</th>
+                                <td>{{ group.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.displayed'|trans }}</th>
+                                <td>
+                                    {% if group.displayed %}<i class="fa fa-check"></i>
+                                    {% else %}<i class="fa fa-close"></i>{% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.roles'|trans }}</th>
+                                <td>
+                                    {% for role in group.roles %}
+                                        {{ role }}
+                                        {% if not loop.last %}<br>{% endif %}
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <a class="btn btn-secondary btn-lg" href="{{ path('fos_user_group_list') }}"
+                           title="{{ 'link.back'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <a class="btn btn-warning btn-lg"
+                           href="{{ path('fos_user_group_edit', { 'groupName': group.name }) }}"
+                           title="{{ 'link.edit'|trans }}"><i class="fas fa-pencil-alt"></i></a>
+
+                        <a class="btn btn-danger btn-lg pull-right"
+                           href="{{ path('fos_user_group_delete', { 'groupName': group.name }) }}"
+                           title="{{ 'link.delete'|trans }}"><i class="fas fa-times"></i></a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {#-- End Panel - main --#}
+
+{% endblock lucca_panels %}
+

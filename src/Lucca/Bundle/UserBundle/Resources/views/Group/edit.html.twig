@@ -1,0 +1,42 @@
+{% extends 'LuccaThemeAngleBundle:SubLayout:edit.html.twig' %}
+{% trans_default_domain 'LuccaUserBundle' %}
+
+{% set param_entity='entity.group'|transchoice(1) %}
+{% set param_entities='entity.group'|transchoice(2) %}
+
+{% block menuActive_group %}class="active"{% endblock menuActive_group %}
+
+
+{% block lucca_panels %}
+
+    {#-- Panel - main --#}
+    <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+
+        <div class="card card-default">
+            <div class="card-header">
+                {{ 'title.edit'|trans({}, 'LuccaThemeAngleBundle') }} - <b>{{ group_name }}</b>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+                    <div class="col-12">
+                        {{ form_start(form, { 'action': path('fos_user_group_edit', {'groupName': group_name}), 'attr': { 'class': 'fos_user_group_edit' } }) }}
+                        {{ form_widget(form) }}
+
+                        <a class="btn btn-secondary btn-lg" href="{{ path('fos_user_group_list') }}"
+                           title="{{ 'link.back'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <button type="submit" class="btn btn-success btn-lg"
+                                title="{{ 'link.new'|trans }}"><i class="fa fa-check"></i></button>
+
+                        {{ form_rest(form) }}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#-- End Panel - main --#}
+
+{% endblock lucca_panels %}
+
