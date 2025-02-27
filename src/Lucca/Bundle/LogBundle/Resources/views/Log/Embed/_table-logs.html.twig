@@ -1,0 +1,27 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'LogBundle' %}
+
+{#-- View embed --#}
+<table class="table table-striped table-hover table-bordered w-100 dataTables">
+    <thead class="form-filters">
+    <tr>
+        <th>{{ 'label.user'|trans }}</th>
+        <th>{{ 'label.status'|trans }}</th>
+        <th>{{ 'label.shortMessage'|trans }}</th>
+        <th>{{ 'label.classname'|trans }}</th>
+        <th>{{ 'label.objectId'|trans }}</th>
+        <th>{{ 'label.createdAt'|trans }}</th>
+        <th><i class="fas fa-cogs"></i> {{ 'label.actions'|trans }}</th>
+    </tr>
+    <tr>
+        <td></td>
+        <td>{{ form_widget(form.status) }}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </thead>
+</table>
+{#-- End - View embed --#}

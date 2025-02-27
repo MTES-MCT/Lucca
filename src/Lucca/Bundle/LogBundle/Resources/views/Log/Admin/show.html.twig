@@ -1,0 +1,109 @@
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
+{% trans_default_domain 'LuccaLogBundle' %}
+
+{% set param_entity='entity.log'|transchoice(1) %}
+{% set param_entities='entity.log'|transchoice(2) %}
+
+
+{% block menuActive_parameter %} class="active"{% endblock menuActive_parameter %}
+
+{% macro recursiveLogContent(key, content) %}
+    <tr>
+        <th>{{ key }}</th>
+        <td>
+            {% if content is iterable %}
+                <table class="table table-striped table-hover">
+                    {% for keyIterable, element in content %}
+                        {{ _self.recursiveLogContent(keyIterable, element) }}
+                    {% endfor %}
+                </table>
+            {% else %}
+                {{ content }}
+            {% endif %}
+        </td>
+    </tr>
+{% endmacro %}
+
+
+{% block lucca_panels %}
+
+    {#-- Panel - main --#}
+    <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+
+        <div class="card card-default">
+            <div class="card-header">
+                {{ 'title.show'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ log.id }}</b>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+
+                    <div class="col-12">
+                        <table class="table table-striped table-hover">
+                            <tbody>
+                            <tr>
+                                <th><i class="fa fa-paste"></i> {{ 'label.id'|trans }}</th>
+                                <td>{{ log.id }}</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fa fa-user"></i> {{ 'label.user'|trans }}</th>
+                                <td>{{ log.user.username }}</td>
+                            </tr>
+                            <tr>
+                                <th> {{ 'label.shortMessage'|trans }}</th>
+                                <td>{{ log.shortMessage }}</td>
+                            </tr>
+                            <tr>
+                                <th> {{ 'label.status'|trans }}</th>
+                                <td>{{ log.status|trans }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.createdAt'|trans }}</th>
+                                <td>{% if log.createdAt %}{{ log.createdAt|date('d/m/Y H:i:s') }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.classname'|trans }}</th>
+                                <td>{{ log.classname }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.objectId'|trans }}</th>
+                                <td>{{ log.objectId }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.message'|trans }}</th>
+                                <td>
+                                    <table class="table table-striped table-hover">
+                                        {% for key,data in log.message|json_decode %}
+                                            {{ _self.recursiveLogContent(key, data) }}
+                                        {% endfor %}
+                                    </table>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_log_index') }}"
+                           title="{{ 'link.back'|trans }}"><i class="fa fa-reply"></i></a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {#-- End Panel - main --#}
+
+
+{% endblock lucca_panels %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+{% endblock lucca_js %}
