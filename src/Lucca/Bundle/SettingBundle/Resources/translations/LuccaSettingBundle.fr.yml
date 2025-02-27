@@ -1,0 +1,258 @@
+#####################################################
+## Lucca Locatio Angle Bundle
+#####################################################
+
+########################
+# Entity
+########################
+entity:
+    setting: "Paramètre|Paramètres"
+    import:
+        setting: 'Importer des settings'
+
+########################
+# Label
+########################
+label:
+    accessType: 'Accès'
+    position: 'Position'
+    type: 'Type'
+    name: 'Nom'
+    value: 'Valeur'
+    comment: 'Commentaire'
+    actions: 'Actions'
+    category: 'Category'
+    valuesAvailable: 'Liste de valeurs'
+    yesNo: "Oui/Non"
+    file: 'Fichier'
+
+########################
+# Text
+########################
+text:
+    importFailed: "Le setting suivant n'as pas pu être importé : "
+    valueMissing: "Il manque une valeur pour : "
+
+########################
+# Link
+########################
+link:
+    setting:
+        new: "Créer un nouveau paramètre"
+        edit: "Modifier le paramètre"
+        show: "Visualiser le paramètre"
+        backList: "Retourner à la liste des paramètres"
+    backList: "Retour à la liste"
+    reducePanel: 'Réduire le panneau'
+    import: 'Importer'
+    export: 'Exporter'
+
+###############
+## Choice
+###############
+choice:
+    setting:
+        type:
+            integer: "Entier : Valeur numérique entière"
+            float: "Flottant : Valeur numérique à virgule"
+            percent: "% : Pourcentage"
+            text: "Texte"
+            boolean: "Oui/Non"
+            list: "Liste de valeur"
+            color: "Couleur"
+            admin: "Administrateur"
+            superAdmin: "Super Administrateur"
+        accessType:
+            superAdmin: "Super administrateur"
+            admin: "Administrateur"
+
+###############
+## Setting
+## Here you need to add all the translations of your settings
+###############
+setting:
+    #    Define all the categories
+    category:
+        general:
+            name: "Général"
+            comment: "Catégorie englobant les paramètres généraux de Lucca"
+        map:
+            name: "Cartographie"
+            comment: "Paramètres de GoogleMap"
+        pdf:
+            name: "PDF"
+            comment: "Paramètres concernant les pdfs"
+        folder:
+            name: "Procès verbaux"
+            comment: "Paramètres concernant les procès verbaux"
+        courier:
+            name: "Courrier"
+            comment: "Paramètres concernant les courriers"
+        control:
+            name: "Contrôle"
+            comment: "Paramètres concernant les contrôles"
+        module:
+            name: "Modules"
+            comment: "" #"Liste des accès aux fonctionnalités"
+
+    #    Define all the settings order by category
+    #    Settings category general
+    general:
+        colorL:
+            name: "Couleur bandeau gauche"
+            comment: "Ce paramètre permet de changer la couleur du bandeau à gauche en haut de l'application."
+        colorR:
+            name: "Couleur bandeau droite"
+            comment: "Ce paramètre permet de changer la couleur du bandeau en haut à droite de l'application."
+        app:
+            name: "Nom de l'application"
+            comment: "Nom affiché dans l'application"
+        departement:
+            name: "Département"
+            comment: "Indiquer ici le numéro du département."
+        emailGlobal:
+            name: "Email expéditeur"
+            comment: "Email utilisé pour envoyer des mails"
+        emailLegaleDepartement:
+            name: "Email département"
+            comment: "Email de contact de la DDTM"
+        logo:
+            name: "Logo"
+            comment: "Logo de la ddt"
+        ddtName:
+            name: "Nom de la DDT"
+            comment: "Nom donné à la DDT"
+        url:
+            name: "Url du site web"
+            comment: "Url à laquelle se situe le site web de l'application"
+        urlGouv:
+            name: "Url du site web Gouvernemental"
+            comment: "Url à laquelle se situe le site web gouvernemental du département"
+        prefixUsername:
+            name: "Prefix nom d'utilisateur"
+            comment: "Préfixe utilisé pour générer les nom d'utilisateurs de
+                      l'application. A renseigner sans espace ou caractères spéciaux."
+        ddtAcronym:
+            name: "Acronyme de la direction départementale"
+            comment: "Acronyme utilisé dans les courriers et l'application. A renseigner sans espace ou caractères spéciaux."
+
+        catchphrase1:
+            name: "Phrase d'accroche site web (Première ligne)"
+            comment: "Phrase visible en haut du site web, sous le nom de l'application (Première ligne)."
+
+        catchphrase2:
+            name: "Phrase d'accroche site web (Deuxième ligne)"
+            comment: "Phrase visible en haut du site web, sous le nom de l'application (Deuxième ligne)."
+
+        converterLink:
+            name: "Lien convertisseur PDF en image"
+            comment: "Ce lien dirige vers un outil en ligne de conversion de PDF en image. Ce lien est affiché à plusieurs endroits de l'application."
+
+    #    Settings category map
+    map:
+        mapActive:
+            name: "Activation carte"
+            comment: ""
+        mapKey:
+            name: "Clef api carte"
+            comment: "Cette clef permet de se connecter à l'API Google afin de charger la carte"
+        geocodeKey:
+            name: "Clef api géocodes"
+            comment: "Cette clef permet de se connecter à l'API Google afin de rechercher les geocodes
+                      associés à une adresse et inversement"
+        lat:
+            name: "Latitude carte"
+            comment: "Coordonnée de Latitude pour le focus de la carte"
+        lon:
+            name: "Longitude carte"
+            comment: "Coordonnée de Longitude pour le focus de la carte"
+        maxResults:
+            name: "Maximum marqueurs"
+            comment: "Change le nombre maximum de données remontées
+                      pour générer les marqueurs. Cette valeur permet
+                      d'éviter les temps de chargement long et les bugs
+                      si trop de données sont chargées."
+
+    #    Settings category PDF
+    pdf:
+        logo:
+            name: "Logo PDF"
+            comment: "Logo utilisé dans les pdfs"
+        logoInHeader:
+            name: "Logo en en tête ?"
+            comment: "Affichage du logo dans le header.
+                         Si oui -> logo affiché sur toutes les pages
+                         Si non -> logo affiché UNIQUEMENT sur la première page"
+
+    #    Settings category Folder
+    folder:
+        docFooterDueDate:
+            name: "Affichage date limite (pied de page) ?"
+            comment: "Affiche le block due date dans le footer"
+        docContent:
+            name: "Contenu personalisé ?"
+            comment: "Indique s'il faut aller chercher une version personnalisée du document ou non"
+        docContentObstacle:
+            name: "Contenu obstacle personalisé ?"
+            comment: "Indique s'il faut aller chercher une version personnalisée du document obstacle ou non"
+        blockAttachmentToChecklist:
+            name: "Bloquer l'ajout de fichier joint dans la checklist ?"
+            comment: "Indique si l'ajout de fichier joint est bloqué ou non dans la checklist"
+        indexFilterByRollingOrCalendarYear:
+            name: "Filtrer par année glissante ?"
+            comment: "Indique si les dossiers et les procès verbaux doivent être filtrés par année civile ou par année glissante."
+        presetFilterAdherentByConnectedUser:
+            name: "Présélectionner le filtre 'Adhérent' par l'utilisateur connecté ?"
+            comment: "Indique si le filtre 'Adhérent' doit être présélectionné par l'utilisateur connecté dans le filtre de la liste des dossiers."
+        annexesQuantity:
+            name: "Nombres d'annexes maximum"
+            comment: "Indique le nombre maximum d'annexes pouvant être présentes sur un PV"
+        annexesMaxSize:
+            name: "Taille maximum d'une annexe"
+            comment: "Indique la taille maximum d'une annexe pouvant être ajouté dans un PV via la 'galerie' annexes"
+        useRefreshAgentForRefreshSignature:
+            name: "L'agent renseigné sur la réactualisation est le signataire ?"
+            comment: "Permet de choisir si on utilise l'agent renseigné sur le dossier ou l'agent renseigné sur la réactualisation pour la signature"
+
+    #    Settings category Courier
+    courier:
+        offenderContent:
+            name: "Contenu information au contrevenant ?"
+            comment: "Indique s'il faut aller chercher une version personnalisée du courrier au contrevenant "
+        ddtmContent:
+            name: "Contenu information a la DDTM ?"
+            comment: "Indique s'il faut aller chercher une version personnalisée du contenu de la lettre DDTM "
+        judicialContent:
+            name: "Contenu lettre de saisine ? "
+            comment: "Indique s'il faut aller chercher une version personnalisée du contenu de la lettre de saisine"
+        mayorContent:
+            name: "Contenu du courrier de rattachement personalisé ? "
+            comment: "Indique s'il faut aller chercher une version personnalisée du contenu du courrier de rattachement"
+
+
+    #    Settings category Control
+    control:
+        footer:
+            name: "Contenu pied de page personalisé ?"
+            comment: "Indique s'il faut aller chercher une version personnalisée du controle du pied de page d'un pv"
+        accessContent:
+            name: "Contenu lettre d'accès personalisé ?"
+            comment: "Indique s'il faut aller chercher une version personnalisée du contenu de la lettre d'accès"
+        accessEmpty:
+            name: "Contenu lettre d'accès vide personalisé ?"
+            comment: "Indique s'il faut aller chercher une version personnalisée du contenu de la lettre d'accès vide"
+        convocationContent:
+            name: "Contenu convocation personalisé ?"
+            comment: "Indique s'il faut aller chercher une version personnalisée du contenu de la lettre de convocation"
+
+    #    Settings Modules
+    module:
+        mayorletter:
+            name: "Module - Courrier de rattachement"
+            comment: "Fonctionnalité permettant la génération de courriers de rattachement (lettre au maire)"
+        dashboardAdmin:
+            name: "Module - Tableau de bord administrateur"
+            comment: "Fonctionnalité permettant d'afficher ou non le tableau de bord administrateur contenant les stats"
+        annexes:
+            name: "Module - Annexes PV"
+            comment: "Fonctionnalité permettant d'ajouter des annexes sur le PV"

@@ -1,0 +1,32 @@
+services:
+    #################################################################
+    ##  Generator
+    #################################################################
+    lucca.generator.setting:
+        class: Lucca\Bundle\SettingBundle\Generator\SettingGenerator
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - '@cache.settings'
+
+    #################################################################
+    ##  Manager
+    #################################################################
+    lucca.manager.setting:
+        class: Lucca\Bundle\SettingBundle\Manager\SettingManager
+
+    #################################################################
+    ##  Utils
+    #################################################################
+    #    Add setting because there might be an other csv converter
+    lucca.utils.setting.converter.csv_array:
+        class: Lucca\Bundle\SettingBundle\Utils\ConverterCsvArray
+
+    #################################################################
+    ## Twig
+    #################################################################
+    ## Twig extension to get a setting value from name
+    flit.twig.setting:
+        public:    false
+        class:     Lucca\Bundle\SettingBundle\Twig\SettingExtension
+        tags:
+            - { name: twig.extension }

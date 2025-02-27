@@ -1,0 +1,64 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaSettingBundle' %}
+
+{#--  View embed  --#}
+{#--  Panel - main  --#}
+ {#-- Panel - main --#}
+<div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+
+    <div class="card card-default">
+        <div class="card-header">
+            {{ 'title.show'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ setting.name |trans }}</b>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="card-body">
+
+                <table class="table table-striped table-hover">
+                    <tbody>
+                    <tr>
+                        <th> {{ 'label.type'|trans }}</th>
+                        <td>{{ setting.type |trans }}</td>
+                    </tr>
+                    <tr>
+                        <th> {{ 'label.category'|trans }}</th>
+                        <td>{{ setting.category.name|trans }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'label.accessType'|trans }}</th>
+                        <td>{{ setting.accessType |trans }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'label.position'|trans }}</th>
+                        <td>{{ setting.position }}</td>
+                    </tr>
+                    {% if isShow is defined and isShow == true %}
+                        <tr>
+                            <th>{{ 'label.value'|trans }}</th>
+                            <td>
+                                {% if setting.type is constant('TYPE_BOOL', setting) %}
+                                    {{ setting.value|boolean }}
+                                {% elseif setting.type is constant('TYPE_COLOR', setting)%}
+                                    <p style="color:{{ setting.value }}"> {{ setting.value }}</p>
+                                {% else %}
+                                    {{ setting.value }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                    <tr>
+                        <th>{{ 'label.comment'|trans }}</th>
+                        <td>{{ setting.comment |trans }}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+                {#-- Block embed --#}
+                {% block lucca_embed_buttons_setting %}
+
+                {% endblock %} {#-- End Block embed --#}
+            </div>
+        </div>
+    </div>
+</div>

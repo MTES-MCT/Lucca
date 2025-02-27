@@ -20,5 +20,5 @@ return [
     Lucca\Bundle\CoreBundle\LuccaCoreBundle::class => ['all' => true],
     Lucca\Bundle\SecurityBundle\LuccaSecurityBundle::class => ['all' => true],
     Lucca\Bundle\UserBundle\LuccaUserBundle::class => ['all' => true],
-    Lucca\Bundle\SecurityBundle\LuccaSecurityBundle::class => ['all' => true],
+    Lucca\Bundle\SettingBundle\LuccaSettingBundle::class => ['all' => true],
 ];

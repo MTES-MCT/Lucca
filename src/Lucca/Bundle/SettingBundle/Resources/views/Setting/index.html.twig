@@ -1,0 +1,154 @@
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
+{% trans_default_domain 'LuccaSettingBundle' %}
+
+{% set param_entity='entity.setting'|transchoice(1) %}
+{% set param_entities='entity.setting'|transchoice(2) %}
+
+{% block lucca_page %}
+
+    {% include '@LuccaThemeStreamDashboardUiKit/Flash/flashes.html.twig' %}
+
+    <div class="card card-default">
+        <div class="card-header">
+            {{ 'entity.setting' | transchoice(2) }}
+        </div>
+
+        <div class="card-wrapper">
+            <div class="card-body">
+                <div class="col-xs-12">
+
+                    {% if is_granted("ROLE_SUPER_ADMIN") %}
+                        <a class="btn btn-info btn-lg m-2" href="{{ path('lucca_setting_import') }}"
+                           title="{{ 'link.import'|trans }}"><i
+                                    class="fas fa-file-invoice"></i> {{ 'link.import'|trans }}</a>
+                        <a class="btn btn-info btn-lg m-2" href="{{ path('lucca_setting_export') }}"
+                           title="{{ 'link.export'|trans }}"><i
+                                    class="fas fa-file-invoice"></i> {{ 'link.export'|trans }}</a>
+                    {% endif %}
+
+                    <div class="tabs-container">
+                        <ul class="nav nav-tabs setting" role="tablist">
+                            {% for key, category in categories %}
+                                <li class="nav-item" id="tab-{{ category.id }}-title">
+                                    <a class="nav-link {% if loop.first %} active {% endif %}" data-toggle="tab"
+                                       href="#tab-{{ category.id }}">
+                                        <i class="{{ category.icon }}"></i>&nbsp;{{ category.name|trans }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        {#Tab Content#}
+                        <div class="tab-content">
+                            {% for key, category in categories %}
+                                {#Dynamic Tab#}
+                                <div id="tab-{{ category.id }}" {% if loop.first %} class="tab-pane active" {% else %} class="tab-pane" {% endif %}
+                                     role="tabpanel" aria-labelledby="{{ category.name }}-tab">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-12 col-xs-12">
+                                                <div class="ibox">
+                                                    <div class="scrollable-deb">
+                                                        <h4 class="mb-3 mt-3">
+                                                            <span>{{ category.comment | trans }}</span></h4>
+                                                        <table class="table table-striped table-hover dataTables responsive">
+                                                            <thead>
+                                                            <tr>
+                                                                <th><i class=""></i> {{ 'label.name'|trans }}</th>
+                                                                {% if is_granted("ROLE_SUPER_ADMIN") %}
+                                                                    <th><i class=""></i> {{ 'label.accessType'|trans }}
+                                                                    </th>
+                                                                    <th><i class=""></i> {{ 'label.position'|trans }}
+                                                                    </th>
+                                                                {% endif %}
+                                                                <th><i class=""></i> {{ 'label.type'|trans }}</th>
+                                                                <th><i class=""></i> {{ 'label.value'|trans }}</th>
+                                                                <th><i class=""></i> {{ 'label.comment'|trans }}</th>
+                                                                <th class="noSort noExport"><i
+                                                                            class="fas fa-cogs"></i>&nbsp;{{ 'label.actions'|trans }}
+                                                                </th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            {% set counter = 0 %}
+                                                            {% for setting in settings %}
+                                                                {% if app.user and ((is_granted("ROLE_ADMIN")
+                                                                    and setting.accessType is constant('ACCESS_TYPE_ADMIN', setting))
+                                                                    or is_granted("ROLE_SUPER_ADMIN"))
+                                                                    and setting.category == category %}
+                                                                    {% set counter = counter + 1 %}
+                                                                    <tr>
+                                                                        <td>{{ setting.name|trans }}</td>
+                                                                        {% if is_granted("ROLE_SUPER_ADMIN") %}
+                                                                            <td>{{ setting.accessType|trans }}</td>
+                                                                            <td>{{ setting.position }}</td>
+                                                                        {% endif %}
+                                                                        <td>{{ setting.type|trans }}</td>
+                                                                        <td>{% if setting.type is constant('TYPE_BOOL', setting) %}
+                                                                                {{ setting.value|boolean }}
+                                                                            {% elseif setting.type is constant('TYPE_COLOR', setting) %}
+                                                                                <p style="color:{{ setting.value }}"> {{ setting.value }}</p>
+                                                                            {% else %}
+                                                                                {{ setting.value }}
+                                                                            {% endif %}
+                                                                        </td>
+                                                                        <td>{{ setting.comment|raw|trans }}</td>
+                                                                        <td>
+                                                                            <a href="{{ path('lucca_setting_show', { 'id': setting.id }) }}"
+                                                                               class="btn btn-info btn-xs"
+                                                                               title="{{ 'link.setting.show'|trans }}">
+                                                                                <i class="fas fa-eye"></i>
+                                                                            </a>
+                                                                            <a href="{{ path('lucca_setting_edit', { 'id': setting.id }) }}"
+                                                                               class="btn btn-warning btn-xs"
+                                                                               title="{{ 'link.setting.edit'|trans }}">
+                                                                                <i class="fas fa-pencil-alt"></i>
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {#Add css rules in loop because we need to hide tab that haven't data#}
+                                {% if counter == 0 %}
+                                    <style>
+                                        #tab-{{ category.id }}-title {
+                                            display: none;
+                                        }
+                                    </style>
+                                {% endif %}
+                            {% endfor %}
+                            {#End - Dynamic Tab#}
+                        </div>
+                        {#End - Tab content#}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock lucca_page %}
+
+{% block lucca_css %}
+    {{ parent() }}
+    {#-- Plugin - DataTables --#}
+    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/datatables.css.html.twig" %}
+
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    {#-- Plugin - DataTables --#}
+    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/datatables.js.html.twig" with { 'params' :
+        { 'id_datatable': '.dataTables', 'pageLength': 10 }
+    } %}
+
+{% endblock lucca_js %}

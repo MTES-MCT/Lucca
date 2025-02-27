@@ -1,0 +1,44 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaSettingBundle' %}
+
+{#--  View embed  --#}
+{#--  Form theming - apply to this form  --#}
+
+<div class="col-12">
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+        {#--  Panel - main  --#}
+        <div class="col-md-6 col-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5><i class="fas fa-print"></i> {{ 'entity.import.setting'|transchoice(1) }} </h5>
+                </div>
+
+                <div class="ibox-content">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr>
+                            <th>{{ 'label.file'|trans }}</th>
+                            <td>
+                                {{ form_widget(form.file) }}
+                                {{ form_errors(form.file) }}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    {% block lucca_embed_buttons_setting %}
+
+                    {% endblock %}
+
+                </div>
+            </div>
+        </div>
+        {#--  End Panel - main  --#}
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+</div>
+{#--  End - View embed  --#}

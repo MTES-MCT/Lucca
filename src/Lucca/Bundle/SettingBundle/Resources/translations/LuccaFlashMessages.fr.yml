@@ -1,0 +1,13 @@
+####################################
+## Flash Domain
+####################################
+
+flashes:
+    setting:
+        updatedSuccessfully: "Le setting a bien été modifié."
+        accessDenied: "Vous n'avez pas accès à ce setting."
+    import:
+        createdSuccessfully: "L'import a réussi !"
+        createdPartial: "L'import a en parti réussis, vérifier les setting ayant remonté des erreurs"
+        badFormat: "Attention le fichier n'as pas le bon format"
+
