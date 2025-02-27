@@ -1,4 +1,4 @@
-{% extends 'LuccaThemeAngleBundle:SubLayout:show.html.twig' %}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
 {% trans_default_domain 'LuccaUserBundle' %}
 
 {% set param_entity='entity.user'|transchoice(1) %}
@@ -15,7 +15,7 @@
 
         <div class="card card-default">
             <div class="card-header">
-                {{ 'title.show'|trans({}, 'LuccaThemeAngleBundle') }} - <b>{{ user.name }}</b>
+                {{ 'title.show'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ user.name }}</b>
             </div>
 
             <div class="card-wrapper">
@@ -48,7 +48,7 @@
                             <tr>
                                 <th>{{ 'label.enabled'|trans }}</th>
                                 <td>{% if user.enabled %}<i class="fa fa-check"></i>{% else %}<i
-                                            class="fas fa-times"></i>{% endif %} </td>
+                                        class="fas fa-times"></i>{% endif %} </td>
                             </tr>
                             <tr>
                                 <th>{{ 'label.lastLogin'|trans }}</th>
@@ -78,5 +78,5 @@
     </div>
     {#-- End Panel - main --#}
 
-    {% include 'LuccaThemeAngleBundle:Modal:delete.html.twig' with {'id': user.username, 'name': user.username, 'delForm': delete_form} %}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': user.username, 'name': user.username, 'delForm': delete_form} %}
 {% endblock lucca_panels %}

@@ -1,4 +1,4 @@
-{% extends 'LuccaThemeAngleBundle:SubLayout:show.html.twig' %}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
 {% trans_default_domain 'LuccaUserBundle' %}
 
 {% set param_entity='entity.group'|transchoice(1) %}
@@ -14,7 +14,7 @@
 
         <div class="card card-default">
             <div class="card-header">
-                {{ 'title.show'|trans({}, 'LuccaThemeAngleBundle') }} - <b>{{ group.name }}</b>
+                {{ 'title.show'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ group.name }}</b>
             </div>
 
             <div class="card-wrapper">

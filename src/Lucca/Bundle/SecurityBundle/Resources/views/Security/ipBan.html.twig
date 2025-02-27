@@ -1,40 +1,27 @@
 {#-- Extends view --#}
-{% extends '@NwThemeColor/Layout/login.html.twig' %}
+{% extends "@LuccaThemeDocsUiKit/Layout/layout.html.twig" %}
 
 {#-- Translation domain --#}
-{% trans_default_domain 'SecurityBundle' %}
-
-{% block theme_title %}
-    {{ 'meta.project.name'|trans({}, 'CoreBundle') }} | {{ 'ban.title'|trans }}
-{% endblock %}
+{% trans_default_domain 'LuccaSecurityBundle' %}
 
 
-{% block theme_loginForm %}
+{# Title #}
+{% block lucca_title %}
+    <title>{{ 'meta.company'|trans }} | {{ 'ban.title'|trans }}</title>
+{% endblock lucca_title %}
+
+
+{% block lucca_page %}
 
     <div class="row mt-5">
-        <div class="col">
+        <div class="col-lg-12 text-center">
             <h3 class="ban-title">{{ 'ban.title'|trans }}</h3>
-            <h3 class="ban-subtitle">{{ 'ban.description'|trans }}</h3>
-
-            <p class="ban-text">
-                <b>{{ 'ban.warning'|trans({
-                        '%maxLoginAttempts%': maxLoginAttempts
-                    }) }}</b>
-            </p>
-
-            <hr>
-
-            <p class="ban-text">
-                {{ 'ban.contact'|trans({
-                    '%company%': 'meta.owner.name'|trans({}, 'CoreBundle')
-                }) }}
-            </p>
+            <h4 class="ban-subtitle">{{ 'ban.contact'|trans }}</h4>
 
             <img src="{{ asset('assets/img/banned.png') }}" alt="{{ 'ban.altLogo'|trans }}"
-                 class="mt-2 img-fluid img-responsive">
+                 class="mt-2 img-fluid " style="max-width: 35%;">
         </div>
     </div>
 
-{% endblock theme_loginForm %}
-
+{% endblock lucca_page %}
 
