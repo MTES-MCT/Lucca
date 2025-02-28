@@ -1,0 +1,260 @@
+{% extends 'LuccaThemeAngleBundle:SubLayout:page.html.twig' %}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{% block menuActive_statistics %}class="active"{% endblock %}
+
+{% import "@LuccaThemeAngle/Macro/buttonHelp.html.twig" as macroButtonHelp %}
+
+{% block lucca_title %}
+    <title>{{ 'setting.general.app.name'| setting({}, 'LuccaCoreBundle') }}
+        | {{ 'statistics.overall.title'|trans }}</title>
+{% endblock lucca_title %}
+
+{% block lucca_header %}
+    {{ 'statistics.overall.title'|trans }}
+{% endblock lucca_header %}
+
+{% set decisionsCountersNotEmpty = false %}
+{% if decisionsCounters is not empty %}
+    {% for counter in decisionsCounters[0] %}
+        {% if counter != "0" %}
+            {% set decisionsCountersNotEmpty = true %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% block lucca_block %}
+
+    {#-- Panel - description --#}
+    <div class="col-12">
+        <div class="card card-default">
+            <div class="card-header"><strong>{{ 'statistics.overall.description'|trans }}</strong></div>
+        </div>
+    </div> {#-- End Panel - description--#}
+
+    {#-- Panel - statistics params --#}
+    <div class="col-12">
+        <div class="card card-default">
+            <div class="card-header hover-pointer" data-tool="card-collapse">
+                <strong>{{ 'statistics.filters'|trans }}</strong>
+                <a class="float-right" href="#" data-tool="card-collapse" title="Collapse card">
+                    <em class="fa fa-plus"></em>
+                </a>
+            </div>
+
+            <div class="card-wrapper collapse">
+                <div class="card-body">
+                    {{ form_start(form) }}
+
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.dateStart) }}
+                            {{ form_row(form.dateEnd) }}
+
+                            <p class="col-sm-10 col-sm-offset-2"><b>{{ 'statistics.filterLocation'|trans }}</b></p>
+                            {{ form_row(form.town) }}
+                        </div>
+
+                        <div class="col-6">
+                            <p class="col-sm-10 col-sm-offset-2"><b>{{ 'statistics.filterAdherent'|trans }}</b></p>
+                            {{ form_row(form.adherent) }}
+                            {{ form_row(form.townAdherent) }}
+                            {{ form_row(form.intercommunal) }}
+                            {{ form_row(form.service) }}
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_core_statistics') }}"
+                           title="{{ 'link.back'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <button type="submit" class="btn btn-info btn-lg pull-right"
+                                title="{{ 'link.new'|trans }}">
+                            <i class="fa fa-check"></i></button>
+                    </div>
+
+                    {{ form_rest(form) }}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+
+    </div> {#-- End Panel - statistics params --#}
+
+
+    <div class="col-12 overall">
+        <div class="row">
+
+            <div class="col-6 mb-3">
+
+                {% embed "@LuccaCore/_panel-filters.html.twig" with { 'filters': filters, 'transDomain': 'LuccaMinuteBundle' } %}
+                {% endembed %}
+
+                {% embed "@LuccaMinute/Minute/Embed/_panel-closedUnclosedMinutes.html.twig" with { 'nbOpen': nbOpen,'nbClosed': nbClosed, 'dateStart': filters['dateStart'], 'dateEnd': filters['dateEnd'] } %}
+                    {% block lucca_class %}
+                        jumbotron jumbotron-stats
+                    {% endblock %}
+                {% endembed %}
+            </div>
+
+            {#Pannel - Reason of closure in circular diagram#}
+            <div class="col-6 mb-3">
+                <div class="card card-default full-height">
+                    <div class="card-header ">
+                        <h2>{{ 'statistics.minutesReasonClosure.title' | trans }}
+                            {{ macroButtonHelp.buttonInfoHelpLight(('statistics.minutesReasonClosure.description' | trans) | raw) }}
+                        </h2>
+                    </div>
+
+                    <div class="card-wrapper">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-5 offset-3">
+                                    {% if closures is not null and closures is not empty %}
+                                        <canvas id="closureChart"></canvas>
+                                    {% else %}
+                                        {{ 'statistics.noData' | trans }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#End Pannel - Reason of closure in circular diagram#}
+        </div>
+
+        <div class="row">
+            {#Pannel - Historic in histogram#}
+            <div class="col-6 mb-3">
+                <div class="card card-default full-height">
+                    <div class="card-header">
+                        <h2>{{ 'statistics.historicStats.title' | trans }}
+                            {{ macroButtonHelp.buttonInfoHelpLight(('statistics.historicStats.description' | trans) | raw) }}
+                        </h2>
+                    </div>
+                    <div class="card-wrapper">
+                        <div class="card-body">
+                            {% if finalArray is not null %}
+                                <canvas id="historicChart"></canvas>
+                            {% else %}
+                                {{ 'statistics.noData' | trans }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#End Pannel - Historic in histogram#}
+
+            {#Pannel - Decisions#}
+            <div class="col-6 mb-3">
+                <div class="card card-default full-height">
+                    <div class="card-header">
+                        <h2>
+                            {{ 'statistics.decisions.title' | trans }}
+                            {{ macroButtonHelp.buttonInfoHelpLight(('statistics.decisions.description' | trans) | raw) }}
+                        </h2>
+                    </div>
+                    <div class="card-wrapper">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="border-right">
+                                        {% if decisionsCounters is not null and decisionsCountersNotEmpty != false %}
+                                            <canvas id="decisionChart"></canvas>
+                                        {% else %}
+                                            {{ 'statistics.noData' | trans }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    {% if decisionsTypeCounters is not null and decisionsTypeCounters is not empty %}
+                                        <canvas id="decisionTypeChart"></canvas>
+                                    {% else %}
+                                        {{ 'statistics.noData' | trans }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#End Pannel - Decisions#}
+        </div>
+    </div>
+
+{% endblock lucca_block %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    <link href="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
+          rel="stylesheet">
+    <link href="{{ asset('bundles/luccathemeangle/plugins/chosen-js/chosen.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('bundles/luccathemeangle/plugins/select2/dist/css/select2.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/luccathemeangle/plugins/@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.css') }}"
+          rel="stylesheet">
+
+    {#-- Plugin - DataTables --#}
+    {% include "LuccaThemeAngleBundle:Plugins:datatables.css.html.twig" %}
+
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script src="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/lang/bootstrap-datepicker.fr.js') }}"></script>
+
+    <script src="{{ asset('bundles/luccathemeangle/plugins/chosen-js/chosen.jquery.js') }}"></script>
+    <script src="{{ asset('bundles/luccathemeangle/plugins/select2/dist/js/select2.full.js') }}"></script>
+
+    <script>
+        {#Chosen#}
+        $('.select2').select2({});
+
+        {#Chosen#}
+        $('.chosen-select').chosen({
+            placeholder_text_single: " ",
+            no_results_text: "Aucun résultat!"
+        });
+
+        {#Datepicker#}
+        $('.date-picker').datepicker({
+            calendarWeeks: true,
+            language: 'fr',
+            orientation: 'bottom',
+        });
+    </script>
+
+    {#-- Plugin - DataTables --#}
+    {% include "LuccaThemeAngleBundle:Plugins:datatables.js.html.twig" with { 'params' :
+        { 'id_datatable': '.dataTables', 'pageLength': 10 }
+    } %}
+
+    {#-- Plugin - chartJs --#}
+    <script src="{{ asset('bundles/luccathemeangle/plugins/chartJs/chart.min.js') }}"></script>
+    <script src="{{ asset('bundles/luccathemeangle/plugins/chartJs/chartjs-plugin-datalabels.min.js') }}"></script>
+
+    <script>
+        {% if finalArray is not null %}
+        {% include '@LuccaMinute/Statistics/Js/historicStats-chart.js.twig' with {'finalArray': finalArray, 'labelControl': ('statistics.control.legend' | trans) } %}
+        {% endif %}
+
+        {% if closures is not null and closures is not empty %}
+        {% include '@LuccaMinute/Statistics/Js/closure-chart.js.twig' with {'closures': closures, 'legendPosition': 'top' } %}
+        {% endif %}
+
+        {% if decisionsTypeCounters is not null and decisionsTypeCounters is not empty %}
+        {% include '@LuccaMinute/Statistics/Js/decisionsType-chart.js.twig' with {'decisions': decisionsTypeCounters } %}
+        {% endif %}
+
+        {% if decisionsCounters is not null and decisionsCountersNotEmpty != false %}
+        {% include '@LuccaMinute/Statistics/Js/decisions-chart.js.twig' with {'decisions': decisionsCounters } %}
+        {% endif %}
+    </script>
+
+{% endblock lucca_js %}

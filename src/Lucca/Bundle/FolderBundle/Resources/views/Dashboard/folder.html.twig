@@ -1,0 +1,181 @@
+{% extends 'LuccaThemeAngleBundle:SubLayout:browser.html.twig' %}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{% set param_entity='entity.folder'|transchoice(1) %}
+{% set param_entities='entity.folder'|transchoice(2) %}
+
+{% block menuActive_folder %}class="active"{% endblock %}
+
+{% block lucca_description %}
+{% endblock lucca_description %}
+
+{% block lucca_filters_form %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-6">
+            {{ form_row(form.dateStart) }}
+            {{ form_row(form.dateEnd) }}
+        </div>
+        <div class="col-6">
+            {{ form_row(form.num) }}
+            {{ form_row(form.numFolder) }}
+        </div>
+    </div>
+
+    {% if is_granted("ROLE_ADMIN") %}
+        <div class="row">
+            <div class="col-6">
+                <p class="col-sm-10 col-sm-offset-2">Sélectionner un adhérent :</p>
+                {{ form_row(form.adherent) }}
+            </div>
+
+            <div class="col-6">
+                <p class="col-sm-10 col-sm-offset-2">Ou sélectionner le maillage territorial concerné :</p>
+                {{ form_row(form.town) }}
+                {{ form_row(form.intercommunal) }}
+                {{ form_row(form.service) }}
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="row">
+
+        <div class="col-12">
+            <a class="btn btn-secondary btn-md" href="{{ path('lucca_core_dashboard') }}"
+               title="{{ 'link.back'|trans }}"><i class="fa fa-reply"></i></a>
+            <button type="submit" class="btn btn-success btn-md" title="{{ 'link.minute.filter'|trans }}">
+                <i class="fa fa-check"></i>
+            </button>
+        </div>
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+{% endblock lucca_filters_form %}
+
+{% block lucca_results_list %}
+
+    {% if app.user and is_granted("ROLE_LUCCA") %}
+        <div class="col-xs-12 text-center">
+            <a href="{{ path('lucca_minute_new') }}" class="btn btn-primary btn-labeled text-right"
+               title="{{ 'link.minute.new'|trans }}">
+                <span class="btn-label"><i class="fa fa-plus"></i></span>
+                {{ 'link.minute.new'|trans }}
+            </a>
+        </div>
+    {% endif %}
+
+    <table class="table table-striped table-hover dataTables responsive">
+        <thead>
+        <tr>
+            <th>{{ 'column.town'|trans }}</th>
+            <th><i class="fas fa-folder-open"></i> {{ 'column.folder.num'|trans }}</th>
+            <th>{{ 'column.folder.dateClosing'|trans }}</th>
+            <th>{{ 'column.folder.nature'|trans }}</th>
+            <th>{{ 'column.minute.responsibles'|trans }}</th>
+            <th>{{ 'column.decision.tgi'|trans }}</th>
+            <th>{{ 'column.decision.cour'|trans }}</th>
+            <th>{{ 'column.decision.penalty'|trans }}</th>
+            <th>{{ 'column.decision.expulsion'|trans }}</th>
+            <th>{{ 'column.decision.demolition'|trans }}</th>
+            <th>{{ 'column.minute.closing'|trans }}</th>
+            <th><i class="fa fa-cogs"></i> {{ 'label.actions'|trans }}</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for folder in folders %}
+            {% set minute = folder.minute %}
+            <tr {% if minute.closure %} class="table-info" {% elseif folder.dateClosure is not null %} class="table-primary"{% endif %}>
+                <td>
+                    {{ minute.plot.town.name }}
+                    <br>
+                    <b>{{ minute.plot.parcel }}</b>
+                </td>
+                <td>{{ folder.num }}</td>
+                <td>{% if folder.dateClosure %}{{ folder.dateClosure|date('d/m/Y') }}{% endif %}</td>
+                <td>
+                    {% for tag in folder.tagsNature %}
+                        <a class="btn btn-xs btn-secondary">{{ tag.name }}</a>
+                        {% if not loop.last %}<br>{% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for human in minute.humans %}
+                        {{ human.officialName }}
+                        {% if not loop.last %}<br>{% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for decision in minute.decisions %}
+                        {% if decision.tribunalCommission and decision.tribunalCommission.dateJudicialDesision %}
+                            {{ decision.tribunalCommission.dateJudicialDesision|date('d/m/Y') }}
+                            <br>
+                            <span class="badge badge-info">{{ decision.tribunalCommission.statusDecision|trans }}</span>
+                            <br>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for decision in minute.decisions %}
+                        {% if decision.appealCommission and decision.appealCommission.dateJudicialDesision %}
+                            {{ decision.appealCommission.dateJudicialDesision|date('d/m/Y') }}
+                            <br>
+                            <span class="badge badge-info">{{ decision.appealCommission.statusDecision|trans }}</span>
+                            <br>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for decision in minute.decisions %}
+                        {% if decision.dateStartRecovery %}
+                            {{ decision.dateStartRecovery|date('d/m/Y') }}
+                            <br>
+                            <span class="badge badge-info">{{ 'text.decision.yes'|trans }}</span>
+                            <br>
+                        {% else %}
+                            <span class="badge badge-warning">{{ 'text.decision.no'|trans }}</span>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for decision in minute.decisions %}
+                        {% if decision.expulsion and decision.expulsion.dateJudicialDesision %}
+                            {{ decision.expulsion.dateJudicialDesision|date('d/m/Y') }}
+                            <br>
+                            <span class="badge badge-info">{{ 'text.decision.yes'|trans }}</span>
+                            <br>
+                        {% else %}
+                            <span class="badge badge-warning">{{ 'text.decision.no'|trans }}</span>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for decision in minute.decisions %}
+                        {% if decision.demolition and decision.demolition.dateDemolition %}
+                            {{ decision.demolition.dateDemolition|date('d/m/Y') }}
+                            <br>
+                            <span class="badge badge-info">{{ 'text.decision.yes'|trans }}</span>
+                            <br>
+                        {% else %}
+                            <span class="badge badge-warning">{{ 'text.decision.no'|trans }}</span>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{% if minute.closure %}{{ minute.closure.dateClosing|date('d/m/Y') }}{% endif %}</td>
+                <td>
+                    {% if app.user and is_granted("ROLE_VISU") %}
+                        <a href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"
+                           title="{{ 'link.minute.show'|trans }}" class="btn btn-primary btn-sm">
+                            <i class="fa fa-eye"></i>
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock lucca_results_list %}
+

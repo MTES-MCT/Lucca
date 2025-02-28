@@ -1,0 +1,106 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaControlBundle' %}
+
+{#-- Parameters --#}
+
+{#-- Set status --#}
+{% if control.accepted is null or control.accepted %}
+    {% set status = true %}
+{% else %}
+    {% set status = false %}
+{% endif %}
+{#-- End Set human --#}
+
+{#-- Set plot --#}
+{% set plot = minute.plot %}
+{#-- End Set plot --#}
+
+{% import "LuccaMinuteBundle:Human:human-macro.html.twig" as humanMacro %}
+
+{#-- Embed view --#}
+{% block lucca_control_access_empty_title %}
+<div class="row mb50 mt150 pt150">
+    <div class="col-10  offset-1 text-center">
+        <h2 class="bordered">{{ 'title.access_authorized'|trans }}</h2>
+    </div>
+</div>
+{% endblock %}
+
+<div class="row mb50 mt50 pt50">
+    <div class="col-12 offset-1">
+        {{ 'access.the'|trans }}
+        {% if human and control.dateControl and control.hourControl %}..{{ control.dateControl|date('d/m/Y') }}..{% else %}....................................{% endif %}
+        <br>
+        {{ 'access.at_hour'|trans }} :
+        {% if human and control.dateControl and control.hourControl %}..{{ control.hourControl|date('H:i') }}..{% else %}....................................{% endif %}
+        <br>
+    </div>
+</div>
+
+
+{% block lucca_control_access_empty_content %}
+<div class="row mb50 letter-content">
+    <div class="col-10 offset-1 pv">
+        <div class="clearfix">
+            {{ 'access.undersigned'|trans }}
+            {% if human %}..{{ human|human_genderName(false) }}..{% else %}....................................{% endif %}
+            ,<br>
+            {{ 'access.quality'|trans }} :
+            {% if human %}..{{ human.status|trans }}..{% else %}....................................{% endif %}<br>
+            {{ 'access.resident'|trans }}
+            :............................................................................................................<br>
+        </div>
+
+        <div class="clearfix">
+            {{ 'access.visit'|trans }} {{ minute.agent.officialName }},
+            {{ 'access.function'|trans }} {{ minute.agent.function|trans({}, 'LuccaMinuteBundle') }}.<br>
+            <br>
+
+            {% if control.agentAttendants %}
+                {% for agentAttendant in control.agentAttendants %}
+                    {{ 'access.accompanied'|trans }} {{ agentAttendant.officialName }}<br>
+                    {{ 'access.function'|trans }} {{ agentAttendant.function|trans({}, 'LuccaMinuteBundle') }}.<br>
+                {% endfor %}
+            {% endif %}
+
+        </div>
+
+        <div class="clearfix">
+            {{ 'access.authorization'|trans }} :<br>
+
+            {{ 'label.parcel'|trans({}, 'LuccaMinuteBundle') }} :
+            {% if human %}..{{ human.address }}..{% else %}....................................{% endif %}<br>
+            {{ 'label.address'|trans({}, 'LuccaMinuteBundle') }} :
+            ........................................................................<br>
+            {{ 'label.place'|trans({}, 'LuccaMinuteBundle') }} : ....................................<br>
+            {{ 'label.town'|trans({}, 'LuccaMinuteBundle') }} : ....................................<br>
+            <br>
+        </div>
+
+        <div class="clearfix">
+            {% if status %}
+                J'autorise {{ minute.agent.officialName }} à procéder à cette visite et consens expressément à ce qu'il y opère toutes les vérifications et
+                constatations entrant dans le cadre de ses attributions et qu'il jugera utile à l'enquête en cours.
+            {% else %}
+                afin d’y effectuer les constatations et vérifications relatives à une enquête en cours.
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block lucca_control_access_empty_footer %}
+<div class="row">
+    <div class="col-10 offset-1">
+        A ....................................,
+        Le ....................................
+    </div>
+</div>
+
+<div class="row mb100">
+    <div class="col-2 offset-8">
+        Nom, prénom et signature :
+    </div>
+</div>
+{% endblock %}
+{#-- End - Embed view --#}

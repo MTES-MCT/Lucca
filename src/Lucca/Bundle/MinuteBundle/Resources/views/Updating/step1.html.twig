@@ -1,0 +1,65 @@
+{% extends 'LuccaThemeAngleBundle:SubLayout:edit.html.twig' %}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{% set param_entity='entity.folder'|transchoice(1) %}
+{% set param_entities='entity.folder'|transchoice(2) %}
+
+{% block menuActive_minute %}class="active"{% endblock menuActive_minute %}
+
+
+{% block lucca_panels %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+
+        {#-- Panel - main --#}
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+
+            <div class="card card-default">
+                <div class="card-header"><strong>{{ 'title.frame6'|trans }}</strong></div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        {{ form_row(form.nature) }}
+
+                        <p class="col-sm-offset-2 col-sm-10 text-danger"><em>{{ 'help.updating.aggravated'|trans }}</em>
+                        </p>
+
+                        {{ form_row(form.description) }}
+
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"
+                           title="{{ 'link.backMinute'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <button type="submit" class="btn btn-success btn-lg" title="{{ 'link.updating.edit'|trans }}">
+                            <i class="fa fa-check"></i> {{ 'link.updating.edit'|trans }}</button>
+
+                        <button type="submit" class="btn btn-info btn-lg" name="saveAndContinue"
+                                title="{{ 'link.save_and_continue'|trans }}">
+                            <i class="fa fa-angle-double-right"></i> {{ 'link.save_and_continue'|trans }}
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {#-- End Panel - main --#}
+
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+            {# Widget - Display all controls and folders #}
+            {% if updating is defined %}
+                {{ render(controller(
+                    'LuccaMinuteBundle:RenderApi\\UpdatingWidget:displayControlsAndFolders',
+                    { 'updating_id': updating.id }
+                )) }}
+            {% endif %} {# End widget #}
+        </div>
+
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+{% endblock lucca_panels %}

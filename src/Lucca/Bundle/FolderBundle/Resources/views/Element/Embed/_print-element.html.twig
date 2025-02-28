@@ -1,0 +1,13 @@
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+<h1 class="text-center">{{ element.name }}</h1>
+<br>
+<br>
+
+{% if 'print' not in app.request.pathinfo %}
+    <div class="text-center">{{ element.image|mediaTag }}</div>
+{% else %}
+    <div class="text-center" style="height: 50%;">{{ element.image|mediaPdf(null, "width-80") }}</div>
+{% endif %}
+<br>
+<span class="text-justify">{{ element.comment }}</span>

@@ -1,0 +1,172 @@
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{% set folder = courier.folder %}
+
+<div class="row mb-2">
+
+    <div class="col-12">
+        {% if folder.dateClosure is null %}
+            <a name="courier" class="btn btn-secondary btn-xs btn-block btn-collapse" disabled="disabled">
+                <h4>
+                    {{ loop.index }} ) {{ 'entity.courier'|trans }} {{ 'help.courier.joined_at'|trans }}
+                    : {{ folder.num }}
+                    <span class="badge badge-warning float-right mr15">
+                {{ 'text.courier.folder_not_close'|trans }}</span>
+                </h4>
+            </a>
+        {% else %}
+            <a name="courier" data-value="courier-{{ courier.id }}"
+               class="btn btn-secondary btn-xs btn-block btn-collapse">
+                <h4>
+                    {{ loop.index }} ) {{ 'entity.courier'|trans }} {{ 'help.courier.joined_at'|trans }}
+                    : {{ folder.num }}
+
+                    {% if not frame_update or folder.nature is constant('NATURE_OBSTACLE', folder) %}
+                        <span class="badge {% if courier.dateOffender is null %}badge-warning{% else %}badge-success{% endif %} float-right mr15">{{ 'text.courier.offender_name'|trans }}</span>
+                        <span class="badge {% if courier.dateDdtm is null %}badge-warning{% else %}badge-success{% endif %} float-right mr15">{{ 'text.courier.ddtm_name'|trans( {'%DDTM%': 'setting.general.ddtAcronym.name'|setting } ) }}</span>
+                        <span class="badge {% if courier.dateJudicial is null %}badge-warning{% else %}badge-success{% endif %} float-right mr15">{{ 'text.courier.judicial_name'|trans }}</span>
+                    {% else %}
+                        <span class="badge {% if courier.dateDdtm is null %}badge-warning{% else %}badge-success{% endif %} float-right mr15">{{ 'text.courier.ddtm_name'|trans( {'%DDTM%': 'setting.general.ddtAcronym.name'|setting }  ) }}</span>
+                    {% endif %}
+                </h4>
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="col-12">
+        <div id="courier-{{ courier.id }}" style="display: none;">
+            <table class="table table-striped table-hover">
+                <tbody>
+
+                {% if not frame_update or folder.nature is constant('NATURE_OBSTACLE', folder) %}
+                    <tr>
+                        <th>{{ 'text.courier.judicial'|trans }}</th>
+                        <td>
+
+                            {% if courier.dateJudicial is null %}
+                                {% if is_granted("ROLE_LUCCA") and not closure %}
+                                    <a href="{{ path('lucca_courier_judicial_date', {'minute_id': minute.id, 'id': courier.id }) }}"
+                                       class="btn btn-warning btn-sm btn-labeled"
+                                       title="{{ 'help.courier.edit_judicial'|trans }}">
+                                        <span class="btn-label"><i class="fas fa-pencil-alt"></i></span>
+                                        {{ 'text.courier.fill'|trans }}
+                                    </a>
+
+                                    <a href="{{ path('lucca_courier_manual_judicial', {'minute_id': minute.id, 'id': courier.id }) }}"
+                                       class="btn btn-info btn-sm btn-labeled"
+                                       title="{{ 'help.courier.manualEditing'|trans }}">
+                                        <span class="btn-label"><i class="fa fa-hand-paper"></i></span>
+                                        {{ 'text.courier.manualEditing'|trans }}
+                                    </a>
+                                {% endif %}
+
+                                <a href="{{ path('lucca_courier_judicial_preprint', {'minute_id': minute.id, 'id': courier.id }) }}"
+                                   class="btn btn-primary btn-sm btn-labeled" target="_blank"
+                                   title="{{ 'help.courier.print_judicial'|trans }}">
+                                    <span class="btn-label"><i class="fa fa-print"></i></span>
+                                    {{ 'link.preprint'|trans }}
+                                </a>
+
+                                <a class="btn btn-success btn-sm btn-labeled mt-1"
+                                   data-target="#courier-judicial-{{ courier.id }}"
+                                   data-toggle="modal" title="{{ 'help.courier.print_judicial'|trans }}">
+                                    <span class="btn-label">
+                                        <i class="fas fa-clock"></i> </span> {{ 'link.date_and_print'|trans }}
+                                </a>
+
+                            {% else %}
+                                <a href="{{ path('lucca_courier_judicial_print', {'minute_id': minute.id, 'id': courier.id }) }}"
+                                   class="btn btn-success btn-sm btn-labeled" target="_blank"
+                                   title="{{ 'help.courier.print_judicial'|trans }}">
+                                    <span class="btn-label"><i class="fa fa-print"></i></span>
+                                    {{ 'link.print'|trans }}
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+
+                <tr>
+                    <th>{{ 'text.courier.ddtm'|trans( {'%DDTM%': 'setting.general.ddtAcronym.name'|setting } ) }}</th>
+                    <td>
+                        {% if is_granted("ROLE_LUCCA") and not closure and courier.dateDdtm is null %}
+                            <a href="{{ path('lucca_courier_manual_ddtm', {'minute_id': minute.id, 'id': courier.id }) }}"
+                               class="btn btn-info btn-sm btn-labeled"
+                               title="{{ 'help.courier.manualEditing'|trans }}">
+                                <span class="btn-label"><i class="fa fa-hand-paper"></i></span>
+                                {{ 'text.courier.manualEditing'|trans }}
+                            </a>
+
+                        {% endif %}
+
+                        {% if not closure and courier.dateDdtm is null %}
+
+                            <a href="{{ path('lucca_courier_ddtm_preprint', {'minute_id': minute.id, 'id': courier.id }) }}"
+                               class="btn btn-primary btn-sm btn-labeled" title="{{ 'help.courier.send_ddtm'|trans( {'%DDTM%': 'setting.general.ddtAcronym.name'|setting }  ) }}">
+                                <span class="btn-label"><i class="fa fa-print"></i></span>
+                                {{ 'link.preprint'|trans }}
+                            </a>
+
+                            <a class="btn btn-success btn-sm btn-labeled"
+                               data-target="#courier-ddtm-{{ courier.id }}"
+                               data-toggle="modal" title="{{ 'help.courier.print_ddtm'|trans( {'%DDTM%': 'setting.general.ddtAcronym.name'|setting } ) }}">
+                                    <span class="btn-label">
+                                        <i class="fas fa-clock"></i> </span> {{ 'link.date_and_print'|trans }}
+                            </a>
+                        {% else %}
+                            <a href="{{ path('lucca_courier_ddtm_print', {'minute_id': minute.id, 'id': courier.id }) }}"
+                               class="btn btn-success btn-sm btn-labeled" title="{{ 'help.courier.send_ddtm'|trans( {'%DDTM%': 'setting.general.ddtAcronym.name'|setting } ) }}">
+                                <span class="btn-label"><i class="fa fa-print"></i></span>
+                                {{ 'link.print'|trans }}
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+
+                {% if not frame_update or folder.nature is constant('NATURE_OBSTACLE', folder) %}
+                    <tr>
+                        <th>
+                            {{ 'text.courier.offender'|trans }}<br>
+                            <span class="text-danger">{{ 'help.courier.dont_send_pv'|trans }}</span>
+                        </th>
+                        <td>
+
+                            {% if is_granted("ROLE_LUCCA") and not closure and courier.dateOffender is null %}
+                                <a href="{{ path('lucca_courier_manual_offender', {'minute_id': minute.id, 'id': courier.id }) }}"
+                                   class="btn btn-info btn-sm btn-labeled"
+                                   title="{{ 'help.courier.manualEditing'|trans }}">
+                                    <span class="btn-label"><i class="fa fa-hand-paper"></i></span>
+                                    {{ 'text.courier.manualEditing'|trans }}
+                                </a>
+
+                                <a href="{{ path('lucca_courier_offender_preprint', {'minute_id': minute.id, 'id': courier.id }) }}"
+                                   class="btn btn-primary btn-sm btn-labeled"
+                                   title="{{ 'help.courier.print_offender'|trans }}">
+                                    <span class="btn-label"><i class="fa fa-print"></i></span>
+                                    {{ 'link.preprint'|trans }}
+                                </a>
+
+                                <a class="btn btn-success btn-sm btn-labeled"
+                                   data-target="#courier-offender-{{ courier.id }}"
+                                   data-toggle="modal" title="{{ 'help.courier.print_offender'|trans }}">
+                                    <span class="btn-label">
+                                        <i class="fas fa-clock"></i> </span> {{ 'link.date_and_print'|trans }}
+                                </a>
+                            {% else %}
+                                <a href="{{ path('lucca_courier_offender_print', {'minute_id': minute.id, 'id': courier.id }) }}"
+                                   class="btn btn-success btn-sm btn-labeled"
+                                   title="{{ 'help.courier.print_offender'|trans }}">
+                                    <span class="btn-label"><i class="fa fa-print"></i></span>
+                                    {{ 'link.print'|trans }}
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

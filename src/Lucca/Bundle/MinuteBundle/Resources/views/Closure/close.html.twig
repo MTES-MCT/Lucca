@@ -1,0 +1,119 @@
+{% extends 'LuccaThemeAngleBundle:SubLayout:edit.html.twig' %}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{% set param_entity='entity.minute'|transchoice(1) %}
+{% set param_entities='entity.minute'|transchoice(2) %}
+
+{% block menuActive_minute %}class="active"{% endblock menuActive_minute %}
+
+
+{% block lucca_panels %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {#-- Panel - main --#}
+    <div class="col-lg-6 col-md-8 col-sm-12 col-12">
+
+        <div class="card card-default">
+            <div class="card-header"><strong>{{ 'title.frame8'|trans }}</strong></div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+                    <div class="bool-inline">
+                        {{ form_row(form.status) }}
+                    </div>
+
+                    {{ form_row(form.dateClosing) }}
+
+                    <div class="block-other" style="display: none;">
+                        {{ form_row(form.reason) }}
+                    </div>
+
+                    <div class="block-regularized" style="display: none;">
+                        {{ form_row(form.natureRegularized) }}
+                        {{ form_row(form.initiatingStructure) }}
+                    </div>
+
+                    {{ form_row(form.observation) }}
+
+                    <div class="text-left text-warning">
+                        {{ 'help.closure.closure_close_all_data'|trans }}
+                        <br>
+                    </div>
+
+                    <a class="btn btn-secondary btn-lg" href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"
+                       title="{{ 'link.backMinute'|trans }}"><i class="fa fa-reply"></i></a>
+
+                    <button type="submit" class="btn btn-success btn-lg"
+                            title="{{ 'link.closure.new'|trans }}"><i class="fa fa-check"></i></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {#-- End Panel - main --#}
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+{% endblock lucca_panels %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    <link href="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
+          rel="stylesheet">
+    <link href="{{ asset('plugins/summernote/summernote-bs4.css') }}" rel="stylesheet">
+
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script src="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/lang/bootstrap-datepicker.fr.js') }}"></script>
+
+    <script src="{{ asset('plugins/summernote/summernote-bs4.js') }}"></script>
+    <script src="{{ asset('plugins/summernote/lang/summernote-fr-FR.min.js') }}"></script>
+
+    <script>
+        {# Summernote #}
+        $('.summernote').summernote({
+            height: 100,
+            lang: 'fr-FR',
+            tabsize: 2,
+            disableDragAndDrop: true,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link']],
+                ['view', ['fullscreen', 'codeview', 'help']],
+            ],
+        });
+        {#-- End --#}
+
+        {# Datepicker #}
+        $('.date-picker').datepicker({
+            calendarWeeks: true,
+            language: 'fr'
+        });
+        {#-- End --#}
+
+        {#-- Custom JS --#}
+        $('input[name="lucca_minutebundle_closure[status]"]').click(function () {
+            $(".block-other").hide('slow');
+            $(".block-regularized").hide('slow');
+
+            if ($(this).val() === 'choice.status.other')
+                $(".block-other").show('slow');
+            if ($(this).val() === 'choice.status.regularized')
+                $(".block-regularized").show('slow');
+        });
+    </script>
+{% endblock lucca_js %}

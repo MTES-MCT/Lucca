@@ -1,0 +1,131 @@
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+const closureCtx = document.getElementById('closureChart').getContext('2d');
+const closureChart = new Chart(closureCtx, {
+    type: 'pie',
+    data: {
+        labels: [
+            {% for key, item in closures %}
+            "{{ key | trans }}"
+            {% if not loop.last %}
+            ,
+            {% endif %}
+            {% endfor %}
+        ],
+        datasets: [
+            {
+                backgroundColor: [
+                    {% for item in closures %}
+                    "{{ item['color'] }}"
+                    {% if not loop.last %}
+                    ,
+                    {% endif %}
+                    {% endfor %}
+                ],
+                data: [
+                    {% for item in closures %}
+                    "{{ item['count'] }}"
+                    {% if not loop.last %}
+                    ,
+                    {% endif %}
+                    {% endfor %}
+                ]
+            }
+
+            {#-Don't use a loop for in oreder to mange dataset case by case
+            #-and in order to display data in specifc order wothout adding complexity in manager-#}
+            {################################# STATUS_REGULARIZED ##################################################}
+            {#{% if constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_REGULARIZED') in closures|keys %}#}
+            {#{#}
+            {#label: "{{ constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_REGULARIZED') | trans }}",#}
+            {#backgroundColor:#}
+            {#"#f9902c"#}
+            {#,#}
+            {#data: {{ closures[constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_REGULARIZED')] }}#}
+
+            {#},#}
+            {#{% endif %}#}
+            {##}{################################# STATUS_EXEC_OFFICE ##################################################}
+            {#{% if constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_EXEC_OFFICE') in closures|keys %}#}
+            {#{#}
+            {#label: "{{ constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_EXEC_OFFICE') | trans }}",#}
+            {#backgroundColor:#}
+            {#"#f9902c"#}
+            {#,#}
+            {#data: {{ closures[constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_EXEC_OFFICE')] }}#}
+
+            {#},#}
+            {#{% endif %}#}
+            {##}{################################# STATUS_REGULARIZED ##################################################}
+            {#{% if constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_RELAXED') in closures|keys %}#}
+            {#{#}
+            {#label: "{{ constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_RELAXED') | trans }}",#}
+            {#backgroundColor:#}
+            {#"#f9902c"#}
+            {#,#}
+            {#data: {{ closures[constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_RELAXED')] }}#}
+
+            {#},#}
+            {#{% endif %}#}
+            {##}{################################# STATUS_REGULARIZED ##################################################}
+            {#{% if constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_OTHER') in closures|keys %}#}
+            {#{#}
+            {#label: "{{ constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_OTHER') | trans }}",#}
+            {#backgroundColor:#}
+            {#"#f9902c"#}
+            {#,#}
+            {#data: {{ closures[constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_OTHER')] }}#}
+
+            {#},#}
+            {#{% endif %}#}
+        ]
+    },
+    plugins: [ChartDataLabels],
+    options: {
+        plugins: {
+            legend: {
+                {% if legendPosition is defined %}
+                position: '{{ legendPosition }}',
+                {% else %}
+                position: 'right',
+                {% endif %}
+                display: true,
+            },
+            {% if legendPosition is not defined %}
+            title: {
+                display: true,
+                text: '{{ 'statistics.minutesReasonClosure.title' | trans }}'
+            },
+            {% endif %}
+            datalabels: {
+                backgroundColor: function (context) {
+                    return context.dataset.backgroundColor;
+                },
+                color: 'white',
+                anchor: 'center',
+                display: function (context) {
+                    let dataset = context.dataset;
+                    let value = parseInt(dataset.data[context.dataIndex]);
+
+                    let biggest = 0;
+
+                    for (var i = 0; i < dataset['data'].length; i++) {
+                        if (biggest < dataset['data'][i])
+                            biggest = dataset['data'][i];
+                    }
+
+                    let percentage = value / biggest * 100;
+
+                    if (percentage < 10) {
+                        return "";
+                    }
+
+                    return value !== 0;
+                },
+                font: {
+                    weight: 'bold'
+                }
+            }
+        }
+    }
+});

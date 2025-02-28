@@ -1,0 +1,27 @@
+####################################
+## validators
+####################################
+
+constraint:
+    minute:
+        humans: "Vous devez renseigner au moins une personne responsable."
+
+    plot:
+        address_or_parcel: "Vous devez renseigner soit l'adresse, soit le lieu-dit."
+        locationNeeded: "Vous devez renseigner la localisation."
+
+    agent:
+        commission: "Vous devez renseigner un N° de commission"
+        tribunal: "Vous devez renseigner un tribunal compétent"
+    control:
+        send_greater_equal_postal: "La date d'envoi doit être supérieure ou égale à la date du courrier"
+        send_less_notified: "La date d'envoi doit être inférieure à la date de notification"
+        send_less_returned: "La date d'envoi doit être inférieure à la date de retour"
+
+        notified_greater_postal: "La date de notification doit être supérieure à la date du courrier"
+        notified_greater_sended: "La date de notification doit être supérieure à la date d'envoi"
+        notified_less_returned: "La date de notification doit être inférieure à la date de retour"
+
+        returned_greater_postal: "La date de retour doit être supérieure à la date du courrier"
+        returned_greater_sended: "La date de retour doit être supérieure à la date d'envoi"
+        returned_greater_notified: "La date de retour doit être supérieure à la date de notification"

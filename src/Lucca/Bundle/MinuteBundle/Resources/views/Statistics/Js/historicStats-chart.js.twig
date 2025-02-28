@@ -1,0 +1,123 @@
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+const historicCtx = document.getElementById('historicChart').getContext('2d');
+const historicChart = new Chart(historicCtx, {
+    type: 'bar',
+    data: {
+        labels: [
+            {% for key, month in finalArray %}
+            {#Convert the date in order to get the month in letters#}
+            {% set dateTime = date(key) | dateToLetterMonth %}
+            "{{ dateTime }}"
+            {% if not loop.last %}
+            ,
+            {% endif %}
+            {% endfor %}
+        ],
+        datasets: [
+            {################################# Control ##################################################}
+            {
+                {% if labelControl is defined %}
+                label: "{{ labelControl }}",
+                {% else %}
+                label: "{{ constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_CONTROL') | trans }}",
+                {% endif %}
+                backgroundColor:
+                    "#5b2500"
+                ,
+                data: [
+                    {% for data in finalArray %}
+                    "{{ data['control'] }}"
+                    {% if not loop.last %}
+                    ,
+                    {% endif %}
+                    {% endfor %}
+                ]
+            },
+            {################################# Folders ##################################################}
+            {
+                label: "{{ constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_FOLDER') | trans }}",
+                backgroundColor:
+                    "#e34c4a"
+                ,
+                data: [
+                    {% for data in finalArray %}
+                    "{{ data['folder'] }}"
+                    {% if not loop.last %}
+                    ,
+                    {% endif %}
+                    {% endfor %}
+                ]
+            },
+            {################################# Ascertainment ##################################################}
+            {
+                label: "{{ 'label.ascertainment'| trans({}, 'LuccaCoreBundle') }}",
+                backgroundColor:
+                    "#87c6f1"
+                ,
+                data: [
+                    {% for data in finalArray %}
+                    "{{ data['ascertainment'] }}"
+                    {% if not loop.last %}
+                    ,
+                    {% endif %}
+                    {% endfor %}
+                ]
+            },
+            {################################# Decisions ##################################################}
+            {
+                label: "{{ constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_DECISION') | trans }}",
+                backgroundColor:
+                    "#3a81a0"
+                ,
+                data: [
+                    {% for data in finalArray %}
+                    "{{ data['decision'] }}"
+                    {% if not loop.last %}
+                    ,
+                    {% endif %}
+                    {% endfor %}
+                ]
+            }
+        ]
+    },
+    options: {
+        {#plugins: {#}
+        {#title: {#}
+        {#display: true,#}
+        {#text: '{{ 'statistics.historicStats.title' | trans }}'#}
+        {#},#}
+        {#subtitle: {#}
+        {#display: true,#}
+        {#text: '{{ 'statistics.historicStats.text' | trans }}'#}
+        {#}#}
+        {#},#}
+        responsive: true,
+        scales: {
+            x: {
+                stacked: true,
+            },
+            y: {
+                stacked: true
+            }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    {# This is used to add totals in legend#}
+                    generateLabels: function (chart) {
+                        return Chart.defaults.plugins.legend.labels.generateLabels(chart).map(function (label) {
+                            var dataset = chart.data.datasets[label.datasetIndex];
+                            var total = 0;
+                            for (var j = 0; j < dataset.data.length; j++) {
+                                total += parseInt(dataset.data[j]);
+                            }
+                            label.text = dataset.label + ': ' + total;
+                            return label;
+                        });
+                    }
+                }
+            }
+        }
+    }
+});

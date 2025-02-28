@@ -1,0 +1,62 @@
+{% extends '@LuccaMinute/Control/Printing/Basic/convocation_content.html.twig' %}
+{% trans_default_domain 'LuccaControlBundle' %}
+
+{% import "LuccaMinuteBundle:Human:human-macro.html.twig" as humanMacro %}
+
+
+{% block lucca_control_convocation_content %}
+    <div class="row ">
+        {#-- Letter Content --#}
+        <div class="col-12 pv">
+            <div class="letter-content">
+                <div class="clearfix">
+                    <p>{{ human|human_gender }}, </p>
+                </div>
+
+                <div class="clearfix">
+                    <p>
+                        Des travaux irréguliers ont été relevés sur l'unité foncière cadastrée
+                        section {{ plot.parcel }} située {{ plot.address }},
+                        {% if plot.place %}lieu dit {{ plot.place }}{% endif %}
+                        sur le territoire de la commune de {{ plot.town.name }} {{ plot.town.zipcode }}.
+                    </p>
+                </div>
+
+                <div class="clearfix">
+                    <p>
+                        Ces travaux sont susceptibles de constituer une infraction au code de l’urbanisme.
+                    </p>
+                    <p>
+                        Afin de vérifier cette situation, je vous informe qu'une visite de la parcelle sera effectuée
+                        le {{ control.dateControl|date('d/m/Y') }},
+                        à {{ control.hourControl|date('H:i') }} heures.
+                    </p>
+                </div>
+                <div class="clearfix">
+                    <p>
+                        En votre qualité de
+                        {{ human.status|trans }}
+                        {% if human.person is constant('PERSON_CORPORATION', human) %}  de {{ human.company }}{% endif %}
+                        , je vous demande de bien vouloir être présent lors de cette
+                        visite.
+                        En cas d'indisponibilité je vous invite à prendre contact à l’adresse suivante {{ adherent.address }}
+                        , {{ adherent.zipcode }} - {{ adherent.city }} ou au {{ adherent.officialPhone }}, afin de convenir d’un
+                        nouveau rendez-vous.
+                    </p>
+                </div>
+                <div class="clearfix">
+                    <p>
+                        Je vous rappelle que l'obstacle au droit de visite constitue une infraction réprimée par
+                        l'article L480-12 du code de l'urbanisme et constitue un délit passible de poursuites
+                        pénales devant le tribunal correctionnel.
+                    </p>
+                </div>
+
+                <div class="clearfix">
+                    <p>Je vous prie d'agréer, {{ human|human_gender }}, l'assurance de ma considération distinguée.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

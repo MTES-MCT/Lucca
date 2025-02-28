@@ -1,0 +1,60 @@
+{#-- Extends view --#}
+{% extends "LuccaThemeAngleBundle:SubLayout:new.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{#-- Parameters --#}
+{% set param_entity='entity.natinf'|transchoice(1) %}
+{% set param_entities='entity.natinf'|transchoice(2) %}
+{% block menuActive_parameter %}class="active"{% endblock menuActive_parameter %}
+
+
+{% block lucca_panels %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {#-- Panel - main --#}
+    <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+        <div class="card card-default">
+            <div class="card-header">
+                {{ 'title.new'|trans({}, 'LuccaThemeAngleBundle') }} - <b>{{ param_entity }}</b>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+                    <div class="col-12">
+                        {{ form_row(form.num) }}
+                        {{ form_row(form.enabled) }}
+                        {{ form_row(form.qualification) }}
+                        {{ form_row(form.definedBy) }}
+                        {{ form_row(form.repressedBy) }}
+                        {{ form_row(form.tags) }}
+                        {{ form_row(form.parent) }}
+
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_natinf_index') }}"
+                           title="{{ 'link.natinf.backList'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <button type="submit" class="btn btn-success btn-lg"
+                                title="{{ 'link.natinf.new'|trans }}"><i class="fa fa-check"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#-- End Panel - main --#}
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock lucca_panels %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+{% endblock lucca_js %}

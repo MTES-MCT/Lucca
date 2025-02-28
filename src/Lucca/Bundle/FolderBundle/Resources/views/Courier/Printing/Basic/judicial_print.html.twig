@@ -1,0 +1,33 @@
+{#-- Extends view --#}
+{% extends "@LuccaModel/Printing/base.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaControlBundle' %}
+
+
+{% block lucca_title %}
+    Lettre au parquet
+{% endblock lucca_title %}
+
+{% block lucca_model_content %}
+
+    {% if isPreprint is defined and isPreprint %}
+        <img src="{{ pdf_asset }}{{ asset('assets/img/preprint.png') }}"
+             alt="preprint" class="preprint">
+    {% endif %}
+
+    {% if courier.edition and courier.edition.judicialEdited %}
+        {#We need to replace the logo of view by logo of pdf#}
+        {{ courier.edition.letterJudicial | localPath | raw }}
+    {% else %}
+        {% if 'setting.courier.judicialContent.name'|setting == true %}
+            {% set filename = 'LuccaMinuteBundle:Courier/Printing/Custom:judicial_content-' ~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+            {#Logo in header#}
+            {% include filename %}
+        {% else %}
+            {% include 'LuccaMinuteBundle:Courier/Printing/Basic:judicial_content.html.twig' %}
+        {% endif %}
+    {% endif %}
+
+
+{% endblock lucca_model_content %}

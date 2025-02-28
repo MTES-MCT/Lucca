@@ -1,0 +1,29 @@
+{#-- Extends view --#}
+{% extends "@LuccaModel/Printing/base.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaControlBundle' %}
+
+
+{% block lucca_title %}
+    {{ 'title.letter'|trans }}
+{% endblock lucca_title %}
+
+
+{% block lucca_model_content %}
+    {% if edition.letterConvocation is not null %}
+        {% if 'print' in app.request.pathinfo %}
+            {{ edition.letterConvocation|localPath|raw }}
+        {% else %}
+            {{ edition.letterConvocation|raw }}
+        {% endif %}
+    {% else %}
+        {% if 'setting.control.convocationContent.name'|setting == true %}
+            {% set filename = 'LuccaMinuteBundle:Control/Printing/Custom:convocation_content-'~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+            {% include filename with {'minute': minute, 'control': control, 'human': edition.human} %}
+        {% else %}
+            {% include 'LuccaMinuteBundle:Control/Printing/Basic:convocation_content.html.twig' with {'minute': minute, 'control': control, 'human': edition.human} %}
+        {% endif %}
+    {% endif %}
+{% endblock lucca_model_content %}
+

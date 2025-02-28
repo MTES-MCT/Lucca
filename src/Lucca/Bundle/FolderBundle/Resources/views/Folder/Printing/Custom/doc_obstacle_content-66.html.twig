@@ -1,0 +1,24 @@
+{% extends '@LuccaMinute/Folder/Printing/Basic/doc_obstacle_content.html.twig' %}
+{% trans_default_domain 'LuccaFolderBundle' %}
+
+{% import "LuccaMinuteBundle:Human:human-macro.html.twig" as humanMacro %}
+{% import "LuccaMinuteBundle:Agent:agent-attendant-macro.html.twig" as agentAttendantMacro %}
+
+
+{% block lucca_folder_doc_obstacle_content_close %}
+    <div class="row mb25 mb15 pt15">
+        <div class="col-12 letter-content">
+            Je dresse le présent procès-verbal en double exemplaire à l’encontre de :
+            <ul>
+                {# Affichage des informations de la (des) personne(s) #}
+                {{ humanMacro.humansByFolderViewListComplete(folder.humansByMinute|merge(folder.humansByFolder)) }}
+            </ul>
+
+            pour être transmis à Monsieur le Procureur de la République de Perpignan.<br>
+            Une copie du procès verbal sera adressée à la Direction des Territoires et de la Mer / Affaires juridiques à
+            Perpignan.<br>
+        </div>
+    </div>
+{% endblock %}
+
+

@@ -1,0 +1,11 @@
+####################################
+## Flash Domain
+##
+## Author Terence <terence@numeric-wave.tech>
+####################################
+
+flash:
+    decision:
+        createdSuccessfully: "La décision a bien été créée."
+        updatedSuccessfully: "La décision a bien été modifiée."
+        deletedSuccessfully: "La décision a bien été supprimée."

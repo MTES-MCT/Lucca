@@ -1,0 +1,46 @@
+#####################################################
+## Lucca Folder Bundle
+##
+## Author : Térence
+#####################################################
+
+########################
+# Choice
+########################
+choice:
+    #### Agent
+    quality:
+        mayor: "Maire ou Adjoint au maire"
+        police: "Policier municipal"
+        administrative: "Agent administratif territorial"
+        country: "Agent de l'Etat"
+
+    function:
+        mayor: "Maire"
+        deputy: "Adjoint au maire"
+        police: "Policier municipal"
+        dgs: "Directeur Services Techniques"
+        dst: "Directeur Général des Services"
+        town_manager: "Responsable urbanisme"
+        admin_agent: "Agent administratif territorial"
+        country_agent: "Agent de l'Etat"
+        asvp: "ASVP"
+        country_guard: "Garde champêtre"
+
+    status:
+        ## Human
+        owner: "Propriétaire"
+        undivided: "Propriétaire en indivision"
+        usufruct: "Usufruit"
+        occupant: "Occupant"
+        neighbour: "Voisin"
+        director: "Directeur"
+        manager: "Gérant"
+        leader: "Dirigeant"
+        president: "Président"
+
+    #### Folder / Updating
+    nature:
+        regularized: "la situation est régularisée"
+        aggravated: "la situation s'est aggravée"
+        unchanged: "la situation est inchangée"

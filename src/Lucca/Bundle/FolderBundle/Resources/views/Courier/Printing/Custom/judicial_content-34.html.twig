@@ -1,0 +1,24 @@
+{% extends '@LuccaMinute/Courier/Printing/Basic/judicial_content.html.twig' %}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+{% import "LuccaMinuteBundle:Human:human-macro.html.twig" as humanMacro %}
+
+{#--  Letter header  --#}
+{% block lucca_courrier_judicial_content_header %}
+    <div class="row">
+        <div class="col-12 text-left letter-object">
+            <br>
+            <br>
+            <div class="clearfix">
+                Objet : Infraction au code de l’urbanisme – commune de {{ plot.town.name }}<br>
+                Pièce jointe : Procès-Verbal de constatation des infractions et ses annexes
+            </div>
+            {#Si le dossier est d'une nature d'obstacle, ajout de la mention "Obstacle au droit de visite"#}
+            {% if folder.nature is constant('NATURE_OBSTACLE', folder) %}
+                <div class="clearfix"><b>Obstacle au droit de visite</b></div>
+            {% endif %}
+            <br>
+            <br>
+        </div>
+    </div>
+{% endblock %}
+{#--  END - Letter header  --#}

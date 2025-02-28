@@ -1,0 +1,88 @@
+{% extends '@LuccaMinute/Control/Printing/Basic/convocation_content.html.twig' %}
+{% trans_default_domain 'LuccaControlBundle' %}
+
+{% import "LuccaMinuteBundle:Human:human-macro.html.twig" as humanMacro %}
+
+{% set isIntercomunal = control.minute.adherent.intercommunal != null and control.minute.adherent.town == null and control.minute.adherent.service == null %}
+{% set isTown = control.minute.adherent.intercommunal == null and control.minute.adherent.town != null and control.minute.adherent.service == null %}
+{% set isService = control.minute.adherent.intercommunal == null and control.minute.adherent.town == null and control.minute.adherent.service != null %}
+
+
+{% block lucca_control_convocation_content %}
+    <div class="row ">
+        {#-- Letter Content --#}
+        <div class="col-12 pv">
+            <div class="letter-content">
+                <div class="clearfix">
+                    <p>{{ human|human_gender }}, </p>
+                </div>
+                <div class="clearfix">
+                    <p style="letter-spacing: 0;">
+                        Dans le cadre de la vigilance territoriale prévue par l’article L 461-1 ou l’article L480-1 du
+                        code
+                        de l’urbanisme et en vertu des pouvoirs qui sont conférés aux agents assermentés au code de
+                        l’urbanisme et dûment commissionnés, je vous informe que
+                        {% if isTown %} des agents de la commune {% endif %}
+                        {% if isIntercomunal %} des agents de l'intercommunalité {% endif %}
+                        {% if isService %} des agents de la direction départementale des territoires et de la mer, accompagnés de la police municipale de {{ plot.town.name }} {% endif %}
+                        se présenteront sur votre propriété cadastrée
+                        {{ plot.parcel }} {% if plot.place %}sise au lieu-dit "{{ plot.place }}"{% endif %}
+                        à {{ plot.town.name }} le {{ control.dateControl|dateToLetterSimple }},
+                        entre {{ control.hourControl|date('H:i') }}
+                        et {{ control.hourControl|date_modify('+ 45 minutes')|date('H:i') }}
+                        heures.
+                    </p>
+                </div>
+                <div class="clearfix">
+                    <p>
+                        Je vous saurais gré de bien vouloir prendre toutes les dispositions utiles pour être
+                        présent{% if human.gender == 'choice.gender.female' %}e{% endif %} et
+                        faciliter
+                        ce droit de visite.
+                    </p>
+                </div>
+                <div class="clearfix">
+                    <p>
+                        Je vous informe qu’en cas d’obstacle fait au droit de visite, les dispositions de l’article L
+                        480-12
+                        du code de l’urbanisme prévoient une peine d’amende de 7500 euros et six mois d’emprisonnement.
+                    </p>
+                </div>
+                <div class="clearfix">
+                    <p>
+                        En cas d’indisponibilité, vous voudrez bien contacter
+                        {% if isService %}
+                            le service
+                        {% else %}
+                            l’unité
+                        {% endif %}
+                        en charge du suivi de cette affaire aux
+                        coordonnées mentionnées dans l’en-tête afin de pouvoir convenir d’une autre date.
+                    </p>
+                </div>
+
+                <div class="clearfix">
+                    <p>Je vous prie d'agréer, {{ human|human_gender }}, l'assurance de ma considération distinguée.</p>
+                </div>
+            </div>
+
+            <br>
+            <br>
+
+
+            <div class="row letter-addr-to-bottom">
+                <div class="col-xs-6"><b>
+                        {% if human.person is constant('PERSON_CORPORATION', human) %}
+                            Société {{ human.company }},<br>
+                        {% endif %}
+                        {{ human.gender|trans({}, 'LuccaMinuteBundle') }} {{ human.officialName }},<br>
+                        {{ human.address|nl2br }}
+                    </b></div>
+                <div class="col-xs-6">
+                </div>
+            </div>
+        </div>
+        {#-- End - Letter Content --#}
+    </div>
+
+{% endblock %}

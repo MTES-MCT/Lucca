@@ -1,0 +1,26 @@
+{% extends '@LuccaMinute/Courier/Printing/Basic/offender_content.html.twig' %}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+
+{% block lucca_courier_offender_content_followedBy %}
+<div class="row letter-followed-by">
+    <div class="col-12">
+        {{ minute.agent.adherent.service.name }}<br>
+        Affaire suivie par: {{ minute.agent.officialName }}<br>
+        Coordonnées:
+        {% if(minute.agent.adherent.emailPublic) %}
+            {{ minute.agent.adherent.emailPublic }},
+        {% endif %}
+        {{ minute.agent.adherent.officialPhone }}
+    </div>
+</div>
+{% endblock %}
+
+{% block lucca_courier_offender_content_object %}
+<div class="row letter-object">
+    <div class="col-12">
+        <b>Objet :</b> Demande de régularisation<br>
+        <b>REFER :</b> Procès-verbal en date du {{ folder.dateClosure|date('d/m/Y') }}
+    </div>
+</div>
+{% endblock %}

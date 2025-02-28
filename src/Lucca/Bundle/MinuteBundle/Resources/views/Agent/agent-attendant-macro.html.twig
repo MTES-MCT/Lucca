@@ -1,0 +1,37 @@
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{#-- AgentAtendant - Text --#}
+{% macro agentAtendantViewTextNamed(agents) %}
+
+    {% if agents and agents|length > 0 %}
+        {% for agent in agents %}
+            {% if loop.first %}
+                accompagné(e) de {{ agent.officialName }} {{ agent.function|trans|lower }}
+            {% elseif loop.last %}
+                et de {{ agent.officialName }} {{ agent.function|trans|lower }}
+            {% else %}
+                , {{ agent.officialName }} {{ agent.function|trans|lower }},
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+{% endmacro %}
+{#-- End - AgentAtendant - Text --#}
+
+{#-- AgentAtendant - Text --#}
+{% macro agentAtendantViewTextNamedBis(agents) %}
+
+    {% if agents and agents|length > 0 %}
+        {% for agent in agents %}
+            {% if loop.first %}
+                Accompagné(e) de {{ agent.officialName }} {{ agent.function|trans|lower }}
+            {% elseif loop.last %}
+                et de {{ agent.officialName }} {{ agent.function|trans|lower }}
+            {% else %}
+                , {{ agent.officialName }} {{ agent.function|trans|lower }},
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+{% endmacro %}
+{#-- End - AgentAtendant - Text --#}

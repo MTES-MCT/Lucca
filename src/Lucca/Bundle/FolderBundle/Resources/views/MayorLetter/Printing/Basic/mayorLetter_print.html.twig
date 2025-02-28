@@ -1,0 +1,33 @@
+{% extends "LuccaThemeAngleBundle:Layout:printLayout.html.twig" %}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+
+{% block lucca_title %}
+    Lettre au maire
+{% endblock lucca_title %}
+
+
+{% block lucca_print %}
+
+    {% if 'setting.courier.mayorContent.name'|setting == true %}
+        {% set filename = 'LuccaMinuteBundle:MayorLetter/Printing/Custom:mayorLetter_content-' ~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+        {#Logo in header#}
+        {% if 'setting.pdf.logoInHeader.name'|setting == false %}
+            {% include filename with {'officialLogo': officialLogo} %}
+        {% else %}
+            {% include filename %}
+        {% endif %}
+    {% else %}
+        {% include 'LuccaMinuteBundle:MayorLetter/Printing/Basic:mayorLetter_content.html.twig' %}
+    {% endif %}
+
+{% endblock lucca_print %}
+
+{% block lucca_css %}
+    <style>
+        body{
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+    </style>
+{% endblock lucca_css %}

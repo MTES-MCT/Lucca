@@ -1,0 +1,237 @@
+{% extends 'LuccaThemeAngleBundle:SubLayout:page.html.twig' %}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{% block menuActive_statistics %}class="active"{% endblock %}
+
+{% block lucca_title %}
+    <title>{{ 'setting.general.app.name'| setting({}, 'LuccaCoreBundle') }}
+        | {{ 'statistics.minutes.title'|trans }}</title>
+{% endblock lucca_title %}
+
+{% block lucca_header %}
+    {{ 'statistics.minutes.title'|trans }}
+{% endblock lucca_header %}
+
+{% block lucca_block %}
+
+    {#-- Panel - description --#}
+    <div class="col-12">
+        <div class="card card-default">
+            <div class="card-header"><strong>{{ 'statistics.minutes.description'|trans }}</strong></div>
+        </div>
+    </div> {#-- End Panel - description--#}
+
+    {#-- Panel - statistics params --#}
+    <div class="col-12">
+
+        <div class="card card-default">
+            <div class="card-header hover-pointer" data-tool="card-collapse">
+                <strong>{{ 'statistics.filters'|trans }}</strong>
+                <a class="float-right" href="#" data-tool="card-collapse" title="Collapse card">
+                    <em class="fa fa-plus"></em>
+                </a>
+            </div>
+
+            <div class="card-wrapper collapse">
+                <div class="card-body">
+                    {{ form_start(form) }}
+
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.dateStart) }}
+                            {{ form_row(form.dateEnd) }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.dateStartClosure) }}
+                            {{ form_row(form.dateEndClosure) }}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6">
+                            <p class="col-sm-10 col-sm-offset-2"><b>{{ 'statistics.filterLocation'|trans }}</b></p>
+                            {{ form_row(form.town) }}
+                            <p class="col-sm-10 col-sm-offset-2"><b>{{ 'statistics.filterAdherent'|trans }}</b></p>
+                            {{ form_row(form.adherent) }}
+                            {{ form_row(form.townAdherent) }}
+                            {{ form_row(form.intercommunal) }}
+                            {{ form_row(form.service) }}
+                        </div>
+
+                        <div class="col-6">
+                            {{ form_row(form.origin) }}
+                            {{ form_row(form.risk) }}
+                            <hr>
+                            {{ form_row(form.stateControl) }}
+                            <hr>
+                            {{ form_row(form.nature) }}
+                            {{ form_row(form.natinfs) }}
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_core_statistics') }}"
+                           title="{{ 'link.back'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <button type="submit" class="btn btn-info btn-lg pull-right"
+                                title="{{ 'link.new'|trans }}">
+                            <i class="fa fa-check"></i></button>
+                    </div>
+
+                    {{ form_rest(form) }}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+
+    </div> {#-- End Panel - statistics params --#}
+
+
+    <div class="col-12">
+        <div class="card card-default">
+            <div class="card-header"><strong>{{ 'statistics.filters'|trans }}</strong></div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+                    <table class="table table-striped table-hover dataTables responsive">
+                        <thead>
+                        <tr>
+                            <th>{{ 'label.num'|trans }}</th>
+                            <th>{{ 'label.dateOpening'|trans }}</th>
+                            <th>{{ 'label.adherentSimple'|trans }}</th>
+                            <th>{{ 'label.serviceOrTown'|trans }}</th>
+                            <th>{{ 'label.plot'|trans }}</th>
+                            <th>{{ 'label.town'|trans }}</th>
+                            <th>{{ 'label.origin'|trans }}</th>
+                            <th>{{ 'label.risk'|trans }}</th>
+                            <th>{{ 'label.numberControls'|trans }}</th>
+                            <th>{{ 'label.stateControl'|trans }}</th>
+                            <th>{{ 'label.numberFolders'|trans }}</th>
+                            <th>{{ 'label.dateClosure'|trans }}</th>
+                            <th>{{ 'label.nature'|trans }}</th>
+                            <th>{{ 'label.natinfs'|trans }}</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for minute in minutes %}
+                            <tr {% if minute.closure %}class="table-info"{% endif %}>
+                                <td>{{ minute.num }}</td>
+                                <td>{{ minute.dateOpening | date('d/m/Y') }}</td>
+                                <td>{{ minute.adherent.officialName }}</td>
+                                <td>
+                                    {% if minute.adherent.service %}
+                                        {{ minute.adherent.service.name }}
+                                    {% elseif minute.adherent.town %}
+                                        {{ minute.adherent.town.name }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ minute.plot.parcel }}</td>
+                                <td>{{ minute.plot.town.name }}</td>
+                                <td>
+                                    {% if minute.origin %}
+                                        {{ minute.origin | trans }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if minute.plot.risk %}
+                                        {{ minute.plot.risk | trans }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ minute.controls | length }}</td>
+                                <td>
+                                    {% for stateControl in data[minute.num]['controlState'] %}
+                                        {{ stateControl | trans }}
+                                        {% if not loop.last %}
+                                            <br>
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+                                <td>{{ data[minute.num]['countFolders'] }}</td>
+                                <td>
+                                    {% for dateClosure in data[minute.num]['folderDateClosure'] %}
+                                        {{ dateClosure }}
+                                        {% if not loop.last %}
+                                            <br>
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {% for nature in data[minute.num]['folderNature'] %}
+                                        {{ nature | trans }}
+                                        {% if not loop.last %}
+                                            <br>
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {% for natinf in data[minute.num]['folderNatinf'] %}
+                                        <a class="btn btn-info btn-xs m-1" data-trigger="hover click"
+                                           data-toggle="popover" data-placement="left" data-html="true"
+                                           title="{{ natinf['num'] }}" data-content="{{ natinf['qualification'] }}">
+                                            {{ natinf['num'] }}
+                                        </a>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock lucca_block %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    <link href="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
+          rel="stylesheet">
+    <link href="{{ asset('bundles/luccathemeangle/plugins/chosen-js/chosen.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('bundles/luccathemeangle/plugins/select2/dist/css/select2.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/luccathemeangle/plugins/@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.css') }}"
+          rel="stylesheet">
+
+    {#-- Plugin - DataTables --#}
+    {% include "LuccaThemeAngleBundle:Plugins:datatables.css.html.twig" %}
+
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script src="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/lang/bootstrap-datepicker.fr.js') }}"></script>
+
+    <script src="{{ asset('bundles/luccathemeangle/plugins/chosen-js/chosen.jquery.js') }}"></script>
+    <script src="{{ asset('bundles/luccathemeangle/plugins/select2/dist/js/select2.full.js') }}"></script>
+
+    <script>
+        {#Chosen#}
+        $('.select2').select2({});
+
+        {#Chosen#}
+        $('.chosen-select').chosen({
+            placeholder_text_single: " ",
+            no_results_text: "Aucun résultat!"
+        });
+
+        {#Datepicker#}
+        $('.date-picker').datepicker({
+            calendarWeeks: true,
+            language: 'fr',
+            orientation: 'bottom',
+        });
+    </script>
+
+    {#-- Plugin - DataTables --#}
+    {% include "LuccaThemeAngleBundle:Plugins:datatables.js.html.twig" with { 'params' :
+        { 'id_datatable': '.dataTables', 'pageLength': 10 }
+    } %}
+
+{% endblock lucca_js %}

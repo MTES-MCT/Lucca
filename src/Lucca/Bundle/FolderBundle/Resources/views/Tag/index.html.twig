@@ -1,0 +1,52 @@
+{#-- Extends view --#}
+{% extends 'LuccaThemeAngleBundle:SubLayout:index.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{#-- Parameters --#}
+{% set param_entity='entity.tag'|transchoice(1) %}
+{% set param_entities='entity.tag'|transchoice(2) %}
+{% block menuActive_parameter %}class="active"{% endblock menuActive_parameter %}
+
+
+{% block lucca_list %}
+
+    <table class="table table-striped table-hover dataTables responsive">
+        <thead>
+        <tr>
+            <th><i class="fa fa-map"></i> {{ 'label.num'|trans }}</th>
+            <th>{{ 'label.name'|trans }}</th>
+            <th>{{ 'label.category'|trans }}</th>
+            <th>{{ 'label.proposals'|trans }}</th>
+            <th>{{ 'label.description'|trans }}</th>
+            <th><i class="fa fa-cogs"></i> {{ 'label.actions'|trans }}</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for tag in tags %}
+            <tr>
+                <td>{{ tag.num }}</td>
+                <td>{{ tag.name }}</td>
+                <td>{{ tag.category|trans }}</td>
+                <td><label class="badge badge-success">{{ tag.proposals|length }}</label></td>
+                <td>{{ tag.description }}</td>
+                <td>
+                    <a href="{{ path('lucca_tag_show', { 'id': tag.id }) }}" class="btn btn-primary btn-sm"
+                       title="{{ 'link.tag.show'|trans }}"> <i class="fa fa-eye"></i> </a>
+                    <a href="{{ path('lucca_tag_edit', { 'id': tag.id }) }}" class="btn btn-warning btn-sm"
+                       title="{{ 'link.tag.edit'|trans }}"> <i class="fas fa-pencil-alt"></i> </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-secondary btn-lg" href="{{ path('lucca_core_parameter') }}"
+       title="{{ 'link.parameter'|trans }}"><i class="fa fa-reply"></i></a>
+
+    <a class="btn btn-primary btn-lg" href="{{ path('lucca_tag_new') }}"
+       title="{{ 'link.tag.new'|trans }}"><i class="fa fa-plus"></i></a>
+{% endblock lucca_list %}
+

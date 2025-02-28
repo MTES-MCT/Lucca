@@ -1,0 +1,154 @@
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{# If control is not accepeted - then hide updating line #}
+{% set flagControlisAccepted = true %}
+
+{% set controlsF6 = updating.controls %}
+{% set foldersF6 = [] %}
+
+{% for control in controlsF6 %}
+    {% if control.folder %}{% set foldersF6 = foldersF6|merge([control.folder]) %}{% endif %}
+
+    {% if control.accepted is not constant('ACCEPTED_OK', control) %}
+        {% set flagControlisAccepted = false %}
+    {% endif %}
+{% endfor %}
+
+{% set flagFolderFenced = false %}
+{% for folder in foldersF6 %}
+    {% if folder.dateClosure %}{% set flagFolderFenced = true %}{% endif %}
+{% endfor %}
+
+<div class="row mb-2">
+
+    <div class="col-12">
+        <a name="updating" data-value="updating-{{ updating.id }}"
+           class="btn btn-secondary btn-xs btn-block btn-collapse">
+            <h4>
+                {{ loop.index }} ) {{ 'entity.updating'|trans }} : {{ updating.num }}
+
+                {# Add date of last control dealed #}
+                {% if controlsF6|length > 0 %}
+                    - {{ controlsF6|last.dateControl|date('d/m/Y') }}
+                {% endif %}
+
+                {% if foldersF6|length > 0 %}
+                    - {{ foldersF6|last.dateClosure|date('d/m/Y') }}
+                {% endif %}
+
+                {% if updating.nature is constant('NATURE_AGGRAVATED', updating) %}
+                    <span class="badge badge-danger float-right mr15">
+                        {{ updating.nature|trans({}, 'LuccaUpdateBundle') }}
+                    </span>
+                {% elseif updating.nature is constant('NATURE_UNCHANGED', updating) %}
+                    <span class="badge badge-info float-right mr15">
+                        {{ updating.nature|trans({}, 'LuccaUpdateBundle') }}
+                    </span>
+                {% elseif updating.nature is constant('NATURE_REGULARIZED', updating) %}
+                    <span class="badge badge-success float-right mr15">
+                        {{ updating.nature|trans({}, 'LuccaUpdateBundle') }}
+                    </span>
+                {% endif %}
+            </h4>
+        </a>
+    </div>
+
+    <div class="col-12">
+        <div id="updating-{{ updating.id }}" style="display: none;">
+
+            <table class="table table-striped table-hover">
+                <tbody>
+                {#-- 1st row --#}
+                <tr>
+                    <th>{{ 'text.updating.control'|trans }}</th>
+                    <td>
+                        {% for control in controlsF6 %}
+                            {% include "LuccaMinuteBundle:Control:frame.html.twig" with { 'control': control, 'frame_update': true } %}
+                        {% endfor %}
+
+                        {% if is_granted("ROLE_LUCCA") and not closure and controlsF6|length == 0 %}
+                            <a class="btn btn-primary" title="{{ 'link.control.new'|trans }}"
+                               href="{{ path('lucca_updating_control_new', { 'updating_id': updating.id }) }}">
+                                <i class="fa fa-plus"></i></a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {#-- End - 1st row --#}
+
+                {#-- 2nd row --#}
+                {% if flagControlisAccepted %}
+                    <tr>
+                        <th>
+                            {{ 'label.nature_updating'|trans }}<br>
+                            {% if updating.nature is constant('NATURE_AGGRAVATED', updating) %}
+                                <span class="badge badge-danger mr15">
+                                    {{ updating.nature|trans({}, 'LuccaUpdateBundle') }}
+                                </span>
+                            {% elseif updating.nature is constant('NATURE_UNCHANGED', updating) %}
+                                <span class="badge badge-info mr15">
+                                    {{ updating.nature|trans({}, 'LuccaUpdateBundle') }}
+                                </span>
+                            {% elseif updating.nature is constant('NATURE_REGULARIZED', updating) %}
+                                <span class="badge badge-success mr15">
+                                    {{ updating.nature|trans({}, 'LuccaUpdateBundle') }}
+                                </span>
+                            {% endif %}
+                        </th>
+                        <td>
+                            {% if updating.description %}
+                                <b>{{ 'label.description'|trans }}</b> :
+                                {{ updating.description|raw }}
+                            {% endif %}
+
+                            {% if is_granted("ROLE_LUCCA") and not closure and not flagFolderFenced %}
+                                <hr class="hr-table">
+                                <div class="text-right">
+                                    <a class="btn btn-warning btn-sm btn-labeled" title="{{ 'link.edit'|trans }}"
+                                       href="{{ path('lucca_updating_step1', { 'minute_id': minute.id, 'id': updating.id }) }}">
+                                        <span class="btn-label"><i class="fas fa-pencil-alt"></i></span>
+                                        {{ 'link.updating.edit'|trans }}
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+                {#-- End - 2nd row --#}
+
+                {#-- 3rd row --#}
+                <tr>
+                    <th>{{ 'text.updating.folder'|trans }}</th>
+                    <td>
+                        {% for folder in foldersF6 %}
+                            {% include "LuccaMinuteBundle:Folder:frame.html.twig" with { 'folder': folder } %}
+                        {% endfor %}
+
+                        {% if is_granted("ROLE_LUCCA") and not closure and foldersF6|length == 0 %}
+                            <a class="btn btn-primary" title="{{ 'link.folder.new'|trans }}"
+                               href="{{ path('lucca_updating_folder_new', { 'minute_id': minute.id, 'updating_id': updating.id }) }}">
+                                <i class="fa fa-plus"></i></a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {#-- End - 3rd row --#}
+
+                {#-- 4th row --#}
+                <tr>
+                    <th>{{ 'text.updating.courier'|trans }}</th>
+                    <td>
+                        {% for folder in foldersF6 %}
+                            {% if folder.courier %}
+                                {% include "LuccaMinuteBundle:Courier:frame.html.twig" with { 'courier': folder.courier, 'frame_update': true } %}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                {#-- End - 4th row --#}
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</div>

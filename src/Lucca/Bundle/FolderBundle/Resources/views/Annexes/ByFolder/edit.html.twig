@@ -1,0 +1,47 @@
+{#- - Extends view - -#}
+{% extends "LuccaThemeAngleBundle:SubLayout:edit.html.twig" %}
+
+{#- - Translation domain - -#}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{#- - Parameters - -#}
+{% set param_entity='entity.folder'|transchoice(1) %}
+{% set param_entities='entity.folder'|transchoice(2) %}
+{% block menuActive_minute %}class="active"{% endblock %}
+
+{% block lucca_panels %}
+
+    <div class="row">
+        {#- - Panel - main - -#}
+
+        {% embed "@LuccaMinute/Annexes/Embed/_form-annexes.html.twig" with {
+            'form': edit_form
+        } %}
+            {% trans_default_domain 'LuccaMinuteBundle' %}
+            {% block lucca_embed_buttons_annexes %}
+                <div class="pt-3">
+                    <a class="btn btn-secondary btn-lg"
+                       href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"
+                       title="{{ 'link.minute.show'|trans }}"><i class="fa fa-reply"></i></a>
+
+                    <button type="submit" class="btn btn-success btn-lg"
+                            title="{{ 'link.annexes.save'|trans }}">
+                        <i class="fa fa-check"></i></button>
+                </div>
+            {% endblock %}
+        {% endembed %}
+        {#- - End Panel - main - -#}
+
+    </div>
+
+{% endblock lucca_panels %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+
+{% endblock lucca_css %}
+
+{% block lucca_js %}
+    {{ parent() }}
+{% endblock lucca_js %}

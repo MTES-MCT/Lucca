@@ -1,0 +1,64 @@
+{% extends 'LuccaThemeAngleBundle:SubLayout:edit.html.twig' %}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{% set param_entity='entity.courier'|transchoice(1) %}
+{% set param_entities='entity.courier'|transchoice(2) %}
+
+{% block menuActive_minute %}class="active"{% endblock menuActive_minute %}
+
+
+{% block lucca_panels %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {# Form theme apply for child only #}
+    {% form_theme form 'LuccaThemeAngleBundle:Form:jquery.collection.html.twig' %}
+    {% form_theme form.humansEditions 'LuccaMinuteBundle:CourierEdition:editionOffender-theme.html.twig' %}
+
+    <div class="row">
+
+        {#-- Panel - main --#}
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            <div class="card card-default">
+                <div class="card-header"><strong>{{ 'title.courier.offender'|trans }}</strong></div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+
+                        {{ form_widget(form.humansEditions) }}
+
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"
+                           title="{{ 'link.backMinute'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <button type="submit" class="btn btn-success btn-lg"
+                                title="{{ 'link.courier.manual.offenderpdate'|trans }}">
+                            <i class="fa fa-check"></i></button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {#-- End Panel - main --#}
+
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+{% endblock lucca_panels %}
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script src="{{ asset('plugins/symfony-collection/jquery.collection.js') }}"></script>
+
+    <script>
+
+        {# Collection form #}
+        $('.editions-collection').collection({
+            allow_duplicate: false, allow_up: false, allow_down: false, allow_add: false, allow_delete: false,
+        });
+    </script>
+{% endblock lucca_js %}

@@ -1,0 +1,142 @@
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{% set plot = minute.plot %}
+{% set folder = courier.folder %}
+
+{% import "LuccaMinuteBundle:Human:human-macro.html.twig" as humanMacro %}
+
+{% set structureName = adherent.structureName %}
+{% set structureOffice = adherent.structureOffice %}
+
+{% if folder.nature is constant('NATURE_OBSTACLE', folder) %}
+    {% set humansList = folder.humansByMinute|merge(folder.humansByFolder) %}
+{% else %}
+    {% set humansList = minute.humans %}
+{% endif %}
+
+{# Si ce n'est pas un actualisation #}
+{% block lucca_courier_ddtm_content_folderType %}
+    {% if folder.type is constant('TYPE_FOLDER', folder) %}
+        <div class="row">
+            <div class="col-10 offset-2 pv letter-object text-left">
+                <div class="clearfix">
+                    Objet : Procès-verbal d’infraction à l’urbanisme n° <b>{{ folder.num }}</b>
+                </div>
+                <br>
+                <div class="clearfix">
+                    Commune de {{ plot.town.name }} {{ plot.town.zipcode }} – à l’encontre
+                    de {{ humanMacro.humansByCourierViewText(humansList) }}.
+                </div>
+
+                {# Si c'est un obstacle, ajout de la mention #}
+                {% if folder.nature is constant('NATURE_OBSTACLE', folder) %}
+                    <div class="clearfix"><b>Obstacle au droit de visite</b></div>
+                {% endif %}
+            </div>
+
+            <br>
+            <br>
+
+            <div class="col-12 pv letter-content">
+                <div class="clearfix">
+                    <p>
+                        Je vous prie de trouver ci-joint un procès-verbal d’infraction à l’urbanisme dressé
+                        le {{ folder.dateClosure|date('d/m/Y') }} à l’encontre
+                        de {{ humanMacro.humansByCourierViewText(humansList) }} &#160;
+                        pour
+                        {# Si ce n'est pas un obstacle #}
+                        {% if folder.nature is not constant('NATURE_OBSTACLE', folder) %}
+                            la réalisation de travaux irréguliers sur l’unité foncière
+                            cadastrée {{ plot.parcel }} {% if plot.place %}lieudit {{ plot.place }}{% endif %} à
+                            l'adresse {{ plot.address }} sur le territoire de la commune
+                            de {{ plot.town.name }} {{ plot.town.zipcode }}.
+
+                            {# Si c'est un obstacle #}
+                        {% else %}
+                            le délit : Obstacle au droit de visite des constructions par les autorités habilitées.<br>
+                            <br>
+                            Les travaux devant faire l'objet d'un contrôle sont situés sur l'unité foncière cadastrée
+                            {{ plot.parcel }} {% if plot.place %}lieudit {{ plot.place }}{% endif %} à
+                            l'adresse {{ plot.address }} sur le territoire de la commune
+                            de {{ plot.town.name }} {{ plot.town.zipcode }}.
+                        {% endif %}
+                    </p>
+                </div>
+
+                {# Si ce n'est pas un obstacle : liste des constatations #}
+                {% if folder.ascertainment and folder.nature is not constant('NATURE_OBSTACLE', folder) %}
+                    <div class="clearfix">
+                        <p> Les travaux illicites consistent à : </p>
+                        {% if 'print' in app.request.pathinfo %}
+                            {{ folder.ascertainment|localPath|raw }}
+                        {% else %}
+                            {{ folder.ascertainment|raw }}
+                        {% endif %}
+                        <br>
+                    </div>
+                {% endif %}
+
+                <div class="clearfix">
+                    <p>
+                        L' infraction étant constituée, j’ai demandé à M. le procureur de la République d’engager les
+                        poursuites pénales à l’encontre
+                        de
+                        {# Affichage des informtions du contrevenant #}
+                        {{ humanMacro.humansByCourierViewText(humansList) }}.
+                    </p>
+                </div>
+
+                <div class="clearfix">
+                    <p>
+                        Je ne manquerai pas de vous tenir informé de l’évolution de ce dossier.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block lucca_courier_ddtm_content_updating %}
+
+    {# Si il s'agit d'une actualisation #}
+    {% if folder.type is constant('TYPE_REFRESH', folder) %}
+
+        <div class="row">
+            <div class="col-10 offset-2 pv letter-object">
+                <div class="clearfix">
+                    Objet : Procès-verbal de constatation à l’urbanisme n° <b>{{ folder.num }}</b>
+                </div>
+                <br>
+                <div class="clearfix">
+                    Commune de {{ plot.town.name }} ({{ plot.town.zipcode }})
+                </div>
+            </div>
+
+            <br>
+            <br>
+
+            <div class="col-12 pv letter-content">
+
+                <div class="clearfix">
+                    <p>
+                        {# Affichage de la date de cloture du dossier et des informations de la passerelle #}
+                        Je vous prie de trouver ci-joint un procès-verbal de constatation dressé
+                        le {{ folder.dateClosure|date('d/m/Y') }}
+                        pour la réalisation de travaux irréguliers sur l’unité foncière
+                        cadastrée {{ plot.parcel }} {% if plot.place %}lieudit {{ plot.place }}{% endif %} à
+                        l'adresse {{ plot.address }} sur le territoire de la commune de {{ plot.town.name }}
+                        ({{ plot.town.zipcode }}).
+                    </p>
+                </div>
+
+                <div class="clearfix">
+                    <p>
+                        Je ne manquerai pas de vous tenir informé de l’éventuelle évolution de ce dossier.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

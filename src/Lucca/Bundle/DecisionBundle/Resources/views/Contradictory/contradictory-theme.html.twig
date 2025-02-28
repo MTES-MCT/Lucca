@@ -1,0 +1,56 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{% block collection_widget %}
+    {% spaceless %}
+        {% if prototype is defined %}
+            {% set attr = attr|merge({'data-prototype': form_widget(prototype)}) %}
+            {% set attr = attr|merge({'data-prototype-name': prototype.vars.name}) %}
+        {% endif %}
+        {% set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) %}
+        {% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}
+        {% set attr = attr|merge({'data-name-prefix': full_name}) %}
+
+        {{ form_errors(form) }}
+
+        <table {{ block('widget_attributes') }}>
+            <thead>
+            <tr>
+                <th>{{ 'label.dateNoticeDdtm'|trans( {'%DDTM%': 'setting.general.ddtAcronym.name'|setting } ) }}</th>
+                <th>{{ 'label.dateExecution'|trans }}</th>
+                <th>{{ 'label.dateAnswer'|trans }}</th>
+                <th>{{ 'label.answer'|trans }}</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for item in form %}
+                {{ form_widget(item) }}
+            {% endfor %}
+
+            </tbody>
+        </table>
+    {% endspaceless %}
+
+{% endblock %}
+
+{% block lucca_minutebundle_contradictory_widget %}
+
+    <tr {{ block('widget_attributes') }}>
+        <td>{{ form_widget(form.dateNoticeDdtm) }}</td>
+        <td>{{ form_widget(form.dateExecution) }}</td>
+        <td>{{ form_widget(form.dateAnswer) }}</td>
+        <td>{{ form_widget(form.answer) }}</td>
+
+        <td class="text-center">
+            <a href="#" class="collection-duplicate btn btn-info" title="{{ 'link.contradictory.duplicate'|trans }}">
+                <span class="fa fa-th-large"></span></a>
+            <a href="#" class="collection-remove btn btn-danger" title="{{ 'link.contradictory.delete'|trans }}">
+                <span class="fa fa-trash"></span></a>
+        </td>
+    </tr>
+
+{% endblock %}
+
+{% block lucca_minutebundle_contradictory_label %}{% endblock %}

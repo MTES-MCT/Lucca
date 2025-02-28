@@ -1,0 +1,65 @@
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+
+<div class="row mb-2">
+
+    <div class="col-12">
+        <a name="closure" data-value="closure-{{ closure.id }}" class="btn btn-secondary btn-xs btn-block btn-collapse">
+            <h4>
+                {{ 'entity.closure'|trans }}
+                <span class="badge badge-success float-right mr15">{{ closure.status|trans }}</span>
+            </h4>
+        </a>
+    </div>
+
+    <div class="col-12">
+        <div id="closure-{{ closure.id }}" style="display: block;">
+            <table class="table table-striped table-hover">
+                <tbody>
+                <tr>
+                    <th>{{ 'label.dateClosing'|trans }}</th>
+                    <td>{{ closure.dateClosing|date('d/m/Y') }}</td>
+                </tr>
+                {% if closure.reason %}
+                    <tr>
+                        <th>{{ 'label.reasonClosing'|trans }}</th>
+                        <td>{{ closure.reason }}</td>
+                    </tr>
+                {% endif %}
+                {% if closure.natureRegularized %}
+                    <tr>
+                        <th>{{ 'label.natureRegularized'|trans }}</th>
+                        <td>{{ closure.natureRegularized|trans }}</td>
+                    </tr>
+                {% endif %}
+                {% if closure.initiatingStructure %}
+                    <tr>
+                        <th>{{ 'label.initiatingStructure'|trans }}</th>
+                        <td>{{ closure.initiatingStructure|trans }}</td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <th>{{ 'label.observation'|trans }}</th>
+                    <td>{{ closure.observation|raw }}</td>
+                </tr>
+                {% if is_granted("ROLE_SUPER_ADMIN") %}
+                    <tr class="table-danger">
+                        <th>
+                            {{ 'label.actions'|trans }}
+                            <label class="badge badge-danger">{{ 'badge.sadmin'|trans }}</label>
+                        </th>
+                        <td>
+                            <a href="{{ path('lucca_minute_open', {'id': minute.id }) }}"
+                               class="btn btn-info btn-sm btn-labeled" title="{{ 'link.open'|trans }}">
+                                <span class="btn-label"><i class="fa fa-gavel"></i></span>
+                                {{ 'link.minute.open'|trans }}
+                            </a>
+                        </td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

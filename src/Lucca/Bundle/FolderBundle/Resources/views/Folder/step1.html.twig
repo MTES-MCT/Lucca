@@ -1,0 +1,189 @@
+{% extends 'LuccaThemeAngleBundle:SubLayout:edit.html.twig' %}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{#--  Import specific macro  --#}
+{% import "@LuccaThemeAngle/Macro/buttonHelp.html.twig" as macroButtonHelp %}
+
+{% set param_entity='entity.folder'|transchoice(1) %}
+{% set param_entities='entity.folder'|transchoice(2) %}
+
+{% block menuActive_minute %}class="active"{% endblock %}
+
+
+{% block lucca_panels %}
+
+    <div class="row">
+
+        <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+            <p class="text-danger">
+                <em>
+                    Cliquez sur les mots-clés pour définir la nature de l'infraction. Pour certains de ces mots, une
+                    aide à
+                    la rédaction du PV est disponible par des phrases types.<br>
+                    Il suffit de cliquer sur le bouton <i class="fa fa-clipboard"></i> pour copier automatiquement le
+                    texte.<br>
+                </em>
+            </p>
+        </div>
+    </div>
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {#-- Panel - main --#}
+    <div class="row">
+
+        <div class="col-lg-6 col-md-8 col-sm-12 col-12">
+
+            <div class="card card-default">
+                <div class="card-header"><strong>{{ 'title.frame3'|trans }}</strong></div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label" for="lucca_num">{{ 'label.num_folder'|trans }}</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="lucca_num" class="form-control"
+                                       value="{{ folder.num }}" disabled="disabled">
+                            </div>
+                        </div>
+
+                        <div class="bool-inline">{{ form_row(form.tagsNature) }}</div>
+
+                        <div class="text-right text-danger">
+                            {{ 'help.folder.ascertainment'|trans }}<br>
+                            {% set avoid_break_page = avoid_break_page|split(',') %}
+                            {{ 'help.folder.custom_tags'|trans }} {{ avoid_break_page[0] }} {{ 'help.folder.text'|trans }} {{ avoid_break_page[1] }}
+                            {{ macroButtonHelp.buttonInfoHelp('help.folder.infos'|trans) }}
+                        </div>
+
+                        <label class="col-sm-10 col-sm-offset-2">J’ai constaté ce qui suit:</label>
+                        {{ form_row(form.ascertainment) }}
+
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"
+                           title="{{ 'link.backMinute'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <button type="submit" class="btn btn-success btn-lg" title="{{ 'link.save_and_stop'|trans }}">
+                            <i class="fa fa-check"></i> {{ 'link.save_and_stop'|trans }}</button>
+
+                        <button type="submit" class="btn btn-info btn-lg" name="saveAndContinue"
+                                title="{{ 'link.save_and_continue'|trans }}"><i
+                                    class="fa fa-angle-double-right"></i> {{ 'link.save_and_continue'|trans }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {#-- End Panel - main --#}
+
+        {#-- Panel - proposals --#}
+        <div class="col-lg-6 col-md-8 col-sm-12 col-12">
+
+            <div class="card card-default">
+                <div class="card-header"><strong>{{ 'title.proposals'|trans }}</strong></div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>{{ 'label.actions'|trans }}</th>
+                                <th>{{ 'label.tag'|trans }}</th>
+                                <th>{{ 'label.sentence'|trans }}</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for tag in tags|reverse %}
+                                {% for proposal in tag.proposals %}
+                                    <tr class="proposals tag-{{ tag.id }}" style="display: none;">
+                                        <td>
+                                            <a href="#" class="btn btn-secondary append-text" name="{{ proposal.id }}"
+                                               title="{{ 'help.folder.add_text'|trans }}">
+                                                <i class="fa fa-clipboard"></i> </a>
+                                        </td>
+                                        <td>{{ tag.name }}</td>
+                                        <td id="sentence-{{ proposal.id }}">{{ proposal.sentence|raw }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    {#-- End Panel - proposals --#}
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+{% endblock lucca_panels %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    <link href="{{ asset('plugins/summernote/summernote-bs4.css') }}" rel="stylesheet">
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script src="{{ asset('plugins/summernote/summernote-bs4.js') }}"></script>
+    <script src="{{ asset('plugins/summernote/lang/summernote-fr-FR.min.js') }}"></script>
+
+    <script>
+        {#Summernote#}
+        var summernoteLight = $('.summernote-light').summernote({
+            height: 600,
+            {% if toolbar is defined %}
+            toolbar: {{ toolbar|json_encode|raw }},
+            {% endif %}
+            lang: 'fr-FR',
+            callbacks: {
+                onImageUpload: function (files) {
+                    wysiwyg.uploadImageContent(files[0], summernoteLight);
+                },
+            }
+        });
+        {#-- End --#}
+
+        {#-- Custom JS --#}
+        {#-- Display checked proposals --#}
+        $(document).ready(function () {
+            {% for tag in folder.tagsNature %}
+            var classname = ".tag-" + {{ tag.id }};
+            $(classname).toggle('slow');
+            {% endfor %}
+        });
+        {#-- End --#}
+
+        {#-- Display/Hide proposals when checkbox is clicked --#}
+        $('input[name="lucca_minutebundle_folder_step1[tagsNature][]"]').click(function () {
+            var classname = ".tag-" + $(this).val();
+            $(classname).toggle('slow');
+        });
+        {#-- End --#}
+
+        {#-- Display proposals when checkbox is clicked --#}
+        $('.append-text').click(function () {
+            var idSentence = "#sentence-" + $(this).attr("name");
+            var text = '<br>' + $(idSentence).text() + '<br>';
+
+            {#-- Copy Html text at cursor position --#}
+            $('.summernote-light').summernote('editor.saveRange');
+            $('.summernote-light').summernote('editor.restoreRange');
+            $('.summernote-light').summernote('editor.focus');
+            $('.summernote-light').summernote('editor.pasteHTML', text);
+        });
+        {#-- End --#}
+    </script>
+{% endblock lucca_js %}

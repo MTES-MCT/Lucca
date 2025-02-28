@@ -1,0 +1,120 @@
+{% extends '@LuccaMinute/Courier/Printing/Basic/ddtm_content.html.twig' %}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{% import "LuccaMinuteBundle:Human:human-macro.html.twig" as humanMacro %}
+
+
+{% block lucca_courier_ddtm_content_header %}
+
+{% endblock %}
+
+{% block lucca_courier_ddtm_content_folderType %}
+{% if folder.type is constant('TYPE_FOLDER', folder) %}
+<div class="row mb50 pt50">
+    <div class="col-12 letter-object">
+        Objet : Commune de {{ plot.town.name }} {{ plot.town.zipcode }}<br>
+        <span class="ml-5">Infractions au code de l’urbanisme<br></span>
+        <span class="ml-5">Procès verbal n°{{ folder.num }} à l’encontre
+        de {{ humanMacro.humansByCourierViewText(humansList) }}</span>
+        {% if folder.nature is constant('NATURE_OBSTACLE', folder) %}
+            <span class="ml-5"><b>Obstacle au droit de visite</b></span>
+        {% endif %}
+    </div>
+</div>
+
+<div class="clearfix mt15 letter-object">
+    PJ : 1 dossier en double exemplaire
+</div>
+
+<div class="row">
+    <div class="col-12 pv letter-content">
+        <div class="clearfix">
+            Je vous prie de trouver ci-joint un procès-verbal d’infraction à l’urbanisme dressé le
+            {{ folder.dateClosure|date('d/m/Y') }}
+            à l’encontre de
+            {{ humanMacro.humansByCourierViewText(humansList) }}
+            pour
+            {% if folder.nature is not constant('NATURE_OBSTACLE', folder) %}
+                la réalisation de travaux irréguliers sur l’unité foncière
+                cadastrée {{ plot.parcel }} {% if plot.place %}lieudit {{ plot.place }}{% endif %}
+                sise à {{ plot.address }} sur le territoire de la commune
+                de {{ plot.town.name }} {{ plot.town.zipcode }}.
+            {% else %}
+                le délit : Obstacle au droit de visite des constructions par les autorités habilitées.<br>
+                <br>
+                Les travaux devant faire l'objet d'un contrôle sont situés sur l'unité foncière cadastrée
+                {{ plot.parcel }} {% if plot.place %}lieudit {{ plot.place }}{% endif %}
+                sise à {{ plot.address }} sur le territoire de la commune
+                de {{ plot.town.name }} {{ plot.town.zipcode }}.
+            {% endif %}
+
+            {% if folder.ascertainment and folder.nature is not constant('NATURE_OBSTACLE', folder) %}
+                <div class="clearfix">
+                    <p> Les travaux illicites consistent à : </p>
+                    {% if 'print' in app.request.pathinfo %}
+                        {{ folder.ascertainment|localPath|raw }}
+                    {% else %}
+                        {{ folder.ascertainment|raw }}
+                    {% endif %}
+                <br>
+                </div>
+            {% endif %}
+
+            <div class="clearfix">
+                <p>
+                    L' infraction étant constituée, j’ai demandé à M. le procureur de la République d’engager les
+                    poursuites pénales à l’encontre
+                    de {{ humanMacro.humansByCourierViewText(humansList) }}.
+                </p>
+            </div>
+
+            <div class="clearfix">
+                <p>
+                    Je ne manquerai pas de vous tenir informé de l’évolution de ce dossier.
+                </p>
+            </div>
+
+        </div>
+    </div>
+{% endif %}
+{% endblock %}
+
+{% block lucca_courier_ddtm_content_updating %}
+    {% if folder.type is constant('TYPE_REFRESH', folder) %}
+        <div class="row mb50 pt150">
+            <div class="col-12 pv letter-object">
+                <div class="clearfix">
+                    Objet : Procès-verbal de constatation à l’urbanisme n° <b>{{ folder.num }}</b>
+                </div>
+                <div class="clearfix">
+                    Commune de {{ plot.town.name }} ({{ plot.town.zipcode }})
+                </div>
+            </div>
+
+            <div class="clearfix mt15 letter-object">
+                PJ : 1 dossier en double exemplaire
+            </div>
+
+            <div class="col-10 offset-2 mt15 pt15 pv letter-content">
+
+                <div class="clearfix">
+                    <p>
+                        Je vous prie de trouver ci-joint un procès-verbal de constatation dressé
+                        le {{ folder.dateClosure|date('d/m/Y') }}
+                        pour la réalisation de travaux irréguliers sur l’unité foncière
+                        cadastrée {{ plot.parcel }} {% if plot.place %}lieudit {{ plot.place }}{% endif %} à
+                        l'adresse {{ plot.address }} sur le territoire de la commune de {{ plot.town.name }}
+                        ({{ plot.town.zipcode }}).
+                    </p>
+                </div>
+
+                <div class="clearfix">
+                    <p>
+                        Je ne manquerai pas de vous tenir informé de l’éventuelle évolution de ce dossier.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

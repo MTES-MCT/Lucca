@@ -1,0 +1,32 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{#-- .delWin --#}
+<div class="modal inmodal mapModal" tabindex="-1" role="dialog" aria-labelledby="Resize"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+                    <span class="sr-only">{{ 'link.close'|trans }}</span></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="d-flex flex-row">
+                    <div class="d-flex flex-column flex-fill m-2">
+                        <div>
+                            <div id="js-google-map"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <a type="button" class="btn btn-secondary btn-md" data-dismiss="modal">
+                    {{ 'link.close'|trans }} </a>
+            </div>
+        </div>
+    </div>
+</div> {#-- End .delWin --#}

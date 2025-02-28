@@ -1,0 +1,47 @@
+{##}{#Script load when document is ready - Then all dependencies is loaded#}
+$(document).ready(function () {
+    var summernote = $('.summernote-letter').summernote({
+        height: {{ param_height }},
+        {% if toolbar is defined %}
+        toolbar: {{ toolbar|json_encode|raw }},
+        {% endif %}
+        lang: 'fr-FR',
+        callbacks: {
+            onImageUpload: function (files) {
+                let summernoteSelected;
+                let id = $(this).attr('id');
+
+                /** Check all summernote in tab summernote to get the focused */
+                for (let i = 0; i < summernote.length; i++) {
+                    if ($(summernote[i]).attr('id') === id) {
+                        summernoteSelected = summernote[i];
+                    }
+                }
+                wysiwyg.uploadImageContent(files[0], summernoteSelected);
+            },
+        }
+    });
+    let id = "";
+    {% if origin == "letterOffender" %}
+    id = "#{{ idWidget|e('js') }}_{{ origin }}";
+    {% elseif idWidget is defined %}
+    id = "#{{ idWidget|e('js') }}_letter{{ origin|capitalize }}";
+    {% else %}
+    id = '.summernote-letter';
+    {% endif %}
+
+    $(id).summernote('disable');
+    {% if isEdited %}
+    $(id).summernote('enable');
+    {% endif %}
+
+// On checkbox click, toggle summernote input
+    $('input[name*="{{ nameWidget|e('js') }}[{{ origin }}Edited]"]').click(function () {
+        console.log('input[name*="{{ nameWidget|e('js') }}[{{ origin }}Edited]"]');
+        if ($('input[name*="{{ nameWidget|e('js') }}[{{ origin }}Edited]"]').is(':checked')) {
+            $(id).summernote('enable');
+        } else {
+            $(id).summernote('disable');
+        }
+    });
+});

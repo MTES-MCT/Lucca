@@ -1,0 +1,115 @@
+{% extends 'LuccaThemeAngleBundle:SubLayout:edit.html.twig' %}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{% set param_entity='entity.courier'|transchoice(1) %}
+{% set param_entities='entity.courier'|transchoice(2) %}
+
+{% block menuActive_minute %}class="active"{% endblock menuActive_minute %}
+
+
+{% block lucca_panels %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {#-- Panel - main --#}
+    <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+
+        <div class="card card-default">
+            <div class="card-header"><strong>{{ 'title.courier_judicial'|trans }}</strong></div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+
+                    <p class="text-warning">
+                        <em> Ajoutez si besoin des éléments de contexte, qui apparaîtront dans le courrier. </em>
+                    </p>
+
+                    {{ form_row(form.context) }}
+
+                    <p class="text-warning">
+                        <em> Constitution de partie civile - </em>
+                        <a href="{{ path('lucca_core_page_tools') }}"
+                           target="_blank">{{ 'help.tools.listPages'|trans }}</a>
+                    </p>
+
+                    <div class="bool-inline">{{ form_row(form.civilParty) }}</div>
+
+                    <div class="civilParty" style="display: none;">
+                        {{ form_row(form.amount) }}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <a class="btn btn-secondary btn-lg"
+                               href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"
+                               title="{{ 'link.backMinute'|trans }}"><i class="fa fa-reply"></i></a>
+
+                            <button type="submit" class="btn btn-success btn-lg"
+                                    title="{{ 'link.courier.manual.judicialUpdate'|trans }}"><i class="fa fa-check"></i>
+                            </button>
+
+                            <button type="submit" class="btn btn-info btn-lg" name="saveAndContinue"
+                                    title="{{ 'link.save_and_continue'|trans }}">
+                                <i class="fa fa-angle-double-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {#-- End Panel - main --#}
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+{% endblock lucca_panels %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    <link href="{{ asset('plugins/summernote/summernote-bs4.css') }}" rel="stylesheet">
+
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script src="{{ asset('plugins/summernote/summernote-bs4.js') }}"></script>
+    <script src="{{ asset('plugins/summernote/lang/summernote-fr-FR.min.js') }}"></script>
+
+    <script>
+        {# Summernote #}
+        $('.summernote').summernote({
+            height: 100,
+            disableDragAndDrop: true,
+            lang: 'fr-FR',
+            tabsize: 2,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link']],
+                ['view', ['fullscreen', 'codeview', 'help']],
+            ],
+        });
+        {#-- End --#}
+
+        {#-- Custom JS --#}
+        {#-- Display/Hide proposals when checkbox is clicked --#}
+        $('input[name="lucca_minutebundle_courier[civilParty]"]').click(function () {
+            if ($(this).val() == 1)
+                $('.civilParty').show('slow');
+            else
+                $('.civilParty').hide('slow');
+        });
+        {#-- End --#}
+    </script>
+{% endblock lucca_js %}

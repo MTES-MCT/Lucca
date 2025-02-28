@@ -1,0 +1,108 @@
+{% extends '@LuccaMinute/Courier/Printing/Basic/judicial_content.html.twig' %}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{% import "LuccaMinuteBundle:Human:human-macro.html.twig" as humanMacro %}
+
+{#--  Letter header  --#}
+{% block lucca_courrier_judicial_content_header %}
+
+    <div class="row letter-content">
+        <br>
+        <br>
+        <div class="clearfix">
+            Objet : Procès-verbal d’infraction à l’urbanisme n° <b>{{ folder.num }}</b>
+        </div>
+        <div class="clearfix">
+            Commune de {{ plot.town.name }} {{ plot.town.zipcode }} – à l’encontre
+            de {{ humanMacro.humansByCourierViewText(humansList) }}
+        </div>
+        {% if folder.nature is constant('NATURE_OBSTACLE', folder) %}
+            <div class="clearfix"><b>Obstacle au droit de visite</b></div>
+        {% endif %}
+        <div class="clearfix mt15">
+            PJ : 1 dossier en double exemplaire
+        </div>
+    </div>
+{% endblock %}
+{#--  END - Letter header  --#}
+
+
+{#-- Letter Content --#}
+{% block lucca_courrier_judicial_content_content%}
+    <div class="row">
+        <div class="col-12 pv">
+            <div class="letter-content mt15">
+                <div class="clearfix">
+                    <p>
+                        Je vous prie de trouver ci-joint un procès-verbal d’infraction à l’urbanisme dressé
+                        le {{ folder.dateClosure|date('d/m/Y') }} à l’encontre
+                        de {{ humanMacro.humansByCourierViewText(humansList) }}
+                        &#160; pour
+                        {% if folder.nature is not constant('NATURE_OBSTACLE', folder) %}
+                            la réalisation de travaux irréguliers sur l’unité foncière
+                            cadastrée {{ plot.parcel }} {% if plot.place %}lieudit {{ plot.place }}{% endif %} à
+                            l'adresse {{ plot.address }} sur le territoire de la commune
+                            de {{ plot.town.name }} {{ plot.town.zipcode }}.
+                        {% else %}
+                            le délit : Obstacle au droit de visite des constructions par les autorités habilitées.<br>
+                            <br>
+                            Les travaux devant faire l'objet d'un contrôle sont situés sur l'unité foncière cadastrée
+                            {{ plot.parcel }} {% if plot.place %}lieudit {{ plot.place }}{% endif %} à
+                            l'adresse {{ plot.address }} sur le territoire de la commune
+                            de {{ plot.town.name }} {{ plot.town.zipcode }}.
+                        {% endif %}
+                    </p>
+                </div>
+
+                {% if  folder.ascertainment and folder.nature is not constant('NATURE_OBSTACLE', folder) %}
+                    <div class="clearfix mt15">
+                        <p> Les travaux relevés consistent à : </p>
+                        {% if 'print' in app.request.pathinfo %}
+                            {{ folder.ascertainment|localPath|raw }}
+                        {% else %}
+                            {{ folder.ascertainment|raw }}
+                        {% endif %}
+                        <br>
+                    </div>
+                {% endif %}
+
+                {% if courier.context %}
+                    <div class="clearfix">
+                        {% if 'print' in app.request.pathinfo %}
+                            {{ courier.context|localPath|raw }}
+                        {% else %}
+                            {{ courier.context|raw }}
+                        {% endif %}
+                        <br>
+                    </div>
+                {% endif %}
+
+                <div class="clearfix">
+                    <p>
+                        L' infraction étant constituée, je vous saurais gré de bien vouloir engager des poursuites pénales à
+                        l’encontre de
+                        {{ humanMacro.humansByCourierViewText(humansList) }}.
+                    </p>
+                </div>
+
+                {% if courier.civilParty %}
+                    <div class="clearfix">
+                        <p>
+                            Je vous informe que je souhaite par la présente, me constituer partie civile dans l’affaire
+                            sus-référencée afin d’obtenir réparation du préjudice conformément aux articles 420-1 du code de
+                            procédure pénale et L480-1, al. 6 du code de l’urbanisme. Je sollicite la somme
+                            de {{ courier.amount|price }} en réparation du préjudice subi ainsi que la remise
+                            en état du terrain par la démolition des ouvrages construits et installés illégalement.
+                        </p>
+                    </div>
+                {% endif %}
+
+                <div class="clearfix">
+                    <p>
+                        Je reste à votre disposition pour toute information complémentaire.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

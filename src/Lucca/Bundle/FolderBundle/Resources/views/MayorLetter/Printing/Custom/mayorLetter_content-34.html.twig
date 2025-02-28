@@ -1,0 +1,171 @@
+{% extends '@LuccaMinute/MayorLetter/Printing/Basic/mayorLetter_content.html.twig' %}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{#-- Letter Content --#}
+{% block lucca_mayor_letter_content_content %}
+    <div class="row">
+        <div class="col-12 pv">
+            <div class="letter-content">
+                <div class="clearfix">
+                    <p>
+                        {{ mayorLetter.gender|trans }} le Maire,
+                    </p>
+                </div>
+
+                <div class="clearfix">
+                    <p>
+                        Dans le cadre de l'exercice de leurs fonctions, des agents assermentés de la DDTM ont été amenés
+                        à constater des infractions au code de l'urbanisme sur votre commune sur la/les parcelle·s
+                        {% for folder in mayorLetter.folders %}
+                        {{ folder.minute.plot.parcel }}{% if not loop.last %},{% endif %}
+                        {% endfor %}.
+                    </p>
+                    <p>
+                        Comme le prévoit l'article L.480-1 du même code,
+
+                        {% if mayorLetter.folders | length <= 1 %}
+                            un procès verbal (PV) d'infraction a été dressé
+                        {% else %}
+                            des procès verbaux (PV) d'infraction ont été dressés
+                        {% endif %}
+
+                        et
+                        transmis sans délai au ministère public, à qui il appartient de décider des suites à donner au
+                        titre de la procédure pénale.
+                    </p>
+                    <p>
+                        En parallèle de cette action enclenchée par mes services et sans attendre les suites pénales
+                        pouvant être données par le ministère public, il importe de mobiliser l'ensembre des leviers à
+                        votre disposition pour faire cesser cet état de fait et inciter le contrevenent à retirer les
+                        constructions/installations concernées ou, si leur régularisation est possible au regard des règles
+                        d'urbanisme, à déposer une demande d'autorisation d'urbanisme.
+                    </p>
+                    <p>
+                        Pour vous permettre d'agir, je vous transmets en votre qualité d'officier de police judiciaire la copie
+                        du/des PV dressé·s. J'attire votre attention sur le fait que ce document constitue une pièce de la
+                        procédure pénale qui n'est communicable aux administrés ou aux personnes mises en cause que par le
+                        ministère public ou avec son accord.
+                    </p>
+                </div>
+
+                <div class="clearfix">
+                    <p>
+                        Sur la base de
+
+                        {% if mayorLetter.folders | length <= 1 %}
+                            ce procès verbal
+                        {% else %}
+                            ces procès verbaux
+                        {% endif %}
+                        , je vous invite :
+                    </p>
+                    <p>
+                        - à prendre un arrêté interruptif de travaux (AIT), conformément à l'article L.480-2 du code de
+                        l'urbanisme, qui enjoindra au contrevenent de mettre fin immédiatement au travaux en cours,
+                        avant leur achèvement. Si cet AIT venait à ne pas être suivi d'effet, vous avez compétence pour
+                        dresser un nouveau PV pour constater la poursuite des travaux malgré l'AIT.
+                    </p>
+                    <p>
+                        - à procéder à une mise en demeure, sous astreinte administrative d'un montant adapté à la
+                        situation, de régularisation. A cette fin, vous trouverez en pièce jointe une fiche explicitant
+                        la démarche.
+                        Ces nouvelles dispositions permettent au maire de disposer d'un levier incitatif mobilisable
+                        dans un délai court pour contraindre le mise en conformité de la construction, soit;
+                        lorsque les règles d'urbanisme le permettent, par l'obtention d'une autorisation d'urbanisme.
+                    </p>
+                </div>
+
+                <br>
+                <br>
+                <br>
+
+                <div class="row letter-addr-to-bottom">
+                    <div class="col-xs-6"><b>
+                            {{ mayorLetter.gender|trans }} {{ mayorLetter.name }},<br>
+                            {{ mayorLetter.address|nl2br }}<br>
+                            {{ mayorLetter.town.zipcode }} {{ mayorLetter.town.name }}<br>
+                        </b></div>
+                    <div class="col-xs-6">
+                    </div>
+                </div>
+
+
+                <div class="page-break"></div>
+
+                <div class="clearfix">
+                    <p>
+                        Par ailleurs, ce PV a été transmis au service de
+                        la {{ 'setting.general.ddtAcronym.name'|setting }} en charge de la fiscalité
+                        de l'aménagement et fera l'objet d'une majoration de 80 % de la taxe après une procédure
+                        contradictoire, comme prévu par l'article L.331-23 du code de l'urbanisme.
+                    </p>
+                </div>
+
+                <br>
+                <br>
+
+                <div class="clearfix">
+                    <p>
+                        En complément, j'attire votre attention sur d'autres modes d'action à votre disposition :
+                    </p>
+                    <p>
+                        - sur le fondement de l'article L.480-14 du code de l'urbanisme : possibilité pour la commune
+                        d'engager une action en démolition devant le juge civil, lorsqu'il y a méconnaissance des
+                        dispositions du PLU et/ou de la règle de procédure (avec une prescription de dix ans à compter
+                        de l'achèvement
+                        des travaux) ;
+                    </p>
+                    <p>
+                        - sur le fondement de l'article 835 du code de procédure civile : possibilité pour la commune,
+                        afin d'obtenir une action plus rapide, de saisie le juge civil des référés.
+                    </p>
+                    <p>
+                        Même si cette opération nécessite pour la commune de faire appel à un avocat, elle permet
+                        d'obtenir les mêmes leviers en réparation que la procédure pénale (remise en état des lieux sous
+                        astreintes journalières) dans les délais les plus courts.
+                    </p>
+                    <p>
+                        A noter enfin qu'en cas de décision du ministère public d'engager les poursuites, la commune peut
+                        se porter partie civile dans le cadre de la procédure pénale faisant suite à l'infraction
+                        contatée par PV afin d'obtenir réparation du préjudice subi (atteinte à l'urbanisme et à l'environnement,
+                        démarches menées pour inciter le mis en cause à mettre sa construction en conformité, etc.).
+                    </p>
+                </div>
+
+                <br>
+                <br>
+
+                <div class="clearfix">
+                    <p>
+                        Les services de la {{ 'setting.general.ddtAcronym.name'|setting }} restent à votre disposition
+                        pour toute précision utile
+                        ou pour vous appuyer dans vos démarches de lutte contre la cabanisation.
+                    </p>
+                </div>
+
+                <br>
+                <br>
+
+                <div class="clearfix">
+                    <p>
+                        Je vous pris d'agréer, {{ mayorLetter.gender|trans }} le Maire, l'assurance de ma considération distinguée.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        {#-- Signature --#}
+        <div class="row mb25 mb15 pt15">
+            <div class="col-8 offset-4 text-center letter-signature">
+                Le directeur,
+            </div>
+        </div>
+        {#-- End - Signature --#}
+    </div>
+{% endblock %}

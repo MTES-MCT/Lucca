@@ -1,0 +1,58 @@
+####################################
+## Flash Domain
+##
+## Author Terence <terence@numeric-wave.tech>
+####################################
+
+flash:
+    control:
+        needed: "Avant de créer un PV, veuillez créer un contrôle."
+
+    folder:
+        createdSuccessfully: "Le procès verbal a bien été créé."
+        updatedSuccessfully: "Le procès verbal a bien été modifié."
+        deletedSuccessfully: "Le procès verbal a bien été supprimé."
+        closeSuccessfully: "Le procès verbal a bien été clôturé."
+        openSuccessfully: "Le procès verbal a bien été ouvert."
+
+        step1Saved: "La nature de l'infraction du procès verbal a été saisie."
+        step1CannotBeEdited: "La nature de l'infraction du procès verbal ne peut pas être modifiée."
+        step2Saved: "La réglementation applicable du procès verbal a été saisie."
+        step2CannotBeEdited: "La réglementation applicable du procès verbal ne peut pas être modifiée."
+        step3Saved: "Les natinfs du procès verbal ont été saisies."
+        step3CannotBeEdited: "Les natinfs du procès verbal ne peuvent pas être modifiés."
+        alreadyFenced: "Le procès verbal a déjà été clôturé."
+        updatedManualSuccessfully: "Les modifications sur le Procès Verbal ont été enregistrées."
+        markAsReRead: "Le procès verbal a été marqué comme relu."
+        markAsUnReRead: "Le procès verbal a été marqué comme non relu."
+        cannotPrint: "Le PDF ne peut être généré pour le PV demandé. Veuillez vérifier l'intégrité des images fournies."
+
+    courier:
+        offenderDate: "Les courriers aux contrevenant seront datés d'aujourd'hui."
+        ddtmDate: "Le courrier à la DDT sera daté d'aujourd'hui."
+        judicialUpdate: "Le courrier au parquet a été modifié"
+        judicialDate: "Le courrier au parquet sera à la date du jour."
+        addSuccessfully: "Les courriers ont été créés automatiquement. Vous devez les dater pour les imprimer."
+
+        judicialEditedManually: "La lettre au parquet a été modifiée manuellement."
+        ddtmEditedManually: "La lettre à la DDT a été modifiée manuellement."
+        offenderEditedManually: "Les lettres aux contrevenants ont été modifiées manuellement."
+        alreadySended: "Le courrier a déjà été envoyé."
+
+    natinf:
+        createdSuccessfully: "Le natinf a bien été créé."
+        updatedSuccessfully: "Le natinf a bien été modifié."
+        deletedSuccessfully: "Le natinf a bien été supprimé."
+        disabledSuccessfully: "Le natinf a bien été désactivé."
+        enabledSuccessfully: "Le natinf a bien été activé."
+
+    folderSigned:
+        createdSuccessfully: "Le PV signé a bien été ajouté."
+        updatedSuccessfully: "Le PV signé a bien été modifiée."
+        deletedSuccessfully: "Le PV signé a bien été supprimée."
+
+    annexes:
+        updatedSuccessfully: "Les annexes ont été mises à jour."
+
+    model:
+        notFound: "Aucun Model trouvé pour ce document"

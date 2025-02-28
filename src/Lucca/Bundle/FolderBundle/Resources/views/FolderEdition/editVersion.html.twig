@@ -1,0 +1,67 @@
+{% extends 'LuccaThemeAngleBundle:SubLayout:edit.html.twig' %}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{% set param_entity='entity.folder'|transchoice(1) %}
+{% set param_entities='entity.folder'|transchoice(2) %}
+
+{% block menuActive_minute %}class="active"{% endblock %}
+
+
+{% block lucca_panels %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+
+        {#-- Panel - main --#}
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            <div class="card card-default">
+                <div class="card-header"><strong>{{ 'title.folder.manualVersion'|trans }}</strong></div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <div class="text-right text-danger">
+                            {% set avoid_break_page = avoid_break_page|split(',') %}
+                            {{ 'help.folder.custom_tags'|trans }} {{ avoid_break_page[0] }} {{ 'help.folder.text'|trans }} {{ avoid_break_page[1] }}
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                {{ form_widget(form.folderEdited) }}
+                            </div>
+
+                            <div class="col-10">
+                                {{ form_widget(form.folderVersion) }}
+                            </div>
+                        </div>
+
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"
+                           title="{{ 'link.backMinute'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <button type="submit" class="btn btn-success btn-lg" title="{{ 'link.new'|trans }}">
+                            <i class="fa fa-check"></i></button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {#-- End Panel - main --#}
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+{% endblock lucca_panels %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script>
+        {% include '@LuccaMinute/Js/summernoteEdition.js.twig' with
+            {'param_height': 600, 'nameWidget': "", 'form': form,
+                'origin': "folder", 'isEdited': form.vars.value.folderEdited}
+        %}
+    </script>
+{% endblock lucca_js %}

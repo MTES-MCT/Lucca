@@ -1,0 +1,246 @@
+{% extends 'LuccaThemeAngleBundle:SubLayout:edit.html.twig' %}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{% set param_entity='entity.mayorLetter'|trans %}
+{% set param_entities='entity.mayorLetter'|trans %}
+
+{% block menuActive_mayorLetter %}class="active"{% endblock %}
+
+
+{% block lucca_page %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {#-- Panel - main --#}
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+        <div class="card card-default">
+            <div class="card-header">
+                <strong>{{ 'text.mayorLetter.informations'|trans }}</strong>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+
+                    <div class="col-12">
+                        {{ form_row(form.gender) }}
+                        {{ form_row(form.name) }}
+                        {{ form_row(form.address) }}
+                        {{ form_row(form.dateSended) }}
+                        {{ form_row(form.town) }}
+                        {{ form_row(form.agent) }}
+                    </div>
+
+                    <div class="col-12 mt-3">
+                        <a class="btn btn-success btn-lg js-check-print-letter" title="{{ 'text.mayorLetter.generate'|trans }}">
+                            <i class="fa fa-print mr-3"></i>{{ 'text.mayorLetter.generate'|trans }}
+                        </a>
+
+                        <button type="submit" name="print" class="btn btn-success btn-lg js-print" formtarget="_blank"
+                                title="{{ 'text.mayorLetter.generate'|trans }}"
+                                style="display: none">
+                            <i class="fa fa-print"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {#-- End Panel - main --#}
+
+    {#-- DATATABLE --#}
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+        <div class="card card-default">
+            <div class="card-header">
+                <strong>{{ 'text.mayorLetter.folderList'|trans }}</strong>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+                    <div class="col-12">
+
+                        <div class="pb-3">
+                            <div class="px-3 badge badge-warning">{{ 'text.mayorLetter.helpNeed'|trans }}
+                                {{ 'text.mayorLetter.helpSelect'|trans }}
+                            </div>
+
+                        </div>
+
+                        <table class="table table-striped table-hover dataTables responsive">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>{{ 'column.town'|trans }}</th>
+                                <th><i class="fas fa-folder-open"></i> {{ 'column.folder.num'|trans }}</th>
+                                <th>{{ 'column.folder.dateClosing'|trans }}</th>
+                                <th>{{ 'column.folder.nature'|trans }}</th>
+                                <th>{{ 'column.minute.responsibles'|trans }}</th>
+                                <th>{{ 'column.decision.tgi'|trans }}</th>
+                                <th>{{ 'column.decision.cour'|trans }}</th>
+                                <th>{{ 'column.decision.penalty'|trans }}</th>
+                                <th>{{ 'column.decision.expulsion'|trans }}</th>
+                                <th>{{ 'column.decision.demolition'|trans }}</th>
+                                <th>{{ 'column.minute.closing'|trans }}</th>
+                                <th><i class="fa fa-cogs"></i> {{ 'label.actions'|trans }}</th>
+                            </tr>
+                            </thead>
+
+                            <tbody id="table-body-folders-by-town">
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    {#-- END - DATATABLE --#}
+
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+{% endblock lucca_page %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    {#-- Plugin - DataTables --#}
+    {% include "LuccaThemeAngleBundle:Plugins:datatables.css.html.twig" %}
+    <link rel="stylesheet" href="{{ asset('plugins/dataTables/Select-1.3.3/select.dataTables.min.css') }}"/>
+
+    {# Datepicker #}
+    <link href="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
+          rel="stylesheet">
+    <link href="{{ asset('plugins/material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}"
+          rel="stylesheet">
+
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    {#-- Plugin - DataTables --#}
+    {% include "LuccaThemeAngleBundle:Plugins:datatables.js.html.twig" with { 'params' :
+        { 'id_datatable': '.dataTables', 'pageLength': 10, 'hasSelector': true }
+    } %}
+    <script src="{{ asset('plugins/dataTables/Select-1.3.3/dataTables.select.min.js') }}"></script>
+
+    {# Datepicker #}
+    <script src="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/lang/bootstrap-datepicker.fr.js') }}"></script>
+    <script src="{{ asset('plugins/material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}"></script>
+
+    <script>
+
+        {# Datepicker #}
+        $('.date-picker').datepicker({
+            calendarWeeks: true,
+            language: 'fr'
+        });
+
+        let $checkPrint = $('.js-check-print-letter');
+        let $print = $('.js-print');
+        let $folders = $('.js-folders');
+
+        // Update Folders value list
+        function updateFolders() {
+            let folders = []
+            table.rows({selected: true}).nodes().to$().each(function() {
+                folders.push($(this)[0].id);
+            });
+            $folders.val(JSON.stringify(folders))
+        }
+
+        let checkLetterDataFunction = function postCheckMayorLetter(data, callback) {
+            $.ajax({
+                url: Routing.generate('lucca_mayor_letter_check_post', {}),
+                type: 'POST',
+                data: JSON.stringify(data),
+                success: callback,
+                error: function (jqXHR) {
+                    let json = jqXHR["responseJSON"];
+                    Swal.fire({
+                        type: 'warning',
+                        title: 'Attention',
+                        text: json['message'],
+                    });
+                }
+            })
+        };
+
+        {#-------------------------------
+        Get Data FUNCTION
+        --------------------------------#}
+        function getData(){
+            let data = {};
+
+            data['gender'] = $('.js-gender').val();
+            data['nameMayor'] = $('.js-nameMayor').val();
+            data['addressMayor'] = $('.js-addressMayor').val();
+            data['dateSended'] = $('.js-dateSended').val();
+            data['town'] = $('.js-select-town').find(':selected').val();
+
+            data['folders'] = [];
+
+            table.rows({selected: true}).nodes().to$().each(function() {
+                data['folders'].push($(this)[0].id);
+            });
+
+            return data;
+        }
+        {#-- END Get Data FUNCTION --#}
+
+        {#-------------------------------
+        Event function
+        --------------------------------#}
+        // Update folders list when we select or deselect values in datatable
+        table.on('select', updateFolders).on('deselect', updateFolders);
+
+        // On click button call function embed with callback
+        $checkPrint.click(() => checkLetterDataFunction(getData(), () => $print.click()));
+
+        // Refresh data in table depending on town choosen
+        $(document).on('change', '.js-select-town', function (){
+            let townID = $('.js-select-town').find(':selected').val();
+
+            $.ajax({
+                url: '{{ path('lucca_mayor_letter_get_folders_api') }}',
+                data: {
+                    terms: townID,
+                },
+                success: function (html) {
+                     // refresh datatable
+                    if(html === "<tr><td colspan='14' class='text-center'>Aucun résultat</td></tr>"){
+                        table.clear();
+                        table.draw();
+                    }
+                    else {
+                        let data = JSON.parse(html);
+                        let rows = data.rows;
+
+                        /** Replace current position field ... */
+                        table.clear();
+
+                        $.each(rows, function (index, row) {
+                            let folder = $(row.trim().replace(/\s+/g, " ").replace("/</tr> <tr/g", "</tr><tr"));
+                            table.rows.add(folder).draw();
+                        })
+                    }
+                },
+                complete: function () {
+                    request = null;
+                },
+            });
+        });
+
+    </script>
+{% endblock lucca_js %}

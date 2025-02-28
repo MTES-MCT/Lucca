@@ -1,0 +1,488 @@
+{#-- Extends view --#}
+{% extends "LuccaThemeAngleBundle:SubLayout:new.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{#-- Macros --#}
+{% import "LuccaMinuteBundle:Human:human-macro.html.twig" as humanMacro %}
+
+{#-- Parameters --#}
+{% set param_entity='entity.control'|transchoice(1) %}
+{% set param_entities='entity.control'|transchoice(2) %}
+{% block menuActive_minute %}class="active"{% endblock %}
+
+
+{% block lucca_panels %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {# Form theme apply for child only #}
+    {% form_theme form  'LuccaThemeAngleBundle:Form:jquery.collection.html.twig' %}
+    {% form_theme form.humansByControl 'LuccaMinuteBundle:Human:human-theme.html.twig' %}
+    {% form_theme form.agentAttendants 'LuccaMinuteBundle:Agent:agent-attendant-theme.html.twig' %}
+
+    <div class="row">
+        {#-- Panel - main --#}
+        <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card card-default">
+                    <div class="card-header"><strong>
+                            {% if app.request.attributes.get('minute_id') %}
+                                {{ 'title.frame2'|trans }}
+                            {% elseif app.request.attributes.get('updating_id') %}
+                                {{ 'title.frame6'|trans }}
+                            {% endif %}
+                        </strong></div>
+
+                    <div class="card-wrapper">
+                        <div class="card-body">
+                            <div class="col-12">
+
+                                <div class="bool-inline">{{ form_row(form.summoned) }}</div>
+
+                                {{ form_row(form.stateControl) }}
+
+                                {{ form_row(form.dateControl) }}
+                                {{ form_row(form.hourControl) }}
+
+                                {# 1st block - control-inside #}
+                                <div class="controls control-inside" style="display: none;">
+                                    {# Humans summoned - Begin #}
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label" for="status">
+                                            {{ 'label.humanConvocated'|trans }}
+                                        </label>
+
+                                        <div class="col-sm-8">
+                                            <label class="radio-inline">
+                                                <input type="checkbox" name="status" id="owner" value="owner" checked>
+                                                {{ 'choice.status.owner'|trans }} / {{ 'choice.status.occupant'|trans }}
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="checkbox" name="status" id="others" value="others">
+                                                {{ 'choice.status.other'|trans }}
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="field-humans" id="field-humansByMinute">
+                                        {{ form_row(form.humansByMinute) }}
+                                    </div>
+                                </div>
+
+                                {# 2nd block - control-inside #}
+                                <div class="controls field-humans" id="field-humansByControl"
+                                     style="display: none;">
+
+                                    <label class="col-form-label col-sm-2 labels label-neighbour"
+                                           style="display: none;">
+                                        {{ 'label.humanNeighbour'|trans }}
+                                    </label>
+
+                                    {{ form_row(form.humansByControl) }}
+                                </div>
+
+                                {# 3rd block - control-inside #}
+                                <div class="controls control-inside" style="display: none;">
+                                    {{ form_row(form.datePostal) }}
+                                    {{ form_row(form.courierDelivery) }}
+
+                                    <div class="row">
+                                        <div class="text-warning offset-sm-2 col-sm-10">{{ 'help.control.validate_information'|trans }}</div>
+                                    </div>
+
+                                    {{ form_row(form.dateSended) }}
+                                    {{ form_row(form.dateNotified) }}
+                                    {{ form_row(form.dateContact) }}
+
+                                    {{ form_row(form.dateReturned) }}
+                                    {{ form_row(form.reason) }}
+                                </div>
+
+                                <div class="bool-inline">{{ form_row(form.accepted) }}</div>
+                                <div class="row">
+                                    <div class="col-sm-8 offset-sm-2 col-12 control-accepted control-accepted-true text-warning text-justify"
+                                         style="display: none;">
+                                        {#accepted#}
+                                    </div>
+
+                                    <div class="col-sm-8 offset-sm-2 col-12 control-accepted control-accepted-false text-warning text-justify"
+                                         style="display: none;">
+                                        Procédure à suivre dans le cas d'un contrôle refusé :
+                                        <ul>
+                                            {% if app.request.attributes.get('updating_id') %}
+                                                <li> compléter le procès-verbal d'obstacle au droit de visite qui a été
+                                                    généré automatiquement dans le cadre 6. Le transmettre au parquet et
+                                                    à la {{ 'setting.general.ddtAcronym.name'|setting }}{{ 'setting.general.departement.name'|setting }}/Affaires juridiques
+                                                </li>
+                                            {% else %}
+                                                <li> compléter le procès-verbal d'obstacle au droit de visite qui a été
+                                                    généré automatiquement dans le cadre 3. Le transmettre au parquet et
+                                                    à la {{ 'setting.general.ddtAcronym.name'|setting }}{{ 'setting.general.departement.name'|setting }}/Affaires juridiques
+                                                </li>
+                                            {% endif %}
+                                            <li> dans le cas où le contrôle de l'extérieur de la propriété ou
+                                                depuis une parcelle voisine est possible : revenir au cadre 2 pour
+                                                créer un nouveau contrôle
+                                            </li>
+                                            <li> dans le cas où le contrôle de l'extérieur de la propriété ou depuis
+                                                une parcelle voisine est impossible : le signaler à la {{ 'setting.general.ddtAcronym.name'|setting }}/Affaires
+                                                juridiques
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-sm-8 offset-sm-2 col-12 control-accepted control-accepted-null text-warning text-justify"
+                                         style="display: none;">
+                                        Procédure à suivre dans le cas d'un contrôle non abouti :
+                                        <ul>
+                                            <li> dans le cas où le contrôle de l'extérieur de la propriété ou depuis
+                                                une parcelle voisine est possible : revenir au cadre 2 pour créer un
+                                                nouveau contrôle
+                                            </li>
+                                            <li> dans le cas où le contrôle de l'extérieur de la propriété ou depuis une
+                                                parcelle voisine est impossible : le signaler à la {{ 'setting.general.ddtAcronym.name'|setting }}/Affaires
+                                                juridiques
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                {# Agent of Control #}
+                                <hr>
+                                <h4>{{ 'label.agent'|trans }}</h4>
+
+                                {% if app.request.attributes.get('updating_id') %}
+                                    <div class="bool-inline">{{ form_row(form.sameAgent) }}</div>
+
+                                    <div class="agent agent-new">
+                                        {{ form_row(form.agent) }}
+                                    </div>
+                                {% endif %}
+
+                                <div class="agent agent-same">
+                                    <table class="table table-striped table-hover">
+                                        <tbody>
+                                        <tr>
+                                            <th>{{ 'label.name'|trans }}</th>
+                                            <td>{{ minute.agent.officialName }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ 'label.function'|trans }}</th>
+                                            <td>{{ minute.agent.function|trans }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {# End - Agent of Control #}
+
+                                <hr>
+                                <p class="text-center"><b>{{ 'help.data.option'|trans }}</b></p>
+                                {{ form_row(form.agentAttendants) }}
+
+                                <a class="btn btn-secondary btn-lg"
+                                   href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"
+                                   title="{{ 'link.control.backList'|trans }}"><i class="fa fa-reply"></i></a>
+
+                                <button type="submit" class="btn btn-success btn-lg"
+                                        title="{{ 'link.control.new'|trans }}">
+                                    <i class="fa fa-check"></i></button>
+
+                                {% if app.request.attributes.get('updating_id') %}
+                                    <button type="submit" class="btn btn-info btn-lg" name="saveAndContinue"
+                                            title="{{ 'link.save_and_continue'|trans }}">
+                                        <i class="fa fa-angle-double-right"></i>
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {#-- End Panel - main --#}
+
+        {#-- Panel - Informations --#}
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+
+            {#-- Panel - Plot --#}
+            {% set plot = minute.plot %}
+            <strong>{{ 'title.plot'|trans }}</strong>
+            <table class="table table-striped table-hover">
+                <tbody>
+                <tr>
+                    <th>{{ 'label.town'|trans }}</th>
+                    <td>{{ plot.town.name }}</td>
+                </tr>
+                <tr>
+                    <th>{{ 'label.parcel'|trans }}</th>
+                    <td>{{ plot.parcel }}</td>
+                </tr>
+                {% if plot.place %}
+                    <tr>
+                        <th>{{ 'label.place'|trans }}</th>
+                        <td>{{ plot.place }}</td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <th>{{ 'label.address'|trans }}</th>
+                    <td>{{ plot.address }}</td>
+                </tr>
+                {% if plot.isRiskZone %}
+                    <tr>
+                        <th>{{ 'label.isRiskZone'|trans }}</th>
+                        <td>{{ plot.isRiskZone|trans({}, 'LuccaControlBundle') }}</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+            {#-- End Panel - Plot --#}
+
+            {# Widget - Display all controls and folders #}
+            {% if updating is defined and updating.id is not null %}
+                {{ render(controller(
+                    'LuccaMinuteBundle:RenderApi\\UpdatingWidget:displayControlsAndFolders',
+                    { 'updating_id': updating.id }
+                )) }}
+            {% endif %} {# End widget #}
+
+        </div>
+        {#-- End Panel - Informations --#}
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+{% endblock lucca_panels %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    <link href="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
+          rel="stylesheet">
+    <link href="{{ asset('plugins/material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}"
+          rel="stylesheet">
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script src="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/lang/bootstrap-datepicker.fr.js') }}"></script>
+
+    <script src="{{ asset('plugins/symfony-collection/jquery.collection.js') }}"></script>
+    <script src="{{ asset('plugins/momentjs/moment.js') }}"></script>
+    <script src="{{ asset('plugins/material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}"></script>
+
+    <script>
+        {# Datepicker #}
+        $('.date-picker').datepicker({
+            calendarWeeks: true,
+            language: 'fr'
+        });
+
+        {# Collection form #}
+        $('.human-collection').collection({
+            allow_duplicate: false, allow_up: false, allow_down: false,
+            add_at_the_end: true, max: 1,
+            add: '<a href="#" class="btn btn-info" title="{{ 'link.human.new'|trans }}"><span class="fa fa-plus"></span> {{ 'link.human.new'|trans }}</a>',
+        });
+        {# End - Collection form #}
+
+        {# Collection form #}
+        $('.agentsAttendants-collection').collection({
+            allow_duplicate: false, allow_up: false, allow_down: false,
+            add_at_the_end: true, max: 3,
+            add: '<a href="#" class="btn btn-secondary" title="{{ 'link.agentAttendant.new'|trans }}"><span class="fa fa-plus"></span></a>',
+        });
+        {# End - Collection form #}
+
+        {# Custom JS #}
+
+        {#--------------------------------------------------------------------#}
+        {#-- Accepted --#}
+        {#--------------------------------------------------------------------#}
+        $(document).ready(function () {
+
+            $(".control-accepted").hide('slow');
+
+            if ($('#lucca_minutebundle_minute_control_accepted').val() === 'choice.accepted.none')
+                $(".control-accepted-null").show('slow');
+
+            else if ($('#lucca_minutebundle_minute_control_accepted').val() === 'choice.accepted.nok')
+                $(".control-accepted-false").show('slow');
+
+            else if ($('#lucca_minutebundle_minute_control_accepted').val() === 'choice.accepted.ok')
+                $(".control-accepted-true").show('slow');
+        });
+
+        $('#lucca_minutebundle_minute_control_accepted').on('change', function () {
+            $(".control-accepted").hide('slow');
+
+            {# Accepted true #}
+            if ($(this).val() === 'choice.accepted.none') {
+                $(".control-accepted-null").show('slow');
+            } else if ($(this).val() === 'choice.accepted.nok') {
+                $(".control-accepted-false").show('slow');
+            } else if ($(this).val() === 'choice.accepted.ok') {
+                $(".control-accepted-true").show('slow');
+            }
+        });
+        {#-- End Summoned - Accepted --#}
+
+        {#--------------------------------------------------------------------#}
+        {#-- Summoned - stateControl --#}
+        {#   TODO Reformat this code to avoid using 0,1,2,3,...     #}
+        {#--------------------------------------------------------------------#}
+        $(document).ready(function () {
+            if ($('input[name*="[summoned]"]:checked').val() === '1') {
+                $("#lucca_minutebundle_minute_control_stateControl_0").prop("disabled", false);
+                $("#lucca_minutebundle_minute_control_stateControl_1").prop("disabled", true);
+                $("#lucca_minutebundle_minute_control_stateControl_2").prop("disabled", true);
+                $("#lucca_minutebundle_minute_control_stateControl_3").prop("disabled", true);
+            } else if ($('input[name*="[summoned]"]:checked').val() === '0') {
+                $("#lucca_minutebundle_minute_control_stateControl_0").prop("disabled", true);
+                $("#lucca_minutebundle_minute_control_stateControl_1").prop("disabled", false);
+                $("#lucca_minutebundle_minute_control_stateControl_2").prop("disabled", false);
+                $("#lucca_minutebundle_minute_control_stateControl_3").prop("disabled", false);
+            } else {
+                $("#lucca_minutebundle_minute_control_stateControl_0").prop("disabled", true);
+                $("#lucca_minutebundle_minute_control_stateControl_1").prop("disabled", true);
+                $("#lucca_minutebundle_minute_control_stateControl_2").prop("disabled", true);
+                $("#lucca_minutebundle_minute_control_stateControl_3").prop("disabled", true);
+            }
+        });
+
+        $('input[name*="[summoned]"]').on('click', function () {
+            $(".controls").hide('slow');
+
+            {# Summoned true #}
+            if ($(this).val() === '1') {
+                console.log('1');
+                $('input[id*="control_stateControl_0"]').prop("disabled", false);
+                $('input[id*="control_stateControl_1"]').prop("disabled", true);
+                $('input[id*="control_stateControl_2"]').prop("disabled", true);
+                $('input[id*="control_stateControl_3"]').prop("disabled", true);
+                $("#lucca_minutebundle_minute_control_stateControl_0").prop("checked", true).change();
+            } else {
+                console.log('0');
+                {# Summoned false #}
+                $('input[id*="control_stateControl_0"]').prop("disabled", true);
+                $('input[id*="control_stateControl_1"]').prop("disabled", false);
+                $('input[id*="control_stateControl_2"]').prop("disabled", false);
+                $('input[id*="control_stateControl_3"]').prop("disabled", false);
+                if ($("#lucca_minutebundle_minute_control_stateControl_0").prop("checked")){
+                    $("#lucca_minutebundle_minute_control_stateControl_1").prop("checked", true).change();
+                }
+            }
+        });
+        {#-- End Summoned - stateControl --#}
+
+        {#--------------------------------------------------------------------#}
+        {#-- stateControl - fields control --#}
+        {#--------------------------------------------------------------------#}
+        // $(document).ready(function () {
+        //     if ($('input[name*="[stateControl]"]:checked').val() === 'choice.state.inside') {
+        //         $(".control-inside").show('slow');
+        //     }
+        // });
+
+        $('input[name*="[stateControl]"]').on('change', function () {
+            $(".controls").hide('slow');
+
+            if ($(this).val() === 'choice.state.inside'){
+
+                $(".control-inside").show('slow');
+                if ($("#others").prop("checked")){
+                    $("#field-humansByControl").show('slow');
+                }
+            }
+
+            if ($(this).val() === 'choice.state.neighbour') {
+                $("#field-humansByControl").show('slow');
+                $(".label-human").hide('slow');
+                $(".label-neighbour").show('slow');
+
+
+            }
+        });
+        {#-- End - stateControl - fields control --#}
+
+        {#--------------------------------------------------------------------#}
+        {#-- sameAgent - Agent --#}
+        {#--------------------------------------------------------------------#}
+        $(document).ready(function () {
+            {% if control.agent is null or control.agent == minute.agent %}
+            $("#lucca_minutebundle_updating_control_sameAgent_0").prop("checked", true);
+            $(".agent-same").show('slow');
+            $(".agent-new").hide('slow');
+            {% else %}
+            $("#lucca_minutebundle_updating_control_sameAgent_1").prop("checked", true);
+            $(".agent-new").show('slow');
+            {% endif %}
+        });
+
+        $('input[name*="[sameAgent]').on('change', function () {
+            $(".agent").hide('slow');
+
+            if ($(this).val() === '0') {# = no #}
+                $(".agent-new").show('slow');
+            else {# = yes #}
+                $(".agent-same").show('slow');
+        });
+        {#-- End - sameAgent - Agent --#}
+
+        {#--------------------------------------------------------------------#}
+        {#-- Radion buttons for status of human summoned --#}
+        {#--------------------------------------------------------------------#}
+        $(document).ready(function () {
+            {% if control.humansByControl|length > 0 %}
+            $('input[id="others"]').prop("checked", true);
+            $("#field-humansByControl").show('slow');
+            {% endif %}
+        });
+
+        $('input[name="status"]').on('change', function () {
+            if ($(this).val() === 'owner')
+                $("#field-humansByMinute").toggle('slow');
+
+            if ($(this).val() === 'others')
+                $("#field-humansByControl").toggle('slow');
+        });
+        {#-- End - Radion buttons for status of human summoned --#}
+
+        $(document).ready(function () {
+
+            const abort = ["choice.reason.error_adress", "choice.reason.unknown_adress"];
+
+            $("#lucca_minutebundle_minute_control_reason").on("change", function () {
+                var isInArrayAbort = jQuery.inArray($(this).val(), abort);
+                if (isInArrayAbort >= 0) {
+                    $("#lucca_minutebundle_minute_control_accepted option").prop("selected", null);
+                    $("#lucca_minutebundle_minute_control_accepted option[value='choice.accepted.none']").prop("selected", "selected");
+                    if ($(".control-accepted-null").css('display') === 'none') {
+                        $(".control-accepted").hide('slow');
+                        $(".control-accepted-null").show('slow');
+                    }
+                } else if (!$(this).val()) {
+
+                } else {
+                    $("#lucca_minutebundle_minute_control_accepted option").prop("selected", null);
+                    $("#lucca_minutebundle_minute_control_accepted option[value='choice.accepted.nok']").prop("selected", "selected");
+                    if ($(".control-accepted-false").css('display') === 'none') {
+                        $(".control-accepted").hide('slow');
+                        $(".control-accepted-false").show('slow');
+                    }
+
+                }
+            });
+        });
+    </script>
+
+{% endblock lucca_js %}

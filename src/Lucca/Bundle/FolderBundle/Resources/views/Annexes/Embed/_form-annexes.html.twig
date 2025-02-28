@@ -1,0 +1,50 @@
+{#- - Translation domain - -#}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{#- - Form theming - apply to this form - -#}
+{% form_theme form.annexes 'LuccaMediaBundle:Media/Theme:theme-dropzone.html.twig' %}
+
+{#- - View embed - -#}
+
+{#- - Panel - main - -#}
+<div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card card-default">
+            <div class="card-header"><strong>
+                    {{ 'title.annexes'|trans }}
+                </strong>
+                <span class="jumbotron-warning m-2 p-2">
+                    <span class="text-help">{{ 'help.annexes.maxElementsStart'|trans }} {{ maxCollectionFiles }} {{ 'help.annexes.maxElementsEnd'|trans }}</span>
+                    <span class="text-help">{{ 'help.annexes.maxSizeElementsStart'|trans }} {{ maxFilesize }} {{ 'help.annexes.maxSizeElementsEnd'|trans }}</span>
+                    <span class="text-help">{{ 'help.annexes.maxSizeCollectionStart'|trans }} {{ maxFilesize }} {{ 'help.annexes.maxSizeCollectionEnd'|trans }}</span>
+                </span>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+                    <div class="col-12">
+
+
+                        {{ form_start(form) }}
+                        {{ form_errors(form) }}
+
+                        {{ form_widget(form.annexes,{ 'attr': { 'class': 'labels-hidden' } }) }}
+
+                        {#- - Block embed - -#}
+                        {% block lucca_embed_buttons_annexes %}
+                        {% endblock %} {#- - End Block embed - -#}
+
+                        {{ form_rest(form) }}
+                        {{ form_end(form) }}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{#- - End Panel - main - -#}
+
+{#- - End - View embed - -#}

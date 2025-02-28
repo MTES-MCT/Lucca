@@ -1,0 +1,155 @@
+{% extends '@LuccaMinute/Folder/Printing/Basic/doc_content.html.twig' %}
+{% trans_default_domain 'LuccaFolderBundle' %}
+
+{% import "LuccaMinuteBundle:Human:human-macro.html.twig" as humanMacro %}
+{% import "LuccaMinuteBundle:Agent:agent-attendant-macro.html.twig" as agentAttendantMacro %}
+
+
+{% block lucca_folder_doc_content_title %}
+    <div class="row mb25 mt150 pt15">
+        <div class="col-xs-12 col-12 text-center offset-2">
+            <h3 class="bordered p-3 letter-title">
+                {% if folder.type is constant('TYPE_REFRESH', folder) %}
+                    {#Si c'est une actualisation#}
+                    Procès verbal de constatation à l'urbanisme
+                {% else %}
+                    {#Si ce n'est pas une actualisation#}
+                    PROCÈS VERBAL D’INFRACTION <br>AU CODE DE L’URBANISME
+                {% endif %}
+
+                {#Si le dossier a le tag 'Plan de prévention des risques' affichage du texte#}
+                {% if folder.hasTag('Plan de prévention des risques') %}
+                    <br>Et au code de l'environnement
+                {% endif %}
+                <br>
+                <small>N° {{ folder.num }}</small>
+            </h3>
+        </div>
+    </div>
+{% endblock %}
+
+{#-- Agent function --#}
+{% block lucca_folder_doc_content_agentFunction %}
+    <div class="row mb25 mb15 pt15">
+        <div class="col-12 letter-content">
+
+            {#Selon la fonction de l'agent, si il n'est pas maire ou député on affiche plus d'informations sur celui ci#}
+            {% if agent.function in [
+                constant('FUNCTION_MAYOR', agent),
+                constant('FUNCTION_DEPUTY', agent)
+            ] %}
+                Je soussigné, {{ agent.officialName }}, agissant en tant que {{ agent.function|trans({}, 'LuccaFolderBundle') }}
+                de la commune de {{ structureName }} rapporte et certifie que :
+            {% else %}
+                {% if adherent.service %}
+                    Je soussigné(e) {{ agent.officialName }},
+                    {% if agent.function in [
+                        constant('FUNCTION_COUNTRY_AGENT', agent),
+                        constant('FUNCTION_ADMIN_AGENT', agent)
+                    ]%}
+                        {{ agent.function|trans({}, 'LuccaFolderBundle') | lower }}
+                    {% else %}
+                        {{ agent.function|trans({}, 'LuccaFolderBundle') }}
+                    {% endif %}
+                    de la {{ structureName }}
+                    en poste à {{ structureOffice }} ayant prêté serment devant le tribunal judiciaire de
+                    {{ minute.tribunal.office.name }} et porteur de la commission n° {{ agent.commission }}, rapporte ce qui suit :
+                {% else %}
+                    Je soussigné(e) {{ agent.officialName }},
+                    {% if agent.function in [
+                        constant('FUNCTION_COUNTRY_AGENT', agent),
+                        constant('FUNCTION_ADMIN_AGENT', agent)
+                    ]%}
+                        {{ agent.function|trans({}, 'LuccaFolderBundle') | lower }}
+                    {% else %}
+                        {{ agent.function|trans({}, 'LuccaFolderBundle') }}
+                    {% endif %}
+                    en poste à {{ structureOffice }}
+                    ayant prêté serment devant le tribunal judiciaire de {{ minute.tribunal.office.name }} et porteur de la commission
+                    n° {{ agent.commission }}, rapporte ce qui suit :
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
+{#-- End - Agent function --#}
+
+
+{#-- Plot --#}
+{% block lucca_folder_doc_content_plot %}
+    <div class="row mb25 mb15 pt15">
+        <div class="col-12 letter-content">
+
+            {#34 - Hide this date#}
+            {#Le {{ control.dateControl|date('d/m/Y') }} à {{ control.hourControl|date('H:i') }} heures.<br>#}
+
+            {#Si le controle possède une date et une heure on l'affiche sous forme de texte#}
+            {% if control.dateControl and control.hourControl %}
+                {{ control.dateControl|dateToLetter }} {{ control.hourControl|hourToLetter }}.<br>
+            {% endif %}
+
+            Je me suis transporté(e),
+            {#Affichage des informations des agents accompagnants#}
+            {{ agentAttendantMacro.agentAtendantViewTextNamed(control.agentAttendants) }}
+            sur l’unité foncière cadastrée {{ plot.parcel }} située sur la commune de {{ plot.town.name }}
+
+            {#Affichage des différentes informations de la passerelle si on connait les infomations#}
+            ({{ plot.town.zipcode }}), {% if plot.place %}lieudit {{ plot.place }},{% endif %}
+            {% if plot.address %}à l'adresse {{ plot.address }},{% endif %}
+            appartenant à :
+            <ul>
+                {#Affichage des informations de la (des) personne(s)#}
+                {{ humanMacro.humansResponsiblesByMinuteViewListComplete(minute.humans) }}
+            </ul>
+
+            Le contrôle prévu a été effectué
+            {% if control.stateControl is constant('STATE_OUTSIDE', control) %} {#Controle effectué depuis l'extérieur#}
+                de l’extérieur de la propriété, en l’absence du propriétaire.
+            {% elseif control.stateControl is constant('STATE_INSIDE', control) %} {#Controle effectué depuis l'interieur#}
+                de l’intérieur de la propriété, en présence et avec l’assentiment de :
+                <ul>
+                    {#Affichage des informations de la (des) personne(s)#}
+                    {{ humanMacro.humansByFolderViewTextNamed(folder.humansByMinute|merge(folder.humansByFolder)) }}
+                </ul>
+            {% elseif control.stateControl is constant('STATE_INSIDE_WITHOUT_CONVOCATION', control) %} {#Controle effectué depuis l'interieur sans convocation#}
+                de l’intérieur de la propriété.
+
+            {% elseif control.stateControl is constant('STATE_NEIGHBOUR', control) %}  {#Controle effectué depuis chez le voisin#}
+                de l’intérieur d’une parcelle voisine et avec l’assentiment
+
+                {#Affichage des informations de la (des) personnes si renseigné#}
+                {% if control.humansByControl|length > 0 %}
+                    {% for human in control.humansByControl %}
+                        {{ human|human_genderName }}, propriétaire de la parcelle {{ human.address }}
+                    {% endfor %}
+                {% endif %}
+                .
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+{#-- End - Plot --#}
+
+{#-- Close --#}
+{% block lucca_folder_doc_close %}
+    <div class="row mb25 mb15 pt15">
+        <div class="col-12 letter-content">
+            {% if update is defined and not update %}
+                {#Si ce n'est pas une actualisation#}
+                Je dresse le présent procès-verbal en double exemplaire à l’encontre de :
+                <ul>
+                    {{ humanMacro.humansByMinuteViewListComplete(minute.humans) }}
+                </ul>
+
+                pour être transmis à Monsieur le Procureur de la République.<br>
+                Une copie du procès verbal sera adressée à la Direction des Territoires / Affaires juridiques à
+                {{ minute.tribunal.office.name }}.<br>
+            {% else %}
+                Je dresse le présent procès-verbal de constatation pour être transmis à la Direction des Territoires / Affaires juridiques à {{ minute.tribunal.office.name }}.
+            {% endif %}
+
+        </div>
+    </div>
+{% endblock %}
+{#-- End - Close --#}

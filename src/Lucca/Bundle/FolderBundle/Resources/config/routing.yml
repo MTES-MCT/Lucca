@@ -1,0 +1,35 @@
+# LuccaMinuteBundle Routing
+lucca_minute_bundle_admin:
+    resource: "@LuccaMinuteBundle/Controller/Admin"
+    type:     annotation
+    prefix:   /back-office
+
+# LuccaMinuteBundle Routing - Manual Editing
+lucca_minute_bundle_manual_edit:
+    resource: "@LuccaMinuteBundle/Controller/ManualEdit"
+    type:     annotation
+    prefix:   /back-office
+
+# LuccaMinuteBundle Routing - Printing
+lucca_minute_bundle_printing:
+    resource: "@LuccaMinuteBundle/Controller/Printing"
+    type:     annotation
+    prefix:   /back-office
+
+# LuccaMinuteBundle Routing - Dashboard
+lucca_minute_bundle_dashboard:
+    resource: "@LuccaMinuteBundle/Controller/Dashboard"
+    type:     annotation
+    prefix:   /back-office
+
+# LuccaMinuteBundle Routing - API
+lucca_minute_bundle_api:
+    resource: "@LuccaMinuteBundle/Controller/Api"
+    type:     annotation
+    prefix:   /back-office
+
+# LuccaMinuteBundle Routing - By Folder
+lucca_minute_bundle_by_folder:
+    resource: "@LuccaMinuteBundle/Controller/ByFolder"
+    type:     annotation
+    prefix:   /back-office

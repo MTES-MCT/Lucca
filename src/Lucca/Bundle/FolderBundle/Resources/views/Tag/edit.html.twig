@@ -1,0 +1,150 @@
+{#-- Extends view --#}
+{% extends 'LuccaThemeAngleBundle:SubLayout:edit.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{#-- Parameters --#}
+{% set param_entity='entity.tag'|transchoice(1) %}
+{% set param_entities='entity.tag'|transchoice(2) %}
+{% block menuActive_parameter %}class="active"{% endblock menuActive_parameter %}
+
+
+{% block lucca_panels %}
+
+    {{ form_start(edit_form) }}
+
+    {% form_theme edit_form
+        'LuccaThemeAngleBundle:Form:jquery.collection.html.twig'
+        'LuccaMinuteBundle:Proposal:proposalTheme.html.twig' %}
+
+    {{ form_errors(edit_form) }}
+
+    <div class="row">
+        {#-- Panel - main --#}
+        <div class="col-6">
+
+            <div class="card card-default">
+                <div class="card-header">
+                    {{ 'title.edit'|trans({}, 'LuccaThemeAngleBundle') }} - <b>{{ tag.name }}</b>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <div class="col-12">
+                            {{ form_row(edit_form.num) }}
+                            {{ form_row(edit_form.name) }}
+                            {{ form_row(edit_form.enabled) }}
+                            {{ form_row(edit_form.category) }}
+                            {{ form_row(edit_form.description) }}
+
+                            <a href="{{ path('lucca_tag_show', { 'id': tag.id }) }}"
+                               class="btn btn-secondary btn-lg" title="{{ 'link.tag.show'|trans }}">
+                                <i class="fa fa-eye"></i></a>
+
+                            <button type="submit" class="btn btn-warning btn-lg" title="{{ 'link.tag.edit'|trans }}">
+                                <i class="fa fa-check"></i></button>
+
+                            <a class="btn btn-danger btn-lg pull-right"
+                               data-toggle="modal" data-target=".delWin" title="{{ 'link.tag.delete'|trans }}">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {#-- End Panel - main --#}
+
+        {#-- Panel - proposals --#}
+        <div class="col-6">
+
+            <div class="card card-default">
+                <div class="card-header">
+                    {{ 'title.manage'|trans({}, 'LuccaThemeAngleBundle') }} - <b>{{ 'label.proposals'|trans }}</b>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <div class="col-12">
+                            {{ form_widget(edit_form.proposals) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Panel - proposals --#}
+    </div>
+
+    {{ form_rest(edit_form) }}
+    {{ form_end(edit_form) }}
+
+{% endblock lucca_panels %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    <link href="{{ asset('plugins/summernote/summernote-bs4.css') }}" rel="stylesheet">
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {% include 'LuccaThemeAngleBundle:Modal:delete.html.twig' with {'id': tag.name, 'name': tag.name, 'delForm': delete_form} %}
+    {{ parent() }}
+
+    <script src="{{ asset('plugins/summernote/summernote-bs4.js') }}"></script>
+    <script src="{{ asset('plugins/summernote/lang/summernote-fr-FR.min.js') }}"></script>
+    <script src="{{ asset('plugins/symfony-collection/jquery.collection.js') }}"></script>
+
+    <script>
+        $('.summernote').summernote({
+            height: 250,
+            lang: 'fr-FR',
+            disableDragAndDrop: true,
+            tabsize: 2,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link']],
+                ['view', ['fullscreen', 'codeview', 'help']],
+            ],
+        });
+
+        $('.summernote-light').summernote({
+            height: 210,
+            lang: 'fr-FR',
+            disableDragAndDrop: true,
+            tabsize: 2,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link']],
+                ['view', ['fullscreen', 'codeview', 'help']],
+            ],
+        });
+
+        {# Collection form #}
+        $('.proposals-collection').collection({
+            allow_duplicate: true, allow_up: false, allow_down: false,
+            add_at_the_end: true,
+            add: '<a href="#" class="btn btn-secondary" title="{{ "link.proposal.new"|trans }}"><span class="fa fa-plus"></span></a>',
+            elements_selector: 'tr.element',
+            elements_parent_selector: '%id% tbody',
+            after_add: function (collection, element) {
+                $('.summernote-light').summernote('destroy');
+                $('.summernote-light').summernote({
+                    height: 100,
+                    disableDragAndDrop: true,
+                });
+            }
+        });
+    </script>
+{% endblock lucca_js %}

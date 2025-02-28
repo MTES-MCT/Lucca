@@ -1,0 +1,76 @@
+{% trans_default_domain 'LuccaCoreBundle' %}
+
+<div class="row align-items-center {% block lucca_class %}{% endblock %}">
+    {% if nbOpen is defined and nbClosed is defined %}
+        <div class="col-4 text-center folder-totalCounter">
+            <i class="fa fa-8x fa-folder"></i>
+            <div class="folder-total">
+                <h1 class="timer counter alt-font appear"
+                    data-speed="7000">
+                    {{ nbOpen + nbClosed }}
+                </h1>
+                <span>
+                    {{ 'label.total' | trans }}
+                </span>
+            </div>
+        </div>
+    {% else %}
+        <div class="col-4 text-center date-filters">
+            <i class="fa fa-3x fa-calendar-alt"></i><br>
+            {{ 'label.selectedPeriod' | trans }}<br>
+            <span class="border-grey-thin">{{ dateStart|date('d/m/Y') }}</span>
+            {{ 'label.to' | trans }}
+            <span class="border-grey-thin">{{ dateEnd|date('d/m/Y') }}</span>
+        </div>
+    {% endif %}
+    <div class="col-4 text-center folder-closed">
+        <i class="fa fa-8x fa-folder"></i>
+        <div class="folder-total">
+            <h1 class="timer counter alt-font appear" data-speed="7000">
+                {% if stories is defined and 'totalClosed' in stories|keys %}
+                    {{ stories['totalClosed'] }}
+                {% elseif nbClosed is defined %}
+                    {{ nbClosed }}
+                {% else %}
+                    0
+                {% endif %}
+            </h1>
+            <span>
+                {{ 'label.totalClosed' | trans }}
+            </span>
+        </div>
+    </div>
+    <div class="col-4 text-center folder-rapport">
+        <i class="fa fa-8x fa-folder"></i>
+        <div class="folder-total">
+            <h1 class="timer counter alt-font appear" data-speed="7000">
+                {% if nbFolderWithEmptyNatinfs is defined %}
+                    {{ nbFolderWithEmptyNatinfs }}
+                {% else %}
+                    0
+                {% endif %}
+            </h1>
+            <span>
+                {{ 'label.ascertainment'| trans }}
+            </span>
+        </div>
+    </div>
+</div>
+
+{# Add javascript code here in order to have all code needed when embed this view #}
+<script>
+    $(document).ready(function () {
+
+        $('.counter').each(function () {
+            $(this).prop('Counter', 0).animate({
+                Counter: $(this).text()
+            }, {
+                duration: 2000,
+                easing: 'swing',
+                step: function (now) {
+                    $(this).text(Math.ceil(now));
+                }
+            });
+        });
+    });
+</script>

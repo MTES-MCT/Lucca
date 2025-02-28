@@ -1,0 +1,61 @@
+{#-- Extends view --#}
+{% extends "@LuccaModel/Printing/base.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaFolderBundle' %}
+
+{% if 'setting.folder.useRefreshAgentForRefreshSignature.name'|setting and update.controls is defined and update.controls|length == 1 %}
+    {% set agent = update.controls[0].agent %}
+{% else %}
+    {% set agent = minute.agent %}
+{% endif %}
+
+{% block lucca_title %}
+    Procès Verbal
+{% endblock lucca_title %}
+
+{% block lucca_model_content %}
+    {% if isPreprint is defined and isPreprint %}
+        <img src="{{ pdf_asset }}{{ asset('assets/img/preprint.png') }}"
+             alt="preprint" class="preprint">
+    {% endif %}
+    {% if folder.edition and folder.edition.folderEdited %}
+        {% if 'print' in app.request.pathinfo %}
+            {{ folder.edition.folderVersion|localPath|raw }}
+        {% else %}
+            {{ folder.edition.folderVersion|raw }}
+        {% endif %}
+    {% else %}
+        {% if folder.nature is constant('NATURE_OBSTACLE', folder) %}
+            {#SETTING#}
+            {% if 'setting.folder.docContentObstacle.name'|setting == true %}
+                {% set filename = 'LuccaMinuteBundle:Folder/Printing/Custom:doc_obstacle_content-'~ 'setting.general.departement.name'|setting ~'.html.twig' %}
+                {% include filename with {'agent' : agent } %}
+            {% else %}
+
+                {% include 'LuccaMinuteBundle:Folder/Printing/Basic:doc_obstacle_content.html.twig' with {'agent' : agent, 'folder': folder, 'update': update} %}
+            {% endif %}
+
+        {% else %}
+            {#SETTING#}
+            {% if 'setting.folder.docContent.name'|setting == true %}
+                {% set filename = 'LuccaMinuteBundle:Folder/Printing/Custom:doc_content-'~ 'setting.general.departement.name'|setting ~'.html.twig' %}
+                {% include filename  with {'agent' : agent, 'folder' : folder } %}
+            {% else %}
+                {% include 'LuccaMinuteBundle:Folder/Printing/Basic:doc_content.html.twig' with {'agent' : agent, 'folder' : folder, 'update' : update} %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+    {% include 'LuccaMinuteBundle:Folder/Printing/Basic:doc_footer.html.twig' with {'agent' : agent} %}
+
+    {% for element in folder.elements %}
+        {% if element.image %}
+            <div class="page-break"></div>
+            <div class="page-break-inside-avoid">
+                {% include '@LuccaMinute/Element/Embed/_print-element.html.twig' with { 'element': element } %}
+            </div>
+        {% endif %}
+    {% endfor %}
+
+{% endblock lucca_model_content %}
