@@ -1,0 +1,41 @@
+####################################
+## NwFlashMessages Domain
+####################################
+
+flash:
+    media:
+        createdSuccessfully: "Le media a bien été créé."
+        updatedSuccessfully: "Le media a bien été modifié."
+        deletedSuccessfully: "Le media a bien été supprimé."
+        deletedCancelled: "Le media n'a pas été supprimé."
+        disabledSuccessfully: "Le media a bien été désactivé."
+        enabledSuccessfully: "Le media a bien été activé."
+        
+        uploadedSuccessfully: "Le média a bien été chargé."
+        defaultObjectCreated: "Les objets par défauts ont bien été créé."
+        defaultObjectAlreadyCreated: "Les objets par défauts existent déjà."
+        usedInGallery: "Le média est utilisé dans une galerie."
+        unusedInGallery: "Le média n'est pas utilisé dans une galerie."
+    
+    gallery:
+        createdSuccessfully: "La galerie a bien été créée."
+        enabledSuccessfully: "La galerie a bien été activée."
+        disabledSuccessfully: "La galerie a bien été désactivée."
+        updatedSuccessfully: "La galerie a bien été modifiée."
+        deletedSuccessfully: "La galerie a bien été supprimée."
+        deletedCancelled: "La galerie n'a pas été supprimée."
+    
+    category:
+        createdSuccessfully: "La catégorie a bien été créée."
+        enabledSuccessfully: "La catégorie a bien été activée."
+        disabledSuccessfully: "La catégorie a bien été désactivée."
+        updatedSuccessfully: "La catégorie a bien été modifiée."
+        deletedSuccessfully: "La catégorie a bien été supprimée."
+    
+    storager:
+        createdSuccessfully: "Le stockeur a bien été créé."
+        updatedSuccessfully: "Le stockeur a bien été modifié."
+        deletedSuccessfully: "Le stockeur a bien été supprimé."
+        deletedCancelled: "Le stockeur n'a pas été supprimé."
+        disabledSuccessfully: "Le stockeur a bien été désactivé."
+        enabledSuccessfully: "Le stockeur a bien été activé."

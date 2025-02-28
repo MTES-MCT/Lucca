@@ -1,0 +1,70 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMediaBundle' %}
+
+{#-- Form theming - apply to this form --#}
+{% form_theme form.metas '@LuccaMedia/MetaData/For/theme-metaData.html.twig' %}
+
+
+{#-- View embed --#}
+    {#-- Panel - main --#}
+<div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+
+    <div class="card card-default">
+        <div class="card-header">
+            <a class="collapse-link" title="{{ 'link.reducePanel'|trans }}">
+                <h5><i class="far fa-image"></i> {{ 'entity.media'|transchoice(1) }} </h5>
+            </a>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="card-body">
+
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+
+                {#-- Display file if it exist - Check if of object --#}
+                {% if form.vars.value is not null and form.vars.value.id is not null %}
+                    <h4 class="text-secondary">{{ 'help.media.replace'|trans }}</h4>
+                    {{ form.vars.value|mediaTag }}
+                    <hr>
+                {% endif %}
+
+                {{ form_row(form.file) }}
+                {{ form_row(form.category) }}
+                {{ form_row(form.public) }}
+                {{ form_row(form.description) }}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card card-default">
+        <div class="card-header">
+            <a class="collapse-link" title="{{ 'link.reducePanel'|trans }}">
+                <h5><i class="fal fa-meteor"></i> {{ 'entity.metaData'|transchoice(2) }} </h5>
+            </a>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="card-body">
+
+                {{ form_widget(form.metas) }}
+
+            </div>
+
+            <div class="col-12 pb-3">
+                {#-- Block embed --#}
+                {% block lucca_embed_buttons_media %}
+                {% endblock %} {#-- End Block embed --#}
+            </div>
+
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{#-- End Panel - main --#}
+
+{#-- End - View embed --#}

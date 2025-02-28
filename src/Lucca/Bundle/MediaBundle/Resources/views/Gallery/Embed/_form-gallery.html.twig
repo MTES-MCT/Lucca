@@ -1,0 +1,60 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMediaBundle' %}
+
+{#-- Form theming - apply to this form --#}
+{% form_theme form.files '@LuccaMedia/Media/Theme/theme-dropzone.html.twig' %}
+
+{#-- View embed --#}
+<div class="col-12">
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="max-2-columns-large-responsive">
+
+        <div class="card card-default">
+            <div class="card-header">
+                <a class="collapse-link" title="{{ 'link.reducePanel'|trans }}">
+                    <h5><i class="fad fa-photo-video"></i> {{ 'entity.gallery'|transchoice(1) }} </h5>
+                </a>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+                    {#-- Panel - main --#}
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.defaultMedia) }}
+                    {{ form_row(form.description) }}
+                </div>
+            </div> {#-- End Panel - main --#}
+        </div>
+
+        {#-- Panel - medias --#}
+
+        <div class="card card-default">
+            <div class="card-header">
+                <a class="collapse-link" title="{{ 'link.reducePanel'|trans }}">
+                    <h5><i class="far fa-image"></i> {{ 'entity.media'|transchoice(1) }} </h5>
+                    <div class="ibox-tools"><i class="fas fa-chevron-up"></i></div>
+                </a>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+                    {{ form_row(form.files) }}
+                </div>
+            </div>
+        </div>{#-- End Panel - medias --#}
+
+    </div>
+
+    <div class="col-12 pb-3">
+        {#-- Block embed --#}
+        {% block lucca_embed_buttons_gallery %}
+        {% endblock %}  {#-- End Block embed --#}
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+</div>
+{#-- End - View embed --#}

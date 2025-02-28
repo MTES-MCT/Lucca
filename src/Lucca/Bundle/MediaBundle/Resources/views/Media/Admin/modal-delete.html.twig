@@ -1,0 +1,51 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMediaBundle' %}
+
+{#-- Modal start --#}
+<div class="modal inmodal delWin" id="{{ media.id }}" tabindex="-1" role="dialog" aria-labelledby="Delete"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated flipInY">
+
+            <div class="modal-header">
+
+                <h4 class="modal-title"><i class="fas fa-trash modal-icon"></i> {{ 'modal.delete.confirm'|trans }} </h4>
+
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+                    <span class="sr-only">{{ 'link.close'|trans }}</span></button>
+
+
+            </div>
+
+            <div class="modal-body">
+                <p class="pb-2">
+                    {{ 'modal.delete.message'|trans }}
+                </p>
+                <p>
+                    <strong>{{ 'modal.delete.element'|trans }}</strong> - {{ media.name }}
+                </p>
+                <span>{{ media|mediaTag(200) }}</span>
+            </div>
+
+            <div class="modal-footer">
+
+                <a
+                id="modal-confirm-remove"
+                data-media-id="{{ media.id }}"
+                data-media-vars="{{ varsMedia }}"
+                data-entity-parent="{{ entityParent }}"
+                data-entity-parent-id="{{ idParent }}"
+                class="btn btn-danger btn-sm"
+                title="{{ 'link.delete'|trans }}">
+                    {{ 'link.delete'|trans }}
+                </a>
+
+                <a class="btn btn-sm btn-white" data-dismiss="modal" title="{{ 'link.close'|trans }}">
+                    {{ 'link.close'|trans }}
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+{#-- Modal end --#}

@@ -1,0 +1,72 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMediaBundle' %}
+
+{#-- Form theming - apply to this form --#}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% form_theme form.metas '@LuccaMedia/MetaData/Admin/theme-addMetaData.html.twig' %}
+
+{#-- Modal start --#}
+{{ form_start(form, {'action': path('lucca_media_modal_edit',{'id': media.id })}) }}
+
+<div class="modal-header" id="modal_sg">
+    <h5 class="modal-title" id="exampleModalLabel">{{ "title.media.editModal"|trans }}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <div>{{ form.file.parent.vars.value|mediaTag }}</div>
+    <h4 class="text-secondary">{{ 'help.media.replace'|trans }}</h4>
+
+    {{ form_row(form.file) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.public) }}
+    {{ form_row(form.category) }}
+    {{ form_widget(form.metas) }}
+    {{ form_rest(form) }}
+</div>
+
+<div class="modal-footer">
+    <a class="btn btn-sm btn-secondary" data-dismiss="modal">
+        <i class="fas fa-reply"></i>
+    </a>
+
+    <button type="submit" class="btn btn-sm btn-primary" title="{{ 'link.media.edit'|trans }}">
+        <i class="fas fa-check"></i>
+    </button>
+</div>
+
+{{ form_end(form) }}
+{#-- Modal end --#}
+
+
+{% block lucca_js %}
+
+    <script>
+        $('.meta-collection').collection({
+            init_with_n_elements: 1,
+            allow_duplicate: false, allow_up: false, allow_down: false, allow_remove: true, add_at_the_end: true,
+            add: '<a href="#" class="btn btn-primary" title="{{ 'link.metaData.new'|trans }}"><span class="fa fa-plus"></span></a>',
+            elements_selector: '.meta-data',
+        });
+    </script>
+
+    {#-- Ajax Call to get Meta Datas Suggestions --#}
+    {#<script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script>
+        $(document).ready(function () {
+            let routeParams = {
+                categoryId: {{ form.file.parent.vars.value.category.id }}
+            };
+            $.ajax({
+                url: Routing.generate('lucca_media_api_meta_datas', routeParams),
+                success: function (html) {
+                    console.log(html);
+                }
+            });
+        })
+    </script>#}
+
+{% endblock %}

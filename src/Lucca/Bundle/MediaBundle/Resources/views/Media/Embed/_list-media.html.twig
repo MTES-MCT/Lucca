@@ -1,0 +1,18 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMediaBundle' %}
+
+
+{#-- Embed view --#}
+<div class=" media-content-row"> {#if necessary change min-width in css#}
+    <div class="media-responsive"> {#if necessary change min-width in css#}
+        {% for media in medias %}
+            <div class="media-item">
+                <a class="media-trigger-btn" href="#" data-id="{{ media.id }}">
+                    {{ media|mediaTag(200) }}
+                    <div class="media-name">{{ media.name }}</div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{#-- End - Embed view --#}

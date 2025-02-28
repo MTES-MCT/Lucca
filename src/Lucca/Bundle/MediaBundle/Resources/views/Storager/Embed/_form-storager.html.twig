@@ -1,0 +1,39 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMediaBundle' %}
+
+{#-- View embed --#}
+<div class="col-12">
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {#-- Panel - main --#}
+    <div class="card card-default">
+        <div class="card-header">
+            <a class="collapse-link" title="{{ 'link.reducePanel'|trans }}">
+                <h5><i class="fad fa-sd-card"></i> {{ 'entity.storager'|transchoice(1) }} </h5>
+            </a>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="card-body">
+                {{ form_row(form.name) }}
+                {{ form_row(form.enabled) }}
+                {{ form_row(form.serviceFolderNaming) }}
+                {{ form_row(form.serviceMediaNaming) }}
+                {{ form_row(form.description) }}
+            </div>
+        </div>
+    </div> {#-- End Panel - main --#}
+
+    <div class="col-12 pb-3">
+        {#-- Block embed --#}
+        {% block lucca_embed_buttons_storager %}
+
+        {% endblock %}
+        {#-- End Block embed --#}
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+</div>
+{#-- End - View embed --#}

@@ -1,0 +1,82 @@
+{#-- Translation domain --#}
+{% trans_default_domain "LuccaMediaBundle" %}
+
+{#-- Bundle - Media --#}
+
+<div class="col-12">
+    <h2 class="text-blue-medium">{{ 'parameters.title'|trans }}</h2>
+</div>
+
+
+    {#-- Param - Media --#}
+    <div class="col-3">
+        <div class="card card-default">
+            <div class="card-wrapper text-center">
+                <div class="card-body">
+                    <a href="{{ path('lucca_media_index') }}" class="link-unstyled text-blue-dark">
+                        <em class="far fa-image fa-3x mb-lg"></em>
+                        <br>
+                        <span class="h4">{{ 'entity.media'|transchoice(1) }}</span>
+                        <br>
+                        <small class="text-muted">{{ 'parameters.seeList'|trans }} →</small>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#-- End Param - Media --#}
+
+    {#-- Param - Gallery --#}
+    <div class="col-3">
+        <div class="card card-default">
+            <div class="card-wrapper text-center">
+                <div class="card-body">
+                    <a href="{{ path('lucca_media_gallery_index') }}" class="link-unstyled text-blue-dark">
+                        <em class="fad fa-photo-video fa-3x mb-lg"></em>
+                        <br>
+                        <span class="h4">{{ 'entity.gallery'|transchoice(1) }}</span>
+                        <br>
+                        <small class="text-muted">{{ 'parameters.seeList'|trans }} →</small>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#-- End Param - Gallery --#}
+
+    {#-- Param - Category --#}
+    <div class="col-3">
+        <div class="card card-default">
+            <div class="card-wrapper text-center">
+                <div class="card-body">
+                    <a href="{{ path('lucca_media_category_index') }}" class="link-unstyled text-blue-dark">
+                        <em class="fad fa-bookmark fa-3x mb-lg"></em>
+                        <br>
+                        <span class="h4">{{ 'entity.category'|transchoice(1) }}</span>
+                        <br>
+                        <small class="text-muted">{{ 'parameters.seeList'|trans }} →</small>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#-- End Param - Category --#}
+
+    {#-- Param - Storager --#}
+    <div class="col-3">
+        <div class="card card-default">
+            <div class="card-wrapper text-center">
+                <div class="card-body">
+                    <a href="{{ path('lucca_media_storager_index') }}" class="link-unstyled text-blue-dark">
+                        <em class="fad fa-sd-card fa-3x mb-lg"></em>
+                        <br>
+                        <span class="h4">{{ 'entity.storager'|transchoice(1) }}</span>
+                        <br>
+                        <small class="text-muted">{{ 'parameters.seeList'|trans }} →</small>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#-- End Param - Storager --#}
+{#-- End Bundle - Media --#}

@@ -1,0 +1,49 @@
+{#-- Extends view --#}
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMediaBundle' %}
+
+{#-- Parameters --#}
+{% set param_entity='entity.storager'|transchoice(1) %}
+{% set param_entities='entity.storager'|transchoice(2) %}
+{% block menuActive_parameter %}class="active"{% endblock %}
+
+
+{% block lucca_panels %}
+
+    {#-- Embed view - params and block --#}
+    {% embed "@LuccaMedia/Storager/Embed/_form-storager.html.twig" with { 'form': edit_form, 'storager': storager } %}
+        {#-- Translation domain embed --#}
+        {% trans_default_domain 'LuccaMediaBundle' %}
+
+        {% block lucca_embed_buttons_storager %}
+            <a class="btn btn-secondary btn-lg" href="{{ path('lucca_media_storager_index') }}"
+               title="{{ 'link.storager.backList'|trans }}"><i class="fas fa-reply"></i></a>
+
+            <button type="submit" class="btn btn-primary btn-lg" title="{{ 'link.storager.edit'|trans }}">
+                <i class="fas fa-check"></i>
+            </button>
+        {% endblock %}
+
+    {% endembed %} {#-- End Embed --#}
+
+{% endblock lucca_panels %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    {#-- Plugin - Summernote --#}
+    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/summernote.css.html.twig" %}
+
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    {#-- Plugin - Summernote --#}
+    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/summernote.js.html.twig" %}
+
+{% endblock lucca_js %}

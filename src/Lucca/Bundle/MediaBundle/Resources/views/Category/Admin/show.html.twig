@@ -1,0 +1,45 @@
+{#-- Extends view --#}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMediaBundle' %}
+
+{#-- Parameters --#}
+{% set param_entity='entity.category'|transchoice(1) %}
+{% set param_entities='entity.category'|transchoice(2) %}
+{% block menuActive_parameter %}class="active"{% endblock %}
+
+
+{% block lucca_panels %}
+
+    {#-- Embed view - params and block --#}
+    {% embed "@LuccaMedia/Category/Embed/_panel-category.html.twig" with { 'category': category } %}
+        {#-- Translation domain embed --#}
+        {% trans_default_domain 'LuccaMediaBundle' %}
+
+        {% block lucca_embed_buttons_category %}
+            <a class="btn btn-secondary btn-lg" href="{{ path('lucca_media_category_index') }}"
+               title="{{ 'link.category.backList'|trans }}"><i class="fas fa-reply"></i></a>
+
+            {% if app.user and is_granted("ROLE_MEDIA_WRITE") %}
+                <a class="btn btn-warning btn-lg"
+                   href="{{ path('lucca_media_category_edit', { 'id': category.id }) }}"
+                   title="{{ 'link.category.edit'|trans }}"><i class="fas fa-pencil-alt"></i></a>
+            {% endif %}
+
+            {% if is_granted("ROLE_SUPER_ADMIN") %}
+                <span class="float-right">
+                <span class="label label-danger label-sa">{{ 'badge.sa'|trans({}, 'LuccaCoreBundle') }}</span>
+
+                <a class="btn btn-danger btn-lg" data-toggle="modal" data-target=".delWin"
+                   title="{{ 'link.category.delete'|trans }}">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+                {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'name': category.id,'id': category.id, 'delForm': delete_form} %}
+            </span>
+            {% endif %}
+        {% endblock %}
+
+    {% endembed %} {#-- End Embed --#}
+
+{% endblock lucca_panels %}

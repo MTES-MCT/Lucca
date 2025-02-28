@@ -1,0 +1,39 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMediaBundle' %}
+
+{#
+# -- Variable
+# -- media_id - Id of children form for one File
+# -- form - The form parent
+#}
+
+<script>
+    $(document).ready(function () {
+        {#-- Get the line id with Twig functions --#}
+        let input = $('#{{ media_id }} input');
+        let label = $('#{{ media_id }} label');
+        let originalText = "{{ 'label.uploadFile'|trans }}";
+
+        input.on('change', function () {
+            var filename = $(this).val().toString().split("\\");
+
+            if ($(this).val().toString()) {
+                label.animate({
+                    opacity: 0
+                }, 250, function () {
+                    label.text(filename[filename.length - 1]).animate({
+                        opacity: 1
+                    }, 250);
+                });
+            } else {
+                label.animate({
+                    opacity: 0
+                }, 250, function () {
+                    label.text(originalText).animate({
+                        opacity: 1
+                    }, 250);
+                });
+            }
+        });
+    });
+</script>

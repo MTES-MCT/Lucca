@@ -1,0 +1,51 @@
+{#-- Extends view --#}
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMediaBundle' %}
+
+{#-- Parameters --#}
+{% set param_entity='entity.category'|transchoice(1) %}
+{% set param_entities='entity.category'|transchoice(2) %}
+{% block menuActive_parameter %}class="active"{% endblock %}
+
+
+{% block lucca_panels %}
+
+    {#-- Embed view - params and block --#}
+    {% embed "@LuccaMedia/Category/Embed/_form-category.html.twig" with { 'form': form } %}
+        {#-- Translation domain embed --#}
+        {% trans_default_domain 'LuccaMediaBundle' %}
+
+        {% block lucca_embed_buttons_category %}
+            <a href="{{ path('lucca_media_category_index') }}" class="btn btn-secondary btn-lg"
+               title="{{ 'link.category.backList'|trans }}">
+                <i class="fas fa-reply"></i>
+            </a>
+
+            <button type="submit" class="btn btn-success btn-lg float-right" title="{{ 'link.category.new'|trans }}">
+                {{ 'label.validate'|trans }}&nbsp;&nbsp;<i class="fas fa-check"></i>
+            </button>
+        {% endblock %}
+
+    {% endembed %} {#-- End Embed --#}
+
+{% endblock lucca_panels %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script>
+        {#-- Collection form - Extension --#}
+        {% include "@LuccaMedia/Extension/Js/collection-extension.js.twig" with { 'params' :
+            {'position_field_selector': '.position'}
+        } %}
+
+        {#-- Collection form - MetaDataModel --#}
+        {% include "@LuccaMedia/MetaDataModel/Js/collection-metaDataModel.js.twig" with { 'params' :
+            {'position_field_selector': '.position'}
+        } %}
+    </script>
+
+{% endblock lucca_js %}

@@ -1,0 +1,113 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMediaBundle' %}
+
+{#-- TODO unused theme - use to manage a collection of full Media object --#}
+
+{#-- Form theming - collection_widget --#}
+{% block collection_widget %}
+    {% apply spaceless %}
+        {% if prototype is defined %}
+            {% set attr = attr|merge({'data-prototype': form_widget(prototype)}) %}
+            {% set attr = attr|merge({'data-prototype-name': prototype.vars.name}) %}
+        {% endif %}
+        {% set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) %}
+        {% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}
+        {% set attr = attr|merge({'data-name-prefix': full_name}) %}
+
+        {{ form_errors(form) }}
+
+        <div {{ block('widget_attributes') }}>
+            {% for item in form %}
+                {{ form_widget(item) }}
+            {% endfor %}
+        </div>
+    {% endapply %}
+{% endblock %}
+
+
+{#-- Form theming - field widget --#}
+{% block lucca_mediaBundle_media_widget %}
+
+    <div class="row">
+        {#-- Display Media widget to upload file --#}
+        <div class="col-xl-10 col-9">
+            <div {{ block('widget_attributes') }}>
+                {% apply spaceless %}
+                    <div class="media-form-container" {{ block('widget_container_attributes') }}>
+                        {% for child in form %}
+                            {% if child.vars.name == 'file' %}
+                                {% if child.parent.vars.value %}
+                                    <div class="row" id='media-remove-btn-{{child.parent.vars.value.id}}'>
+                                        {% if child.parent.parent.vars.data|canAsyncRemove %}
+                                            <div class='col-md-1 col-xs-2'>
+                                                <button
+                                                    type='button'
+                                                    class='media-remove-btn btn btn-danger btn-xs'
+                                                    data-media-id="{{data.id}}"
+                                                    {% if child.parent.parent %}
+                                                        data-entity-parent="{{child.parent.parent.vars.data|classEntity}}"
+                                                        data-entity-parent-id="{{child.parent.parent.vars.data.id}}"
+                                                        data-media-vars="{{child.parent.vars.name}}"
+                                                    {% endif %}
+                                                    >
+                                                        <i class='fa fa-trash-alt' aria-hidden='true'
+                                                        data-media-id="{{data.id}}"
+                                                        {% if child.parent.parent %}
+                                                            data-entity-parent="{{child.parent.parent.vars.data|classEntity}}"
+                                                            data-entity-parent-id="{{child.parent.parent.vars.data.id}}"
+                                                            data-media-vars="{{child.parent.vars.name}}"
+                                                        {% endif %}
+                                                        >
+                                                        </i>
+                                                </button>
+                                            </div>
+                                        {% endif %}
+                                        <div class='col-md-11 col-xs-10'>{{ child.parent.vars.value|mediaTag(200) }}</div>
+                                    </div>
+                                    <h4>{{ 'help.media.replace'|trans }}</h4>
+                                {% endif %}
+                                <div class="file-input text-center" id="file-input-{{child.vars.id}}">
+                                    <i class="far fa-file-upload"></i>
+                                    {{ form_label(child) }}
+                                    {{ form_widget(child) }}
+                                </div>
+                                <i class='btn btn-danger btn-sm file-remove-btn fas fa-times' style="vertical-align: top" aria-hidden='true' hidden id="file-remove-{{child.vars.id}}">
+                                </i>
+                            {% else %}
+                                {{ form_label(child) }}
+                                {{ form_widget(child) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endapply %}
+                <hr>
+            </div>
+        </div>
+
+        {#-- Display buttons for each rows --#}
+        <div class="col-xl-2 col-3">
+            <a href="#" class="collection-up btn btn-secondary btn-sm" title="{{ "link.media.up"|trans }}">
+                <span class="fas fa-arrow-up"></span></a>
+            <a href="#" class="collection-down btn btn-secondary btn-sm" title="{{ "link.media.down"|trans }}">
+                <span class="fas fa-arrow-down"></span></a>
+
+            <a href="#" class="collection-remove btn btn-danger btn-sm" title="{{ "link.media.delete"|trans }}">
+                <span class="fas fa-trash"></span></a>
+            <a href="#" class="collection-duplicate btn btn-info btn-sm" title="{{ "link.media.duplicate"|trans }}">
+                <span class="fas fa-th-large"></span></a>
+        </div>
+
+        {#-- Display separator --#}
+        <div class="col-12">
+            <hr>
+        </div>
+
+        {#-- Add script per line to manage input and label --> TODO make a global script to all input --#}
+        {% include "@LuccaMedia/Media/Js/script-button-media-with-meta.html.twig" with {
+            'media_id': form.vars.id,
+            'form': form
+        } %}
+    </div>
+
+{% endblock %}
+
