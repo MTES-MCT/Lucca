@@ -1,0 +1,44 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMediaBundle' %}
+
+{% block collection_widget %}
+    {% apply spaceless %}
+        {% if prototype is defined %}
+            {% set attr = attr|merge({'data-prototype': form_widget(prototype)}) %}
+            {% set attr = attr|merge({'data-prototype-name': prototype.vars.name}) %}
+        {% endif %}
+        {% set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) %}
+        {% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}
+        {% set attr = attr|merge({'data-name-prefix': full_name}) %}
+
+        {{ form_errors(form) }}
+
+        <div class="form-group">
+            <div {{ block('widget_attributes') }}>
+                {% for item in form %}
+                    {{ form_widget(item) }}
+                {% endfor %}
+            </div>
+        </div>
+    {% endapply %}
+{% endblock %}
+
+{% block lucca_mediaBundle_metaData_widget %}
+
+    <div {{ block('widget_attributes') }}>
+        <div class="form-label">{{ 'label.name'|trans }}</div>
+        <div class="text-center">{{ form_widget(form.name) }}</div>
+        <div class="form-label">{{ 'label.keyword'|trans }}</div>
+        <div class="text-center">{{ form_widget(form.keyword) }}</div>
+        <div class="form-label">{{ 'label.value'|trans }}</div>
+        <div class="text-center">{{ form_widget(form.value) }}</div>
+        <div class="m-t-sm m-b-sm text-right">
+            <a href="#" class="collection-remove btn btn-sm btn-danger"
+               title="{{ "link.metaData.delete"|trans }}">
+                <i class="fas fa-trash"></i></a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block lucca_mediaBundle_metaData_label %}{% endblock %}

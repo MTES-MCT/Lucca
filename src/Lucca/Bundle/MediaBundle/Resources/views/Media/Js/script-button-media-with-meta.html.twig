@@ -1,0 +1,48 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMediaBundle' %}
+
+{#
+# -- Variable
+# -- media_id - Id of children form for one File
+# -- form - Id of children form for one File
+#-- TODO unused script - use to manage a collection of full Media object
+#}
+
+<script>
+    $(document).ready(function () {
+        {% if form.metas is defined %}
+        {#-- Collection form - MetaDataModel --#}
+        {% include "@LuccaMedia/MetaData/Js/collection-metaData.js.twig" with { 'params' :
+            {'position_field_selector': '.position'}
+        } %}
+        {% endif %}
+
+        {#-- Get the line id with Twig functions --#}
+        let input = $('#{{ media_id }} input');
+        let label = $('#{{ media_id }} label');
+        let originalText = "{{ 'label.uploadFile'|trans }}";
+
+        input.on('change', function () {
+            var filename = $(this).val().toString().split("\\");
+            // console.log($(this).val().toString());
+
+            if ($(this).val().toString()) {
+                label.animate({
+                    opacity: 0
+                }, 250, function () {
+                    label.text(filename[filename.length - 1]).animate({
+                        opacity: 1
+                    }, 250);
+                });
+            } else {
+                label.animate({
+                    opacity: 0
+                }, 250, function () {
+                    label.text(originalText).animate({
+                        opacity: 1
+                    }, 250);
+                });
+            }
+        });
+    });
+</script>

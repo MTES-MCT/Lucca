@@ -1,0 +1,23 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMediaBundle' %}
+
+{#--
+ --- Params :
+  -- media = Media entity
+  -- colSize = Column size
+ --#}
+
+{% if colSize is not defined %}
+    {% set columnSize = 2 %}
+{% else %}
+    {% set columnSize = colSize %}
+{% endif %}
+
+{#-- Embed view --#}
+<div class="col-{{ columnSize }} pb-3">
+    <a class="media-trigger-btn" href="#" data-id="{{ media.id }}">
+        {{ media|mediaTag }}
+        <div class="media-name">{{ media.name }}</div>
+    </a>
+</div>
+{#-- End Embed view --#}

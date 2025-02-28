@@ -19,9 +19,10 @@ return [
     /** Lucca Bundles */
     Lucca\Bundle\CoreBundle\LuccaCoreBundle::class => ['all' => true],
     Lucca\Bundle\LogBundle\LuccaLogBundle::class => ['all' => true],
+    Lucca\Bundle\MediaBundle\LuccaMediaBundle::class => ['all' => true],
     Lucca\Bundle\SecurityBundle\LuccaSecurityBundle::class => ['all' => true],
-    Lucca\Bundle\UserBundle\LuccaUserBundle::class => ['all' => true],
     Lucca\Bundle\SettingBundle\LuccaSettingBundle::class => ['all' => true],
     Lucca\Bundle\ThemeDocsUiKitBundle\LuccaThemeDocsUiKitBundle::class => ['all' => true],
     Lucca\Bundle\ThemeStreamDashboardUiKitBundle\LuccaThemeStreamDashboardUiKitBundle::class => ['all' => true],
+    Lucca\Bundle\UserBundle\LuccaUserBundle::class => ['all' => true],
 ];

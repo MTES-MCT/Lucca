@@ -1,0 +1,95 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaMediaBundle' %}
+
+
+{#-- Panel - Embed --#}
+<div class="col-12">
+    <div class="max-2-columns-responsive">
+        <div class="card card-default">
+            <div class="card-header">
+                <a class="collapse-link" title="{{ 'link.reducePanel'|trans }}">
+                    <h5><i class="fad fa-sd-card"></i> {{ 'entity.storager'|transchoice(1) }} </h5>
+                </a>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+                    <div class="scrollbar-default scroll-x-responsive">
+
+                        <table class="table table-striped table-hover">
+                            <tbody>
+                            <tr>
+                                <th><i class="fad fa-sd-card"></i> {{ 'label.name'|trans }}</th>
+                                <td>{{ storager.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.enabled'|trans }}</th>
+                                <td>{{ storager.enabled|boolean }}</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fal fa-folders"></i> {{ 'label.serviceFolderNaming'|trans }}</th>
+                                <td>{{ storager.serviceFolderNaming }}</td>
+                            </tr>
+                            <tr>
+                                <th><i class="far fa-image"></i> {{ 'label.serviceMediaNaming'|trans }}</th>
+                                <td>{{ storager.serviceMediaNaming }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.description'|trans }}</th>
+                                <td>{{ storager.description }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        {#-- Block embed --#}
+                        {% block lucca_embed_buttons_storager %}
+
+                        {% endblock %}
+                        {#-- End Block embed --#}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card card-default">
+            <div class="card-header">
+                <a class="collapse-link" title="{{ 'link.reducePanel'|trans }}">
+                    <h5><i class="fal fa-folders"></i> {{ 'entity.folder'|transchoice(2) }} </h5>
+                </a>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+                    <div class="scrollbar-default scroll-x-responsive">
+
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th><i class="fal fa-folders"></i> {{ 'label.name'|trans }}</th>
+                                <th>{{ 'label.path'|trans }}</th>
+                                <th>{{ 'label.virtualPath'|trans }}</th>
+                                <th>{{ 'label.public'|trans }}</th>
+                                <th>{{ 'label.description'|trans }}</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for folder in storager.folders %}
+                                <tr>
+                                    <td>{{ folder.name }}</td>
+                                    <td>{{ folder.path }}</td>
+                                    <td>{{ folder.virtualPath }}</td>
+                                    <td>{{ folder.public|boolean }}</td>
+                                    <td>{{ folder.description|raw }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{#-- End Panel - Embed --#}
