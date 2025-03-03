@@ -1,0 +1,44 @@
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
+{% trans_default_domain 'LuccaContentBundle' %}
+
+{% set param_entity='entity.area'|transchoice(1) %}
+{% set param_entities='entity.area'|transchoice(2) %}
+
+
+{% block menuActive_area %}class="active"{% endblock menuActive_area %}
+
+
+{% block lucca_panels %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {#-- Panel - main --#}
+    <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+        <div class="card card-default">
+            <div class="card-header">
+                {{ 'title.new'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ param_entity }}</b>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+                    <div class="col-12">
+                        {{ form_row(form.name) }}
+                        {{ form_row(form.enabled) }}
+                        {{ form_row(form.position) }}
+
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_area_index') }}"
+                           title="{{ 'link.back'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <button type="submit" class="btn btn-success btn-lg"
+                                title="{{ 'link.new'|trans }}"><i class="fa fa-check"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#-- End Panel - main --#}
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock lucca_panels %}

@@ -10,6 +10,10 @@ LuccaChecklistBundle:
     resource: "@LuccaChecklistBundle/Resources/config/routing.yaml"
     prefix:   /
 
+LuccaContentBundle:
+    resource: "@LuccaContentBundle/Resources/config/routing.yaml"
+    prefix:   /
+
 LuccaCoreBundle:
     resource: "@LuccaCoreBundle/Resources/config/routing.yaml"
     prefix:   /

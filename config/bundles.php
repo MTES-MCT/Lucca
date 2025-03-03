@@ -19,6 +19,7 @@ return [
 
     /** Lucca Bundles */
     Lucca\Bundle\AdherentBundle\LuccaAdherentBundle::class => ['all' => true],
+    Lucca\Bundle\ContentBundle\LuccaContentBundle::class => ['all' => true],
     Lucca\Bundle\CoreBundle\LuccaCoreBundle::class => ['all' => true],
     Lucca\Bundle\LogBundle\LuccaLogBundle::class => ['all' => true],
     Lucca\Bundle\MediaBundle\LuccaMediaBundle::class => ['all' => true],
