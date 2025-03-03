@@ -7,26 +7,18 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\DecisionBundle\Repository;
 
-namespace Lucca\MinuteBundle\Repository;
-
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
-use Lucca\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 
 /**
  * Class DecisionRepository
  *
- * @package Lucca\MinuteBundle\Repository
+ * @package Lucca\Bundle\DecisionBundle\Repository
  * @author Terence <terence@numeric-wave.tech>
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
@@ -41,7 +33,7 @@ class DecisionRepository extends EntityRepository
      * @param null $p_minutes
      * @return int|mixed|string
      */
-    public function findBetweenDates($p_minutes = null)
+    public function findBetweenDates($p_minutes = null): mixed
     {
         $qb = $this->queryDecisionSimple();
 
@@ -67,7 +59,7 @@ class DecisionRepository extends EntityRepository
      * @param null $p_minutes
      * @return int|mixed|string
      */
-    public function countTypesBetweenDates($p_minutes = null)
+    public function countTypesBetweenDates($p_minutes = null): mixed
     {
         $qb = $this->queryDecision();
 
@@ -93,7 +85,7 @@ class DecisionRepository extends EntityRepository
      * @param null $p_minutes
      * @return int|mixed|string
      */
-    public function countBetweenDates($p_minutes = null)
+    public function countBetweenDates($p_minutes = null): mixed
     {
         $qb = $this->queryDecision();
 
@@ -130,7 +122,7 @@ class DecisionRepository extends EntityRepository
      * @param null $p_minutes
      * @return int|mixed|string
      */
-    public function findAllInArea($p_minLat, $p_maxLat, $p_minLon, $p_maxLon, Adherent $p_adherent = null, $p_maxResults = null, $p_minutes = null)
+    public function findAllInArea($p_minLat, $p_maxLat, $p_minLon, $p_maxLon, Adherent $p_adherent = null, $p_maxResults = null, $p_minutes = null): mixed
     {
         $qb = $this->getLocalizedByAdherent($p_adherent);
 
@@ -160,7 +152,7 @@ class DecisionRepository extends EntityRepository
      * @param Adherent|null $p_adherent
      * @return array
      */
-    public function findAllWithGeocodeDashboard(Adherent $p_adherent = null)
+    public function findAllWithGeocodeDashboard(Adherent $p_adherent = null): array
     {
         $qb = $this->getLocalizedByAdherent($p_adherent);
 
@@ -180,7 +172,7 @@ class DecisionRepository extends EntityRepository
      * @param Adherent|null $p_adherent
      * @return array
      */
-    public function findAllWithGeocode(Adherent $p_adherent = null)
+    public function findAllWithGeocode(Adherent $p_adherent = null): array
     {
         $qb = $this->getLocalizedByAdherent($p_adherent);
 
@@ -193,7 +185,7 @@ class DecisionRepository extends EntityRepository
      * @param Minute $p_minute
      * @return array
      */
-    public function findDecisionsByMinute(Minute $p_minute)
+    public function findDecisionsByMinute(Minute $p_minute): array
     {
         $qb = $this->queryDecision();
 
@@ -214,7 +206,7 @@ class DecisionRepository extends EntityRepository
      * @param Adherent|null $p_adherent
      * @return QueryBuilder
      */
-    private function getLocalizedByAdherent(Adherent $p_adherent = null)
+    private function getLocalizedByAdherent(Adherent $p_adherent = null): QueryBuilder
     {
         $qb = $this->queryDecision();
 
@@ -243,7 +235,7 @@ class DecisionRepository extends EntityRepository
      *
      * @return array
      */
-    public function findAll()
+    public function findAll(): array
     {
         $qb = $this->queryDecision();
 
@@ -259,7 +251,7 @@ class DecisionRepository extends EntityRepository
      * @param null $lockVersion
      * @return bool|mixed|object|null
      */
-    public function find($id, $lockMode = null, $lockVersion = null)
+    public function find($id, $lockMode = null, $lockVersion = null): mixed
     {
         $qb = $this->queryDecision();
 
@@ -283,7 +275,7 @@ class DecisionRepository extends EntityRepository
      *
      * @return QueryBuilder
      */
-    private function queryDecisionSimple()
+    private function queryDecisionSimple(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('decision')
             ->leftJoin('decision.minute', 'minute')->addSelect('minute')
@@ -298,7 +290,7 @@ class DecisionRepository extends EntityRepository
      *
      * @return QueryBuilder
      */
-    private function queryDecision()
+    private function queryDecision(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('decision')
             ->leftJoin('decision.minute', 'minute')->addSelect('minute')

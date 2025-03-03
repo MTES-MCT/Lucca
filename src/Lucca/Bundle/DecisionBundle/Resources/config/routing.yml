@@ -1,11 +1,11 @@
-# LuccaMinuteBundle Routing
+# LuccaDecisionBundle Routing
 lucca_minute_bundle_admin:
-    resource: "@LuccaMinuteBundle/Controller/Admin"
-    type:     annotation
+    resource: "@LuccaDecisionBundle/Controller/Admin"
+    type:     attribute
     prefix:   /back-office
 
-# LuccaMinuteBundle Routing - Documents
+# LuccaDecisionBundle Routing - Documents
 lucca_minute_bundle_document:
-    resource: "@LuccaMinuteBundle/Controller/Document"
-    type:     annotation
+    resource: "@LuccaDecisionBundle/Controller/Document"
+    type:     attribute
     prefix:   /back-office

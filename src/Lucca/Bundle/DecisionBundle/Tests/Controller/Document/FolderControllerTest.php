@@ -7,19 +7,20 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Tests\Controller\Admin;
+namespace Lucca\Bundle\DecisionBundle\Tests\Controller\Document;
 
+use Lucca\Bundle\FolderBundle\Entity\Folder;
 use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
- * Class DecisionControllerTest
- * Test Lucca\MinuteBundle\Controller\Admin\MinuteController
+ * Class FolderControllerTest
+ * Test Lucca\Bundle\MinuteBundle\Controller\Document\FolderController
  *
- * @package Lucca\MinuteBundle\Tests\Controller\Admin
+ * @package Lucca\Bundle\MinuteBundle\Tests\Controller\Document
  * @author Terence <terence@numeric-wave.tech>
  */
-class DecisionControllerTest extends WebTestCase
+class FolderControllerTest extends WebTestCase
 {
     /**
      * @var $urls
@@ -63,18 +64,18 @@ class DecisionControllerTest extends WebTestCase
         /**
          * Entity who was analysed
          */
-        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Decision')->findOneBy(array());
+        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Folder')->findOneBy(array(
+            'type' => Folder::TYPE_FOLDER
+        ));
 
         $minute = $this->entity->getMinute();
 
         /**
          * Urls who was analyzed
          */
-        $basicUrl = 'lucca_decision_';
-
         $this->urls = array(
-            $this->getUrl($basicUrl . 'new', array('minute_id' => $minute->getId())),
-            $this->getUrl($basicUrl . 'edit', array('minute_id' => $minute->getId(), 'id' => $this->entity->getId())),
+            $this->getUrl('lucca_folder_doc', array('minute_id' => $minute->getId() , 'id' => $this->entity->getId())),
+            $this->getUrl('lucca_control_letter', array('minute_id' => $minute->getId() , 'id' => $this->entity->getId())),
         );
     }
 

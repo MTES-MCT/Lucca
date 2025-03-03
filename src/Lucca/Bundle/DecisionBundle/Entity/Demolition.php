@@ -7,34 +7,21 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
-
-namespace Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity;
+namespace Lucca\Bundle\DecisionBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Demolition
- *
- * @ORM\Table(name="lucca_minute_demolition")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\DemolitionRepository")
- *
- * @package Lucca\MinuteBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
- */
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\DecisionBundle\Repository\DemolitionRepository;
+use Lucca\Bundle\LogBundle\Entity\LogInterface;
+
+#[ORM\Entity(repositoryClass: DemolitionRepository::class)]
+#[ORM\Table(name: "lucca_minute_demolition")]
 class Demolition implements LogInterface
 {
-    /** Traits */
     use TimestampableTrait;
 
     /** RESULT constants */
@@ -43,100 +30,50 @@ class Demolition implements LogInterface
     const RESULT_CANCELLED = 'choice.result.cancelled';
     const RESULT_WAITING = 'choice.result.waiting';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    private ?int $id;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Lucca\MinuteBundle\Entity\Decision", inversedBy="demolition")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $decision;
+    #[ORM\OneToOne(targetEntity: "Lucca\DecisionBundle\Entity\Decision", inversedBy: "demolition")]
+    #[ORM\JoinColumn(nullable: false)]
+    private Decision $decision;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="company", type="string", length=50, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 50,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $company;
+    #[ORM\Column(type: "string", length: 50, nullable: true)]
+    #[Assert\Type(type: "string", message: "constraint.type")]
+    #[Assert\Length(min: 2, max: 50, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
+    private ?string $company;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="amountCompany", type="integer", nullable=true)
-     * @Assert\Type(type="int", message="constraint.type")
-     */
-    private $amountCompany;
+    #[ORM\Column(type: "integer", nullable: true)]
+    #[Assert\Type(type: "int", message: "constraint.type")]
+    private ?int $amountCompany;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateDemolition", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateDemolition;
+    #[ORM\Column(type: "datetime", nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateDemolition;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="bailif", type="string", length=50, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 50,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $bailif;
+    #[ORM\Column(type: "string", length: 50, nullable: true)]
+    #[Assert\Type(type: "string", message: "constraint.type")]
+    #[Assert\Length(min: 2, max: 50, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
+    private ?string $bailif;
 
+    #[ORM\Column(type: "integer", nullable: true)]
+    #[Assert\Type(type: "int", message: "constraint.type")]
+    private ?int $amountBailif;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="amountBailif", type="integer", nullable=true)
-     * @Assert\Type(type="int", message="constraint.type")
-     */
-    private $amountBailif;
+    #[ORM\ManyToMany(targetEntity: "Lucca\DecisionBundle\Entity\Profession", cascade: ["persist", "remove"])]
+    #[ORM\JoinTable(name: "lucca_minute_demolition_linked_profession")]
+    #[ORM\JoinColumn(name: "demolition_id", referencedColumnName: "id")]
+    #[ORM\InverseJoinColumn(name: "profession_id", referencedColumnName: "id")]
+    private ArrayCollection $professions;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Lucca\MinuteBundle\Entity\Profession", cascade={"persist", "remove"})
-     * @ORM\JoinTable(name="lucca_minute_demolition_linked_profession",
-     *      joinColumns={@ORM\JoinColumn(name="demolition_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="profession_id", referencedColumnName="id")}
-     * )
-     */
-    private $professions;
+    #[ORM\Column(type: "text", nullable: true)]
+    private ?string $comment;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="comment", type="text", nullable=true)
-     */
-    private $comment;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="result", type="string", length=30, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 30,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $result;
+    #[ORM\Column(type: "string", length: 30, nullable: true)]
+    #[Assert\Type(type: "string", message: "constraint.type")]
+    #[Assert\Length(min: 2, max: 30, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
+    private ?string $result;
 
     /************************************************************************ Custom functions ************************************************************************/
 
@@ -152,7 +89,7 @@ class Demolition implements LogInterface
      * Log name of this Class
      * @return string
      */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Démolition';
     }
@@ -164,7 +101,7 @@ class Demolition implements LogInterface
      *
      * @return integer
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -176,7 +113,7 @@ class Demolition implements LogInterface
      *
      * @return Demolition
      */
-    public function setCompany($company)
+    public function setCompany(string $company): static
     {
         $this->company = $company;
 
@@ -188,7 +125,7 @@ class Demolition implements LogInterface
      *
      * @return string
      */
-    public function getCompany()
+    public function getCompany(): ?string
     {
         return $this->company;
     }
@@ -200,7 +137,7 @@ class Demolition implements LogInterface
      *
      * @return Demolition
      */
-    public function setAmountCompany($amountCompany)
+    public function setAmountCompany(int $amountCompany): static
     {
         $this->amountCompany = $amountCompany;
 
@@ -212,7 +149,7 @@ class Demolition implements LogInterface
      *
      * @return integer
      */
-    public function getAmountCompany()
+    public function getAmountCompany(): ?int
     {
         return $this->amountCompany;
     }
@@ -224,7 +161,7 @@ class Demolition implements LogInterface
      *
      * @return Demolition
      */
-    public function setDateDemolition($dateDemolition)
+    public function setDateDemolition(\DateTime $dateDemolition): static
     {
         $this->dateDemolition = $dateDemolition;
 
@@ -236,7 +173,7 @@ class Demolition implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateDemolition()
+    public function getDateDemolition(): ?\DateTime
     {
         return $this->dateDemolition;
     }
@@ -248,7 +185,7 @@ class Demolition implements LogInterface
      *
      * @return Demolition
      */
-    public function setBailif($bailif)
+    public function setBailif(string $bailif): static
     {
         $this->bailif = $bailif;
 
@@ -260,7 +197,7 @@ class Demolition implements LogInterface
      *
      * @return string
      */
-    public function getBailif()
+    public function getBailif(): ?string
     {
         return $this->bailif;
     }
@@ -272,7 +209,7 @@ class Demolition implements LogInterface
      *
      * @return Demolition
      */
-    public function setAmountBailif($amountBailif)
+    public function setAmountBailif(int $amountBailif): static
     {
         $this->amountBailif = $amountBailif;
 
@@ -284,7 +221,7 @@ class Demolition implements LogInterface
      *
      * @return integer
      */
-    public function getAmountBailif()
+    public function getAmountBailif(): ?int
     {
         return $this->amountBailif;
     }
@@ -296,7 +233,7 @@ class Demolition implements LogInterface
      *
      * @return Demolition
      */
-    public function setComment($comment)
+    public function setComment(string $comment): static
     {
         $this->comment = $comment;
 
@@ -308,7 +245,7 @@ class Demolition implements LogInterface
      *
      * @return string
      */
-    public function getComment()
+    public function getComment(): ?string
     {
         return $this->comment;
     }
@@ -320,7 +257,7 @@ class Demolition implements LogInterface
      *
      * @return Demolition
      */
-    public function setResult($result)
+    public function setResult(string $result): static
     {
         $this->result = $result;
 
@@ -332,7 +269,7 @@ class Demolition implements LogInterface
      *
      * @return string
      */
-    public function getResult()
+    public function getResult(): ?string
     {
         return $this->result;
     }
@@ -340,11 +277,11 @@ class Demolition implements LogInterface
     /**
      * Set decision
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Decision $decision
+     * @param Decision $decision
      *
      * @return Demolition
      */
-    public function setDecision(\Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Decision $decision)
+    public function setDecision(Decision $decision): static
     {
         $this->decision = $decision;
 
@@ -354,9 +291,9 @@ class Demolition implements LogInterface
     /**
      * Get decision
      *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Decision
+     * @return Decision
      */
-    public function getDecision()
+    public function getDecision(): Decision
     {
         return $this->decision;
     }
@@ -364,11 +301,11 @@ class Demolition implements LogInterface
     /**
      * Add profession
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Profession $profession
+     * @param Profession $profession
      *
      * @return Demolition
      */
-    public function addProfession(\Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Profession $profession)
+    public function addProfession(Profession $profession): static
     {
         $this->professions[] = $profession;
 
@@ -378,9 +315,9 @@ class Demolition implements LogInterface
     /**
      * Remove profession
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Profession $profession
+     * @param Profession $profession
      */
-    public function removeProfession(\Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Profession $profession)
+    public function removeProfession(Profession $profession): void
     {
         $this->professions->removeElement($profession);
     }
@@ -388,9 +325,9 @@ class Demolition implements LogInterface
     /**
      * Get professions
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection|Collection
      */
-    public function getProfessions()
+    public function getProfessions(): ArrayCollection|Collection
     {
         return $this->professions;
     }

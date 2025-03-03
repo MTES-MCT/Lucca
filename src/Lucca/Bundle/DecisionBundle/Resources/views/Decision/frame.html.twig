@@ -1,6 +1,6 @@
-{% trans_default_domain 'LuccaMinuteBundle' %}
+{% trans_default_domain 'DecisionBundle' %}
 
-<a name="decision" data-value="decision-{{ decision.id }}" class="btn btn-secondary btn-xs btn-block btn-collapse">
+<a data-value="decision-{{ decision.id }}" class="btn btn-secondary btn-xs btn-block btn-collapse">
     <h4>
         {{ loop.index }})
         {{ 'entity.decision'|trans }}
@@ -18,7 +18,7 @@
                 <b>{{ 'entity.tribunal'|trans }}</b> : {{ decision.tribunal.name }}<br>
                 <hr class="hr-table">
                 {% if  decision.tribunalCommission %}
-                    {% include "LuccaMinuteBundle:Commission:frame.html.twig" with { 'commission': decision.tribunalCommission } %}
+                    {% include "@LuccaDecision/Commission/frame.html.twig" with { 'commission': decision.tribunalCommission } %}
                 {% endif %}
             </td>
         </tr>
@@ -30,7 +30,7 @@
                 <th>{{ 'text.decision.appeal'|trans }}</th>
                 <td>
                     {% if  decision.appealCommission %}
-                        {% include "LuccaMinuteBundle:Commission:frame.html.twig" with { 'commission': decision.appealCommission } %}
+                        {% include "@LuccaDecision/Commission/frame.html.twig" with { 'commission': decision.appealCommission } %}
                     {% endif %}
                 </td>
             </tr>
@@ -52,7 +52,7 @@
                         <br>
                         <b>{{ 'label.nameNewCassation'|trans }}</b> : {{ decision.nameNewCassation }}<br>
                         <hr class="hr-table">
-                        {% include "LuccaMinuteBundle:Commission:frame.html.twig" with { 'commission': decision.cassationComission } %}
+                        {% include "@LuccaDecision/Commission/frame.html.twig" with { 'commission': decision.cassationComission } %}
                     {% endif %}
                 </td>
             </tr>

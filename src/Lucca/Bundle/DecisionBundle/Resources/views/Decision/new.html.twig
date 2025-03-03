@@ -1,5 +1,5 @@
-{% extends "LuccaThemeAngleBundle:SubLayout:new.html.twig" %}
-{% trans_default_domain 'LuccaMinuteBundle' %}
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
+{% trans_default_domain 'DecisionBundle' %}
 
 {% set param_entity='entity.decision'|transchoice(1) %}
 {% set param_entities='entity.decision'|transchoice(2) %}
@@ -11,14 +11,14 @@
 
     {{ form_start(form) }}
 
-    {% form_theme form  'LuccaThemeAngleBundle:Form:jquery.collection.html.twig' %}
+    {% form_theme form  '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig' %}
 
     {# Form theme apply for child only #}
-    {% form_theme form.liquidations 'LuccaMinuteBundle:Liquidation:liquidation-theme.html.twig' %}
-    {% form_theme form.penalties 'LuccaMinuteBundle:Penalty:penalty-theme.html.twig' %}
-    {% form_theme form.appealPenalties 'LuccaMinuteBundle:AppealPenalty:appeal-penalty-theme.html.twig' %}
-    {% form_theme form.contradictories 'LuccaMinuteBundle:Contradictory:contradictory-theme.html.twig' %}
-    {% form_theme form.demolition.professions 'LuccaMinuteBundle:Profession:profession-theme.html.twig' %}
+    {% form_theme form.liquidations 'LuccaDecisionBundle:Liquidation:liquidation-theme.html.twig' %}
+    {% form_theme form.penalties 'LuccaDecisionBundle:Penalty:penalty-theme.html.twig' %}
+    {% form_theme form.appealPenalties 'LuccaDecisionBundle:AppealPenalty:appeal-penalty-theme.html.twig' %}
+    {% form_theme form.contradictories 'LuccaDecisionBundle:Contradictory:contradictory-theme.html.twig' %}
+    {% form_theme form.demolition.professions 'LuccaDecisionBundle:Profession:profession-theme.html.twig' %}
 
     {{ form_errors(form) }}
 
@@ -560,7 +560,7 @@
 
         {# Custom JS #}
         {#-- JS - Tribunal --#}
-        $('input[name="lucca_minutebundle_decision[tribunalCommission][statusDecision]"]').click(function () {
+        $('input[name="lucca_decisionBundle_decision[tribunalCommission][statusDecision]"]').click(function () {
             $(".trib-status").hide('slow');
 
             if ($(this).val() === 'choice.status_deci.guilty')
@@ -570,11 +570,11 @@
 
 
         {#-- JS - Appeal --#}
-        $('input[name="lucca_minutebundle_decision[appeal]"]').click(function () {
+        $('input[name="lucca_decisionBundle_decision[appeal]"]').click(function () {
             $("#appeal-block").toggle('slow');
         });
 
-        $('input[name="lucca_minutebundle_decision[appealCommission][statusDecision]"]').click(function () {
+        $('input[name="lucca_decisionBundle_decision[appealCommission][statusDecision]"]').click(function () {
             $(".appeal-status").hide('slow');
 
             if ($(this).val() === 'choice.status_deci.guilty')
@@ -584,7 +584,7 @@
 
 
         {#-- JS - Cassation --#}
-        $('input[name="lucca_minutebundle_decision[cassationComplaint]"]').click(function () {
+        $('input[name="lucca_decisionBundle_decision[cassationComplaint]"]').click(function () {
             {# if yes #}
             if ($(this).val() === '0')
                 $("#cassation-block").show('slow');
@@ -593,14 +593,14 @@
                 $("#cassation-block").hide('slow');
         });
 
-        $('input[name="lucca_minutebundle_decision[cassationComission][statusDecision]"]').click(function () {
+        $('input[name="lucca_decisionBundle_decision[cassationComission][statusDecision]"]').click(function () {
             $(".cassation-status").hide('slow');
 
             if ($(this).val() === 'choice.status_deci.guilty')
                 $("#cassation-guilty").show('slow');
         });
 
-        $('input[name="lucca_minutebundle_decision[statusCassation]"]').click(function () {
+        $('input[name="lucca_decisionBundle_decision[statusCassation]"]').click(function () {
             {# if yes #}
             if ($(this).val() === '0')
                 $("#cassation-content").show('slow');

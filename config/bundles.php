@@ -25,4 +25,7 @@ return [
     Lucca\Bundle\ThemeDocsUiKitBundle\LuccaThemeDocsUiKitBundle::class => ['all' => true],
     Lucca\Bundle\ThemeStreamDashboardUiKitBundle\LuccaThemeStreamDashboardUiKitBundle::class => ['all' => true],
     Lucca\Bundle\UserBundle\LuccaUserBundle::class => ['all' => true],
+    Lucca\Bundle\DecisionBundle\LuccaDecisionBundle::class => ['all' => true],
+    Lucca\Bundle\FolderBundle\LuccaFolderBundle::class => ['all' => true],
+    Lucca\Bundle\MinuteBundle\LuccaMinuteBundle::class => ['all' => true],
 ];

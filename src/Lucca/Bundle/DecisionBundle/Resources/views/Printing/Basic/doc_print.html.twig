@@ -2,7 +2,7 @@
 {% extends "@LuccaModel/Printing/base.html.twig" %}
 
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaFolderBundle' %}
+{% trans_default_domain 'DecisionBundle' %}
 
 {% if 'setting.folder.useRefreshAgentForRefreshSignature.name'|setting and update.controls is defined and update.controls|length == 1 %}
     {% set agent = update.controls[0].agent %}
@@ -29,25 +29,25 @@
         {% if folder.nature is constant('NATURE_OBSTACLE', folder) %}
             {#SETTING#}
             {% if 'setting.folder.docContentObstacle.name'|setting == true %}
-                {% set filename = 'LuccaMinuteBundle:Folder/Printing/Custom:doc_obstacle_content-'~ 'setting.general.departement.name'|setting ~'.html.twig' %}
+                {% set filename = 'LuccaDecisionBundle:Folder/Printing/Custom:doc_obstacle_content-'~ 'setting.general.departement.name'|setting ~'.html.twig' %}
                 {% include filename with {'agent' : agent } %}
             {% else %}
 
-                {% include 'LuccaMinuteBundle:Folder/Printing/Basic:doc_obstacle_content.html.twig' with {'agent' : agent, 'folder': folder, 'update': update} %}
+                {% include 'LuccaDecisionBundle:Folder/Printing/Basic:doc_obstacle_content.html.twig' with {'agent' : agent, 'folder': folder, 'update': update} %}
             {% endif %}
 
         {% else %}
             {#SETTING#}
             {% if 'setting.folder.docContent.name'|setting == true %}
-                {% set filename = 'LuccaMinuteBundle:Folder/Printing/Custom:doc_content-'~ 'setting.general.departement.name'|setting ~'.html.twig' %}
+                {% set filename = 'LuccaDecisionBundle:Folder/Printing/Custom:doc_content-'~ 'setting.general.departement.name'|setting ~'.html.twig' %}
                 {% include filename  with {'agent' : agent, 'folder' : folder } %}
             {% else %}
-                {% include 'LuccaMinuteBundle:Folder/Printing/Basic:doc_content.html.twig' with {'agent' : agent, 'folder' : folder, 'update' : update} %}
+                {% include 'LuccaDecisionBundle:Folder/Printing/Basic:doc_content.html.twig' with {'agent' : agent, 'folder' : folder, 'update' : update} %}
             {% endif %}
         {% endif %}
     {% endif %}
 
-    {% include 'LuccaMinuteBundle:Folder/Printing/Basic:doc_footer.html.twig' with {'agent' : agent} %}
+    {% include 'LuccaDecisionBundle:Folder/Printing/Basic:doc_footer.html.twig' with {'agent' : agent} %}
 
     {% for element in folder.elements %}
         {% if element.image %}

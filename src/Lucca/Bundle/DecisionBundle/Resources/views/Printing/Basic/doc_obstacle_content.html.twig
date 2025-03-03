@@ -1,4 +1,4 @@
-{% trans_default_domain 'LuccaFolderBundle' %}
+{% trans_default_domain 'DecisionBundle' %}
 
 {% set control = folder.control %}
 {% set minute = folder.minute %}
@@ -8,8 +8,8 @@
 {% set structureName = minute.adherent.structureName %}
 {% set structureOffice = minute.adherent.structureOffice %}
 
-{% import "LuccaMinuteBundle:Human:human-macro.html.twig" as humanMacro %}
-{% import "LuccaMinuteBundle:Agent:agent-attendant-macro.html.twig" as agentAttendantMacro %}
+{% import "@LuccaMinute/Human/human-macro.html.twig" as humanMacro %}
+{% import "@LuccaMinute/Agent/agent-attendant-macro.html.twig" as agentAttendantMacro %}
 
 <div class="row mb25 mt150 pt15">
     <div class="col-12 text-center">
@@ -90,10 +90,10 @@
             constant('FUNCTION_MAYOR', agent),
             constant('FUNCTION_DEPUTY', agent)
         ] %}
-            Je soussigné, {{ agent.officialName }}, agissant en tant que {{ agent.function|trans({}, 'LuccaFolderBundle') }}
+            Je soussigné, {{ agent.officialName }}, agissant en tant que {{ agent.function|trans({}, 'DecisionBundle') }}
             de la commune de {{ structureName }} rapporte et certifie que :
         {% else %}
-            Je soussigné {{ agent.officialName }}, {{ agent.function|trans({}, 'LuccaFolderBundle') }} en poste à la commune de
+            Je soussigné {{ agent.officialName }}, {{ agent.function|trans({}, 'DecisionBundle') }} en poste à la commune de
             {{ structureOffice }} ayant prêté serment devant le Tribunal de Grande Instance de
             {{ minute.tribunal.office.name }} et porteur de la commission n° {{ agent.commission }}, rapporte ce qui suit :
         {% endif %}
@@ -198,7 +198,7 @@
                 Le {% if control.dateReturned %}{{ control.dateReturned|date('d/m/Y') }}{% endif %} le courrier adressé à
                 {# Affichage des informations de la personne #}
                 {{ humanMacro.humansByFolderViewTextNamed(folder.humansByMinute|merge(folder.humansByFolder)) }}
-                a été retourné avec la mention "{{ control.reason|trans({}, 'LuccaMinuteBundle') }}".
+                a été retourné avec la mention "{{ control.reason|trans({}, 'DecisionBundle') }}".
 
             {% else %}
                 Suite à ce courrier, le contrôle a été refusé par :

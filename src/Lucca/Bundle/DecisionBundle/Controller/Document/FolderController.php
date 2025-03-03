@@ -8,47 +8,41 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Controller\Document;
+namespace Lucca\Bundle\DecisionBundle\Controller\Document;
 
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * Class FolderController
- *
- * @Route("/minute-{minute_id}/folder-")
- * @Security("has_role('ROLE_LUCCA')")
- * @ParamConverter("minute", class="LuccaMinuteBundle:Minute", options={"id" = "minute_id"})
- *
- * @package Lucca\MinuteBundle\Folderler\Document
- * @author Terence <terence@numeric-wave.tech>
  */
-class FolderController extends Controller
+#[IsGranted('ROLE_LUCCA')]
+#[Route('/minute-{minute_id}/folder-')]
+class FolderController extends AbstractController
 {
     /**
      * Displays a Folder
-     *
-     * @Route("{id}/document", name="lucca_folder_doc", methods={"GET"})
-     * @Security("has_role('ROLE_LUCCA')")
      *
      * @param Minute $minute
      * @param Folder $folder
      * @return Response
      */
-    public function folderDocAction(Minute $minute, Folder $folder)
+    #[Route("{id}/document", name: "lucca_folder_doc", methods: ["GET"])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function folderDocAction(Minute $minute, Folder $folder): Response
     {
         $em = $this->getDoctrine()->getManager();
 
         // TODO Check performance bug
-//        $folder = $em->getRepository('LuccaMinuteBundle:Folder')->findCompleteFolder($folder);
-        $update = $em->getRepository('LuccaMinuteBundle:Updating')->findUpdatingByControl($folder->getControl());
+//        $folder = $em->getRepository('LuccaDecisionBundle:Folder')->findCompleteFolder($folder);
+        $update = $em->getRepository('LuccaDecisionBundle:Updating')->findUpdatingByControl($folder->getControl());
 
-        return $this->render('LuccaMinuteBundle:Folder/Printing/Basic:doc.html.twig', array(
+        return $this->render('@LuccaDecision/Printing/Basic/doc.html.twig', array(
             'minute' => $minute,
             'folder' => $folder,
             'update' => $update,

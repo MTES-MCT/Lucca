@@ -1,5 +1,5 @@
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaMinuteBundle' %}
+{% trans_default_domain 'DecisionBundle' %}
 
 {% block collection_widget %}
     {% spaceless %}
@@ -35,7 +35,7 @@
 
 {% endblock %}
 
-{% block lucca_minutebundle_contradictory_widget %}
+{% block lucca_decisionBundle_contradictory_widget %}
 
     <tr {{ block('widget_attributes') }}>
         <td>{{ form_widget(form.dateNoticeDdtm) }}</td>
@@ -53,4 +53,4 @@
 
 {% endblock %}
 
-{% block lucca_minutebundle_contradictory_label %}{% endblock %}
+{% block lucca_decisionBundle_contradictory_label %}{% endblock %}

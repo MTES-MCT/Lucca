@@ -7,122 +7,62 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
-
-namespace Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity;
+namespace Lucca\Bundle\DecisionBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\DecisionBundle\Repository\ExpulsionRepository;
+use Lucca\Bundle\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Expulsion
- *
- * @ORM\Table(name="lucca_minute_expulsion")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\ExpulsionRepository")
- *
- * @package Lucca\MinuteBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
- */
+#[ORM\Entity(repositoryClass: ExpulsionRepository::class)]
+#[ORM\Table(name: "lucca_minute_expulsion")]
 class Expulsion implements LogInterface
 {
     /** Traits */
     use TimestampableTrait;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    private ?int $id;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Lucca\MinuteBundle\Entity\Decision", inversedBy="expulsion")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\OneToOne(targetEntity: "Lucca\DecisionBundle\Entity\Decision", inversedBy: "expulsion")]
+    #[ORM\JoinColumn(nullable: false)]
     private $decision;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="lawFirm", type="string", length=50, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 50,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $lawFirm;
+    #[ORM\Column(type: "string", length: 50, nullable: true)]
+    #[Assert\Type(type: "string", message: "constraint.type")]
+    #[Assert\Length(min: 2, max: 50, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
+    private ?string $lawFirm;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="amountDelivrery", type="integer", nullable=true)
-     * @Assert\Type(type="int", message="constraint.type")
-     */
-    private $amountDelivrery;
+    #[ORM\Column(type: "integer", nullable: true)]
+    #[Assert\Type(type: "int", message: "constraint.type")]
+    private ?int $amountDelivrery;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateHearing", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateHearing;
+    #[ORM\Column(type: "datetime", nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateHearing;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateAdjournment", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateAdjournment;
+    #[ORM\Column(type: "datetime", nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateAdjournment;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateDeliberation", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateDeliberation;
+    #[ORM\Column(type: "datetime", nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateDeliberation;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateJudicialDesision", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateJudicialDesision;
+    #[ORM\Column(type: "datetime", nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateJudicialDesision;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="statusDecision", type="string", length=50, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 50,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $statusDecision;
+    #[ORM\Column(type: "string", length: 50, nullable: true)]
+    #[Assert\Type(type: "string", message: "constraint.type")]
+    #[Assert\Length(min: 2, max: 50, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
+    private ?string $statusDecision;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="comment", type="text", nullable=true)
-     */
-    private $comment;
+    #[ORM\Column(type: "text", nullable: true)]
+    private ?string $comment;
 
     /************************************************************************ Custom functions ************************************************************************/
 
@@ -130,7 +70,7 @@ class Expulsion implements LogInterface
      * Log name of this Class
      * @return string
      */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Expulsion';
     }
@@ -142,7 +82,7 @@ class Expulsion implements LogInterface
      *
      * @return integer
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -154,7 +94,7 @@ class Expulsion implements LogInterface
      *
      * @return Expulsion
      */
-    public function setLawFirm($lawFirm)
+    public function setLawFirm(string $lawFirm): static
     {
         $this->lawFirm = $lawFirm;
 
@@ -166,7 +106,7 @@ class Expulsion implements LogInterface
      *
      * @return string
      */
-    public function getLawFirm()
+    public function getLawFirm(): ?string
     {
         return $this->lawFirm;
     }
@@ -178,7 +118,7 @@ class Expulsion implements LogInterface
      *
      * @return Expulsion
      */
-    public function setAmountDelivrery($amountDelivrery)
+    public function setAmountDelivrery(int $amountDelivrery): static
     {
         $this->amountDelivrery = $amountDelivrery;
 
@@ -190,7 +130,7 @@ class Expulsion implements LogInterface
      *
      * @return integer
      */
-    public function getAmountDelivrery()
+    public function getAmountDelivrery(): ?int
     {
         return $this->amountDelivrery;
     }
@@ -202,7 +142,7 @@ class Expulsion implements LogInterface
      *
      * @return Expulsion
      */
-    public function setDateHearing($dateHearing)
+    public function setDateHearing(\DateTime $dateHearing): static
     {
         $this->dateHearing = $dateHearing;
 
@@ -214,7 +154,7 @@ class Expulsion implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateHearing()
+    public function getDateHearing(): ?\DateTime
     {
         return $this->dateHearing;
     }
@@ -226,7 +166,7 @@ class Expulsion implements LogInterface
      *
      * @return Expulsion
      */
-    public function setDateAdjournment($dateAdjournment)
+    public function setDateAdjournment(\DateTime $dateAdjournment): static
     {
         $this->dateAdjournment = $dateAdjournment;
 
@@ -238,7 +178,7 @@ class Expulsion implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateAdjournment()
+    public function getDateAdjournment(): ?\DateTime
     {
         return $this->dateAdjournment;
     }
@@ -250,7 +190,7 @@ class Expulsion implements LogInterface
      *
      * @return Expulsion
      */
-    public function setDateDeliberation($dateDeliberation)
+    public function setDateDeliberation(\DateTime $dateDeliberation): static
     {
         $this->dateDeliberation = $dateDeliberation;
 
@@ -262,7 +202,7 @@ class Expulsion implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateDeliberation()
+    public function getDateDeliberation(): ?\DateTime
     {
         return $this->dateDeliberation;
     }
@@ -274,7 +214,7 @@ class Expulsion implements LogInterface
      *
      * @return Expulsion
      */
-    public function setDateJudicialDesision($dateJudicialDesision)
+    public function setDateJudicialDesision(\DateTime $dateJudicialDesision): static
     {
         $this->dateJudicialDesision = $dateJudicialDesision;
 
@@ -286,7 +226,7 @@ class Expulsion implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateJudicialDesision()
+    public function getDateJudicialDesision(): ?\DateTime
     {
         return $this->dateJudicialDesision;
     }
@@ -298,7 +238,7 @@ class Expulsion implements LogInterface
      *
      * @return Expulsion
      */
-    public function setStatusDecision($statusDecision)
+    public function setStatusDecision(string $statusDecision): static
     {
         $this->statusDecision = $statusDecision;
 
@@ -310,7 +250,7 @@ class Expulsion implements LogInterface
      *
      * @return string
      */
-    public function getStatusDecision()
+    public function getStatusDecision(): ?string
     {
         return $this->statusDecision;
     }
@@ -322,7 +262,7 @@ class Expulsion implements LogInterface
      *
      * @return Expulsion
      */
-    public function setComment($comment)
+    public function setComment(string $comment): static
     {
         $this->comment = $comment;
 
@@ -334,7 +274,7 @@ class Expulsion implements LogInterface
      *
      * @return string
      */
-    public function getComment()
+    public function getComment(): ?string
     {
         return $this->comment;
     }
@@ -342,11 +282,11 @@ class Expulsion implements LogInterface
     /**
      * Set decision
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Decision $decision
+     * @param Decision $decision
      *
      * @return Expulsion
      */
-    public function setDecision(\Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Decision $decision)
+    public function setDecision(Decision $decision): static
     {
         $this->decision = $decision;
 
@@ -356,9 +296,9 @@ class Expulsion implements LogInterface
     /**
      * Get decision
      *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Decision
+     * @return Decision
      */
-    public function getDecision()
+    public function getDecision(): Decision
     {
         return $this->decision;
     }

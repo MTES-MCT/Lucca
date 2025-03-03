@@ -7,67 +7,38 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
-
-namespace Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity;
+namespace Lucca\Bundle\DecisionBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Liquidation
- *
- * @ORM\Table(name="lucca_minute_liquidation")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\LiquidationRepository")
- *
- * @package Lucca\MinuteBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
- */
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\DecisionBundle\Repository\LiquidationRepository;
+use Lucca\Bundle\LogBundle\Entity\LogInterface;
+
+#[ORM\Entity(repositoryClass: LiquidationRepository::class)]
+#[ORM\Table(name: "lucca_minute_liquidation")]
 class Liquidation implements LogInterface
 {
     /** Traits */
     use TimestampableTrait;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    private ?int $id = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateStart", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateStart;
+    #[ORM\Column(type: "datetime", nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateStart = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateEnd", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateEnd;
+    #[ORM\Column(type: "datetime", nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateEnd = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="amountPenalty", type="integer", nullable=true)
-     * @Assert\Type(type="int", message="constraint.type")
-     */
-    private $amountPenalty;
+    #[ORM\Column(type: "integer", nullable: true)]
+    #[Assert\Type(type: "int", message: "constraint.type")]
+    private ?int $amountPenalty = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
@@ -75,7 +46,7 @@ class Liquidation implements LogInterface
      * Log name of this Class
      * @return string
      */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Liquidation';
     }
@@ -87,7 +58,7 @@ class Liquidation implements LogInterface
      *
      * @return integer
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -99,7 +70,7 @@ class Liquidation implements LogInterface
      *
      * @return Liquidation
      */
-    public function setDateStart($dateStart)
+    public function setDateStart(\DateTime $dateStart): static
     {
         $this->dateStart = $dateStart;
 
@@ -111,7 +82,7 @@ class Liquidation implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateStart()
+    public function getDateStart(): ?\DateTime
     {
         return $this->dateStart;
     }
@@ -123,7 +94,7 @@ class Liquidation implements LogInterface
      *
      * @return Liquidation
      */
-    public function setDateEnd($dateEnd)
+    public function setDateEnd(\DateTime $dateEnd): static
     {
         $this->dateEnd = $dateEnd;
 
@@ -135,7 +106,7 @@ class Liquidation implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateEnd()
+    public function getDateEnd(): ?\DateTime
     {
         return $this->dateEnd;
     }
@@ -143,11 +114,11 @@ class Liquidation implements LogInterface
     /**
      * Set amountPenalty
      *
-     * @param integer $amountPenalty
+     * @param int $amountPenalty
      *
      * @return Liquidation
      */
-    public function setAmountPenalty($amountPenalty)
+    public function setAmountPenalty(int $amountPenalty): static
     {
         $this->amountPenalty = $amountPenalty;
 
@@ -157,9 +128,9 @@ class Liquidation implements LogInterface
     /**
      * Get amountPenalty
      *
-     * @return integer
+     * @return int
      */
-    public function getAmountPenalty()
+    public function getAmountPenalty(): ?int
     {
         return $this->amountPenalty;
     }

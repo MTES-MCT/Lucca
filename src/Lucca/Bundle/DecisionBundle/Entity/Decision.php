@@ -7,229 +7,128 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
-
-namespace Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity;
+namespace Lucca\Bundle\DecisionBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Decision
- *
- * @ORM\Table(name="lucca_minute_decision")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\DecisionRepository")
- *
- * @package Lucca\MinuteBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
- */
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\DecisionBundle\Repository\DecisionRepository;
+use Lucca\Bundle\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\ParameterBundle\Entity\Tribunal;
+#[ORM\Entity(repositoryClass: DecisionRepository::class)]
+#[ORM\Table(name: "lucca_minute_decision")]
 class Decision implements LogInterface
 {
-    /** Traits */
     use TimestampableTrait;
 
     /** TYPE constants */
-    const STATUS_REGULARIZED = 'choice.status.regularized';
-    const STATUS_DEMOLITION = 'choice.status.demolition';
-    const STATUS_EXEC_OFFICE = 'choice.status.exec_office';
-    const STATUS_RELAXED = 'choice.status.relaxed';
+    public const STATUS_REGULARIZED = 'choice.status.regularized';
+    public const STATUS_DEMOLITION = 'choice.status.demolition';
+    public const STATUS_EXEC_OFFICE = 'choice.status.exec_office';
+    public const STATUS_RELAXED = 'choice.status.relaxed';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\MinuteBundle\Entity\Minute", inversedBy="decisions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $minute;
+    #[ORM\ManyToOne(targetEntity: Minute::class, inversedBy: "decisions")]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Minute $minute = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\ParameterBundle\Entity\Tribunal")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $tribunal;
+    #[ORM\ManyToOne(targetEntity: Tribunal::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Tribunal $tribunal = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\MinuteBundle\Entity\Commission", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $tribunalCommission;
+    #[ORM\ManyToOne(targetEntity: Commission::class, cascade: ["persist", "remove"])]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Commission $tribunalCommission = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="appeal", type="boolean")
-     * @Assert\Type(type="bool", message="constraint.type")
-     */
-    private $appeal = false;
+    #[ORM\Column(type: Types::BOOLEAN)]
+    #[Assert\Type(type: "bool", message: "constraint.type")]
+    private bool $appeal = false;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\MinuteBundle\Entity\Commission", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $appealCommission;
+    #[ORM\ManyToOne(targetEntity: Commission::class, cascade: ["persist", "remove"])]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Commission $appealCommission = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="cassationComplaint", type="boolean", nullable=true)
-     * @Assert\Type(type="bool", message="constraint.type")
-     */
-    private $cassationComplaint = null;
+    #[ORM\Column(type: Types::BOOLEAN, nullable: true)]
+    #[Assert\Type(type: "bool", message: "constraint.type")]
+    private ?bool $cassationComplaint = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateAskCassation", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateAskCassation;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateAskCassation = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateAnswerCassation", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateAnswerCassation;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateAnswerCassation = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="statusCassation", type="boolean", nullable=true)
-     * @Assert\Type(type="bool", message="constraint.type")
-     */
-    private $statusCassation = null;
+    #[ORM\Column(type: Types::BOOLEAN, nullable: true)]
+    #[Assert\Type(type: "bool", message: "constraint.type")]
+    private ?bool $statusCassation = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\MinuteBundle\Entity\Commission", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $cassationComission;
+    #[ORM\ManyToOne(targetEntity: Commission::class, cascade: ["persist", "remove"])]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Commission $cassationCommission = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nameNewCassation", type="string", length=35, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     */
-    private $nameNewCassation;
+    #[ORM\Column(type: Types::STRING, length: 35, nullable: true)]
+    #[Assert\Type(type: "string", message: "constraint.type")]
+    private ?string $nameNewCassation = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateReferralEurope", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateReferralEurope;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateReferralEurope = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="answerEurope", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $answerEurope;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $answerEurope = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="dataEurope", type="text", nullable=true)
-     */
-    private $dataEurope;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $dataEurope = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="amountPenaltyDaily", type="integer", nullable=true)
-     * @Assert\Type(type="int", message="constraint.type")
-     */
-    private $amountPenaltyDaily;
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[Assert\Type(type: "int", message: "constraint.type")]
+    private ?int $amountPenaltyDaily = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateStartRecovery", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateStartRecovery;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateStartRecovery = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateNoticeDdtm", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateNoticeDdtm;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateNoticeDdtm = null;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Lucca\MinuteBundle\Entity\Penalty", cascade={"persist", "remove"})
-     * @ORM\JoinTable(name="lucca_minute_decision_linked_penalty",
-     *      joinColumns={@ORM\JoinColumn(name="decision_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="penalty_id", referencedColumnName="id")}
-     * )
-     */
-    private $penalties;
+    #[ORM\ManyToMany(targetEntity: Penalty::class, cascade: ["persist", "remove"])]
+    #[ORM\JoinTable(name: "lucca_minute_decision_linked_penalty")]
+    private Collection $penalties;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Lucca\MinuteBundle\Entity\Liquidation", cascade={"persist", "remove"})
-     * @ORM\JoinTable(name="lucca_minute_decision_linked_liquidation",
-     *      joinColumns={@ORM\JoinColumn(name="decision_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="liquidation_id", referencedColumnName="id")}
-     * )
-     */
-    private $liquidations;
+    #[ORM\ManyToMany(targetEntity: Liquidation::class, cascade: ["persist", "remove"])]
+    #[ORM\JoinTable(name: "lucca_minute_decision_linked_liquidation")]
+    private Collection $liquidations;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="totalPenaltyRecovery", type="integer", nullable=true)
-     * @Assert\Type(type="int", message="constraint.type")
-     */
-    private $totalPenaltyRecovery;
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[Assert\Type(type: "int", message: "constraint.type")]
+    private ?int $totalPenaltyRecovery = null;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Lucca\MinuteBundle\Entity\PenaltyAppeal", cascade={"persist", "remove"})
-     * @ORM\JoinTable(name="lucca_minute_decision_linked_penalty_appeal",
-     *      joinColumns={@ORM\JoinColumn(name="decision_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="penalty_appeal_id", referencedColumnName="id")}
-     * )
-     */
-    private $appealPenalties;
+    #[ORM\ManyToMany(targetEntity: PenaltyAppeal::class, cascade: ["persist", "remove"])]
+    #[ORM\JoinTable(name: "lucca_minute_decision_linked_penalty_appeal")]
+    private Collection $appealPenalties;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Lucca\MinuteBundle\Entity\Contradictory", cascade={"persist", "remove"})
-     * @ORM\JoinTable(name="lucca_minute_decision_linked_contradictory",
-     *      joinColumns={@ORM\JoinColumn(name="decision_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="contradictory_id", referencedColumnName="id")}
-     * )
-     */
-    private $contradictories;
+    #[ORM\ManyToMany(targetEntity: Contradictory::class, cascade: ["persist", "remove"])]
+    #[ORM\JoinTable(name: "lucca_minute_decision_linked_contradictory")]
+    private Collection $contradictories;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Lucca\MinuteBundle\Entity\Expulsion", mappedBy="decision", cascade={"persist", "remove"})
-     */
-    private $expulsion;
+    #[ORM\OneToOne(targetEntity: Expulsion::class, mappedBy: "decision", cascade: ["persist", "remove"])]
+    private ?Expulsion $expulsion = null;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Lucca\MinuteBundle\Entity\Demolition", mappedBy="decision", cascade={"persist", "remove"})
-     */
-    private $demolition;
+    #[ORM\OneToOne(targetEntity: Demolition::class, mappedBy: "decision", cascade: ["persist", "remove"])]
+    private ?Demolition $demolition = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
@@ -239,19 +138,18 @@ class Decision implements LogInterface
     public function __construct()
     {
         $this->penalties = new ArrayCollection();
+        $this->liquidations = new ArrayCollection();
         $this->appealPenalties = new ArrayCollection();
         $this->contradictories = new ArrayCollection();
-        $this->liquidations = new ArrayCollection();
     }
-
     /**
      * Add penalty
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Penalty $penalty
+     * @param Penalty $penalty
      *
      * @return Decision
      */
-    public function addPenalty(\Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Penalty $penalty)
+    public function addPenalty(Penalty $penalty): static
     {
         $this->penalties[] = $penalty;
 
@@ -262,11 +160,11 @@ class Decision implements LogInterface
     /**
      * Add liquidation
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Liquidation $liquidation
+     * @param Liquidation $liquidation
      *
      * @return Decision
      */
-    public function addLiquidation(\Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Liquidation $liquidation)
+    public function addLiquidation(Liquidation $liquidation): static
     {
         $this->liquidations[] = $liquidation;
 
@@ -276,11 +174,11 @@ class Decision implements LogInterface
     /**
      * Add contradictory
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Contradictory $contradictory
+     * @param Contradictory $contradictory
      *
      * @return Decision
      */
-    public function addContradictory(\Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Contradictory $contradictory)
+    public function addContradictory(Contradictory $contradictory): static
     {
         $this->contradictories[] = $contradictory;
 
@@ -290,10 +188,10 @@ class Decision implements LogInterface
     /**
      * Set expulsion
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Expulsion $expulsion
+     * @param Expulsion $expulsion
      * @return Decision
      */
-    public function setExpulsion(\Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Expulsion $expulsion = null)
+    public function setExpulsion(Expulsion $expulsion = null): static
     {
         $this->expulsion = $expulsion;
         if ($expulsion !== null)
@@ -305,10 +203,10 @@ class Decision implements LogInterface
     /**
      * Set demolition
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Demolition $demolition
+     * @param Demolition $demolition
      * @return Decision
      */
-    public function setDemolition(\Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Demolition $demolition = null)
+    public function setDemolition(Demolition $demolition = null): static
     {
         $this->demolition = $demolition;
         if ($demolition !== null)
@@ -320,11 +218,11 @@ class Decision implements LogInterface
     /**
      * Set minute
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute $minute
+     * @param Minute $minute
      *
      * @return Decision
      */
-    public function setMinute(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute $minute)
+    public function setMinute(Minute $minute): static
     {
         $this->minute = $minute;
         $minute->addDecision($this);
@@ -336,7 +234,7 @@ class Decision implements LogInterface
      * Log name of this Class
      * @return string
      */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Décision';
     }
@@ -348,7 +246,7 @@ class Decision implements LogInterface
      *
      * @return integer
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -360,7 +258,7 @@ class Decision implements LogInterface
      *
      * @return Decision
      */
-    public function setAppeal($appeal)
+    public function setAppeal(bool $appeal): static
     {
         $this->appeal = $appeal;
 
@@ -372,7 +270,7 @@ class Decision implements LogInterface
      *
      * @return boolean
      */
-    public function getAppeal()
+    public function getAppeal(): bool
     {
         return $this->appeal;
     }
@@ -384,7 +282,7 @@ class Decision implements LogInterface
      *
      * @return Decision
      */
-    public function setCassationComplaint($cassationComplaint)
+    public function setCassationComplaint(bool $cassationComplaint): static
     {
         $this->cassationComplaint = $cassationComplaint;
 
@@ -396,7 +294,7 @@ class Decision implements LogInterface
      *
      * @return boolean
      */
-    public function getCassationComplaint()
+    public function getCassationComplaint(): ?bool
     {
         return $this->cassationComplaint;
     }
@@ -408,7 +306,7 @@ class Decision implements LogInterface
      *
      * @return Decision
      */
-    public function setDateAskCassation($dateAskCassation)
+    public function setDateAskCassation(\DateTime $dateAskCassation): static
     {
         $this->dateAskCassation = $dateAskCassation;
 
@@ -420,7 +318,7 @@ class Decision implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateAskCassation()
+    public function getDateAskCassation(): ?\DateTime
     {
         return $this->dateAskCassation;
     }
@@ -432,7 +330,7 @@ class Decision implements LogInterface
      *
      * @return Decision
      */
-    public function setDateAnswerCassation($dateAnswerCassation)
+    public function setDateAnswerCassation(\DateTime $dateAnswerCassation): static
     {
         $this->dateAnswerCassation = $dateAnswerCassation;
 
@@ -444,7 +342,7 @@ class Decision implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateAnswerCassation()
+    public function getDateAnswerCassation(): ?\DateTime
     {
         return $this->dateAnswerCassation;
     }
@@ -456,7 +354,7 @@ class Decision implements LogInterface
      *
      * @return Decision
      */
-    public function setStatusCassation($statusCassation)
+    public function setStatusCassation(bool $statusCassation): static
     {
         $this->statusCassation = $statusCassation;
 
@@ -468,7 +366,7 @@ class Decision implements LogInterface
      *
      * @return boolean
      */
-    public function getStatusCassation()
+    public function getStatusCassation(): ?bool
     {
         return $this->statusCassation;
     }
@@ -480,7 +378,7 @@ class Decision implements LogInterface
      *
      * @return Decision
      */
-    public function setNameNewCassation($nameNewCassation)
+    public function setNameNewCassation(string $nameNewCassation): static
     {
         $this->nameNewCassation = $nameNewCassation;
 
@@ -492,7 +390,7 @@ class Decision implements LogInterface
      *
      * @return string
      */
-    public function getNameNewCassation()
+    public function getNameNewCassation(): ?string
     {
         return $this->nameNewCassation;
     }
@@ -504,7 +402,7 @@ class Decision implements LogInterface
      *
      * @return Decision
      */
-    public function setDateReferralEurope($dateReferralEurope)
+    public function setDateReferralEurope(\DateTime $dateReferralEurope): static
     {
         $this->dateReferralEurope = $dateReferralEurope;
 
@@ -516,7 +414,7 @@ class Decision implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateReferralEurope()
+    public function getDateReferralEurope(): ?\DateTime
     {
         return $this->dateReferralEurope;
     }
@@ -528,7 +426,7 @@ class Decision implements LogInterface
      *
      * @return Decision
      */
-    public function setAnswerEurope($answerEurope)
+    public function setAnswerEurope(\DateTime $answerEurope): static
     {
         $this->answerEurope = $answerEurope;
 
@@ -540,7 +438,7 @@ class Decision implements LogInterface
      *
      * @return \DateTime
      */
-    public function getAnswerEurope()
+    public function getAnswerEurope(): ?\DateTime
     {
         return $this->answerEurope;
     }
@@ -552,7 +450,7 @@ class Decision implements LogInterface
      *
      * @return Decision
      */
-    public function setDataEurope($dataEurope)
+    public function setDataEurope(string $dataEurope): static
     {
         $this->dataEurope = $dataEurope;
 
@@ -564,7 +462,7 @@ class Decision implements LogInterface
      *
      * @return string
      */
-    public function getDataEurope()
+    public function getDataEurope(): ?string
     {
         return $this->dataEurope;
     }
@@ -576,7 +474,7 @@ class Decision implements LogInterface
      *
      * @return Decision
      */
-    public function setAmountPenaltyDaily($amountPenaltyDaily)
+    public function setAmountPenaltyDaily(int $amountPenaltyDaily): static
     {
         $this->amountPenaltyDaily = $amountPenaltyDaily;
 
@@ -588,7 +486,7 @@ class Decision implements LogInterface
      *
      * @return integer
      */
-    public function getAmountPenaltyDaily()
+    public function getAmountPenaltyDaily(): ?int
     {
         return $this->amountPenaltyDaily;
     }
@@ -600,7 +498,7 @@ class Decision implements LogInterface
      *
      * @return Decision
      */
-    public function setDateStartRecovery($dateStartRecovery)
+    public function setDateStartRecovery(\DateTime $dateStartRecovery): static
     {
         $this->dateStartRecovery = $dateStartRecovery;
 
@@ -612,7 +510,7 @@ class Decision implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateStartRecovery()
+    public function getDateStartRecovery(): ?\DateTime
     {
         return $this->dateStartRecovery;
     }
@@ -624,7 +522,7 @@ class Decision implements LogInterface
      *
      * @return Decision
      */
-    public function setDateNoticeDdtm($dateNoticeDdtm)
+    public function setDateNoticeDdtm(\DateTime $dateNoticeDdtm): static
     {
         $this->dateNoticeDdtm = $dateNoticeDdtm;
 
@@ -636,7 +534,7 @@ class Decision implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateNoticeDdtm()
+    public function getDateNoticeDdtm(): ?\DateTime
     {
         return $this->dateNoticeDdtm;
     }
@@ -648,7 +546,7 @@ class Decision implements LogInterface
      *
      * @return Decision
      */
-    public function setTotalPenaltyRecovery($totalPenaltyRecovery)
+    public function setTotalPenaltyRecovery(int $totalPenaltyRecovery): static
     {
         $this->totalPenaltyRecovery = $totalPenaltyRecovery;
 
@@ -660,7 +558,7 @@ class Decision implements LogInterface
      *
      * @return integer
      */
-    public function getTotalPenaltyRecovery()
+    public function getTotalPenaltyRecovery(): ?int
     {
         return $this->totalPenaltyRecovery;
     }
@@ -668,9 +566,9 @@ class Decision implements LogInterface
     /**
      * Get minute
      *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute
+     * @return Minute
      */
-    public function getMinute()
+    public function getMinute(): ?Minute
     {
         return $this->minute;
     }
@@ -678,11 +576,11 @@ class Decision implements LogInterface
     /**
      * Set tribunal
      *
-     * @param \Lucca\ParameterBundle\Entity\Tribunal $tribunal
+     * @param $tribunal
      *
      * @return Decision
      */
-    public function setTribunal(\Lucca\ParameterBundle\Entity\Tribunal $tribunal = null)
+    public function setTribunal(Tribunal $tribunal = null): static
     {
         $this->tribunal = $tribunal;
 
@@ -692,9 +590,9 @@ class Decision implements LogInterface
     /**
      * Get tribunal
      *
-     * @return \Lucca\ParameterBundle\Entity\Tribunal
+     * @return Tribunal
      */
-    public function getTribunal()
+    public function getTribunal(): ?Tribunal
     {
         return $this->tribunal;
     }
@@ -702,11 +600,11 @@ class Decision implements LogInterface
     /**
      * Set tribunalCommission
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Commission $tribunalCommission
+     * @param Commission $tribunalCommission
      *
      * @return Decision
      */
-    public function setTribunalCommission(\Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Commission $tribunalCommission = null)
+    public function setTribunalCommission(Commission $tribunalCommission = null): static
     {
         $this->tribunalCommission = $tribunalCommission;
 
@@ -716,9 +614,9 @@ class Decision implements LogInterface
     /**
      * Get tribunalCommission
      *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Commission
+     * @return Commission
      */
-    public function getTribunalCommission()
+    public function getTribunalCommission(): ?Commission
     {
         return $this->tribunalCommission;
     }
@@ -726,11 +624,11 @@ class Decision implements LogInterface
     /**
      * Set appealCommission
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Commission $appealCommission
+     * @param Commission $appealCommission
      *
      * @return Decision
      */
-    public function setAppealCommission(\Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Commission $appealCommission = null)
+    public function setAppealCommission(Commission $appealCommission = null): static
     {
         $this->appealCommission = $appealCommission;
 
@@ -740,9 +638,9 @@ class Decision implements LogInterface
     /**
      * Get appealCommission
      *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Commission
+     * @return Commission
      */
-    public function getAppealCommission()
+    public function getAppealCommission(): ?Commission
     {
         return $this->appealCommission;
     }
@@ -750,11 +648,11 @@ class Decision implements LogInterface
     /**
      * Set cassationComission
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Commission $cassationComission
+     * @param Commission $cassationComission
      *
      * @return Decision
      */
-    public function setCassationComission(\Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Commission $cassationComission = null)
+    public function setCassationComission(Commission $cassationComission = null): static
     {
         $this->cassationComission = $cassationComission;
 
@@ -764,9 +662,9 @@ class Decision implements LogInterface
     /**
      * Get cassationComission
      *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Commission
+     * @return Commission
      */
-    public function getCassationComission()
+    public function getCassationComission(): Commission
     {
         return $this->cassationComission;
     }
@@ -774,9 +672,9 @@ class Decision implements LogInterface
     /**
      * Remove penalty
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Penalty $penalty
+     * @param Penalty $penalty
      */
-    public function removePenalty(\Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Penalty $penalty)
+    public function removePenalty(Penalty $penalty): void
     {
         $this->penalties->removeElement($penalty);
     }
@@ -786,7 +684,7 @@ class Decision implements LogInterface
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPenalties()
+    public function getPenalties(): ArrayCollection|Collection
     {
         return $this->penalties;
     }
@@ -794,9 +692,9 @@ class Decision implements LogInterface
     /**
      * Remove liquidation
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Liquidation $liquidation
+     * @param Liquidation $liquidation
      */
-    public function removeLiquidation(\Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Liquidation $liquidation)
+    public function removeLiquidation(Liquidation $liquidation): void
     {
         $this->liquidations->removeElement($liquidation);
     }
@@ -806,7 +704,7 @@ class Decision implements LogInterface
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getLiquidations()
+    public function getLiquidations(): ArrayCollection|Collection
     {
         return $this->liquidations;
     }
@@ -814,11 +712,11 @@ class Decision implements LogInterface
     /**
      * Add appealPenalty
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\PenaltyAppeal $appealPenalty
+     * @param PenaltyAppeal $appealPenalty
      *
      * @return Decision
      */
-    public function addAppealPenalty(\Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\PenaltyAppeal $appealPenalty)
+    public function addAppealPenalty(PenaltyAppeal $appealPenalty): static
     {
         $this->appealPenalties[] = $appealPenalty;
 
@@ -828,9 +726,9 @@ class Decision implements LogInterface
     /**
      * Remove appealPenalty
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\PenaltyAppeal $appealPenalty
+     * @param PenaltyAppeal $appealPenalty
      */
-    public function removeAppealPenalty(\Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\PenaltyAppeal $appealPenalty)
+    public function removeAppealPenalty(PenaltyAppeal $appealPenalty): void
     {
         $this->appealPenalties->removeElement($appealPenalty);
     }
@@ -840,7 +738,7 @@ class Decision implements LogInterface
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getAppealPenalties()
+    public function getAppealPenalties(): ArrayCollection|Collection
     {
         return $this->appealPenalties;
     }
@@ -848,9 +746,9 @@ class Decision implements LogInterface
     /**
      * Remove contradictory
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Contradictory $contradictory
+     * @param Contradictory $contradictory
      */
-    public function removeContradictory(\Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Contradictory $contradictory)
+    public function removeContradictory(Contradictory $contradictory): void
     {
         $this->contradictories->removeElement($contradictory);
     }
@@ -860,7 +758,7 @@ class Decision implements LogInterface
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getContradictories()
+    public function getContradictories(): ArrayCollection|Collection
     {
         return $this->contradictories;
     }
@@ -868,9 +766,9 @@ class Decision implements LogInterface
     /**
      * Get expulsion
      *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Expulsion
+     * @return Expulsion
      */
-    public function getExpulsion()
+    public function getExpulsion(): ?Expulsion
     {
         return $this->expulsion;
     }
@@ -878,9 +776,9 @@ class Decision implements LogInterface
     /**
      * Get demolition
      *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Demolition
+     * @return Demolition
      */
-    public function getDemolition()
+    public function getDemolition(): ?Demolition
     {
         return $this->demolition;
     }

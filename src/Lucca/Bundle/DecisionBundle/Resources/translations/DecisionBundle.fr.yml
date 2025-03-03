@@ -695,6 +695,17 @@ choice:
         guilty_exempt: "Reconnu coupable avec dispense de peine"
         guilty_restitution: "Reconnu coupable avec mesures de restitution"
 
+        ## Human
+        owner: "Propriétaire"
+        undivided: "Propriétaire en indivision"
+        usufruct: "Usufruit"
+        occupant: "Occupant"
+        neighbour: "Voisin"
+        director: "Directeur"
+        manager: "Gérant"
+        leader: "Dirigeant"
+        president: "Président"
+
     result:
         realized: "Réalisé"
         reported: "Reporté"
@@ -706,6 +717,13 @@ choice:
         coordinates: "Coordonnées"
         manual: "Manuel / Cartographie"
 
+    #### Agent
+    quality:
+        mayor: "Maire ou Adjoint au maire"
+        police: "Policier municipal"
+        administrative: "Agent administratif territorial"
+        country: "Agent de l'Etat"
+        
 ########################
 # Badge
 ########################

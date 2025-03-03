@@ -7,128 +7,77 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\DecisionBundle\Entity;
 
-namespace Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Commission
  *
  * @ORM\Table(name="lucca_minute_commission")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\CommissionRepository")
+ * @ORM\Entity(repositoryClass="Lucca\Bundle\DecisionBundle\Repository\CommissionRepository")
  *
- * @package Lucca\MinuteBundle\Entity
+ * @package Lucca\Bundle\DecisionBundle\Entity
  * @author Terence <terence@numeric-wave.tech>
  */
 class Commission implements LogInterface
 {
-    /** Traits */
     use TimestampableTrait;
 
     /** STATUS constants */
-    const STATUS_RELAXED = 'choice.status_deci.relaxed';
-    const STATUS_GUILTY = 'choice.status_deci.guilty';
-    const STATUS_GUILTY_EXEMPT = 'choice.status_deci.guilty_exempt';
-    const STATUS_GUILTY_RESTITUTION = 'choice.status_deci.guilty_restitution';
+    public const STATUS_RELAXED = 'choice.status_deci.relaxed';
+    public const STATUS_GUILTY = 'choice.status_deci.guilty';
+    public const STATUS_GUILTY_EXEMPT = 'choice.status_deci.guilty_exempt';
+    public const STATUS_GUILTY_RESTITUTION = 'choice.status_deci.guilty_restitution';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $id;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateHearing", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateHearing;
+    #[ORM\Column(name: "dateHearing", type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateHearing = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateAdjournment", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateAdjournment;
+    #[ORM\Column(name: "dateAdjournment", type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateAdjournment = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateDeliberation", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateDeliberation;
+    #[ORM\Column(name: "dateDeliberation", type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateDeliberation = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="amountFine", type="integer", nullable=true)
-     * @Assert\Type(type="int", message="constraint.type")
-     */
-    private $amountFine;
+    #[ORM\Column(name: "amountFine", type: Types::INTEGER, nullable: true)]
+    #[Assert\Type(type: "integer", message: "constraint.type")]
+    private ?int $amountFine = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateJudicialDesision", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateJudicialDesision;
+    #[ORM\Column(name: "dateJudicialDesision", type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateJudicialDesision = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="statusDecision", type="string", length=40, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     */
-    private $statusDecision;
+    #[ORM\Column(name: "statusDecision", type: Types::STRING, length: 40, nullable: true)]
+    #[Assert\Type(type: "string", message: "constraint.type")]
+    private ?string $statusDecision = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="amountPenalty", type="integer", nullable=true)
-     * @Assert\Type(type="int", message="constraint.type")
-     */
-    private $amountPenalty;
+    #[ORM\Column(name: "amountPenalty", type: Types::INTEGER, nullable: true)]
+    #[Assert\Type(type: "integer", message: "constraint.type")]
+    private ?int $amountPenalty = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateExecution", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateExecution;
+    #[ORM\Column(name: "dateExecution", type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateExecution = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="restitution", type="text", nullable=true)
-     */
-    private $restitution;
+    #[ORM\Column(name: "restitution", type: Types::TEXT, nullable: true)]
+    private ?string $restitution = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateStartPenality", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateStartPenality;
+    #[ORM\Column(name: "dateStartPenality", type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateStartPenality = null;
 
 
     /************************************************************************ Custom functions ************************************************************************/
@@ -137,8 +86,9 @@ class Commission implements LogInterface
      * Automation for Date Start Penalty
      *
      * @return bool|\DateTime
+     * @throws \DateMalformedStringException
      */
-    public function autoDateStartPenalty()
+    public function autoDateStartPenalty(): \DateTime|bool
     {
         if ($this->getDateExecution()) {
             $dateStart = new \DateTime($this->getDateExecution()->format('Y-m-d H:i:s'));
@@ -163,9 +113,9 @@ class Commission implements LogInterface
     /**
      * Get id
      *
-     * @return integer
+     * @return int|null
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -177,7 +127,7 @@ class Commission implements LogInterface
      *
      * @return Commission
      */
-    public function setDateHearing($dateHearing)
+    public function setDateHearing(\DateTime $dateHearing): static
     {
         $this->dateHearing = $dateHearing;
 
@@ -189,7 +139,7 @@ class Commission implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateHearing()
+    public function getDateHearing(): ?\DateTime
     {
         return $this->dateHearing;
     }
@@ -201,7 +151,7 @@ class Commission implements LogInterface
      *
      * @return Commission
      */
-    public function setDateAdjournment($dateAdjournment)
+    public function setDateAdjournment($dateAdjournment): static
     {
         $this->dateAdjournment = $dateAdjournment;
 
@@ -213,7 +163,7 @@ class Commission implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateAdjournment()
+    public function getDateAdjournment(): ?\DateTime
     {
         return $this->dateAdjournment;
     }
@@ -225,7 +175,7 @@ class Commission implements LogInterface
      *
      * @return Commission
      */
-    public function setDateDeliberation($dateDeliberation)
+    public function setDateDeliberation($dateDeliberation): static
     {
         $this->dateDeliberation = $dateDeliberation;
 
@@ -237,7 +187,7 @@ class Commission implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateDeliberation()
+    public function getDateDeliberation(): ?\DateTime
     {
         return $this->dateDeliberation;
     }
@@ -249,7 +199,7 @@ class Commission implements LogInterface
      *
      * @return Commission
      */
-    public function setAmountFine($amountFine)
+    public function setAmountFine($amountFine): static
     {
         $this->amountFine = $amountFine;
 
@@ -261,7 +211,7 @@ class Commission implements LogInterface
      *
      * @return integer
      */
-    public function getAmountFine()
+    public function getAmountFine(): ?int
     {
         return $this->amountFine;
     }
@@ -273,7 +223,7 @@ class Commission implements LogInterface
      *
      * @return Commission
      */
-    public function setDateJudicialDesision($dateJudicialDesision)
+    public function setDateJudicialDesision($dateJudicialDesision): static
     {
         $this->dateJudicialDesision = $dateJudicialDesision;
 
@@ -285,7 +235,7 @@ class Commission implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateJudicialDesision()
+    public function getDateJudicialDesision(): ?\DateTime
     {
         return $this->dateJudicialDesision;
     }
@@ -297,7 +247,7 @@ class Commission implements LogInterface
      *
      * @return Commission
      */
-    public function setStatusDecision($statusDecision)
+    public function setStatusDecision(string $statusDecision): static
     {
         $this->statusDecision = $statusDecision;
 
@@ -309,7 +259,7 @@ class Commission implements LogInterface
      *
      * @return string
      */
-    public function getStatusDecision()
+    public function getStatusDecision(): ?string
     {
         return $this->statusDecision;
     }
@@ -321,7 +271,7 @@ class Commission implements LogInterface
      *
      * @return Commission
      */
-    public function setAmountPenalty($amountPenalty)
+    public function setAmountPenalty($amountPenalty): static
     {
         $this->amountPenalty = $amountPenalty;
 
@@ -333,7 +283,7 @@ class Commission implements LogInterface
      *
      * @return integer
      */
-    public function getAmountPenalty()
+    public function getAmountPenalty(): ?int
     {
         return $this->amountPenalty;
     }
@@ -345,7 +295,7 @@ class Commission implements LogInterface
      *
      * @return Commission
      */
-    public function setDateExecution($dateExecution)
+    public function setDateExecution($dateExecution): static
     {
         $this->dateExecution = $dateExecution;
 
@@ -357,7 +307,7 @@ class Commission implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateExecution()
+    public function getDateExecution(): ?\DateTime
     {
         return $this->dateExecution;
     }
@@ -369,7 +319,7 @@ class Commission implements LogInterface
      *
      * @return Commission
      */
-    public function setRestitution($restitution)
+    public function setRestitution(string $restitution): static
     {
         $this->restitution = $restitution;
 
@@ -381,7 +331,7 @@ class Commission implements LogInterface
      *
      * @return string
      */
-    public function getRestitution()
+    public function getRestitution(): ?string
     {
         return $this->restitution;
     }
@@ -393,7 +343,7 @@ class Commission implements LogInterface
      *
      * @return Commission
      */
-    public function setDateStartPenality($dateStartPenality)
+    public function setDateStartPenality(\DateTime $dateStartPenality): static
     {
         $this->dateStartPenality = $dateStartPenality;
 
@@ -405,7 +355,7 @@ class Commission implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateStartPenality()
+    public function getDateStartPenality(): ?\DateTime
     {
         return $this->dateStartPenality;
     }

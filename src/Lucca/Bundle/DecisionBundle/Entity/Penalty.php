@@ -7,267 +7,134 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
-
-namespace Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity;
+namespace Lucca\Bundle\DecisionBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\DecisionBundle\Repository\PenaltyRepository;
+use Lucca\Bundle\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Penalty
- *
- * @ORM\Table(name="lucca_minute_penalty")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\PenaltyRepository")
- *
- * @package Lucca\MinuteBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
- */
+#[ORM\Entity(repositoryClass: PenaltyRepository::class)]
+#[ORM\Table(name: "lucca_minute_penalty")]
 class Penalty implements LogInterface
 {
     /** Traits */
     use TimestampableTrait;
 
     /** TYPE constants */
-    const NATURE_AGGRAVATED = 'choice.nature.aggravated';
-    const NATURE_UNCHANGED = 'choice.nature.unchanged';
-    const NATURE_REGULARIZED = 'choice.nature.regularized';
+    public const NATURE_AGGRAVATED = 'choice.nature.aggravated';
+    public const NATURE_UNCHANGED = 'choice.nature.unchanged';
+    public const NATURE_REGULARIZED = 'choice.nature.regularized';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    private ?int $id = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateFolder", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateFolder;
+    #[ORM\Column(type: "datetime", nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateFolder = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="preparedBy", type="string", length=50)
-     * @Assert\NotNull(message="constraint.not_null")
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 50,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $preparedBy;
+    #[ORM\Column(type: "string", length: 50)]
+    #[Assert\NotNull(message: "constraint.not_null")]
+    #[Assert\Type(type: "string", message: "constraint.type")]
+    #[Assert\Length(min: 2, max: 50, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
+    private string $preparedBy;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nature", type="string", length=30, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     */
-    private $nature;
+    #[ORM\Column(type: "string", length: 30, nullable: true)]
+    #[Assert\Type(type: "string", message: "constraint.type")]
+    private ?string $nature = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="amountPenalty", type="integer", nullable=true)
-     * @Assert\Type(type="int", message="constraint.type")
-     */
-    private $amountPenalty;
+    #[ORM\Column(type: "integer", nullable: true)]
+    #[Assert\Type(type: "int", message: "constraint.type")]
+    private ?int $amountPenalty = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateStart", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateStart;
+    #[ORM\Column(type: "datetime", nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateStart = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateEnd", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateEnd;
+    #[ORM\Column(type: "datetime", nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateEnd = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
-    /**
-     * Log name of this Class
-     * @return string
-     */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Pénalité';
     }
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set dateFolder
-     *
-     * @param \DateTime $dateFolder
-     *
-     * @return Penalty
-     */
-    public function setDateFolder($dateFolder)
+    public function setDateFolder(?\DateTime $dateFolder): static
     {
         $this->dateFolder = $dateFolder;
-
         return $this;
     }
 
-    /**
-     * Get dateFolder
-     *
-     * @return \DateTime
-     */
-    public function getDateFolder()
+    public function getDateFolder(): ?\DateTime
     {
         return $this->dateFolder;
     }
 
-    /**
-     * Set preparedBy
-     *
-     * @param string $preparedBy
-     *
-     * @return Penalty
-     */
-    public function setPreparedBy($preparedBy)
+    public function setPreparedBy(string $preparedBy): static
     {
         $this->preparedBy = $preparedBy;
-
         return $this;
     }
 
-    /**
-     * Get preparedBy
-     *
-     * @return string
-     */
-    public function getPreparedBy()
+    public function getPreparedBy(): string
     {
         return $this->preparedBy;
     }
 
-    /**
-     * Set amountPenalty
-     *
-     * @param integer $amountPenalty
-     *
-     * @return Penalty
-     */
-    public function setAmountPenalty($amountPenalty)
+    public function setNature(?string $nature): static
     {
-        $this->amountPenalty = $amountPenalty;
-
+        $this->nature = $nature;
         return $this;
     }
 
-    /**
-     * Get amountPenalty
-     *
-     * @return integer
-     */
-    public function getAmountPenalty()
+    public function getNature(): ?string
+    {
+        return $this->nature;
+    }
+
+    public function setAmountPenalty(?int $amountPenalty): static
+    {
+        $this->amountPenalty = $amountPenalty;
+        return $this;
+    }
+
+    public function getAmountPenalty(): ?int
     {
         return $this->amountPenalty;
     }
 
-    /**
-     * Set dateStart
-     *
-     * @param \DateTime $dateStart
-     *
-     * @return Penalty
-     */
-    public function setDateStart($dateStart)
+    public function setDateStart(?\DateTime $dateStart): static
     {
         $this->dateStart = $dateStart;
-
         return $this;
     }
 
-    /**
-     * Get dateStart
-     *
-     * @return \DateTime
-     */
-    public function getDateStart()
+    public function getDateStart(): ?\DateTime
     {
         return $this->dateStart;
     }
 
-    /**
-     * Set dateEnd
-     *
-     * @param \DateTime $dateEnd
-     *
-     * @return Penalty
-     */
-    public function setDateEnd($dateEnd)
+    public function setDateEnd(?\DateTime $dateEnd): static
     {
         $this->dateEnd = $dateEnd;
-
         return $this;
     }
 
-    /**
-     * Get dateEnd
-     *
-     * @return \DateTime
-     */
-    public function getDateEnd()
+    public function getDateEnd(): ?\DateTime
     {
         return $this->dateEnd;
-    }
-
-    /**
-     * Set nature
-     *
-     * @param string $nature
-     *
-     * @return Penalty
-     */
-    public function setNature($nature)
-    {
-        $this->nature = $nature;
-
-        return $this;
-    }
-
-    /**
-     * Get nature
-     *
-     * @return string
-     */
-    public function getNature()
-    {
-        return $this->nature;
     }
 }

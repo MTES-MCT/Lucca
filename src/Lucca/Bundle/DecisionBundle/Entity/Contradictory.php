@@ -7,74 +7,41 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\DecisionBundle\Entity;
 
-namespace Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity;
-
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\DecisionBundle\Repository\ContradictoryRepository;
+use Lucca\Bundle\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Contradictory
- *
- * @ORM\Table(name="lucca_minute_contradictory")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\ContradictoryRepository")
- *
- * @package Lucca\MinuteBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
- */
+#[ORM\Entity(repositoryClass: ContradictoryRepository::class)]
+#[ORM\Table(name: "lucca_minute_contradictory")]
 class Contradictory implements LogInterface
 {
     /** Traits */
     use TimestampableTrait;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private ?int $id = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateNoticeDdtm", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateNoticeDdtm;
+    #[ORM\Column(name: "dateNoticeDdtm", type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateNoticeDdtm = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateExecution", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateExecution;
+    #[ORM\Column(name: "dateExecution", type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateExecution = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateAnswer", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateAnswer;
+    #[ORM\Column(name: "dateAnswer", type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateAnswer = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="answer", type="text", nullable=true)
-     */
-    private $answer;
+    #[ORM\Column(name: "answer", type: Types::TEXT, nullable: true)]
+    private ?string $answer = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
@@ -82,7 +49,7 @@ class Contradictory implements LogInterface
      * Log name of this Class
      * @return string
      */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Procédure contradictoire';
     }
@@ -92,9 +59,9 @@ class Contradictory implements LogInterface
     /**
      * Get id
      *
-     * @return integer
+     * @return int|null
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -106,7 +73,7 @@ class Contradictory implements LogInterface
      *
      * @return Contradictory
      */
-    public function setDateNoticeDdtm($dateNoticeDdtm)
+    public function setDateNoticeDdtm($dateNoticeDdtm): static
     {
         $this->dateNoticeDdtm = $dateNoticeDdtm;
 
@@ -118,7 +85,7 @@ class Contradictory implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateNoticeDdtm()
+    public function getDateNoticeDdtm(): ?\DateTime
     {
         return $this->dateNoticeDdtm;
     }
@@ -130,7 +97,7 @@ class Contradictory implements LogInterface
      *
      * @return Contradictory
      */
-    public function setDateExecution($dateExecution)
+    public function setDateExecution(\DateTime $dateExecution): static
     {
         $this->dateExecution = $dateExecution;
 
@@ -142,7 +109,7 @@ class Contradictory implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateExecution()
+    public function getDateExecution(): ?\DateTime
     {
         return $this->dateExecution;
     }
@@ -154,7 +121,7 @@ class Contradictory implements LogInterface
      *
      * @return Contradictory
      */
-    public function setDateAnswer($dateAnswer)
+    public function setDateAnswer(\DateTime $dateAnswer): static
     {
         $this->dateAnswer = $dateAnswer;
 
@@ -166,7 +133,7 @@ class Contradictory implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateAnswer()
+    public function getDateAnswer(): ?\DateTime
     {
         return $this->dateAnswer;
     }
@@ -178,7 +145,7 @@ class Contradictory implements LogInterface
      *
      * @return Contradictory
      */
-    public function setAnswer($answer)
+    public function setAnswer(string $answer): static
     {
         $this->answer = $answer;
 
@@ -190,7 +157,7 @@ class Contradictory implements LogInterface
      *
      * @return string
      */
-    public function getAnswer()
+    public function getAnswer(): ?string
     {
         return $this->answer;
     }

@@ -1,4 +1,4 @@
-{% trans_default_domain 'LuccaMinuteBundle' %}
+{% trans_default_domain 'DecisionBundle' %}
 
 {% set structureName = minute.adherent.structureName %}
 {% set structureOffice = minute.adherent.structureOffice %}
@@ -14,7 +14,7 @@
     {% endif %}
 
     <div class="col-6 offset-6 text-right letter-signature">
-            {{ agent.officialName }}, {{ agent.function|trans({}, 'LuccaFolderBundle') }}<br>
+            {{ agent.officialName }}, {{ agent.function|trans({}, 'DecisionBundle') }}<br>
         <br>
         <br>
         Signature :

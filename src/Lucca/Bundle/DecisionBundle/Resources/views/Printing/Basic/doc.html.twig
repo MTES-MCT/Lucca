@@ -1,5 +1,5 @@
-{% extends 'LuccaThemeAngleBundle:SubLayout:show.html.twig' %}
-{% trans_default_domain 'LuccaMinuteBundle' %}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
+{% trans_default_domain 'DecisionBundle' %}
 
 {% set param_entity='entity.folder'|transchoice(1) %}
 {% set param_entities='entity.folder'|transchoice(2) %}
@@ -34,25 +34,25 @@
                             {% if folder.nature is constant('NATURE_OBSTACLE', folder) %}
                                 {#SETTING#}
                                 {% if 'setting.folder.docContentObstacle.name'|setting == true %}
-                                    {% set filename = 'LuccaMinuteBundle:Folder/Printing/Basic:doc_obstacle_content-'~ 'setting.general.departement.name'|setting ~'.html.twig' %}
+                                    {% set filename = 'LuccaDecisionBundle:Folder/Printing/Basic:doc_obstacle_content-'~ 'setting.general.departement.name'|setting ~'.html.twig' %}
                                     {% include filename with {'agent' : agent} %}
                                 {% else %}
-                                    {% include 'LuccaMinuteBundle:Folder/Printing/Basic:doc_obstacle_content.html.twig'  with {'agent' : agent} %}
+                                    {% include 'LuccaDecisionBundle:Folder/Printing/Basic:doc_obstacle_content.html.twig'  with {'agent' : agent} %}
                                 {% endif %}
 
                             {% else %}
                                 {#SETTING#}
                                 {% if 'setting.folder.docContent.name'|setting == true %}
-                                    {% set filename = 'LuccaMinuteBundle:Folder/Printing/Custom:doc_content-'~ 'setting.general.departement.name'|setting ~'.html.twig' %}
+                                    {% set filename = 'LuccaDecisionBundle:Folder/Printing/Custom:doc_content-'~ 'setting.general.departement.name'|setting ~'.html.twig' %}
                                     {% include filename with {'agent' : agent} %}
                                 {% else %}
-                                    {% include 'LuccaMinuteBundle:Folder/Printing/Basic:doc_content.html.twig'  with {'agent' : agent} %}
+                                    {% include 'LuccaDecisionBundle:Folder/Printing/Basic:doc_content.html.twig'  with {'agent' : agent} %}
                                 {% endif %}
                             {% endif %}
                         {% endif %}
 
 
-                        {% include 'LuccaMinuteBundle:Folder/Printing/Basic:doc_footer.html.twig' with {'agent' : agent} %}
+                        {% include 'LuccaDecisionBundle:Folder/Printing/Basic:doc_footer.html.twig' with {'agent' : agent} %}
 
                         {% for element in folder.elements %}
                             {% if element.image %}
