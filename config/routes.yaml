@@ -2,6 +2,30 @@
 ## Lucca
 #######################################
 
+LuccaAdherentBundle:
+    resource: "@LuccaAdherentBundle/Resources/config/routing.yaml"
+    prefix:   /
+
+LuccaChecklistBundle:
+    resource: "@LuccaChecklistBundle/Resources/config/routing.yaml"
+    prefix:   /
+
+LuccaCoreBundle:
+    resource: "@LuccaCoreBundle/Resources/config/routing.yaml"
+    prefix:   /
+
+LuccaDepartmentBundle:
+    resource: "@LuccaDepartmentBundle/Resources/config/routing.yaml"
+    prefix:   /
+
+LuccaLogBundle:
+    resource: "@LuccaLogBundle/Resources/config/routing.yaml"
+    prefix:   /
+
+LuccaMediaBundle:
+    resource: "@LuccaMediaBundle/Resources/config/routing.yaml"
+    prefix:   /
+    
 LuccaSecurityBundle:
     resource: "@LuccaSecurityBundle/Resources/config/routing.yaml"
     prefix:   /
