@@ -1,0 +1,59 @@
+{#-- Extends view - -#}
+{% extends "@LuccaThemeStreamDashboardUiKit/Layout/printLayout.html.twig" %}
+
+{#-- Translation domain - -#}
+{% trans_default_domain 'LuccaModelBundle' %}
+
+{% if adherent is not defined %}
+    {% set adherent = null %}
+{% endif %}
+
+{% block lucca_print_footer %}
+
+    {% if page.marginBottom %}
+        {% include '@LuccaModel/Margin/Embed/_pdf-margin.html.twig' with { 'margin': page.marginBottom, 'adherent': adherent } %}
+    {% endif %}
+
+    {% if cover is defined %}
+        {% if coverPage.marginBottom %}
+            {% include '@LuccaModel/Margin/Embed/_pdf-margin.html.twig' with { 'margin': coverPage.marginBottom, 'adherent': adherent } %}
+        {% endif %}
+    {% endif %}
+
+    {#This code must be keep here because it's use to now in which page we are#}
+    <div style="display: none">
+        Page <span class="page"></span>/<span class="topage"></span>
+    </div>
+
+    <script type="text/javascript">
+        (function () {
+            // get all url parameters and transform it to a list
+            // pdf generator adds a param for current and the total page sum
+            // add the value to the html elements
+            const urlParams = document.location.search.substring(1).split('&');
+            const urlParamsList = {};
+            const pagingElements = ['topage', 'page'];
+
+            for (let i in urlParams) {
+                const param = urlParams[i].split('=', 2);
+                urlParamsList[param[0]] = unescape(param[1]);
+            }
+
+            for (let i in pagingElements) {
+                const elem = document.getElementsByClassName(pagingElements[i]);
+                for (let j = 0; j < elem.length; ++j) {
+                    elem[j].textContent = urlParamsList[pagingElements[i]];
+                    {% if cover is defined %}
+                        if (urlParamsList[pagingElements[i]] == 1) {
+                            document.getElementById("margin-{{ page.marginBottom.id }}").style.display = 'none';
+                        }
+                        if (urlParamsList[pagingElements[i]] != 1 && pagingElements[i] == 'page') {
+                            document.getElementById("margin-{{ coverPage.marginBottom.id }}").style.display = 'none';
+                        }
+                    {% endif %}
+                }
+            }
+        })();
+    </script>
+
+{% endblock lucca_print_footer %}

@@ -1,0 +1,138 @@
+{% trans_default_domain 'LuccaModelBundle' %}
+{% block lucca_modelbundle_bloc_row %}
+    <div class="col-12">
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
+
+{% block lucca_modelbundle_bloc_widget %}
+
+    {#--  Import specific macro  --#}
+    {% import "@LuccaThemeStreamDashboardUiKit/Macro/buttonHelp.html.twig" as macroButtonHelp %}
+
+    {% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+    <div {{ block('widget_attributes') }}>
+        <hr>
+        <div class="row">
+            <div class="col-1">
+                <p class="text-center">
+                    <a href="#" class="collection-up btn btn-secondary btn-sm" title="{{ "link.bloc.up"|trans }}">
+                        <span class="fa fa-arrow-up"></span></a>
+                    <a href="#" class="collection-down btn btn-secondary btn-sm" title="{{ "link.bloc.down"|trans }}">
+                        <span class="fa fa-arrow-down"></span></a>
+                    <a href="#" class="collection-remove btn btn-danger" title="{{ 'link.bloc.delete'|trans }}">
+                        <span class="fa fa-trash"></span></a>
+                </p>
+            </div>
+
+            <div class="col-12 js-bloc">
+                <div class="row">
+                    <div class="col-11">
+                        <div class="row pb-2">
+                            <div class="col-2">
+                                {{ form_label(form.typeContent) }}
+                            </div>
+                            <div class="col-4">
+                                {{ form_widget(form.typeContent) }}
+                            </div>
+                            <div class="col-6"></div>
+                        </div>
+                    </div>
+                    <div class="col-1"></div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-11">
+                        <div class="row pb-2">
+                            <div class="col-2">
+                                {{ form_label(form.height) }}
+                            </div>
+                            <div class="col-4">
+                                {{ form_widget(form.height) }}
+                            </div>
+                            <div class="col-2">
+                                {{ form_label(form.width) }}
+                            </div>
+                            <div class="col-4">
+                                {{ form_widget(form.width) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        {{ macroButtonHelp.buttonInfoHelpLight('help.size.infos'|trans) }}
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-11">
+                        <div class="row pb-2">
+                            <div class="col-2 m-auto">
+                                {{ form_label(form.headerSize) }}
+                            </div>
+                            <div class="col-4 m-auto">
+                                {{ form_widget(form.headerSize) }}
+                            </div>
+                            <div class="col-2 m-auto">
+                                {{ form_label(form.footerSize) }}
+                            </div>
+                            <div class="col-4 m-auto">
+                                {{ form_widget(form.footerSize) }}
+                            </div>
+                        </div>
+                        <div class="row pb-2">
+                            <div class="col-2 m-auto">
+                                {{ form_label(form.leftSize) }}
+                            </div>
+                            <div class="col-4 m-auto">
+                                {{ form_widget(form.leftSize) }}
+                            </div>
+                            <div class="col-2 m-auto">
+                                {{ form_label(form.rightSize) }}
+                            </div>
+                            <div class="col-4 m-auto">
+                                {{ form_widget(form.rightSize) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-1 m-auto">
+                        {{ macroButtonHelp.buttonInfoHelpLight('help.space.infos'|trans) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        {{ 'label.backgroundImg'|trans }}
+                    </div>
+                    <div class="col-4">
+                        {{ form_widget(form.backgroundImg,{ 'attr': { 'class': 'labels-hidden' } }) }}
+                    </div>
+                    <div class="col-2">
+                        <div class="js-mediaContent">
+                            {{ 'label.media'|trans }}
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="js-mediaContent">
+                            {{ form_widget(form.media,{ 'attr': { 'class': 'labels-hidden' } }) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="js-htmlContent">
+                    {{ form_row(form.content) }}
+                    {{ form_row(form.color) }}
+                </div>
+                <div>
+                    {{ form_row(form.cssInline) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+
+{% endblock %}
+
+{% block lucca_modelbundle_blocs_widget %}
+    {{ form_widget(form.blocs) }}
+{% endblock %}

@@ -1,0 +1,97 @@
+{% trans_default_domain 'LuccaModelBundle' %}
+
+<div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+
+    <div class="card card-default">
+
+        <div class="card-header">
+            {% block lucca_embed_title_page %}
+                <b>{{ 'entity.page'|transchoice(0) }} {{ 'label.recto'|trans }}</b>
+            {% endblock %}
+            <span class="float-right">
+                    {% block lucca_embed_buttons_page %}
+                    {% endblock %}
+                </span>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="card-body">
+                <div class="col-12">
+                    <table class="table table-striped table-hover">
+                        <tbody>
+                        <tr>
+                            <th>{{ 'label.marginUnit'|trans }}</th>
+                            <td>{{ page.marginUnit|trans }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'label.font'|trans }}</th>
+                            <td>{{ page.font|trans }}</td>
+                        </tr>
+                        {#TODO For the first version this data as moved in model#}
+                        {#<tr>#}
+                        {#<th>{{ 'label.color'|trans }}</th>#}
+                        {#<td><p style="color:{{ page.color }}"> {{ page.color }}</p></td>#}
+                        {#</tr>#}
+                        {#<tr>#}
+                        {#<th>{{ 'label.background'|trans }}</th>#}
+                        {#<td style="color:{{ page.background }}">{{ page.background }}</td>#}
+                        {#</tr>#}
+                        <tr>
+                            <th>{{ 'label.cssInline'|trans }}</th>
+                            <td>{{ page.cssInline|raw }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'label.headerSize'|trans }}</th>
+                            <td>
+                                {% if page.marginTop is not null %}
+                                    {#-- Embed view - params and block --#}
+                                    {% embed "@LuccaModel/Page/Embed/margin.html.twig" with {'page': page, 'margin': page.marginTop, 'model': model} %}
+                                    {% endembed %} {#-- End Embed --#}
+                                {% else %}
+                                    {{ page.headerSize }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'label.footerSize'|trans }}</th>
+                            <td>
+                                {% if page.marginBottom is not null %}
+                                    {#-- Embed view - params and block --#}
+                                    {% embed "@LuccaModel/Page/Embed/margin.html.twig" with {'page': page, 'margin': page.marginBottom, 'model': model} %}
+                                    {% endembed %} {#-- End Embed --#}
+                                {% else %}
+                                    {{ page.footerSize }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'label.leftSize'|trans }}</th>
+                            <td>
+                                {% if page.marginLeft is not null %}
+                                    {#-- Embed view - params and block --#}
+                                    {% embed "@LuccaModel/Page/Embed/margin.html.twig" with {'page': page, 'margin': page.marginLeft, 'model': model} %}
+                                    {% endembed %} {#-- End Embed --#}
+                                {% else %}
+                                    {{ page.leftSize }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'label.rightSize'|trans }}</th>
+                            <td>
+                                {% if page.marginRight is not null %}
+                                    {#-- Embed view - params and block --#}
+                                    {% embed "@LuccaModel/Page/Embed/margin.html.twig" with {'page': page, 'margin': page.marginRight, 'model': model} %}
+                                    {% endembed %} {#-- End Embed --#}
+                                {% else %}
+                                    {{ page.rightSize }}
+                                {% endif %}
+                            </td>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

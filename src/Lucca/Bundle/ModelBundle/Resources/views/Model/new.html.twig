@@ -1,0 +1,45 @@
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
+{% trans_default_domain 'LuccaModelBundle' %}
+
+{% set param_entity='entity.model'|transchoice(1) %}
+{% set param_entities='entity.model'|transchoice(2) %}
+
+{% block menuActive_model %}class="active"{% endblock menuActive_model %}
+
+
+{% block lucca_panels %}
+    {% embed "@LuccaModel/Model/Embed/_form-model.html.twig" with { 'form': form } %}
+        {% trans_default_domain 'LuccaModelBundle' %}
+
+        {% block lucca_embed_buttons_model %}
+            <a class="btn btn-secondary btn-lg" href="{{ path('lucca_model_index') }}"
+               title="{{ 'link.backlist'|trans }}"><i class="fa fa-reply"></i></a>
+
+            <button type="submit" class="btn btn-success btn-lg"
+                    title="{{ 'link.model.new'|trans }}"><i class="fa fa-check"></i></button>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock lucca_panels %}
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    <link href="{{ asset('plugins/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css') }}"
+          rel="stylesheet">
+
+    <script>{% include('@LuccaModel/Model/Js/form-model.js.twig') %}</script>
+
+    <script>$('.colorpicker-element').colorpicker();</script>
+
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script src="{{ asset('plugins/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js') }}"></script>
+
+    <script>{% include('@LuccaModel/Model/Js/form-model.js.twig') %}</script>
+
+{% endblock lucca_js %}

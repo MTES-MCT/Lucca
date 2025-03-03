@@ -1,0 +1,244 @@
+#####################################################
+## Lucca Model Bundle
+#####################################################
+
+########################
+# Entity
+########################
+entity:
+    model: "Modèle|Modèles"
+    page: "Page|Pages"
+    margin: "Marge|Marges"
+    bloc: "Bloc|Blocs"
+
+########################
+# Title
+########################
+title:
+    print: "Visualisation du modèle"
+
+########################
+# Label
+########################
+label:
+    actions: "Actions"
+    new: "Nouveau"
+    enabled: "Actif ?"
+
+    name: "Nom"
+    size: "Taille"
+    orientation: "Orientation"
+    type: "Type"
+    layout: "Layout"
+    recto: "Recto"
+    verso: "Verso"
+    firstPage: "Première page"
+    otherPages: "Autres pages"
+    allPages: "Toutes les pages"
+    documents: "Documents"
+    blocs: "Blocs"
+    typeContent: "Type de contenu"
+
+    margin: "Marge"
+    marginUnit: "Unité de marge"
+    marginTop: "Marge d'en-tête"
+    marginBottom: "Marge de pied de page"
+    marginLeft: "Marge de gauche"
+    marginRight: "Marge de droite"
+    rightSize: "Espace à droite"
+    leftSize: "Espace à gauche"
+    headerSize: "Espace en en-tête"
+    footerSize: "Espace de pied de page"
+    width: "Largeur"
+    height: "Hauteur"
+    position: "Position"
+
+    font: "Police"
+    color: "Couleur"
+    background: "Couleur de fond"
+    backgroundImg: "Image de fond"
+    cssInline: "CSS en ligne"
+    media: "Média"
+    content: "Contenu"
+    result: 'Description'
+    code: 'Code'
+    copied: 'Texte copié'
+    owner: 'Propriétaire'
+    sharedService: 'Service partagé'
+    sharedIntercommunal: 'Interco. partagée'
+    sharedTown: 'Commune partagée'
+    countBlocs: ' blocs'
+    configuration: 'Configuration'
+    bloc: 'Bloc'
+    noBloc: 'Aucun bloc'
+    addBloc: 'Ajouter un bloc'
+
+########################
+# Choices
+########################
+choice:
+    documents:
+        convocationLetter: "Lettre de convocation"
+        accessLetter: "Lettre d'accès"
+        folder: "Procès Verbal"
+        judicialLetter: "Lettre au Parquet"
+        ddtmLetter: "Lettre à la DDTM"
+        offender: "Lettre au contrevenant"
+    size:
+        a3: "A3"
+        a4: "A4"
+        a5: "A5"
+    orientation:
+        landscape: "Paysage"
+        portrait: "Portrait"
+    type:
+        origin: "Défaut"
+        shared: "Partagé"
+        private: "Privé"
+    layout:
+        cover: "Couverture"
+        frontback: "Recto et Verso"
+        simple: "Simple"
+    marginUnit:
+        percent : "%"
+        px: "px"
+    position:
+        top: "Haut"
+        bottom: "Bas"
+        left: "Gauche"
+        right: "Droite"
+    typeContent:
+        html: "HTML"
+        media: "Media"
+        adherentLogo: "Logo adhérent / Logo par défaut"
+
+    ## FONTS
+    font:
+        marianne:
+            medium: "Marianne Medium"
+            light: "Marianne Light"
+            regular: "Marianne Regular"
+            thin: "Marianne Thin"
+            extrabold: "Marianne ExtraBold"
+            bold: "Marianne Bold"
+
+########################
+# Link
+########################
+link:
+    new: "Nouveau"
+    dashboard: "Tableau de bord"
+    backlist: "Retour à la liste"
+
+    model:
+        new: "Créer un nouveau modèle"
+        show: "Voir le modèle"
+        delete: "Supprimer le modèle"
+        enable: "Activer le modèle"
+        disable: "Désactiver le modèle"
+        edit: "Editer le modèle"
+        duplicate: "Dupliquer le modèle"
+        print: 'Visualiser le model'
+
+    page:
+        new: "Créer une page"
+        edit: "Editer la page"
+        show: "Voir la page"
+        delete: "Supprimer la page"
+
+    margin:
+        new: "Créer une marge"
+        edit: "Editer la marge"
+        show: "Voir la marge"
+        delete: "Supprimer la marge personnalisée"
+        add:
+            marginTop: "Marge d'en-tête personnalisée"
+            marginBottom: "Marge de pied personnalisée"
+            marginLeft: "Marge gauche personnalisée"
+            marginRight: "Marge droite personnalisée"
+
+    bloc:
+        edit: "Organiser les blocs"
+        up: "Monter"
+        down: "Descendre"
+        delete: "Supprimer le bloc"
+
+########################
+# Pdf
+########################
+pdf:
+    choice:
+        orientation:
+            landscape: "Landscape"
+            portrait: "Portrait"
+
+########################
+# Help Messages
+########################
+help:
+    layout:
+        coverMessage: 'Pour un modèle de type couverture, les hauteurs des marges haut / bas et les largeurs des marges 
+                       gauche / droite des pages recto / verso doivent être identiques'
+        margeMessage: "Cette page vous permet d'ajouter et de modifier les blocs dans la marge désirée."
+        infos: '<b>Couverture</b>: La première page à des marges différentes des autres.<br><b>Simple</b>: toutes les pages ont les mêmes marges.'
+
+    size:
+        infos: "Ces champs vous permettent de définir la taille du bloc.<br>
+                Pour une image, il faut renseigner la hauteur souhaitée et suffisement de largeur pour ne pas couper l'image."
+
+    space:
+        infos: "Ces champs vous permettent de définir les espaces autour du bloc. (Utile pour décoler le bloc du bord)"
+
+#    Used in edition of block
+    redaction:
+        title: 'Aides à la rédaction'
+        explanations: "Ces aides vous permettent d'afficher des informations avancées dans le PDF final.<br>
+        Pour les ajouter, cliquez sur l'information de la colonne code pour le copier. Collez-le ensuite dans la partie contenu du bloc désiré."
+
+    paginate:
+        result: 'Affiche la numérotation des pages'
+        code: '<span class="page"></span>/<span class="topage"></span>'
+
+    breakLine:
+        result: 'Retour à la ligne'
+        code: '<br>'
+
+    line:
+        result: 'Créer une ligne horizontale'
+        code: '<hr>'
+
+    alignRight:
+        result: 'CSS - Aligne le bloc à droite'
+        code: 'float:right;text-align: right;'
+
+    alignLeft:
+        result: 'CSS - Aligne le bloc à gauche'
+        code: 'float:left;text-align: left;'
+
+    textBold:
+        result: 'Texte - Affiche le texte en gras'
+        code: '<b>Texte à afficher en gras</b>'
+
+    textItalics:
+        result: 'Texte - Affiche le texte italique'
+        code: '<i>Texte à afficher en italique</i>'
+
+    textSize:
+        result: 'CSS - Modifie la taille du texte. Pour changer la taille, modifiez le nombre 20.'
+        code: 'font-size: 20px;'
+
+#    Help message displayed in forms
+    owner:
+        infos: "Vous pouvez choisir n'importe quel adhérent car vous etes administrateur de Lucca."
+    documents:
+        infos: "Tous les documents sélectionnés ici verront ce modèle s'appliquer."
+    type:
+        infos: "<b>Defaut</b>: Tous les adhérents n'ayant pas créé leur propre modèle verront celui-ci s'appliquer.<br>
+                <b>Privé</b>: Seul le propriétaire du modèle verra ce modèle s'appliquer."
+    color:
+        infos: 'Couleur du texte'
+    background:
+        infos: 'Couleur de fond du texte'
+    margin:
+        simple: 'Une <b>marge simple</b> permet uniquement de créer un espace entre le bord de la page et le texte.'
+        custom: 'Une <b>marge personalisée</b> permet de créer un espace entre le bord de la page et le texte dans lequel on peut ajouter différents blocs (Textes, images, ...)'
