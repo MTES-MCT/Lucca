@@ -1,0 +1,147 @@
+{#-- Extends view --#}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaAdherentBundle' %}
+
+{#-- Parameters --#}
+{% set param_entity='entity.adherent'|transchoice(1) %}
+{% set param_entities='entity.adherent'|transchoice(2) %}
+
+
+{% block lucca_panels %}
+
+    <div class="row">
+        {#-- Panel - main --#}
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+
+            <div class="card card-default">
+                <div class="card-header">
+                    {{ 'title.show'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ adherent.officialName }}</b>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+
+                        <div class="col-12">
+                            <table class="table table-striped table-hover">
+                                <tbody>
+                                <tr>
+                                    <th><i class="fa fa-user"></i> {{ 'label.name'|trans }}</th>
+                                    <td>{{ adherent.officialName }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.enabled'|trans }}</th>
+                                    <td>{{ adherent.enabled|boolean }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.function'|trans }}</th>
+                                    <td>{{ adherent.function|trans }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.address'|trans }}</th>
+                                    <td>{{ adherent.officialAddress|raw }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.phone'|trans }}</th>
+                                    <td>{{ adherent.phone }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.mobile'|trans }}</th>
+                                    <td>{{ adherent.mobile }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.invitedByMail'|trans }}</th>
+                                    <td>{{ adherent.invitedByMail|boolean }}</td>
+                                </tr>
+                                {% if adherent.town %}
+                                    <tr>
+                                        <th>{{ 'label.town'|trans }}</th>
+                                        <td>{{ adherent.town.name }}</td>
+                                    </tr>
+                                {% endif %}
+                                {% if adherent.service %}
+                                    <tr>
+                                        <th>{{ 'label.partner'|trans }}</th>
+                                        <td>{{ adherent.service.name }}</td>
+                                    </tr>
+                                {% endif %}
+                                {% if adherent.intercommunal %}
+                                    <tr>
+                                        <th>{{ 'label.intercommunal'|trans }}</th>
+                                        <td>{{ adherent.intercommunal.name }}</td>
+                                    </tr>
+                                {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <a class="btn btn-secondary btn-lg" href="{{ path('lucca_core_dashboard') }}"
+                               title="{{ 'link.back'|trans }}"><i class="fa fa-reply"></i></a>
+
+                            <a class="btn btn-warning btn-lg"
+                               href="{{ path('lucca_adherent_profile_edit') }}"
+                               title="{{ 'link.adherent.edit'|trans }}"><i class="fas fa-pencil-alt"></i></a>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Panel - main --#}
+
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+            <div class="row">
+                {#-- Panel - user --#}
+                <div class="col-12">
+
+                    <div class="card card-default">
+                        <div class="card-header">
+                            {{ 'title.show'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ adherent.officialName }}</b>
+                        </div>
+
+                        <div class="card-wrapper">
+                            <div class="card-body">
+                                <div class="col-12">
+                                    <table class="table table-striped table-hover">
+                                        <tbody>
+                                        <tr>
+                                            <th><i class="fa fa-user"></i> {{ 'label.username'|trans }}</th>
+                                            <td>{{ adherent.user.username }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th><i class="fa fa-envelope"></i> {{ 'label.email'|trans }}</th>
+                                            <td>
+                                                <a href="mailto:{{ adherent.user.email }}"> {{ adherent.user.email }}</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ 'label.groups'|trans }}</th>
+                                            <td>
+                                                {% for group in adherent.user.groups %}
+                                                    {{ group.name }}
+                                                    {% if not loop.last %}<br>{% endif %}
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ 'label.lastLogin'|trans }}</th>
+                                            <td>{% if adherent.user.lastLogin %}{{ adherent.user.lastLogin|date('d/m/Y h:i:s') }}{% endif %}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {#-- End Panel - user --#}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock lucca_panels %}
+

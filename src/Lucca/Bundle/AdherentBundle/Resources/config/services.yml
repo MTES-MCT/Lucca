@@ -1,0 +1,73 @@
+# LuccaAdherentBundle parameters
+parameters:
+    path.lucca: "%kernel.root_dir%/../../lucca.doc/"
+    path.import: "%path.lucca%/importFile/"
+    path.historic: "%path.lucca%/historic/"
+    
+    file.adherent: "adherent.csv"
+
+services:
+    
+    #################################################################
+    ## Manager
+    #################################################################
+    ## Manager - ControlEdition
+    lucca.manager.adherent:
+        class: Lucca\Bundle\AdherentBundle\Manager\AdherentManager
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@session"
+            - "@fos_user.user_manager"
+            - "@lucca.generator.adherent_code"
+            -
+    ## Manager - Stats
+    lucca.manager.adherent_statistics:
+        class: Lucca\Bundle\AdherentBundle\Manager\StatisticsManager
+
+    #################################################################
+    ## Generator
+    #################################################################
+    
+    ## Create invoice with flow form
+    lucca.generator.adherent_code:
+        class: Lucca\Bundle\AdherentBundle\Generator\CodeGenerator
+        arguments:
+            - "@doctrine.orm.entity_manager"
+    
+    #################################################################
+    ## Mailer
+    #################################################################
+    
+    ## Mailer subscription
+    lucca.mailer.adherent.subscription.summary:
+        class: Lucca\Bundle\AdherentBundle\Mailer\SummaryAdherentSubscriptionMailer
+        arguments:
+            $container: "@service_container"
+    
+    #################################################################
+    ## Finder
+    #################################################################
+    
+    ## Finder Adherent Entity
+    lucca.finder.adherent:
+        class: Lucca\Bundle\AdherentBundle\Finder\AdherentFinder
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@security.token_storage"
+    
+    ## Finder logo used by Adherent
+    lucca.finder.logo:
+        class: Lucca\Bundle\AdherentBundle\Finder\LogoFinder
+        arguments:
+            - "@doctrine.orm.entity_manager"
+
+    #################################################################
+    ## Twig
+    #################################################################
+    ## Twig extension
+    lucca.twig.adherent:
+        class: Lucca\Bundle\AdherentBundle\Twig\AdherentExtension
+        arguments:
+            - "@doctrine.orm.entity_manager"
+        tags:
+            - { name: twig.extension }

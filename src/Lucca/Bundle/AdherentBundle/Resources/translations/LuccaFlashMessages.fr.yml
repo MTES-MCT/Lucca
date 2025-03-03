@@ -1,0 +1,26 @@
+####################################
+## Flash Domain
+####################################
+
+flash:
+    adherent:
+        createdSuccessfully: "L'adhérent a bien été créé."
+        updatedSuccessfully: "L'adhérent a bien été modifié."
+        deletedSuccessfully: "L'adhérent a bien été supprimé."
+        disabledSuccessfully: "L'adhérent a bien été désactivé."
+        enabledSuccessfully: "L'adhérent a bien été activé."
+        userAlreadyExist: "Un adhérent avec cet email existe déjà."
+        accessDenied: "Vous n'avez pas accès à cette fonctionalitée."
+
+    agent:
+        createdSuccessfully: "L'agent a bien été créé."
+        updatedSuccessfully: "L'agent a bien été modifié."
+        deletedSuccessfully: "L'agent a bien été supprimé."
+        disabledSuccessfully: "L'agent a bien été désactivé."
+        enabledSuccessfully: "L'agent a bien été activé."
+
+    ## MAIL
+    mail:
+        adherentSubscription:
+            sendSuccessfully: "L'email de confirmation vient d'être envoyé."
+            sendFail: "L'email de confirmation n'as pu être envoyé."
