@@ -7,99 +7,58 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\FolderBundle\Entity;
 
-namespace Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity;
-
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\CoreBundle\Entity\ToggleableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\CoreBundle\Entity\ToggleableTrait;
+use Lucca\Bundle\FolderBundle\Repository\TagRepository;
+use Lucca\Bundle\LogBundle\Entity\LogInterface;
 
 /**
  * Tag
  *
- * @ORM\Table(name="lucca_tag")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\TagRepository")
- *
- * @package Lucca\MinuteBundle\Entity
+ * @package Lucca\Bundle\FolderBundle\Entity
  * @author Terence <terence@numeric-wave.tech>
  */
+#[ORM\Table(name: "lucca_tag")]
+#[ORM\Entity(repositoryClass: TagRepository::class)]
 class Tag implements LogInterface
 {
     use ToggleableTrait, TimestampableTrait;
 
-    /** TYPE constants */
     const CATEGORY_NATURE = 'choice.category.nature';
     const CATEGORY_TOWN = 'choice.category.town';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column(name: "id", type: "integer")]
+    private ?int $id;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="num", type="smallint")
-     * @Assert\NotNull(message="constraint.not_null")
-     * @Assert\Type(type="int", message="constraint.type")
-     */
-    private $num;
+    #[ORM\Column(name: "num", type: "smallint")]
+    #[Assert\NotNull(message: "constraint.not_null")]
+    #[Assert\Type(type: "int", message: "constraint.type")]
+    private int $num;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=50)
-     * @Assert\NotNull(message="constraint.not_null")
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 50,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $name;
+    #[ORM\Column(name: "name", type: "string", length: 50)]
+    #[Assert\NotNull(message: "constraint.not_null")]
+    #[Assert\Type(type: "string", message: "constraint.type")]
+    #[Assert\Length(min: 2, max: 50, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
+    private string $name;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="category", type="string", length=30, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 30,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $category;
+    #[ORM\Column(name: "category", type: "string", length: 30, nullable: true)]
+    #[Assert\Type(type: "string", message: "constraint.type")]
+    #[Assert\Length(min: 2, max: 30, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
+    private ?string $category = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text", nullable=true)
-     */
-    private $description;
+    #[ORM\Column(name: "description", type: "text", nullable: true)]
+    private ?string $description = null;
 
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="Lucca\MinuteBundle\Entity\Proposal", mappedBy="tag",
-     *     cascade={"persist", "remove"}, orphanRemoval=true
-     * )
-     */
-    private $proposals;
+    #[ORM\OneToMany(targetEntity: Proposal::class, mappedBy: "tag", cascade: ["persist", "remove"], orphanRemoval: true)]
+    private Collection $proposals;
 
     /************************************************************************ Custom functions ************************************************************************/
 
@@ -115,10 +74,10 @@ class Tag implements LogInterface
      * Add proposal
      * Override function
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Proposal $proposal
+     * @param Proposal $proposal
      * @return Tag
      */
-    public function addProposal(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Proposal $proposal)
+    public function addProposal(Proposal $proposal): static
     {
         $this->proposals[] = $proposal;
         $proposal->setTag($this);
@@ -130,7 +89,7 @@ class Tag implements LogInterface
      * Log name of this Class
      * @return string
      */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Mot clé';
     }
@@ -142,7 +101,7 @@ class Tag implements LogInterface
      *
      * @return integer
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -154,7 +113,7 @@ class Tag implements LogInterface
      *
      * @return Tag
      */
-    public function setNum($num)
+    public function setNum($num): static
     {
         $this->num = $num;
 
@@ -166,7 +125,7 @@ class Tag implements LogInterface
      *
      * @return integer
      */
-    public function getNum()
+    public function getNum(): int
     {
         return $this->num;
     }
@@ -178,7 +137,7 @@ class Tag implements LogInterface
      *
      * @return Tag
      */
-    public function setName($name)
+    public function setName($name): static
     {
         $this->name = $name;
 
@@ -190,7 +149,7 @@ class Tag implements LogInterface
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -202,7 +161,7 @@ class Tag implements LogInterface
      *
      * @return Tag
      */
-    public function setCategory($category)
+    public function setCategory(string $category): static
     {
         $this->category = $category;
 
@@ -214,7 +173,7 @@ class Tag implements LogInterface
      *
      * @return string
      */
-    public function getCategory()
+    public function getCategory(): ?string
     {
         return $this->category;
     }
@@ -226,7 +185,7 @@ class Tag implements LogInterface
      *
      * @return Tag
      */
-    public function setDescription($description)
+    public function setDescription(string $description): static
     {
         $this->description = $description;
 
@@ -238,7 +197,7 @@ class Tag implements LogInterface
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -248,7 +207,7 @@ class Tag implements LogInterface
      *
      * @return boolean
      */
-    public function getEnabled()
+    public function getEnabled(): bool
     {
         return $this->enabled;
     }
@@ -256,9 +215,9 @@ class Tag implements LogInterface
     /**
      * Remove proposal
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Proposal $proposal
+     * @param Proposal $proposal
      */
-    public function removeProposal(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Proposal $proposal)
+    public function removeProposal(Proposal $proposal): void
     {
         $this->proposals->removeElement($proposal);
     }
@@ -266,9 +225,9 @@ class Tag implements LogInterface
     /**
      * Get proposals
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
-    public function getProposals()
+    public function getProposals(): ArrayCollection|Collection
     {
         return $this->proposals;
     }

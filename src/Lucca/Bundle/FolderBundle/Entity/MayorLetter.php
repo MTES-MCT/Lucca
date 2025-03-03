@@ -7,125 +7,74 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\FolderBundle\Entity;
 
-namespace Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity;
-
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\FolderBundle\Repository\MayorLetterRepository;
 use Symfony\Component\Validator\Constraints as Assert;
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\LogBundle\Entity\LogInterface;
 
 /**
  * Plot
  *
- * @ORM\Table(name="lucca_minute_mayor_letter")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\MayorLetterRepository")
- *
- * @package Lucca\MinuteBundle\Entity
+ * @package Lucca\Bundle\FolderBundle\Entity
  * @author Lisa <lisa.alvarez@numeric-wave.eu>
  */
+#[ORM\Table(name: "lucca_minute_mayor_letter")]
+#[ORM\Entity(repositoryClass: MayorLetterRepository::class)]
 class MayorLetter implements LogInterface
 {
-    /** Traits */
     use TimestampableTrait;
 
-    /** GENDER constants */
     const GENDER_MALE = 'choice.gender.male';
     const GENDER_FEMALE = 'choice.gender.female';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    private ?int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="gender", type="string", length=30)
-     * @Assert\NotNull(message="constraint.not_null")
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 30,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $gender;
+    #[ORM\Column(name: "gender", type: "string", length: 30)]
+    #[Assert\NotNull(message: "constraint.not_null")]
+    #[Assert\Type(type: "string", message: "constraint.type")]
+    #[Assert\Length(min: 2, max: 30, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
+    private string $gender;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=150)
-     * @Assert\NotNull(message="constraint.not_null")
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 150,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $name;
+    #[ORM\Column(name: "name", type: "string", length: 150)]
+    #[Assert\NotNull(message: "constraint.not_null")]
+    #[Assert\Type(type: "string", message: "constraint.type")]
+    #[Assert\Length(min: 2, max: 150, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
+    private string $name;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="address", type="string", length=255, nullable=false)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 255,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $address;
+    #[ORM\Column(name: "address", type: "string", length: 255, nullable: false)]
+    #[Assert\Type(type: "string", message: "constraint.type")]
+    #[Assert\Length(min: 2, max: 255, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
+    private string $address;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateSended", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateSended;
+    #[ORM\Column(name: "dateSended", type: "datetime", nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateSended = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\ParameterBundle\Entity\Town")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $town;
+    #[ORM\ManyToOne(targetEntity: Town::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Town $town;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\AdherentBundle\Entity\Adherent", inversedBy="agents")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $adherent;
+    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: "agents")]
+    #[ORM\JoinColumn(nullable: false)]
+    private Adherent $adherent;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\AdherentBundle\Entity\Agent")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $agent;
+    #[ORM\ManyToOne(targetEntity: Agent::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Agent $agent = null;
 
-    /**
-     * Many MayorLetter have Many Folder
-     * Delete Folder - Delete on join table specific rows
-     *
-     * @ORM\ManyToMany(targetEntity="Lucca\MinuteBundle\Entity\Folder", cascade={"persist"})
-     * @ORM\JoinTable(name="lucca_mayor_letter_linked_folder",
-     *      joinColumns={@ORM\JoinColumn(name="mayor_letter_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="folder_id", referencedColumnName="id", onDelete="CASCADE")}
-     *      )
-     */
+    #[ORM\ManyToMany(targetEntity: Folder::class, cascade: ["persist"])]
+    #[ORM\JoinTable(name: "lucca_mayor_letter_linked_folder",
+        joinColumns: [new ORM\JoinColumn(name: "mayor_letter_id", referencedColumnName: "id", onDelete: "CASCADE")],
+        inverseJoinColumns: [new ORM\JoinColumn(name: "folder_id", referencedColumnName: "id", onDelete: "CASCADE")]
+    )]
     private $folders;
 
     /************************************************************************ Custom functions ************************************************************************/
@@ -135,7 +84,7 @@ class MayorLetter implements LogInterface
      * Same as "Lettre au maire"
      * @return string
      */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Courrier de rattachement';
     }
@@ -145,8 +94,9 @@ class MayorLetter implements LogInterface
      *
      * @param array $folders
      */
-    public function setFolders(array $folders) {
-        $this->folders = new \Doctrine\Common\Collections\ArrayCollection($folders);
+    public function setFolders(array $folders): void
+    {
+        $this->folders = new ArrayCollection($folders);
     }
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
@@ -156,15 +106,15 @@ class MayorLetter implements LogInterface
      */
     public function __construct()
     {
-        $this->folders = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->folders = new ArrayCollection();
     }
 
     /**
      * Get id.
      *
-     * @return int
+     * @return int|null
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -176,7 +126,7 @@ class MayorLetter implements LogInterface
      *
      * @return MayorLetter
      */
-    public function setGender($gender)
+    public function setGender(string $gender): static
     {
         $this->gender = $gender;
 
@@ -188,7 +138,7 @@ class MayorLetter implements LogInterface
      *
      * @return string
      */
-    public function getGender()
+    public function getGender(): string
     {
         return $this->gender;
     }
@@ -200,7 +150,7 @@ class MayorLetter implements LogInterface
      *
      * @return MayorLetter
      */
-    public function setName($name)
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -212,7 +162,7 @@ class MayorLetter implements LogInterface
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -224,7 +174,7 @@ class MayorLetter implements LogInterface
      *
      * @return MayorLetter
      */
-    public function setAddress($address)
+    public function setAddress(string $address): static
     {
         $this->address = $address;
 
@@ -236,7 +186,7 @@ class MayorLetter implements LogInterface
      *
      * @return string
      */
-    public function getAddress()
+    public function getAddress(): string
     {
         return $this->address;
     }
@@ -248,7 +198,7 @@ class MayorLetter implements LogInterface
      *
      * @return MayorLetter
      */
-    public function setDateSended($dateSended)
+    public function setDateSended(\DateTime $dateSended): static
     {
         $this->dateSended = $dateSended;
 
@@ -260,7 +210,7 @@ class MayorLetter implements LogInterface
      *
      * @return \DateTime
      */
-    public function getDateSended()
+    public function getDateSended(): ?\DateTime
     {
         return $this->dateSended;
     }
@@ -268,11 +218,11 @@ class MayorLetter implements LogInterface
     /**
      * Set town.
      *
-     * @param \Lucca\ParameterBundle\Entity\Town $town
+     * @param Town $town
      *
      * @return MayorLetter
      */
-    public function setTown(\Lucca\ParameterBundle\Entity\Town $town)
+    public function setTown(Town $town): static
     {
         $this->town = $town;
 
@@ -282,9 +232,9 @@ class MayorLetter implements LogInterface
     /**
      * Get town.
      *
-     * @return \Lucca\ParameterBundle\Entity\Town
+     * @return Town
      */
-    public function getTown()
+    public function getTown(): Town
     {
         return $this->town;
     }
@@ -292,11 +242,11 @@ class MayorLetter implements LogInterface
     /**
      * Set adherent.
      *
-     * @param \Lucca\AdherentBundle\Entity\Adherent $adherent
+     * @param Adherent $adherent
      *
      * @return MayorLetter
      */
-    public function setAdherent(\Lucca\AdherentBundle\Entity\Adherent $adherent)
+    public function setAdherent(Adherent $adherent): static
     {
         $this->adherent = $adherent;
 
@@ -306,9 +256,9 @@ class MayorLetter implements LogInterface
     /**
      * Get adherent.
      *
-     * @return \Lucca\AdherentBundle\Entity\Adherent
+     * @return Adherent
      */
-    public function getAdherent()
+    public function getAdherent(): Adherent
     {
         return $this->adherent;
     }
@@ -316,11 +266,11 @@ class MayorLetter implements LogInterface
     /**
      * Set agent.
      *
-     * @param \Lucca\AdherentBundle\Entity\Agent|null $agent
+     * @param Agent|null $agent
      *
      * @return MayorLetter
      */
-    public function setAgent(\Lucca\AdherentBundle\Entity\Agent $agent = null)
+    public function setAgent(Agent $agent = null): static
     {
         $this->agent = $agent;
 
@@ -330,9 +280,9 @@ class MayorLetter implements LogInterface
     /**
      * Get agent.
      *
-     * @return \Lucca\AdherentBundle\Entity\Agent|null
+     * @return Agent|null
      */
-    public function getAgent()
+    public function getAgent(): Agent|null
     {
         return $this->agent;
     }
@@ -340,11 +290,11 @@ class MayorLetter implements LogInterface
     /**
      * Add folder.
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder $folder
+     * @param Folder $folder
      *
      * @return MayorLetter
      */
-    public function addFolder(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder $folder)
+    public function addFolder(Folder $folder): static
     {
         $this->folders[] = $folder;
 
@@ -354,11 +304,11 @@ class MayorLetter implements LogInterface
     /**
      * Remove folder.
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder $folder
+     * @param Folder $folder
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeFolder(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder $folder)
+    public function removeFolder(Folder $folder): bool
     {
         return $this->folders->removeElement($folder);
     }
@@ -366,9 +316,9 @@ class MayorLetter implements LogInterface
     /**
      * Get folders.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection|Collection
      */
-    public function getFolders()
+    public function getFolders(): ArrayCollection|Collection
     {
         return $this->folders;
     }

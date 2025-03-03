@@ -7,49 +7,45 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\FolderBundle\Command;
 
-namespace Lucca\MinuteBundle\Command;
-
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Natinf;
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Lucca\Bundle\FolderBundle\Entity\Natinf;
+use Lucca\Bundle\FolderBundle\Entity\Tag;
+
 /**
  * Class LuccaImportNatinfCommand
  *
- * @package Lucca\MinuteBundle\Command
+ * @package Lucca\Bundle\FolderBundle\Command
  * @author Terence <terence@numeric-wave.tech>
  */
-class LuccaImportNatinfCommand extends ContainerAwareCommand
+class LuccaImportNatinfCommand extends Command
 {
-    /**
-     * @var ObjectManager
-     */
-    private $em;
-
     /**
      * @var Filesystem
      */
-    private $file;
+    private string $file;
+
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+    )
+    {
+        /** Call the parent constructor */
+        parent::__construct();
+    }
 
     /**
      * Configure command parameters
      * Option : path of csv file
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('lucca:import:natinf')
@@ -68,9 +64,8 @@ class LuccaImportNatinfCommand extends ContainerAwareCommand
      * @param OutputInterface $output
      * @throws \Exception
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
-        $this->em = $this->getContainer()->get('doctrine')->getManager();
         $fs = new Filesystem();
 
         // Catch path option
@@ -99,7 +94,7 @@ class LuccaImportNatinfCommand extends ContainerAwareCommand
      * @param OutputInterface $output
      * @return bool
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): bool
     {
         $startTime = microtime(true);
 
@@ -107,7 +102,7 @@ class LuccaImportNatinfCommand extends ContainerAwareCommand
         $now = new \DateTime();
         $output->writeln([
             '',
-            'Import Natinf for Lucca\'s file',
+            'Import Natinf for Lucca\Bundle\'s file',
             'Start: ' . $now->format('d-m-Y H:i:s') . '',
             '-----------------------------------------------',
         ]);
@@ -141,7 +136,7 @@ class LuccaImportNatinfCommand extends ContainerAwareCommand
      * @param OutputInterface $output
      * @param $file
      */
-    protected function import(InputInterface $input, OutputInterface $output, $file)
+    protected function import(InputInterface $input, OutputInterface $output, $file): void
     {
         $em = $this->em;
         $data = $this->get($input, $output, $file);
@@ -183,7 +178,7 @@ class LuccaImportNatinfCommand extends ContainerAwareCommand
          */
         foreach ($data as $row) {
 
-            $natinf = $em->getRepository('LuccaMinuteBundle:Natinf')->findOneBy(array(
+            $natinf = $em->getRepository('LuccaFolderBundle:Natinf')->findOneBy(array(
                 'num' => utf8_encode($row['code'])
             ));
 
@@ -201,7 +196,7 @@ class LuccaImportNatinfCommand extends ContainerAwareCommand
             foreach ($tag_field as $tag_element) {
 
                 $tag_element = ucfirst($tag_element);
-                $tag = $em->getRepository('LuccaMinuteBundle:Tag')->findOneBy(array(
+                $tag = $em->getRepository('LuccaFolderBundle:Tag')->findOneBy(array(
                     'num' => $tag_element
                 ));
 
@@ -209,7 +204,7 @@ class LuccaImportNatinfCommand extends ContainerAwareCommand
                     $natinf->addTag($tag);
             }
 
-            $natinf_parent = $em->getRepository('LuccaMinuteBundle:Natinf')->findOneBy(array(
+            $natinf_parent = $em->getRepository('LuccaFolderBundle:Natinf')->findOneBy(array(
                 'num' => utf8_encode($row['origin'])
             ));
 
@@ -242,7 +237,7 @@ class LuccaImportNatinfCommand extends ContainerAwareCommand
      * @param $fileName
      * @return mixed
      */
-    protected function get(InputInterface $input, OutputInterface $output, $fileName)
+    protected function get(InputInterface $input, OutputInterface $output, $fileName): mixed
     {
         $converter = $this->getContainer()->get('lucca.converter.csv_array');
         $data = $converter->convert($fileName, ';');

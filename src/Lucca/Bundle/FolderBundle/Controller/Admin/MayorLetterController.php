@@ -7,47 +7,37 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\FolderBundle\Controller\Admin;
 
-namespace Lucca\MinuteBundle\Controller\Admin;
-
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\MayorLetter;
-use Lucca\MinuteBundle\Form\MayorLetterType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\FolderBundle\Entity\MayorLetter;
+use Lucca\Bundle\FolderBundle\Form\MayorLetterType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * Class MayorLetterController
  *
- * @Route("/mayor-letter")
- * @Security("has_role('ROLE_LUCCA')")
- *
- * @package Lucca\MinuteBundle\Controller\Admin
+ * @package Lucca\Bundle\FolderBundle\Controller\Admin
  * @author Lisa <lisa.alvarez@numeric-wave.eu>
  */
-class MayorLetterController extends Controller
+#[IsGranted('ROLE_LUCCA')]
+#[Route('/mayor-letter')]
+class MayorLetterController extends AbstractController
 {
     /**
      * Generate Mayor Letter
      *
-     * @Route("/step-1", name="lucca_mayor_letter_edit", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
      * @param Request $request
      * @return RedirectResponse|Response
      */
-    public function editAction(Request $request)
+    #[Route('/step-1', name: 'lucca_mayor_letter_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function editAction(Request $request): RedirectResponse|Response
     {
         /** Who is connected ;) */
         $adherent = $this->get('lucca.finder.adherent')->whoAmI();
@@ -80,7 +70,7 @@ class MayorLetterController extends Controller
             }
         }
 
-        return $this->render('LuccaMinuteBundle:MayorLetter:edit.html.twig', array(
+        return $this->render('@LuccaFolder/MayorLetter/edit.html.twig', array(
             'form' => $form->createView(),
             'adherent' => $adherent,
         ));

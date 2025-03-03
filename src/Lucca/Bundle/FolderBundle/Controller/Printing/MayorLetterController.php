@@ -8,23 +8,23 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Controller\Printing;
+namespace Lucca\Bundle\FolderBundle\Controller\Printing;
 
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\MayorLetter;
+use Lucca\Bundle\FolderBundle\Entity\MayorLetter;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Lucca\AdherentBundle\Entity\Adherent;
-use Lucca\ModelBundle\Entity\Model;
-use Lucca\SettingBundle\Utils\SettingManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\ModelBundle\Entity\Model;
+use Lucca\Bundle\SettingBundle\Utils\SettingManager;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfReader\PdfReaderException;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Tomsgu\PdfMerger\Exception\FileNotFoundException;
 use Tomsgu\PdfMerger\Exception\InvalidArgumentException;
 use Tomsgu\PdfMerger\PdfCollection;
@@ -34,28 +34,26 @@ use Tomsgu\PdfMerger\PdfMerger;
 /**
  * Class MayorLetterController
  *
- * @Route("/mayor-letter")
- * @Security("has_role('ROLE_LUCCA')")
- *
- * @package Lucca\MinuteBundle\Controller\Printing
+ * @package Lucca\Bundle\FolderBundle\Controller\Printing
  * @author Lisa <lisa.alvarez@numeric-wave.eu>
  */
-class MayorLetterController extends Controller
+#[Route('/mayor-letter')]
+#[IsGranted('ROLE_LUCCA')]
+class MayorLetterController extends AbstractController
 {
     /**
      * Judicial Print letter
      *
-     * @Route("-{id}/print", name="lucca_mayor_letter_print", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
      *
-     * /**
      * @param MayorLetter $p_mayorLetter
      * @param Request $p_request
      * @return Response
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function mayorLetterPrintAction(MayorLetter $p_mayorLetter, Request $p_request)
+    #[Route('-{id}/print', name: 'lucca_mayor_letter_print', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function mayorLetterPrintAction(MayorLetter $p_mayorLetter, Request $p_request): Response
     {
         /** Step 1 : init snappy */
         $snappy = $this->get('knp_snappy.pdf');
@@ -75,7 +73,7 @@ class MayorLetterController extends Controller
         }
 
         /** Step 3 : Create html */
-        $html = $this->renderView('LuccaMinuteBundle:MayorLetter/Printing/Basic:mayorLetter_print.html.twig', array(
+        $html = $this->renderView('@LuccaFolder/MayorLetter/Printing/Basic/mayorLetter_print.html.twig', array(
             'mayorLetter' => $p_mayorLetter, 'adherent' => $adherent, 'officialLogo' => $logo
         ));
 
@@ -101,7 +99,7 @@ class MayorLetterController extends Controller
      * @throws InvalidArgumentException
      * @throws PdfReaderException
      */
-    private function generatePDFFolders(MayorLetter $p_mayorLetter, $p_generatedPDFLetter)
+    private function generatePDFFolders(MayorLetter $p_mayorLetter, $p_generatedPDFLetter): RedirectResponse|string
     {
         /** Init var with tools need to merge pdf */
         $pdf = new PdfCollection();
@@ -136,7 +134,7 @@ class MayorLetterController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             /** Step 1 : Find updating */
-            $update = $em->getRepository('LuccaMinuteBundle:Updating')->findUpdatingByControl($folder->getControl());
+            $update = $em->getRepository('LuccaFolderBundle:Updating')->findUpdatingByControl($folder->getControl());
 
             /** Step 2 : Get adherent and model corresponding*/
             $minute = $folder->getMinute();

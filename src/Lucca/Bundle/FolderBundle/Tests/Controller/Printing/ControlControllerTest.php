@@ -7,20 +7,20 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Tests\Controller\Admin;
+namespace Lucca\Bundle\MinuteBundle\Tests\Controller\Printing;
 
+use Lucca\Bundle\MinuteBundle\Entity\Control;
 use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
- * Class NatinfControllerTest
- * Test Lucca\MinuteBundle\Controller\Admin\MinuteController
+ * Class ControlControllerTest
+ * Test Lucca\Bundle\MinuteBundle\Controller\Printing\ControlController
  *
- * @package Lucca\MinuteBundle\Tests\Controller\Admin
+ * @package Lucca\Bundle\MinuteBundle\Tests\Controller\Printing
  * @author Terence <terence@numeric-wave.tech>
- * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
-class NatinfControllerTest extends WebTestCase
+class ControlControllerTest extends WebTestCase
 {
     /**
      * @var $urls
@@ -64,19 +64,22 @@ class NatinfControllerTest extends WebTestCase
         /**
          * Entity who was analysed
          */
-        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Natinf')->findOneBy(array());
+        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Control')->findOneForTest(Control::TYPE_FOLDER);
+
+        $minute = $this->entity->getMinute();
+
+        if (empty($this->entity->getHumansByMinute() and empty($this->entity->getHumansByControl()))) {
+            $attemptedCode = 302;
+        } else {
+            $attemptedCode = 200;
+        }
 
         /**
          * Urls who was analyzed
          */
-        $basicUrl = 'lucca_natinf_';
         $this->urls = array(
-            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'index', array())),
-            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'new', array())),
-            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'show', array('id' => $this->entity->getId()))),
-            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'edit', array('id' => $this->entity->getId()))),
-            array('expectedCode' => 302, 'route' => $this->getUrl($basicUrl . 'enable', array('id' => $this->entity->getId()))),
-            array('expectedCode' => 302, 'route' => $this->getUrl($basicUrl . 'enable', array('id' => $this->entity->getId()))),
+            array('expectedCode' => $attemptedCode, 'route' => $this->getUrl('lucca_control_access_print', array('minute_id' => $minute->getId() , 'id' => $this->entity->getId()))),
+            array('expectedCode' => $attemptedCode, 'route' => $this->getUrl('lucca_control_letter_print', array('minute_id' => $minute->getId() , 'id' => $this->entity->getId()))),
         );
     }
 

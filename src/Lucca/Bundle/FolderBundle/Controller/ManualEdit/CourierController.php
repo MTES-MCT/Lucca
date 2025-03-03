@@ -8,48 +8,48 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Controller\ManualEdit;
+namespace Lucca\Bundle\FolderBundle\Controller\ManualEdit;
 
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Courier;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
-use Lucca\MinuteBundle\Form\Courier\CourierEditionDdtmType;
-use Lucca\MinuteBundle\Form\Courier\CourierEditionJudicialType;
-use Lucca\MinuteBundle\Form\Courier\CourierOffenderType;
-use Lucca\SettingBundle\Utils\SettingManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+use Lucca\Bundle\FolderBundle\Entity\Courier;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\FolderBundle\Form\Courier\CourierEditionDdtmType;
+use Lucca\Bundle\FolderBundle\Form\Courier\CourierEditionJudicialType;
+use Lucca\Bundle\FolderBundle\Form\Courier\CourierOffenderType;
+use Lucca\Bundle\SettingBundle\Utils\SettingManager;
 /**
  * Class CourierController
  *
- * @Security("has_role('ROLE_LUCCA')")
- * @Route("/minute-{minute_id}/courier-")
- * @ParamConverter("minute", class="LuccaMinuteBundle:Minute", options={"id" = "minute_id"})
- *
- * @package Lucca\MinuteBundle\Controller\ManualEdit
+ * @package Lucca\Bundle\FolderBundle\Controller\ManualEdit
  * @author Terence <terence@numeric-wave.tech>
  * @author Alizée Meyer <alizee.m@numeric-wave.eu>
  */
-class CourierController extends Controller
+#[Route('/minute-{minute_id}/courier-')]
+#[IsGranted('ROLE_LUCCA')]
+class CourierController extends AbstractController
 {
     /**
      * Update Judicial letter of Courier
-     *
-     * @Route("{id}/edit-judicial", name="lucca_courier_manual_judicial", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
      *
      * @param Request $request
      * @param Minute $minute
      * @param Courier $courier
      * @return RedirectResponse|Response
      */
-    public function manualEditingJudicialAction(Request $request, Minute $minute, Courier $courier)
-    {
+    #[Route('{id}/edit-judicial', name: 'lucca_courier_manual_judicial', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function manualEditingJudicialAction(
+        Request $request,
+        #[MapEntity(id: 'minute_id')] Minute $minute,
+        #[MapEntity(id: 'id')] Courier $courier
+    ): RedirectResponse|Response {
         if ($courier->getDateJudicial()) {
             $this->addFlash('warning', 'flash.courier.alreadySended');
             return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId()));
@@ -68,7 +68,7 @@ class CourierController extends Controller
             if (SettingManager::get('setting.courier.judicialContent.name')) {
                 $edition->setLetterJudicial(
                     $this->renderView(
-                        'LuccaMinuteBundle:Courier/Printing/Custom:judicial_content-' . SettingManager::get('setting.general.departement.name') . '.html.twig',
+                        '@LuccaFolder/Courier/Printing/Custom/judicial_content-' . SettingManager::get('setting.general.departement.name') . '.html.twig',
                         array(
                             'minute' => $minute,
                             'courier' => $courier,
@@ -78,7 +78,7 @@ class CourierController extends Controller
                 );
             } else {
                 $edition->setLetterJudicial(
-                    $this->renderView('LuccaMinuteBundle:Courier/Printing/Basic:judicial_content.html.twig', array(
+                    $this->renderView('@LuccaFolder/Courier/Printing/Basic/judicial_content.html.twig', array(
                         'minute' => $minute,
                         'courier' => $courier,
                         'adherent' => $minute->getAdherent(),
@@ -108,7 +108,7 @@ class CourierController extends Controller
             return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId()));
         }
 
-        return $this->render('LuccaMinuteBundle:CourierEdition:editJudicial.html.twig', array(
+        return $this->render('@LuccaFolder/CourierEdition/editJudicial.html.twig', array(
             'minute' => $minute,
             'courier' => $courier,
             'edition' => $edition,
@@ -120,16 +120,18 @@ class CourierController extends Controller
     /**
      * Update Ddtm letter of Courier
      *
-     * @Route("{id}/edit-ddtm", name="lucca_courier_manual_ddtm", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
      * @param Request $request
      * @param Minute $minute
      * @param Courier $courier
      * @return RedirectResponse|Response
      */
-    public function manualEditingDdtmAction(Request $request, Minute $minute, Courier $courier)
-    {
+    #[Route('{id}/edit-ddtm', name: 'lucca_courier_manual_ddtm', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function manualEditingDdtmAction(
+        Request $request,
+        #[MapEntity(id: 'minute_id')] Minute $minute,
+        #[MapEntity(id: 'id')] Courier $courier
+    ): RedirectResponse|Response {
         if ($courier->getDateDdtm()) {
             $this->addFlash('warning', 'flash.courier.alreadySended');
             return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId()));
@@ -147,7 +149,7 @@ class CourierController extends Controller
             if (SettingManager::get('setting.courier.ddtmContent.name')) {
                 $edition->setLetterDdtm(
                     $this->renderView(
-                        'LuccaMinuteBundle:Courier/Printing/Custom:ddtm_content-' . SettingManager::get('setting.general.departement.name') . '.html.twig',
+                        '@LuccaFolder/Courier/Printing/Custom/ddtm_content-' . SettingManager::get('setting.general.departement.name') . '.html.twig',
                         array(
                             'minute' => $minute,
                             'courier' => $courier,
@@ -157,7 +159,7 @@ class CourierController extends Controller
                 );
             } else {
                 $edition->setLetterDdtm(
-                    $this->renderView('LuccaMinuteBundle:Courier/Printing/Basic:ddtm_content.html.twig', array(
+                    $this->renderView('@LuccaFolder/Courier/Printing/Basic/ddtm_content.html.twig', array(
                         'minute' => $minute,
                         'courier' => $courier,
                         'adherent' => $minute->getAdherent(),
@@ -189,7 +191,7 @@ class CourierController extends Controller
             return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId()));
         }
 
-        return $this->render('LuccaMinuteBundle:CourierEdition:editDdtm.html.twig', array(
+        return $this->render('@LuccaFolder/CourierEdition/editDdtm.html.twig', array(
             'minute' => $minute,
             'courier' => $courier,
             'edition' => $edition,
@@ -201,16 +203,18 @@ class CourierController extends Controller
     /**
      * Update Offender letter of Courier
      *
-     * @Route("{id}/edit-offender", name="lucca_courier_manual_offender", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
      * @param Request $request
      * @param Minute $minute
      * @param Courier $courier
      * @return RedirectResponse|Response
      */
-    public function letterOffenderAction(Request $request, Minute $minute, Courier $courier)
-    {
+    #[Route('{id}/edit-offender', name: 'lucca_courier_manual_offender', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function letterOffenderAction(
+        Request $request,
+        #[MapEntity(id: 'minute_id')] Minute $minute,
+        #[MapEntity(id: 'id')] Courier $courier
+    ): RedirectResponse|Response {
         if ($courier->getDateOffender()) {
             $this->addFlash('warning', 'flash.courier.alreadySended');
             return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId()));
@@ -228,7 +232,7 @@ class CourierController extends Controller
                 if (SettingManager::get('setting.courier.offenderContent.name')) {
                     $edition->setLetterOffender(
                         $this->renderView(
-                            'LuccaMinuteBundle:Courier/Printing/Custom:offender_content-' . SettingManager::get('setting.general.departement.name') . '.html.twig',
+                            '@LuccaFolder/Courier/Printing/Custom/offender_content-' . SettingManager::get('setting.general.departement.name') . '.html.twig',
                             array(
                                 'minute' => $minute,
                                 'adherent' => $minute->getAdherent(),
@@ -239,7 +243,7 @@ class CourierController extends Controller
                     );
                 } else {
                     $edition->setLetterOffender(
-                        $this->renderView('LuccaMinuteBundle:Courier/Printing/Basic:offender_content.html.twig', array(
+                        $this->renderView('@LuccaFolder/Courier/Printing/Basic/offender_content.html.twig', array(
                             'minute' => $minute,
                             'adherent' => $minute->getAdherent(),
                             'courier' => $courier,
@@ -273,7 +277,7 @@ class CourierController extends Controller
             return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId()));
         }
 
-        return $this->render('LuccaMinuteBundle:CourierEdition:editOffender.html.twig', array(
+        return $this->render('@LuccaFolder/CourierEdition/editOffender.html.twig', array(
             'minute' => $minute,
             'courier' => $courier,
             'officialLogo' => $logo,

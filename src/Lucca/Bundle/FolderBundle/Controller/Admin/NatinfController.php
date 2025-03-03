@@ -7,48 +7,40 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\FolderBundle\Controller\Admin;
 
-namespace Lucca\MinuteBundle\Controller\Admin;
-
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Natinf;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Lucca\Bundle\FolderBundle\Entity\Natinf;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * Class NatinfController
  *
- * @Route("/natinf")
- * @Security("has_role('ROLE_USER')")
- *
- * @package Lucca\MinuteBundle\Controller\Admin
+ * @package Lucca\Bundle\FolderBundle\Controller\Admin
  * @author Terence <terence@numeric-wave.tech>
  */
-class NatinfController extends Controller
+#[IsGranted('ROLE_USER')]
+#[Route('/natinf')]
+class NatinfController extends AbstractController
 {
     /**
      * List of Natinf
      *
-     * @Route("/", name="lucca_natinf_index", methods={"GET"})
-     * @Security("has_role('ROLE_USER')")
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function indexAction()
+    #[IsGranted('ROLE_USER')]
+    #[Route('/natinf')]
+    public function indexAction(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
-        $natinfs = $em->getRepository('LuccaMinuteBundle:Natinf')->findAll();
+        $natinfs = $em->getRepository('LuccaFolderBundle:Natinf')->findAll();
 
-        return $this->render('LuccaMinuteBundle:Natinf:index.html.twig', array(
+        return $this->render('@LuccaFolder/Natinf/index.html.twig', array(
             'natinfs' => $natinfs
         ));
     }
@@ -56,17 +48,16 @@ class NatinfController extends Controller
     /**
      * Creates a new Natinf entity.
      *
-     * @Route("/new", name="lucca_natinf_new", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_ADMIN')")
-     *
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
-    public function newAction(Request $request)
+    #[Route('/new', name: 'lucca_natinf_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function newAction(Request $request): RedirectResponse|Response
     {
         $natinf = new Natinf();
 
-        $form = $this->createForm('Lucca\MinuteBundle\Form\NatinfType', $natinf);
+        $form = $this->createForm('Lucca\FolderBundle\Form\NatinfType', $natinf);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -79,7 +70,7 @@ class NatinfController extends Controller
             return $this->redirectToRoute('lucca_natinf_show', array('id' => $natinf->getId()));
         }
 
-        return $this->render('LuccaMinuteBundle:Natinf:new.html.twig', array(
+        return $this->render('@LuccaFolder/Natinf/new.html.twig', array(
             'natinf' => $natinf,
             'form' => $form->createView(),
         ));
@@ -88,17 +79,16 @@ class NatinfController extends Controller
     /**
      * Finds and displays a Natinf entity.
      *
-     * @Route("/{id}", name="lucca_natinf_show", methods={"GET"})
-     * @Security("has_role('ROLE_ADMIN')")
-     *
      * @param Natinf $natinf
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function showAction(Natinf $natinf)
+    #[Route('/{id}', name: 'lucca_natinf_show', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function showAction(Natinf $natinf): Response
     {
         $deleteForm = $this->createDeleteForm($natinf);
 
-        return $this->render('LuccaMinuteBundle:Natinf:show.html.twig', array(
+        return $this->render('@LuccaFolder/Natinf/show.html.twig', array(
             'natinf' => $natinf,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -107,17 +97,16 @@ class NatinfController extends Controller
     /**
      * Displays a form to edit an existing Natinf entity.
      *
-     * @Route("/{id}/edit", name="lucca_natinf_edit", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_ADMIN')")
-     *
      * @param Request $request
      * @param Natinf $natinf
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
-    public function editAction(Request $request, Natinf $natinf)
+    #[Route('/{id}/edit', name: 'lucca_natinf_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function editAction(Request $request, Natinf $natinf): RedirectResponse|Response
     {
         $deleteForm = $this->createDeleteForm($natinf);
-        $editForm = $this->createForm('Lucca\MinuteBundle\Form\NatinfType', $natinf);
+        $editForm = $this->createForm('Lucca\FolderBundle\Form\NatinfType', $natinf);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -130,7 +119,7 @@ class NatinfController extends Controller
             return $this->redirectToRoute('lucca_natinf_show', array('id' => $natinf->getId()));
         }
 
-        return $this->render('LuccaMinuteBundle:Natinf:edit.html.twig', array(
+        return $this->render('@LuccaFolder/Natinf/edit.html.twig', array(
             'natinf' => $natinf,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -140,14 +129,13 @@ class NatinfController extends Controller
     /**
      * Deletes a Natinf entity.
      *
-     * @Route("/{id}", name="lucca_natinf_delete", methods={"DELETE"})
-     * @Security("has_role('ROLE_ADMIN')")
-     *
      * @param Request $request
      * @param Natinf $natinf
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    public function deleteAction(Request $request, Natinf $natinf)
+    #[Route('/{id}', name: 'lucca_natinf_delete', methods: ['DELETE'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function deleteAction(Request $request, Natinf $natinf): RedirectResponse
     {
         $form = $this->createDeleteForm($natinf);
         $form->handleRequest($request);
@@ -180,13 +168,12 @@ class NatinfController extends Controller
     /**
      * Finds and enable / disable a Natinf entity.
      *
-     * @Route("/{id}/enable", name="lucca_natinf_enable", methods={"GET"})
-     * @Security("has_role('ROLE_ADMIN')")
-     *
      * @param Natinf $natinf
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    public function enableAction(Natinf $natinf)
+    #[Route('/{id}/enable', name: 'lucca_natinf_enable', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function enableAction(Natinf $natinf): RedirectResponse
     {
         $em = $this->getDoctrine()->getManager();
 

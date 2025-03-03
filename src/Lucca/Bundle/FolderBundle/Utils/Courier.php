@@ -7,29 +7,21 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
-
-namespace Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity;
+namespace Lucca\Bundle\FolderBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Courier
  *
  * @ORM\Table(name="lucca_minute_courier")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\CourierRepository")
+ * @ORM\Entity(repositoryClass="Lucca\Bundle\FolderBundle\Repository\CourierRepository")
  *
- * @package Lucca\MinuteBundle\Entity
+ * @package Lucca\Bundle\FolderBundle\Entity
  * @author Terence <terence@numeric-wave.tech>
  */
 class Courier implements LogInterface
@@ -47,7 +39,7 @@ class Courier implements LogInterface
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Lucca\MinuteBundle\Entity\Folder", mappedBy="courier", cascade={"remove", "persist"})
+     * @ORM\OneToOne(targetEntity="Lucca\FolderBundle\Entity\Folder", mappedBy="courier", cascade={"remove", "persist"})
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $folder;
@@ -101,7 +93,7 @@ class Courier implements LogInterface
 
     /**
      * @ORM\OneToOne(
-     *     targetEntity="Lucca\MinuteBundle\Entity\CourierEdition",
+     *     targetEntity="Lucca\FolderBundle\Entity\CourierEdition",
      *     cascade={"persist", "remove"}, orphanRemoval=true
      *     )
      * @ORM\JoinColumn(nullable=true)
@@ -110,7 +102,7 @@ class Courier implements LogInterface
 
     /**
      * @ORM\OneToMany(
-     *     targetEntity="Lucca\MinuteBundle\Entity\CourierHumanEdition", mappedBy="courier",
+     *     targetEntity="Lucca\FolderBundle\Entity\CourierHumanEdition", mappedBy="courier",
      *     cascade={"persist", "remove"}, orphanRemoval=true
      * )
      */
@@ -129,10 +121,10 @@ class Courier implements LogInterface
     /**
      * Add humansEdition
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\CourierHumanEdition $humansEdition
+     * @param \Lucca\Bundle\FolderBundle\Entity\CourierHumanEdition $humansEdition
      * @return Courier
      */
-    public function addHumansEdition(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\CourierHumanEdition $humansEdition)
+    public function addHumansEdition(\Lucca\Bundle\FolderBundle\Entity\CourierHumanEdition $humansEdition)
     {
         $this->humansEditions[] = $humansEdition;
         $humansEdition->setCourier($this);
@@ -143,10 +135,10 @@ class Courier implements LogInterface
     /**
      * Set folder
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder $folder
+     * @param \Lucca\Bundle\FolderBundle\Entity\Folder $folder
      * @return Courier
      */
-    public function setFolder(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder $folder)
+    public function setFolder(\Lucca\Bundle\FolderBundle\Entity\Folder $folder)
     {
         $this->folder = $folder;
         $folder->setCourier($this);
@@ -322,7 +314,7 @@ class Courier implements LogInterface
     /**
      * Get folder
      *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder
+     * @return \Lucca\Bundle\FolderBundle\Entity\Folder
      */
     public function getFolder()
     {
@@ -332,11 +324,11 @@ class Courier implements LogInterface
     /**
      * Set edition
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\CourierEdition $edition
+     * @param \Lucca\Bundle\FolderBundle\Entity\CourierEdition $edition
      *
      * @return Courier
      */
-    public function setEdition(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\CourierEdition $edition = null)
+    public function setEdition(\Lucca\Bundle\FolderBundle\Entity\CourierEdition $edition = null)
     {
         $this->edition = $edition;
 
@@ -346,7 +338,7 @@ class Courier implements LogInterface
     /**
      * Get edition
      *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\CourierEdition
+     * @return \Lucca\Bundle\FolderBundle\Entity\CourierEdition
      */
     public function getEdition()
     {
@@ -356,9 +348,9 @@ class Courier implements LogInterface
     /**
      * Remove humansEdition
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\CourierHumanEdition $humansEdition
+     * @param \Lucca\Bundle\FolderBundle\Entity\CourierHumanEdition $humansEdition
      */
-    public function removeHumansEdition(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\CourierHumanEdition $humansEdition)
+    public function removeHumansEdition(\Lucca\Bundle\FolderBundle\Entity\CourierHumanEdition $humansEdition)
     {
         $this->humansEditions->removeElement($humansEdition);
     }

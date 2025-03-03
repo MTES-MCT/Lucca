@@ -7,17 +7,17 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Utils;
+namespace Lucca\Bundle\MinuteBundle\Utils;
 
 use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Courier;
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Class CourierManager
  *
- * @package Lucca\MinuteBundle\Utils
+ * @package Lucca\Bundle\MinuteBundle\Utils
  * @author Térence <terence@numeric-wave.tech>
  */
 class CourierManager

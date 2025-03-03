@@ -7,92 +7,61 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\FolderBundle\Entity;
 
-namespace Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity;
-
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\CoreBundle\Entity\ToggleableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\CoreBundle\Entity\ToggleableTrait;
+use Lucca\Bundle\FolderBundle\Repository\NatinfRepository;
+use Lucca\Bundle\LogBundle\Entity\LogInterface;
 
 /**
  * Natinf
  *
- * @ORM\Table(name="lucca_natinf")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\NatinfRepository")
- *
- * @package Lucca\MinuteBundle\Entity
+ * @package Lucca\Bundle\FolderBundle\Entity
  * @author Terence <terence@numeric-wave.tech>
  */
+#[ORM\Table(name: "lucca_natinf")]
+#[ORM\Entity(repositoryClass: NatinfRepository::class)]
 class Natinf implements LogInterface
 {
     use ToggleableTrait, TimestampableTrait;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column(name: "id", type: "integer")]
+    private ?int $id;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="num", type="integer")
-     * @Assert\NotNull(message="constraint.not_null")
-     * @Assert\Type(type="int", message="constraint.type")
-     */
-    private $num;
+    #[ORM\Column(name: "num", type: "integer")]
+    #[Assert\NotNull(message: "constraint.not_null")]
+    #[Assert\Type(type: "int", message: "constraint.type")]
+    private int $num;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="qualification", type="string", length=255)
-     * @Assert\NotNull(message="constraint.not_null")
-     */
-    private $qualification;
+    #[ORM\Column(name: "qualification", type: "string", length: 255)]
+    #[Assert\NotNull(message: "constraint.not_null")]
+    private string $qualification;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="definedBy", type="string", length=255)
-     * @Assert\NotNull(message="constraint.not_null")
-     */
-    private $definedBy;
+    #[ORM\Column(name: "definedBy", type: "string", length: 255)]
+    #[Assert\NotNull(message: "constraint.not_null")]
+    private string $definedBy;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="repressedBy", type="string", length=255)
-     * @Assert\NotNull(message="constraint.not_null")
-     */
-    private $repressedBy;
+    #[ORM\Column(name: "repressedBy", type: "string", length: 255)]
+    #[Assert\NotNull(message: "constraint.not_null")]
+    private string $repressedBy;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Lucca\MinuteBundle\Entity\Tag")
-     * @ORM\JoinTable(name="lucca_natinf_linked_tag",
-     *      joinColumns={@ORM\JoinColumn(name="natinf_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
-     * )
-     */
+    #[ORM\ManyToMany(targetEntity: Tag::class)]
+    #[ORM\JoinTable(name: "lucca_natinf_linked_tag",
+        joinColumns: [new ORM\JoinColumn(name: "natinf_id", referencedColumnName: "id", onDelete: "CASCADE")],
+        inverseJoinColumns: [new ORM\JoinColumn(name: "tag_id", referencedColumnName: "id")]
+    )]
     private $tags;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\MinuteBundle\Entity\Natinf")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $parent;
+    #[ORM\ManyToOne(targetEntity: Natinf::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Natinf $parent = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
@@ -109,7 +78,7 @@ class Natinf implements LogInterface
      *
      * @return string
      */
-    public function getFormLabel()
+    public function getFormLabel(): string
     {
         return $this->getNum() . ' / ' . $this->getQualification();
     }
@@ -119,7 +88,7 @@ class Natinf implements LogInterface
      * @param Tag $tag
      * @return bool
      */
-    public function hasTag(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag $tag)
+    public function hasTag(Tag $tag): bool
     {
         if ($this->getTags()) {
             foreach ($this->getTags() as $element) {
@@ -135,7 +104,7 @@ class Natinf implements LogInterface
      * Log name of this Class
      * @return string
      */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Natinf';
     }
@@ -145,9 +114,9 @@ class Natinf implements LogInterface
     /**
      * Get id
      *
-     * @return integer
+     * @return ?integer
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -159,7 +128,7 @@ class Natinf implements LogInterface
      *
      * @return Natinf
      */
-    public function setNum($num)
+    public function setNum(int $num): static
     {
         $this->num = $num;
 
@@ -171,7 +140,7 @@ class Natinf implements LogInterface
      *
      * @return integer
      */
-    public function getNum()
+    public function getNum(): int
     {
         return $this->num;
     }
@@ -183,7 +152,7 @@ class Natinf implements LogInterface
      *
      * @return Natinf
      */
-    public function setQualification($qualification)
+    public function setQualification(string $qualification): static
     {
         $this->qualification = $qualification;
 
@@ -195,7 +164,7 @@ class Natinf implements LogInterface
      *
      * @return string
      */
-    public function getQualification()
+    public function getQualification(): string
     {
         return $this->qualification;
     }
@@ -207,7 +176,7 @@ class Natinf implements LogInterface
      *
      * @return Natinf
      */
-    public function setDefinedBy($definedBy)
+    public function setDefinedBy(string $definedBy): static
     {
         $this->definedBy = $definedBy;
 
@@ -219,7 +188,7 @@ class Natinf implements LogInterface
      *
      * @return string
      */
-    public function getDefinedBy()
+    public function getDefinedBy(): string
     {
         return $this->definedBy;
     }
@@ -231,7 +200,7 @@ class Natinf implements LogInterface
      *
      * @return Natinf
      */
-    public function setRepressedBy($repressedBy)
+    public function setRepressedBy(string $repressedBy): static
     {
         $this->repressedBy = $repressedBy;
 
@@ -243,7 +212,7 @@ class Natinf implements LogInterface
      *
      * @return string
      */
-    public function getRepressedBy()
+    public function getRepressedBy(): string
     {
         return $this->repressedBy;
     }
@@ -253,7 +222,7 @@ class Natinf implements LogInterface
      *
      * @return boolean
      */
-    public function getEnabled()
+    public function getEnabled(): bool
     {
         return $this->enabled;
     }
@@ -261,11 +230,11 @@ class Natinf implements LogInterface
     /**
      * Add tag
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag $tag
+     * @param Tag $tag
      *
      * @return Natinf
      */
-    public function addTag(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag $tag)
+    public function addTag(Tag $tag): static
     {
         $this->tags[] = $tag;
 
@@ -275,9 +244,9 @@ class Natinf implements LogInterface
     /**
      * Remove tag
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag $tag
+     * @param Tag $tag
      */
-    public function removeTag(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag $tag)
+    public function removeTag(Tag $tag): void
     {
         $this->tags->removeElement($tag);
     }
@@ -285,9 +254,9 @@ class Natinf implements LogInterface
     /**
      * Get tags
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection|Collection
      */
-    public function getTags()
+    public function getTags(): ArrayCollection|Collection
     {
         return $this->tags;
     }
@@ -295,11 +264,11 @@ class Natinf implements LogInterface
     /**
      * Set parent
      *
-     * @param \Lucca\MinuteBundle\Entity\Natinf $parent
+     * @param Natinf|null $parent
      *
      * @return Natinf
      */
-    public function setParent(\Lucca\MinuteBundle\Entity\Natinf $parent = null)
+    public function setParent(Natinf $parent = null): static
     {
         $this->parent = $parent;
 
@@ -309,9 +278,9 @@ class Natinf implements LogInterface
     /**
      * Get parent
      *
-     * @return \Lucca\MinuteBundle\Entity\Natinf
+     * @return Natinf|null
      */
-    public function getParent()
+    public function getParent(): Natinf|null
     {
         return $this->parent;
     }

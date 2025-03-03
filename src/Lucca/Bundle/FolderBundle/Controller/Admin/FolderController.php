@@ -7,57 +7,46 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\FolderBundle\Controller\Admin;
 
-namespace Lucca\MinuteBundle\Controller\Admin;
-
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\FolderBundle\Entity\Tag;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Doctrine\ORM\ORMException;
-use Lucca\MinuteBundle\Form\FolderStep1Type;
-use Lucca\MinuteBundle\Form\FolderStep2Type;
-use Lucca\MinuteBundle\Form\FolderStep3Type;
-use Lucca\MinuteBundle\Form\FolderType;
+use Lucca\Bundle\FolderBundle\Form\FolderStep1Type;
+use Lucca\Bundle\FolderBundle\Form\FolderStep2Type;
+use Lucca\Bundle\FolderBundle\Form\FolderStep3Type;
+use Lucca\Bundle\FolderBundle\Form\FolderType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * Class FolderController
  *
- * @Route("/minute-{minute_id}/folder")
- * @Security("has_role('ROLE_LUCCA')")
- * @ParamConverter("minute", class="LuccaMinuteBundle:Minute", options={"id" = "minute_id"})
- *
- * @package Lucca\MinuteBundle\Controller\Admin
+ * @package Lucca\Bundle\FolderBundle\Controller\Admin
  * @author Terence <terence@numeric-wave.tech>
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
-class FolderController extends Controller
+#[IsGranted('ROLE_LUCCA')]
+#[Route('/minute-{minute_id}/folder')]
+class FolderController extends AbstractController
 {
     /**
      * Creates a new Folder entity.
-     *
-     * @Route("/new", name="lucca_folder_new", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
      *
      * @param Minute $minute
      * @param Request $request
      * @return RedirectResponse|Response|null
      * @throws ORMException
      */
-    public function newAction(Minute $minute, Request $request)
+    #[Route('/new', name: 'lucca_folder_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function newAction(Minute $minute, Request $request): RedirectResponse|Response|null
     {
         $folder = new Folder();
 
@@ -110,7 +99,7 @@ class FolderController extends Controller
             }
         }
 
-        return $this->render('LuccaMinuteBundle:Folder:new.html.twig', array(
+        return $this->render('@LuccaFolder/Folder/new.html.twig', array(
             'folder' => $folder,
             'minute' => $minute,
             'form' => $form->createView(),
@@ -120,15 +109,14 @@ class FolderController extends Controller
     /**
      * Edit or create Step 1 - Folder
      *
-     * @Route("-{id}/step-1", name="lucca_folder_step1", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
      * @param Request $request
      * @param Minute $minute
      * @param Folder $folder
      * @return RedirectResponse|Response|null
      */
-    public function step1Action(Request $request, Minute $minute, Folder $folder)
+    #[Route('-{id}/step-1', name: 'lucca_folder_step1', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function step1Action(Request $request, Minute $minute, Folder $folder): RedirectResponse|Response|null
     {
         if ($folder->getNature() === Folder::NATURE_OBSTACLE) {
             $this->addFlash('warning', 'flash.folder.step1CannotBeEdited');
@@ -136,7 +124,7 @@ class FolderController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-        $tags = $em->getRepository('LuccaMinuteBundle:Tag')->findValuesByCategory(Tag::CATEGORY_NATURE);
+        $tags = $em->getRepository('LuccaFolderBundle:Tag')->findValuesByCategory(Tag::CATEGORY_NATURE);
 
         $form = $this->createForm(FolderStep1Type::class, $folder, array());
         $form->handleRequest($request);
@@ -160,7 +148,7 @@ class FolderController extends Controller
             return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId()));
         }
 
-        return $this->render('LuccaMinuteBundle:Folder:step1.html.twig', array(
+        return $this->render('@LuccaFolder/Folder/step1.html.twig', array(
             'folder' => $folder,
             'minute' => $minute,
             'tags' => $tags,
@@ -171,15 +159,14 @@ class FolderController extends Controller
     /**
      * Edit or create Step 2 - Folder
      *
-     * @Route("-{id}/step-2", name="lucca_folder_step2", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
      * @param Request $request
      * @param Minute $minute
      * @param Folder $folder
      * @return RedirectResponse|Response|null
      */
-    public function step2Action(Request $request, Minute $minute, Folder $folder)
+    #[Route('-{id}/step-2', name: 'lucca_folder_step2', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function step2Action(Request $request, Minute $minute, Folder $folder): RedirectResponse|Response|null
     {
         if ($folder->getNature() === Folder::NATURE_OBSTACLE) {
             $this->addFlash('warning', 'flash.folder.step2CannotBeEdited');
@@ -187,7 +174,7 @@ class FolderController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-        $tags = $em->getRepository('LuccaMinuteBundle:Tag')->findValuesByCategory(Tag::CATEGORY_TOWN);
+        $tags = $em->getRepository('LuccaFolderBundle:Tag')->findValuesByCategory(Tag::CATEGORY_TOWN);
 
         $form = $this->createForm(FolderStep2Type::class, $folder, array());
         $form->handleRequest($request);
@@ -211,7 +198,7 @@ class FolderController extends Controller
             return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId()));
         }
 
-        return $this->render('LuccaMinuteBundle:Folder:step2.html.twig', array(
+        return $this->render('@LuccaFolder/Folder/step2.html.twig', array(
             'folder' => $folder,
             'minute' => $minute,
             'tags' => $tags,
@@ -222,15 +209,14 @@ class FolderController extends Controller
     /**
      * Edit or create Step 3 - Folder
      *
-     * @Route("-{id}/step-3", name="lucca_folder_step3", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
      * @param Request $request
      * @param Minute $minute
      * @param Folder $folder
      * @return RedirectResponse|Response|null
      */
-    public function step3Action(Request $request, Minute $minute, Folder $folder)
+    #[Route('-{id}/step-3', name: 'lucca_folder_step3', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function step3Action(Request $request, Minute $minute, Folder $folder): RedirectResponse|Response|null
     {
         if ($folder->getNature() === Folder::NATURE_OBSTACLE) {
             $this->addFlash('warning', 'flash.folder.step3CannotBeEdited');
@@ -239,8 +225,8 @@ class FolderController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $natinfs = $em->getRepository('LuccaMinuteBundle:Natinf')->findAllByStatus(true);
-        $natinfsFiltered = $em->getRepository('LuccaMinuteBundle:Natinf')->findNatinfsByFolder($folder);
+        $natinfs = $em->getRepository('LuccaFolderBundle:Natinf')->findAllByStatus(true);
+        $natinfsFiltered = $em->getRepository('LuccaFolderBundle:Natinf')->findNatinfsByFolder($folder);
 
         $form = $this->createForm(FolderStep3Type::class, $folder, array('natinfsFiltered' => $natinfsFiltered));
         $form->handleRequest($request);
@@ -254,7 +240,7 @@ class FolderController extends Controller
             return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId()));
         }
 
-        return $this->render('LuccaMinuteBundle:Folder:step3.html.twig', array(
+        return $this->render('@LuccaFolder/Folder/step3.html.twig', array(
             'folder' => $folder,
             'minute' => $minute,
             'natinfs' => $natinfs,
@@ -266,16 +252,15 @@ class FolderController extends Controller
     /**
      * Displays a form to edit an existing Folder entity.
      *
-     * @Route("-{id}/edit", name="lucca_folder_edit", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
      * @param Request $request
      * @param Minute $minute
      * @param Folder $folder
      * @return RedirectResponse|Response|null
      * @throws ORMException
      */
-    public function editAction(Request $request, Minute $minute, Folder $folder)
+    #[Route('-{id}/edit', name: 'lucca_folder_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function editAction(Request $request, Minute $minute, Folder $folder): RedirectResponse|Response|null
     {
         $editForm = $this->createForm(FolderType::class, $folder, array(
             'minute' => $minute,
@@ -322,16 +307,15 @@ class FolderController extends Controller
     /**
      * Deletes a Folder entity.
      *
-     * @Route("-{id}/delete", name="lucca_folder_delete", methods={"GET", "DELETE"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
      * @param Request $request
      * @param Minute $minute
      * @param Folder $folder
      * @return RedirectResponse
      * @throws ORMException
      */
-    public function deleteAction(Request $request, Minute $minute, Folder $folder)
+    #[Route('-{id}/delete', name: 'lucca_folder_delete', methods: ['GET', 'DELETE'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function deleteAction(Request $request, Minute $minute, Folder $folder): RedirectResponse
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -368,15 +352,14 @@ class FolderController extends Controller
     /**
      * Close a Folder entity.
      *
-     * @Route("-{id}/close", name="lucca_folder_fence")
-     * @Security("has_role('ROLE_LUCCA')")
-     *
      * @param Minute $minute
      * @param Folder $folder
      * @return RedirectResponse
      * @throws \Exception
      */
-    public function fenceAction(Minute $minute, Folder $folder)
+    #[Route('-{id}/close', name: 'lucca_folder_fence')]
+    #[IsGranted('ROLE_LUCCA')]
+    public function fenceAction(Minute $minute, Folder $folder): RedirectResponse
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -395,14 +378,13 @@ class FolderController extends Controller
     /**
      * Open a Folder entity.
      *
-     * @Route("-{id}/open", name="lucca_folder_open")
-     * @Security("has_role('ROLE_FOLDER_OPEN')")
-     *
      * @param Minute $minute
      * @param Folder $folder
      * @return RedirectResponse
      */
-    public function openAction(Minute $minute, Folder $folder)
+    #[Route('-{id}/open', name: 'lucca_folder_open')]
+    #[IsGranted('ROLE_FOLDER_OPEN')]
+    public function openAction(Minute $minute, Folder $folder): RedirectResponse
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -420,15 +402,14 @@ class FolderController extends Controller
     /**
      * Open a Folder entity.
      *
-     * @Route("-{id}/reread", name="lucca_folder_reread")
-     * @Route("-{id}/unreread", name="lucca_folder_unreread")
-     * @Security("has_role('ROLE_ADMIN')")
-     *
      * @param Minute $minute
      * @param Folder $folder
      * @return RedirectResponse
      */
-    public function rereadAction(Minute $minute, Folder $folder)
+    #[Route('-{id}/reread', name: 'lucca_folder_reread')]
+    #[Route('-{id}/unreread', name: 'lucca_folder_unreread')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function rereadAction(Minute $minute, Folder $folder): RedirectResponse
     {
         $em = $this->getDoctrine()->getManager();
 

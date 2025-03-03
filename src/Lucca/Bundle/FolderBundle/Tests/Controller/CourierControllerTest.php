@@ -7,20 +7,19 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Tests\Controller\Printing;
+namespace Lucca\Bundle\MinuteBundle\Tests\Controller\Admin;
 
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control;
 use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
- * Class ControlControllerTest
- * Test Lucca\MinuteBundle\Controller\Printing\ControlController
+ * Class CourierControllerTest
+ * Test Lucca\Bundle\MinuteBundle\Controller\Admin\MinuteController
  *
- * @package Lucca\MinuteBundle\Tests\Controller\Printing
+ * @package Lucca\Bundle\MinuteBundle\Tests\Controller\Admin
  * @author Terence <terence@numeric-wave.tech>
  */
-class ControlControllerTest extends WebTestCase
+class CourierControllerTest extends WebTestCase
 {
     /**
      * @var $urls
@@ -64,28 +63,22 @@ class ControlControllerTest extends WebTestCase
         /**
          * Entity who was analysed
          */
-        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Control')->findOneForTest(Control::TYPE_FOLDER);
+        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Courier')->findOneBy(array());
 
-        $minute = $this->entity->getMinute();
-
-        if (empty($this->entity->getHumansByMinute() and empty($this->entity->getHumansByControl()))) {
-            $attemptedCode = 302;
-        } else {
-            $attemptedCode = 200;
-        }
+        $minute = $this->entity->getFolder()->getMinute();
 
         /**
          * Urls who was analyzed
          */
         $this->urls = array(
-            array('expectedCode' => $attemptedCode, 'route' => $this->getUrl('lucca_control_access_print', array('minute_id' => $minute->getId() , 'id' => $this->entity->getId()))),
-            array('expectedCode' => $attemptedCode, 'route' => $this->getUrl('lucca_control_letter_print', array('minute_id' => $minute->getId() , 'id' => $this->entity->getId()))),
+            $this->getUrl('lucca_courier_judicial_date', array('minute_id' => $minute->getId(), 'id' => $this->entity->getId())),
         );
     }
 
     /************************************ Test - routes reachable ************************************/
+
     /**
-     * Test n°1 - No User authenticated
+     * Test n°1 - No user authenticated
      * If basic urls are blocked
      */
     public function testBasicUrlsAnonymous()
@@ -93,12 +86,13 @@ class ControlControllerTest extends WebTestCase
         $this->defineBasicParams();
 
         /** Create client which test this action */
-        $client = self::createClient();
+        $client = $this->createClient();
 
         foreach ($this->urls as $url) {
-            $client->request('GET', $url['route']);
+            $client->request('GET', $url);
+
             /** HTTP code attempted */
-            self::assertStatusCode(302, $client);
+            $this->assertStatusCode(302, $client);
         }
 
         /** Close database connection */
@@ -113,14 +107,15 @@ class ControlControllerTest extends WebTestCase
     {
         $this->defineBasicParams();
 
-        /** Log Log object + Create client which test this action */
+        /** Log User object + Create client which test this action */
         $this->loginAs($this->clientAuthenticated, 'main');
         $client = $this->makeClient();
 
         foreach ($this->urls as $url) {
-            $client->request('GET', $url['route']);
+            $client->request('GET', $url);
+
             /** HTTP code attempted */
-            self::assertStatusCode($url['expectedCode'], $client);
+            $this->assertStatusCode(200, $client);
         }
 
         /** Close database connection */

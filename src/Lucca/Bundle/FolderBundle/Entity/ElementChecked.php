@@ -7,96 +7,60 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
-
-namespace Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity;
+namespace Lucca\Bundle\FolderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\ChecklistBundle\Entity\Element;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
-use Lucca\MediaBundle\Entity\Media;
-use Lucca\MediaBundle\Entity\MediaAsyncInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\FolderBundle\Repository\ElementCheckedRepository;
+use Lucca\Bundle\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\MediaBundle\Entity\Media;
+use Lucca\Bundle\MediaBundle\Entity\MediaAsyncInterface;
 
 /**
  * ElementChecked
  *
- * @ORM\Table(name="lucca_minute_folder_element")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\ElementCheckedRepository")
- *
- * @package Lucca\MinuteBundle\Entity
+ * @package Lucca\Bundle\FolderBundle\Entity
  * @author Terence <terence@numeric-wave.tech>
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
+#[ORM\Table(name: "lucca_minute_folder_element")]
+#[ORM\Entity(repositoryClass: ElementCheckedRepository::class)]
 class ElementChecked implements LogInterface, MediaAsyncInterface
 {
     use TimestampableTrait;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    private ?int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\MinuteBundle\Entity\Folder", inversedBy="elements")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $folder;
+    #[ORM\ManyToOne(targetEntity: Folder::class, inversedBy: "elements")]
+    #[ORM\JoinColumn(nullable: false)]
+    private Folder $folder;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     * @Assert\NotNull(message="constraint.not_null")
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 255,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $name;
+    #[ORM\Column(name: "name", type: "string", length: 255)]
+    #[Assert\NotNull(message: "constraint.not_null")]
+    #[Assert\Type(type: "string", message: "constraint.type")]
+    #[Assert\Length(min: 2, max: 255, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
+    private string $name;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="state", type="boolean")
-     * @Assert\NotNull(message="constraint.not_null")
-     * @Assert\Type(type="bool", message="constraint.type")
-     */
-    private $state = false;
+    #[ORM\Column(name: "state", type: "boolean")]
+    #[Assert\NotNull(message: "constraint.not_null")]
+    #[Assert\Type(type: "bool", message: "constraint.type")]
+    private bool $state = false;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="position", type="smallint", nullable=true)
-     * @Assert\Type(type="int", message="constraint.type")
-     */
-    private $position;
+    #[ORM\Column(name: "position", type: "smallint", nullable: true)]
+    #[Assert\Type(type: "int", message: "constraint.type")]
+    private ?int $position = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\MediaBundle\Entity\Media", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $image;
+    #[ORM\ManyToOne(targetEntity: Media::class, cascade: ["persist"])]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Media $image = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="comment", type="text", nullable=true)
-     */
-    private $comment;
+    #[ORM\Column(name: "comment", type: "text", nullable: true)]
+    private ?string $comment = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
@@ -106,7 +70,7 @@ class ElementChecked implements LogInterface, MediaAsyncInterface
      * @param Folder|null $folder
      * @param Element|null $element
      */
-    public function __construct(Folder $folder = null, Element $element = null)
+    public function __construct(?Folder $folder = null, ?Element $element = null)
     {
         if ($folder)
             $this->setFolder($folder);
@@ -122,19 +86,13 @@ class ElementChecked implements LogInterface, MediaAsyncInterface
      *
      * @return ElementChecked
      */
-    public function setAsyncMedia(Media $media = null)
+    public function setAsyncMedia(?Media $media = null): self
     {
         $this->setImage($media);
-
         return $this;
     }
 
-    /**
-     * Get media by asynchronous method.
-     *
-     * @return Media|null
-     */
-    public function getAsyncMedia()
+    public function getAsyncMedia(): ?Media
     {
         return $this->getImage();
     }
@@ -143,7 +101,7 @@ class ElementChecked implements LogInterface, MediaAsyncInterface
      * Log name of this Class
      * @return string
      */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Element validé';
     }
@@ -155,7 +113,7 @@ class ElementChecked implements LogInterface, MediaAsyncInterface
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -167,7 +125,7 @@ class ElementChecked implements LogInterface, MediaAsyncInterface
      *
      * @return ElementChecked
      */
-    public function setName($name)
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -179,7 +137,7 @@ class ElementChecked implements LogInterface, MediaAsyncInterface
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -191,7 +149,7 @@ class ElementChecked implements LogInterface, MediaAsyncInterface
      *
      * @return ElementChecked
      */
-    public function setState($state)
+    public function setState(bool $state): static
     {
         $this->state = $state;
 
@@ -203,7 +161,7 @@ class ElementChecked implements LogInterface, MediaAsyncInterface
      *
      * @return bool
      */
-    public function getState()
+    public function getState(): bool
     {
         return $this->state;
     }
@@ -215,7 +173,7 @@ class ElementChecked implements LogInterface, MediaAsyncInterface
      *
      * @return ElementChecked
      */
-    public function setPosition($position)
+    public function setPosition(int $position): static
     {
         $this->position = $position;
 
@@ -227,7 +185,7 @@ class ElementChecked implements LogInterface, MediaAsyncInterface
      *
      * @return int
      */
-    public function getPosition()
+    public function getPosition(): ?int
     {
         return $this->position;
     }
@@ -239,7 +197,7 @@ class ElementChecked implements LogInterface, MediaAsyncInterface
      *
      * @return ElementChecked
      */
-    public function setComment($comment = null)
+    public function setComment(?string $comment = null): static
     {
         $this->comment = $comment;
 
@@ -251,7 +209,7 @@ class ElementChecked implements LogInterface, MediaAsyncInterface
      *
      * @return string|null
      */
-    public function getComment()
+    public function getComment(): ?string
     {
         return $this->comment;
     }
@@ -259,11 +217,11 @@ class ElementChecked implements LogInterface, MediaAsyncInterface
     /**
      * Set folder.
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder $folder
+     * @param Folder $folder
      *
      * @return ElementChecked
      */
-    public function setFolder(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder $folder)
+    public function setFolder(Folder $folder): static
     {
         $this->folder = $folder;
 
@@ -273,9 +231,9 @@ class ElementChecked implements LogInterface, MediaAsyncInterface
     /**
      * Get folder.
      *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder
+     * @return Folder
      */
-    public function getFolder()
+    public function getFolder(): Folder
     {
         return $this->folder;
     }
@@ -283,11 +241,11 @@ class ElementChecked implements LogInterface, MediaAsyncInterface
     /**
      * Set image.
      *
-     * @param \Lucca\MediaBundle\Entity\Media $image
+     * @param Media $image
      *
      * @return ElementChecked
      */
-    public function setImage($image)
+    public function setImage(Media $image): static
     {
         $this->image = $image;
 
@@ -297,9 +255,9 @@ class ElementChecked implements LogInterface, MediaAsyncInterface
     /**
      * Get image.
      *
-     * @return \Lucca\MediaBundle\Entity\Media
+     * @return Media|null
      */
-    public function getImage()
+    public function getImage(): ?Media
     {
         return $this->image;
     }

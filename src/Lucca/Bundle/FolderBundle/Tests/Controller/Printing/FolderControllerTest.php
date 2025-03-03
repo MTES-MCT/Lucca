@@ -7,17 +7,17 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Tests\Controller\Dashboard;
+namespace Lucca\Bundle\MinuteBundle\Tests\Controller\Printing;
 
 use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * Class FolderControllerTest
- * Test Lucca\MinuteBundle\Controller\Dashboard\FolderController
+ * Test Lucca\Bundle\MinuteBundle\Controller\Printing\FolderController
  *
- * @package Lucca\MinuteBundle\Tests\Controller\ByFolder
- * @author Alizee Meyer <alizee.m@numeric-wave.eu>
+ * @package Lucca\Bundle\MinuteBundle\Tests\Controller\Printing
+ * @author Terence <terence@numeric-wave.tech>
  */
 class FolderControllerTest extends WebTestCase
 {
@@ -32,6 +32,12 @@ class FolderControllerTest extends WebTestCase
      * Client which can authenticated
      */
     private $clientAuthenticated;
+
+    /**
+     * @var $entity
+     * Entity to test
+     */
+    private $entity;
 
     /**
      * @var EntityManager
@@ -55,17 +61,24 @@ class FolderControllerTest extends WebTestCase
         ));
 
         /**
+         * Entity who was analysed
+         */
+        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Folder')->findOneForTest();
+
+        $minute = $this->entity->getMinute();
+
+        /**
          * Urls who was analyzed
          */
-        $basicUrl = 'lucca_folder_';
         $this->urls = array(
-            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'dashboard', array())),
+            array('expectedCode' => 302, 'route' => $this->getUrl('lucca_folder_doc_print', array('minute_id' => $minute->getId() , 'id' => $this->entity->getId()))),
         );
     }
 
     /************************************ Test - routes reachable ************************************/
+
     /**
-     * Test n°1 - No User authenticated
+     * Test n°1 - No user authenticated
      * If basic urls are blocked
      */
     public function testBasicUrlsAnonymous()
@@ -73,12 +86,13 @@ class FolderControllerTest extends WebTestCase
         $this->defineBasicParams();
 
         /** Create client which test this action */
-        $client = self::createClient();
+        $client = $this->createClient();
 
         foreach ($this->urls as $url) {
             $client->request('GET', $url['route']);
+
             /** HTTP code attempted */
-            self::assertStatusCode(302, $client);
+            $this->assertStatusCode(302, $client);
         }
 
         /** Close database connection */
@@ -93,14 +107,14 @@ class FolderControllerTest extends WebTestCase
     {
         $this->defineBasicParams();
 
-        /** Log Log object + Create client which test this action */
+        /** Log User object + Create client which test this action */
         $this->loginAs($this->clientAuthenticated, 'main');
         $client = $this->makeClient();
 
         foreach ($this->urls as $url) {
             $client->request('GET', $url['route']);
             /** HTTP code attempted */
-            self::assertStatusCode($url['expectedCode'], $client);
+            $this->assertStatusCode($url['expectedCode'], $client);
         }
 
         /** Close database connection */

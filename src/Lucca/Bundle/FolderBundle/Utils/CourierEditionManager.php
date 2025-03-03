@@ -7,13 +7,13 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Utils;
+namespace Lucca\Bundle\MinuteBundle\Utils;
 
 use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Courier;
 use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\CourierEdition;
 use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\CourierHumanEdition;
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\Human;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
@@ -21,7 +21,7 @@ use Doctrine\ORM\ORMException;
 /**
  * Class CourierEditionManager
  *
- * @package Lucca\MinuteBundle\Utils
+ * @package Lucca\Bundle\MinuteBundle\Utils
  * @author Térence <terence@numeric-wave.tech>
  */
 class CourierEditionManager

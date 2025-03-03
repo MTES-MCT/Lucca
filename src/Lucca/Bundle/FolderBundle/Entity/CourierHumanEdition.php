@@ -7,186 +7,97 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
-
-namespace Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity;
+namespace Lucca\Bundle\FolderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\FolderBundle\Repository\CourierHumanEditionRepository;
+use Lucca\Bundle\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\MinuteBundle\Entity\Human;
 
 /**
  * CourierHumanEdition
- *
- * @ORM\Table(name="lucca_minute_courier_human_edition")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\CourierHumanEditionRepository")
- *
- * @package Lucca\MinuteBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
  */
+#[ORM\Table(name: "lucca_minute_courier_human_edition")]
+#[ORM\Entity(repositoryClass: CourierHumanEditionRepository::class)]
 class CourierHumanEdition implements LogInterface
 {
-    /** Traits */
     use TimestampableTrait;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    private ?int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\MinuteBundle\Entity\Courier", inversedBy="humansEditions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $courier;
+    #[ORM\ManyToOne(targetEntity: Courier::class, inversedBy: "humansEditions")]
+    #[ORM\JoinColumn(nullable: false)]
+    private Courier $courier;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\MinuteBundle\Entity\Human", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $human;
+    #[ORM\ManyToOne(targetEntity: Human::class, cascade: ["persist"])]
+    #[ORM\JoinColumn(nullable: false)]
+    private Human $human;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="letterOffenderEdited", type="boolean")
-     * @Assert\Type(type="bool", message="constraint.type")
-     */
-    private $letterOffenderEdited = false;
+    #[ORM\Column(name: "letterOffenderEdited", type: "boolean")]
+    #[Assert\Type(type: "bool", message: "constraint.type")]
+    private bool $letterOffenderEdited = false;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="letterOffender", type="text", nullable=true)
-     */
-    private $letterOffender;
+    #[ORM\Column(name: "letterOffender", type: "text", nullable: true)]
+    private ?string $letterOffender = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
-    /**
-     * Log name of this Class
-     * @return string
-     */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Courrier édition par humain';
     }
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * Set letterOffenderEdited
-     *
-     * @param boolean $letterOffenderEdited
-     *
-     * @return CourierHumanEdition
-     */
-    public function setLetterOffenderEdited($letterOffenderEdited)
+    public function setLetterOffenderEdited(bool $letterOffenderEdited): self
     {
         $this->letterOffenderEdited = $letterOffenderEdited;
-
         return $this;
     }
 
-    /**
-     * Get letterOffenderEdited
-     *
-     * @return boolean
-     */
-    public function getLetterOffenderEdited()
+    public function getLetterOffenderEdited(): bool
     {
         return $this->letterOffenderEdited;
     }
 
-    /**
-     * Set letterOffender
-     *
-     * @param string $letterOffender
-     *
-     * @return CourierHumanEdition
-     */
-    public function setLetterOffender($letterOffender)
+    public function setLetterOffender(?string $letterOffender): self
     {
         $this->letterOffender = $letterOffender;
-
         return $this;
     }
 
-    /**
-     * Get letterOffender
-     *
-     * @return string
-     */
-    public function getLetterOffender()
+    public function getLetterOffender(): ?string
     {
         return $this->letterOffender;
     }
 
-    /**
-     * Set courier
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Courier $courier
-     *
-     * @return CourierHumanEdition
-     */
-    public function setCourier(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Courier $courier)
+    public function setCourier(Courier $courier): self
     {
         $this->courier = $courier;
-
         return $this;
     }
 
-    /**
-     * Get courier
-     *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Courier
-     */
-    public function getCourier()
+    public function getCourier(): Courier
     {
         return $this->courier;
     }
 
-    /**
-     * Set human
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $human
-     *
-     * @return CourierHumanEdition
-     */
-    public function setHuman(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $human)
+    public function setHuman(Human $human): self
     {
         $this->human = $human;
-
         return $this;
     }
 
-    /**
-     * Get human
-     *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human
-     */
-    public function getHuman()
+    public function getHuman(): Human
     {
         return $this->human;
     }

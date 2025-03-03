@@ -7,49 +7,40 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\FolderBundle\Controller\Api;
 
-namespace Lucca\MinuteBundle\Controller\Api;
-
-use Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Decision;
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human;
-use Lucca\ParameterBundle\Entity\Town;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
+use Lucca\Bundle\DecisionBundle\Entity\Decision;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\FolderBundle\Entity\Tag;
+use Lucca\Bundle\MinuteBundle\Entity\Human;
+use Lucca\Bundle\ParameterBundle\Entity\Town;
 
 /**
  * Class MayorLetterController
  *
- * @Route("/")
- * @Security("has_role('ROLE_USER')")
- *
- * @package Lucca\MinuteBundle\Controller\Api
+ * @package Lucca\Bundle\FolderBundle\Controller\Api
  * @author lisa <lisa.alvarez@numeric-wave.eu>
  */
-class MayorLetterController extends Controller
+#[IsGranted('ROLE_USER')]
+#[Route('/')]
+class MayorLetterController extends AbstractController
 {
     /**
      * Search geocode corresponding to address
      *
-     * @Route("/getFolderList", name="lucca_mayor_letter_get_folders_api", methods={"GET", "POST"}, options = { "expose" = true })
-     * @Security("has_role('ROLE_USER')")
-     *
      * @param Request $p_request
      * @return Response
      */
-    public function getFolderListAction(Request $p_request)
+    #[Route('/getFolderList', name: 'lucca_mayor_letter_get_folders_api', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
+    public function getFolderListAction(Request $p_request): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -161,12 +152,12 @@ class MayorLetterController extends Controller
                 if($decision->getDateStartRecovery()) {
                     $row .= $decision->getDateStartRecovery()->format('d/m/Y');
                     $row .= "<br><span class='badge badge-info'>"
-                        . $this->get('translator')->trans("text.decision.yes", array(), 'LuccaMinuteBundle')
+                        . $this->get('translator')->trans("text.decision.yes", array(), 'LuccaFolderBundle')
                         ."</span><br>";
                 }
                 else
                     $row .= "<span class='badge badge-warning'>"
-                        . $this->get('translator')->trans("text.decision.no", array(), 'LuccaMinuteBundle')
+                        . $this->get('translator')->trans("text.decision.no", array(), 'LuccaFolderBundle')
                         ."</span>";
             }
             $row .= "</td>";
@@ -178,12 +169,12 @@ class MayorLetterController extends Controller
                 if($decision->getExpulsion() && $decision->getExpulsion()->getDateJudicialDesision()) {
                     $row .= $decision->getExpulsion()->getDateJudicialDesision()->format('d/m/Y');
                     $row .= "<br><span class='badge badge-info'>"
-                        . $this->get('translator')->trans("text.decision.yes", array(), 'LuccaMinuteBundle')
+                        . $this->get('translator')->trans("text.decision.yes", array(), 'LuccaFolderBundle')
                         ."</span><br>";
                 }
                 else
                     $row .= "<span class='badge badge-warning'>"
-                        . $this->get('translator')->trans("text.decision.no", array(), 'LuccaMinuteBundle')
+                        . $this->get('translator')->trans("text.decision.no", array(), 'LuccaFolderBundle')
                         ."</span>";
             }
             $row .= "</td>";
@@ -195,12 +186,12 @@ class MayorLetterController extends Controller
                 if($decision->getDemolition() && $decision->getDemolition()->getDateDemolition()) {
                     $row .= $decision->getDemolition()->getDateDemolition()->format('d/m/Y');
                     $row .= "<br><span class='badge badge-info'>"
-                        . $this->get('translator')->trans("text.decision.yes", array(), 'LuccaMinuteBundle')
+                        . $this->get('translator')->trans("text.decision.yes", array(), 'LuccaFolderBundle')
                         ."</span><br>";
                 }
                 else
                     $row .= "<span class='badge badge-warning'>"
-                        . $this->get('translator')->trans("text.decision.no", array(), 'LuccaMinuteBundle')
+                        . $this->get('translator')->trans("text.decision.no", array(), 'LuccaFolderBundle')
                         ."</span>";
             }
             $row .= "</td>";
@@ -216,7 +207,7 @@ class MayorLetterController extends Controller
             $row .= "<td>";
             $row .= "<a href='". $this->generateUrl('lucca_minute_show', array('id' => $minute->getId())) ."'";
             $row .= "class='btn btn-sm btn-primary'";
-            $row .= "title='" . $this->get('translator')->trans("link.minute.show", array(), 'LuccaMinuteBundle') . "'>";
+            $row .= "title='" . $this->get('translator')->trans("link.minute.show", array(), 'LuccaFolderBundle') . "'>";
             $row .= "<i class='fa fa-eye'></i></a>";
             $row .= "</td>";
 
@@ -235,16 +226,14 @@ class MayorLetterController extends Controller
      * Api Action
      * Post check value for new MayorLetter
      *
-     * @Route("/postCheckMayorLetter", name="lucca_mayor_letter_check_post", methods={"POST"}, options = { "expose" = true })
-     *
-     * @Security("is_granted('ROLE_USER')")
-     *
      * @param Request $request
      *
      * @return JsonResponse
      * @throws \Exception
      */
-    public function apiCheckPostMayorLetter(Request $request)
+    #[Route('/postCheckMayorLetter', name: 'lucca_mayor_letter_check_post', options: ['expose' => true], methods: ['POST'])]
+    #[IsGranted('ROLE_USER')]
+    public function apiCheckPostMayorLetter(Request $request): JsonResponse
     {
 
         /* get Body Request */

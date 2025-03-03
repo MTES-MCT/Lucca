@@ -8,22 +8,23 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Controller\Printing;
+namespace Lucca\Bundle\FolderBundle\Controller\Printing;
 
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Courier;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
-use Lucca\AdherentBundle\Entity\Adherent;
-use Lucca\ModelBundle\Entity\Model;
+use Lucca\Bundle\FolderBundle\Entity\Courier;
+use Lucca\Bundle\MinuteBundle\Entity\Human;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\ModelBundle\Entity\Model;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use setasign\Fpdi\Fpdi;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Tomsgu\PdfMerger\PdfCollection;
 use Tomsgu\PdfMerger\PdfFile;
 use Tomsgu\PdfMerger\PdfMerger;
@@ -31,22 +32,16 @@ use Tomsgu\PdfMerger\PdfMerger;
 /**
  * Class CourierController
  *
- * @Route("/minute-{minute_id}/courier")
- * @Security("has_role('ROLE_LUCCA')")
- * @ParamConverter("p_minute", class="LuccaMinuteBundle:Minute", options={"id" = "minute_id"})
- *
- * @package Lucca\MinuteBundle\Controller\Printing
+ * @package Lucca\Bundle\FolderBundle\Controller\Printing
  * @author Terence <terence@numeric-wave.tech>
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
-class CourierController extends Controller
+#[Route('/minute-{minute_id}/courier')]
+#[IsGranted('ROLE_LUCCA')]
+class CourierController extends AbstractController
 {
     /**
      * Offender Letter print
-     *
-     * @Route("-{id}/offender-print", name="lucca_courier_offender_print", methods={"GET", "POST"})
-     * @Route("-{id}/offender-preprint", name="lucca_courier_offender_preprint", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
      *
      * @param Minute $p_minute
      * @param Courier $p_courier
@@ -54,8 +49,13 @@ class CourierController extends Controller
      * @return RedirectResponse|Response
      * @throws \Exception
      */
-    public function offenderPrintAction(Minute $p_minute, Courier $p_courier, Request $p_request)
-    {
+    #[Route('-{id}/offender-preprint', name: 'lucca_courier_offender_preprint', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function offenderPrintAction(
+        #[MapEntity(id: 'minute_id')] Minute $p_minute,
+        #[MapEntity(id: 'id')] Courier $p_courier,
+        Request $p_request
+    ): RedirectResponse|Response {
         /** Check in route if it's preprint route that is called */
         $isPrePrint = str_contains($p_request->attributes->get('_route'), "preprint");
 
@@ -155,7 +155,7 @@ class CourierController extends Controller
 
                 $human = $edition->getHuman();
 
-                $var['humanGender'] = $this->get("translator")->trans($human->getGender(), [], 'LuccaMinuteBundle');
+                $var['humanGender'] = $this->get("translator")->trans($human->getGender(), [], 'LuccaFolderBundle');
                 $var['humanName'] = $human->getOfficialName();
                 $var['humanAddress'] = $human->getAddress();
                 $var['humanCompany'] = "";
@@ -192,7 +192,7 @@ class CourierController extends Controller
             /** Create a temp pdf for each human */
             foreach ($humans as $human) {
 
-                $var['humanGender'] = $this->get("translator")->trans($human->getGender(), [], 'LuccaMinuteBundle');
+                $var['humanGender'] = $this->get("translator")->trans($human->getGender(), [], 'LuccaFolderBundle');
                 $var['humanName'] = $human->getOfficialName();
                 $var['humanAddress'] = $human->getAddress();
                 $var['humanCompany'] = "";
@@ -240,18 +240,20 @@ class CourierController extends Controller
     /**
      * Judicial Print letter
      *
-     * @Route("-{id}/judicial-print", name="lucca_courier_judicial_print", methods={"GET", "POST"})
-     * @Route("-{id}/judicial-preprint", name="lucca_courier_judicial_preprint", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
      * @param Minute $p_minute
      * @param Courier $p_courier
      * @param Request $p_request
      * @return RedirectResponse|Response
      * @throws \Exception
      */
-    public function judicialPrintAction(Minute $p_minute, Courier $p_courier, Request $p_request)
-    {
+    #[Route('-{id}/judicial-print', name: 'lucca_courier_judicial_print', methods: ['GET', 'POST'])]
+    #[Route('-{id}/judicial-preprint', name: 'lucca_courier_judicial_preprint', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function judicialPrintAction(
+        #[MapEntity(id: 'minute_id')] Minute $p_minute,
+        #[MapEntity(id: 'id')] Courier $p_courier,
+        Request $p_request
+    ): RedirectResponse|Response {
         $em = $this->getDoctrine()->getManager();
 
         /** Check in route if it's preprint route that is called */
@@ -337,18 +339,20 @@ class CourierController extends Controller
     /**
      * Ddtm Print letter
      *
-     * @Route("-{id}/ddtm-print", name="lucca_courier_ddtm_print", methods={"GET", "POST"})
-     * @Route("-{id}/ddtm-preprint", name="lucca_courier_ddtm_preprint", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
      * @param Minute $p_minute
      * @param Courier $p_courier
      * @param Request $p_request
      * @return RedirectResponse|Response
      * @throws \Exception
      */
-    public function ddtmPrintAction(Minute $p_minute, Courier $p_courier, Request $p_request)
-    {
+    #[Route('-{id}/ddtm-print', name: 'lucca_courier_ddtm_print', methods: ['GET', 'POST'])]
+    #[Route('-{id}/ddtm-preprint', name: 'lucca_courier_ddtm_preprint', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function ddtmPrintAction(
+        #[MapEntity(id: 'minute_id')] Minute $p_minute,
+        #[MapEntity(id: 'id')] Courier $p_courier,
+        Request $p_request
+    ): RedirectResponse|Response {
         $em = $this->getDoctrine()->getManager();
         /** Check in route if it's preprint route that is called */
         $isPrePrint = str_contains($p_request->attributes->get('_route'), "preprint");

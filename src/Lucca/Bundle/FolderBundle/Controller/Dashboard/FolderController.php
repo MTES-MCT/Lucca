@@ -8,26 +8,26 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Controller\Dashboard;
+namespace Lucca\Bundle\FolderBundle\Controller\Dashboard;
 
-use Lucca\SettingBundle\Utils\SettingManager;
+use Lucca\Bundle\SettingBundle\Utils\SettingManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Sensio\Bundle\FrameworkExtraBundle\Configuration\Security,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\Routing\Annotation\Route;
 
-use Lucca\MinuteBundle\Form\Folder\FolderBrowserType;
+use Lucca\Bundle\FolderBundle\Form\Folder\FolderBrowserType;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * Class FolderController
  *
- * @Route("/folder")
- * @Security("has_role('ROLE_USER')")
- *
- * @package Lucca\MinuteBundle\Controller\Dashboard
+ * @package Lucca\Bundle\FolderBundle\Controller\Dashboard
  * @author Terence <terence@numeric-wave.tech>
  */
-class FolderController extends Controller
+#[Route('/folder')]
+#[IsGranted('ROLE_USER')]
+class FolderController extends AbstractController
 {
 
     /**
@@ -47,13 +47,12 @@ class FolderController extends Controller
     /**
      * List of Folder
      *
-     * @Route("/", name="lucca_folder_dashboard", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_USER')")
-     *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
+    #[Route('/', name: 'lucca_folder_dashboard', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -103,13 +102,13 @@ class FolderController extends Controller
         }
 
         if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN'))
-            $folders = $em->getRepository('LuccaMinuteBundle:Folder')->findFolderBrowser(null,
+            $folders = $em->getRepository('LuccaFolderBundle:Folder')->findFolderBrowser(null,
                 $filters['dateStart'], $filters['dateEnd'], $filters['num'], $filters['numFolder'], $filters['adherent'], $filters['town'], $filters['intercommunal'], $filters['service']);
         else
-            $folders = $em->getRepository('LuccaMinuteBundle:Folder')->findFolderBrowser($adherent,
+            $folders = $em->getRepository('LuccaFolderBundle:Folder')->findFolderBrowser($adherent,
                 $filters['dateStart'], $filters['dateEnd'], $filters['num'], $filters['numFolder']);
 
-        return $this->render('LuccaMinuteBundle:Dashboard:folder.html.twig', array(
+        return $this->render('@LuccaFolder/Dashboard/folder.html.twig', array(
             'form' => $form->createView(),
             'filters' => $filters,
             'adherent' => $adherent,

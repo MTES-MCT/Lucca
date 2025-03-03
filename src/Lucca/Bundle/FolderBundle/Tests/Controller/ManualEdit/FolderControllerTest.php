@@ -7,20 +7,20 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Tests\Controller\Admin;
+namespace Lucca\Bundle\MinuteBundle\Tests\Controller\ManualEdit;
 
+use Lucca\Bundle\FolderBundle\Entity\Folder;
 use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
- * Class TagControllerTest
- * Test Lucca\MinuteBundle\Controller\Admin\MinuteController
+ * Class FolderControllerTest
+ * Test Lucca\Bundle\MinuteBundle\Controller\ManualEdit\FolderController
  *
- * @package Lucca\MinuteBundle\Tests\Controller\Admin
+ * @package Lucca\Bundle\MinuteBundle\Tests\Controller\ManualEdit
  * @author Terence <terence@numeric-wave.tech>
- * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
-class TagControllerTest extends WebTestCase
+class FolderControllerTest extends WebTestCase
 {
     /**
      * @var $urls
@@ -46,7 +46,6 @@ class TagControllerTest extends WebTestCase
     private $em;
 
     /************************************ Init Test functions ************************************/
-
     /**
      * Define basic urls to test
      */
@@ -64,19 +63,17 @@ class TagControllerTest extends WebTestCase
         /**
          * Entity who was analysed
          */
-        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Tag')->findOneBy(array());
+        /** @var Folder entity */
+        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Folder')->findOneForTest();
+
+        $minute = $this->entity->getMinute();
 
         /**
          * Urls who was analyzed
          */
-        $basicUrl = 'lucca_tag_';
+        $basicUrl = 'lucca_folder_';
         $this->urls = array(
-            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'index', array())),
-            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'new', array())),
-            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'show', array('id' => $this->entity->getId()))),
-            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'edit', array('id' => $this->entity->getId()))),
-            array('expectedCode' => 302, 'route' => $this->getUrl($basicUrl . 'enable', array('id' => $this->entity->getId()))),
-            array('expectedCode' => 302, 'route' => $this->getUrl($basicUrl . 'enable', array('id' => $this->entity->getId()))),
+            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'manual', array('minute_id' => $minute->getId(), 'id' => $this->entity->getId()))),
         );
     }
 

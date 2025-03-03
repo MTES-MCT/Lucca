@@ -7,19 +7,20 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Tests\Controller\Printing;
+namespace Lucca\Bundle\MinuteBundle\Tests\Controller\Admin;
 
+use Lucca\Bundle\FolderBundle\Entity\Folder;
 use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
- * Class FolderControllerTest
- * Test Lucca\MinuteBundle\Controller\Printing\FolderController
+ * Class UpdatingFolderControllerTest
+ * Test Lucca\Bundle\MinuteBundle\Controller\Admin\MinuteController
  *
- * @package Lucca\MinuteBundle\Tests\Controller\Printing
+ * @package Lucca\Bundle\MinuteBundle\Tests\Controller\Admin
  * @author Terence <terence@numeric-wave.tech>
  */
-class FolderControllerTest extends WebTestCase
+class UpdatingFolderControllerTest extends WebTestCase
 {
     /**
      * @var $urls
@@ -63,22 +64,27 @@ class FolderControllerTest extends WebTestCase
         /**
          * Entity who was analysed
          */
-        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Folder')->findOneForTest();
+        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Folder')->findOneBy(array(
+            'type' => Folder::TYPE_REFRESH
+        ));
 
         $minute = $this->entity->getMinute();
+        $updating = $this->em->getRepository('LuccaMinuteBundle:Updating')->findUpdatingByControl($this->entity->getControl()) ;
 
         /**
          * Urls who was analyzed
          */
+        $basicUrl = 'lucca_updating_folder_';
         $this->urls = array(
-            array('expectedCode' => 302, 'route' => $this->getUrl('lucca_folder_doc_print', array('minute_id' => $minute->getId() , 'id' => $this->entity->getId()))),
+            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'new', array('minute_id' => $minute->getId(), 'updating_id' => $updating->getId()))),
+            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'edit', array('minute_id' => $minute->getId(), 'updating_id' => $updating->getId(), 'id' => $this->entity->getId()))),
+            array('expectedCode' => 302, 'route' => $this->getUrl($basicUrl . 'fence', array('minute_id' => $minute->getId(), 'updating_id' => $updating->getId(), 'id' => $this->entity->getId()))),
         );
     }
 
     /************************************ Test - routes reachable ************************************/
-
     /**
-     * Test n°1 - No user authenticated
+     * Test n°1 - No User authenticated
      * If basic urls are blocked
      */
     public function testBasicUrlsAnonymous()
@@ -86,13 +92,12 @@ class FolderControllerTest extends WebTestCase
         $this->defineBasicParams();
 
         /** Create client which test this action */
-        $client = $this->createClient();
+        $client = self::createClient();
 
         foreach ($this->urls as $url) {
             $client->request('GET', $url['route']);
-
             /** HTTP code attempted */
-            $this->assertStatusCode(302, $client);
+            self::assertStatusCode(302, $client);
         }
 
         /** Close database connection */
@@ -107,14 +112,14 @@ class FolderControllerTest extends WebTestCase
     {
         $this->defineBasicParams();
 
-        /** Log User object + Create client which test this action */
+        /** Log Log object + Create client which test this action */
         $this->loginAs($this->clientAuthenticated, 'main');
         $client = $this->makeClient();
 
         foreach ($this->urls as $url) {
             $client->request('GET', $url['route']);
             /** HTTP code attempted */
-            $this->assertStatusCode($url['expectedCode'], $client);
+            self::assertStatusCode($url['expectedCode'], $client);
         }
 
         /** Close database connection */

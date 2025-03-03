@@ -7,48 +7,40 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\FolderBundle\Controller\Admin;
 
-namespace Lucca\MinuteBundle\Controller\Admin;
-
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Lucca\Bundle\FolderBundle\Entity\Tag;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * Class TagController
  *
- * @Route("/tag")
- * @Security("has_role('ROLE_ADMIN')")
- *
- * @package Lucca\MinuteBundle\Controller\Admin
+ * @package Lucca\Bundle\FolderBundle\Controller\Admin
  * @author Terence <terence@numeric-wave.tech>
  */
-class TagController extends Controller
+#[IsGranted('ROLE_ADMIN')]
+#[Route('/tag')]
+class TagController extends AbstractController
 {
     /**
      * List of Tag
      *
-     * @Route("/", name="lucca_tag_index", methods={"GET"})
-     * @Security("has_role('ROLE_ADMIN')")
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function indexAction()
+    #[Route('/', name: 'lucca_tag_index', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function indexAction(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
-        $tags = $em->getRepository('LuccaMinuteBundle:Tag')->findAll();
+        $tags = $em->getRepository('LuccaFolderBundle:Tag')->findAll();
 
-        return $this->render('LuccaMinuteBundle:Tag:index.html.twig', array(
+        return $this->render('@LuccaFolder/Tag/index.html.twig', array(
             'tags' => $tags
         ));
     }
@@ -56,17 +48,16 @@ class TagController extends Controller
     /**
      * Creates a new Tag entity.
      *
-     * @Route("/new", name="lucca_tag_new", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_ADMIN')")
-     *
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
-    public function newAction(Request $request)
+    #[Route('/new', name: 'lucca_tag_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function newAction(Request $request): RedirectResponse|Response
     {
         $tag = new Tag();
 
-        $form = $this->createForm('Lucca\MinuteBundle\Form\TagType', $tag);
+        $form = $this->createForm('Lucca\FolderBundle\Form\TagType', $tag);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -83,7 +74,7 @@ class TagController extends Controller
             return $this->redirectToRoute('lucca_tag_show', array('id' => $tag->getId()));
         }
 
-        return $this->render('LuccaMinuteBundle:Tag:new.html.twig', array(
+        return $this->render('@LuccaFolder/Tag/new.html.twig', array(
             'tag' => $tag,
             'form' => $form->createView(),
         ));
@@ -92,17 +83,16 @@ class TagController extends Controller
     /**
      * Finds and displays a Tag entity.
      *
-     * @Route("/{id}", name="lucca_tag_show", methods={"GET"})
-     * @Security("has_role('ROLE_ADMIN')")
-     *
      * @param Tag $tag
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function showAction(Tag $tag)
+    #[Route('/{id}', name: 'lucca_tag_show', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function showAction(Tag $tag): Response
     {
         $deleteForm = $this->createDeleteForm($tag);
 
-        return $this->render('LuccaMinuteBundle:Tag:show.html.twig', array(
+        return $this->render('@LuccaFolder/Tag/show.html.twig', array(
             'tag' => $tag,
             'proposals' => $tag->getProposals(),
             'delete_form' => $deleteForm->createView(),
@@ -112,17 +102,16 @@ class TagController extends Controller
     /**
      * Displays a form to edit an existing Tag entity.
      *
-     * @Route("/{id}/edit", name="lucca_tag_edit", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_ADMIN')")
-     *
      * @param Request $request
      * @param Tag $tag
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
-    public function editAction(Request $request, Tag $tag)
+    #[Route('/{id}/edit', name: 'lucca_tag_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function editAction(Request $request, Tag $tag): RedirectResponse|Response
     {
         $deleteForm = $this->createDeleteForm($tag);
-        $editForm = $this->createForm('Lucca\MinuteBundle\Form\TagType', $tag);
+        $editForm = $this->createForm('Lucca\FolderBundle\Form\TagType', $tag);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -139,7 +128,7 @@ class TagController extends Controller
             return $this->redirectToRoute('lucca_tag_show', array('id' => $tag->getId()));
         }
 
-        return $this->render('LuccaMinuteBundle:Tag:edit.html.twig', array(
+        return $this->render('@LuccaFolder/Tag/edit.html.twig', array(
             'tag' => $tag,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -149,14 +138,13 @@ class TagController extends Controller
     /**
      * Deletes a Tag entity.
      *
-     * @Route("/{id}", name="lucca_tag_delete", methods={"DELETE"})
-     * @Security("has_role('ROLE_ADMIN')")
-     *
      * @param Request $request
      * @param Tag $tag
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    public function deleteAction(Request $request, Tag $tag)
+    #[Route('/{id}', name: 'lucca_tag_delete', methods: ['DELETE'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function deleteAction(Request $request, Tag $tag): RedirectResponse
     {
         $form = $this->createDeleteForm($tag);
         $form->handleRequest($request);
@@ -189,13 +177,12 @@ class TagController extends Controller
     /**
      * Finds and enable / disable a Tag entity.
      *
-     * @Route("/{id}/enable", name="lucca_tag_enable", methods={"GET"})
-     * @Security("has_role('ROLE_ADMIN')")
-     *
      * @param Tag $tag
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    public function enableAction(Tag $tag)
+    #[Route('/{id}/enable', name: 'lucca_tag_enable', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function enableAction(Tag $tag): RedirectResponse
     {
         $em = $this->getDoctrine()->getManager();
 

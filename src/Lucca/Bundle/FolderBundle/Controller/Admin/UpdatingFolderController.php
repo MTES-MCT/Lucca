@@ -7,53 +7,36 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\FolderBundle\Controller\Admin;
 
-namespace Lucca\MinuteBundle\Controller\Admin;
-
-
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Courier;
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Updating;
-use Doctrine\ORM\ORMException;
-use Lucca\MinuteBundle\Form\FolderType;
-use Lucca\MinuteBundle\Form\UpdatingFolderType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Lucca\Bundle\MinuteBundle\Entity\Updating;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+use Doctrine\ORM\ORMException;
+use Lucca\Bundle\FolderBundle\Entity\Courier;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\FolderBundle\Form\FolderType;
+use Lucca\Bundle\FolderBundle\Form\UpdatingFolderType;
 /**
  * Class UpdatingFolderController
  *
- * @Security("has_role('ROLE_LUCCA')")
- * @Route("/minute-{minute_id}/updating-{updating_id}/folder")
- * @ParamConverter("minute", class="LuccaMinuteBundle:Minute", options={"id" = "minute_id"})
- * @ParamConverter("updating", class="LuccaMinuteBundle:Updating", options={"id" = "updating_id"})
- *
- * @package Lucca\MinuteBundle\Controller\Admin
+ * @package Lucca\Bundle\FolderBundle\Controller\Admin
  * @author Terence <terence@numeric-wave.tech>
  */
-class UpdatingFolderController extends Controller
+#[IsGranted('ROLE_LUCCA')]
+#[Route('/minute-{minute_id}/updating-{updating_id}/folder')]
+class UpdatingFolderController extends AbstractController
 {
     /**
      * Creates a new Folder entity.
-     *
-     * @Route("/new", name="lucca_updating_folder_new")
-     * @Method({"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
      *
      * @param Minute $minute
      * @param Updating $updating
@@ -61,8 +44,13 @@ class UpdatingFolderController extends Controller
      * @return RedirectResponse|Response
      * @throws ORMException
      */
-    public function newAction(Minute $minute, Updating $updating, Request $request)
-    {
+    #[Route('/new', name: 'lucca_updating_folder_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function newAction(
+        #[MapEntity(id: 'minute_id')] Minute $minute,
+        #[MapEntity(id: 'updating_id')] Updating $updating,
+        Request $request
+    ): RedirectResponse|Response {
         $folder = new Folder();
 
         $folder->setMinute($minute);
@@ -103,7 +91,7 @@ class UpdatingFolderController extends Controller
             }
         }
 
-        return $this->render('LuccaMinuteBundle:Folder:new.html.twig', array(
+        return $this->render('@LuccaFolder/Folder/new.html.twig', array(
             'updating' => $updating,
             'folder' => $folder,
             'minute' => $minute,
@@ -114,17 +102,18 @@ class UpdatingFolderController extends Controller
     /**
      * Displays a form to edit an existing Folder entity.
      *
-     * @Route("-{id}/edit", name="lucca_updating_folder_edit")
-     * @Method({"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
      * @param Request $request
      * @param Minute $minute
      * @param Folder $folder
      * @return RedirectResponse|Response
      */
-    public function editAction(Request $request, Minute $minute, Folder $folder)
-    {
+    #[Route('-{id}/edit', name: 'lucca_updating_folder_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function editAction(
+        Request $request,
+        #[MapEntity(id: 'minute_id')] Minute $minute,
+        #[MapEntity(id: 'id')] Folder $folder
+    ): RedirectResponse|Response {
         $editForm = $this->createForm(FolderType::class, $folder, array(
             'minute' => $minute,
         ));
@@ -148,7 +137,7 @@ class UpdatingFolderController extends Controller
             return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId()));
         }
 
-        return $this->render('LuccaMinuteBundle:Folder:edit.html.twig', array(
+        return $this->render('@LuccaFolder/Folder/edit.html.twig', array(
             'folder' => $folder,
             'minute' => $minute,
             'adherent' => $minute->getAdherent(),
@@ -160,19 +149,21 @@ class UpdatingFolderController extends Controller
     /**
      * Deletes a Folder entity.
      *
-     * @Route("-{id}/delete", name="lucca_updating_folder_delete")
-     * @Security("has_role('ROLE_LUCCA')")
-     *
      * @param Request $request
      * @param Minute $minute
      * @param Folder $folder
      * @return RedirectResponse
      */
-    public function deleteAction(Request $request, Minute $minute, Folder $folder)
-    {
+    #[Route('-{id}/delete', name: 'lucca_updating_folder_delete', methods: ['DELETE'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function deleteAction(
+        Request $request,
+        #[MapEntity(id: 'minute_id')] Minute $minute,
+        #[MapEntity(id: 'id')] Folder $folder
+    ): RedirectResponse {
         $em = $this->getDoctrine()->getManager();
 
-        $courier = $em->getRepository('LuccaMinuteBundle:Courier')->findOneBy(array(
+        $courier = $em->getRepository('LuccaFolderBundle:Courier')->findOneBy(array(
             'folder' => $folder
         ));
         foreach ($courier->getHumansEditions() as $edition)
@@ -205,18 +196,19 @@ class UpdatingFolderController extends Controller
     /**
      * Close a Folder entity.
      *
-     * @Route("-{id}/close", name="lucca_updating_folder_fence")
-     * @Security("has_role('ROLE_LUCCA')")
-     *
      * @param Minute $minute
      * @param Folder $folder
      * @return RedirectResponse
      */
-    public function fenceAction(Minute $minute, Folder $folder)
-    {
+    #[Route('-{id}/close', name: 'lucca_updating_folder_fence', methods: ['GET'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function fenceAction(
+        #[MapEntity(id: 'minute_id')] Minute $minute,
+        #[MapEntity(id: 'id')] Folder $folder
+    ): RedirectResponse {
         $em = $this->getDoctrine()->getManager();
 
-        $courier = $em->getRepository('LuccaMinuteBundle:Courier')->findOneBy(array(
+        $courier = $em->getRepository('LuccaFolderBundle:Courier')->findOneBy(array(
             'folder' => $folder
         ));
 

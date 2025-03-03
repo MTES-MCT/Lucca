@@ -7,19 +7,20 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Tests\Controller\Admin;
+namespace Lucca\Bundle\MinuteBundle\Tests\Controller\Admin;
 
 use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
- * Class FolderControllerTest
- * Test Lucca\MinuteBundle\Controller\Admin\MinuteController
+ * Class NatinfControllerTest
+ * Test Lucca\Bundle\MinuteBundle\Controller\Admin\MinuteController
  *
- * @package Lucca\MinuteBundle\Tests\Controller\Admin
+ * @package Lucca\Bundle\MinuteBundle\Tests\Controller\Admin
+ * @author Terence <terence@numeric-wave.tech>
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
-class MayorLetterControllerTest extends WebTestCase
+class NatinfControllerTest extends WebTestCase
 {
     /**
      * @var $urls
@@ -32,6 +33,12 @@ class MayorLetterControllerTest extends WebTestCase
      * Client which can authenticated
      */
     private $clientAuthenticated;
+
+    /**
+     * @var $entity
+     * Entity to test
+     */
+    private $entity;
 
     /**
      * @var EntityManager
@@ -55,11 +62,21 @@ class MayorLetterControllerTest extends WebTestCase
         ));
 
         /**
+         * Entity who was analysed
+         */
+        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Natinf')->findOneBy(array());
+
+        /**
          * Urls who was analyzed
          */
-        $basicUrl = 'lucca_mayor_letter_';
+        $basicUrl = 'lucca_natinf_';
         $this->urls = array(
-            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'edit', array())),
+            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'index', array())),
+            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'new', array())),
+            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'show', array('id' => $this->entity->getId()))),
+            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'edit', array('id' => $this->entity->getId()))),
+            array('expectedCode' => 302, 'route' => $this->getUrl($basicUrl . 'enable', array('id' => $this->entity->getId()))),
+            array('expectedCode' => 302, 'route' => $this->getUrl($basicUrl . 'enable', array('id' => $this->entity->getId()))),
         );
     }
 

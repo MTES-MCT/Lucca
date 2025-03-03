@@ -7,20 +7,19 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Tests\Controller\ByFolder;
+namespace Lucca\Bundle\MinuteBundle\Tests\Controller\Dashboard;
 
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
 use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * Class FolderControllerTest
- * Test Lucca\MinuteBundle\Controller\ByFolder\FolderSignedController
+ * Test Lucca\Bundle\MinuteBundle\Controller\Dashboard\FolderController
  *
- * @package Lucca\MinuteBundle\Tests\Controller\ByFolder
+ * @package Lucca\Bundle\MinuteBundle\Tests\Controller\ByFolder
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
-class FolderSignedControllerTest extends WebTestCase
+class FolderControllerTest extends WebTestCase
 {
     /**
      * @var $urls
@@ -33,12 +32,6 @@ class FolderSignedControllerTest extends WebTestCase
      * Client which can authenticated
      */
     private $clientAuthenticated;
-
-    /**
-     * @var $entity
-     * Entity to test
-     */
-    private $entity;
 
     /**
      * @var EntityManager
@@ -62,21 +55,11 @@ class FolderSignedControllerTest extends WebTestCase
         ));
 
         /**
-         * Entity who was analysed
-         */
-        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Folder')->findOneBy(array(
-            'type' => Folder::TYPE_FOLDER
-        ));
-
-        $minute = $this->entity->getMinute();
-
-        /**
          * Urls who was analyzed
          */
-        $basicUrl = 'lucca_folderSigned_';
+        $basicUrl = 'lucca_folder_';
         $this->urls = array(
-            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'new', array('minute_id' => $minute->getId(), 'folder_id' => $this->entity->getId()))),
-            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'edit', array('minute_id' => $minute->getId(), 'folder_id' => $this->entity->getId()))),
+            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'dashboard', array())),
         );
     }
 

@@ -7,19 +7,13 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Tests\Controller\Admin;
+namespace Lucca\Bundle\MinuteBundle\Tests\Controller\ByFolder;
 
+use Lucca\Bundle\FolderBundle\Entity\Folder;
 use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
-/**
- * Class CourierControllerTest
- * Test Lucca\MinuteBundle\Controller\Admin\MinuteController
- *
- * @package Lucca\MinuteBundle\Tests\Controller\Admin
- * @author Terence <terence@numeric-wave.tech>
- */
-class CourierControllerTest extends WebTestCase
+class FolderSignedControllerTest extends WebTestCase
 {
     /**
      * @var $urls
@@ -63,22 +57,25 @@ class CourierControllerTest extends WebTestCase
         /**
          * Entity who was analysed
          */
-        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Courier')->findOneBy(array());
+        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Folder')->findOneBy(array(
+            'type' => Folder::TYPE_FOLDER
+        ));
 
-        $minute = $this->entity->getFolder()->getMinute();
+        $minute = $this->entity->getMinute();
 
         /**
          * Urls who was analyzed
          */
+        $basicUrl = 'lucca_folderSigned_';
         $this->urls = array(
-            $this->getUrl('lucca_courier_judicial_date', array('minute_id' => $minute->getId(), 'id' => $this->entity->getId())),
+            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'new', array('minute_id' => $minute->getId(), 'folder_id' => $this->entity->getId()))),
+            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'edit', array('minute_id' => $minute->getId(), 'folder_id' => $this->entity->getId()))),
         );
     }
 
     /************************************ Test - routes reachable ************************************/
-
     /**
-     * Test n°1 - No user authenticated
+     * Test n°1 - No User authenticated
      * If basic urls are blocked
      */
     public function testBasicUrlsAnonymous()
@@ -86,13 +83,12 @@ class CourierControllerTest extends WebTestCase
         $this->defineBasicParams();
 
         /** Create client which test this action */
-        $client = $this->createClient();
+        $client = self::createClient();
 
         foreach ($this->urls as $url) {
-            $client->request('GET', $url);
-
+            $client->request('GET', $url['route']);
             /** HTTP code attempted */
-            $this->assertStatusCode(302, $client);
+            self::assertStatusCode(302, $client);
         }
 
         /** Close database connection */
@@ -107,15 +103,14 @@ class CourierControllerTest extends WebTestCase
     {
         $this->defineBasicParams();
 
-        /** Log User object + Create client which test this action */
+        /** Log Log object + Create client which test this action */
         $this->loginAs($this->clientAuthenticated, 'main');
         $client = $this->makeClient();
 
         foreach ($this->urls as $url) {
-            $client->request('GET', $url);
-
+            $client->request('GET', $url['route']);
             /** HTTP code attempted */
-            $this->assertStatusCode(200, $client);
+            self::assertStatusCode($url['expectedCode'], $client);
         }
 
         /** Close database connection */

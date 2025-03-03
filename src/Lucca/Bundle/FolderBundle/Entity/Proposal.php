@@ -7,57 +7,39 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
-
-namespace Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity;
+namespace Lucca\Bundle\FolderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\CoreBundle\Entity\ToggleableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\CoreBundle\Entity\ToggleableTrait;
+use Lucca\Bundle\FolderBundle\Repository\ProposalRepository;
+use Lucca\Bundle\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Proposal
  *
- * @ORM\Table(name="lucca_proposal")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\ProposalRepository")
- *
- * @package Lucca\MinuteBundle\Entity
+ * @package Lucca\Bundle\FolderBundle\Entity
  * @author Terence <terence@numeric-wave.tech>
  */
+#[ORM\Table(name: "lucca_proposal")]
+#[ORM\Entity(repositoryClass: ProposalRepository::class)]
 class Proposal implements LogInterface
 {
     use ToggleableTrait, TimestampableTrait;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column(name: "id", type: "integer")]
+    private ?int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\MinuteBundle\Entity\Tag", inversedBy="proposals")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $tag;
+    #[ORM\ManyToOne(targetEntity: Tag::class, inversedBy: "proposals")]
+    #[ORM\JoinColumn(nullable: false)]
+    private Tag $tag;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="sentence", type="text")
-     * @Assert\NotNull(message="constraint.not_null")
-     */
-    private $sentence;
+    #[ORM\Column(name: "sentence", type: "text")]
+    #[Assert\NotNull(message: "constraint.not_null")]
+    private string $sentence;
 
     /************************************************************************ Custom functions ************************************************************************/
 
@@ -65,7 +47,7 @@ class Proposal implements LogInterface
      * Log name of this Class
      * @return string
      */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Proposition';
     }
@@ -75,9 +57,9 @@ class Proposal implements LogInterface
     /**
      * Get id
      *
-     * @return integer
+     * @return int|null
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -89,7 +71,7 @@ class Proposal implements LogInterface
      *
      * @return Proposal
      */
-    public function setSentence($sentence)
+    public function setSentence(string $sentence): static
     {
         $this->sentence = $sentence;
 
@@ -101,7 +83,7 @@ class Proposal implements LogInterface
      *
      * @return string
      */
-    public function getSentence()
+    public function getSentence(): string
     {
         return $this->sentence;
     }
@@ -111,7 +93,7 @@ class Proposal implements LogInterface
      *
      * @return boolean
      */
-    public function getEnabled()
+    public function getEnabled(): bool
     {
         return $this->enabled;
     }
@@ -119,11 +101,11 @@ class Proposal implements LogInterface
     /**
      * Set tag
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag $tag
+     * @param Tag $tag
      *
      * @return Proposal
      */
-    public function setTag(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag $tag)
+    public function setTag(Tag $tag): static
     {
         $this->tag = $tag;
 
@@ -133,9 +115,9 @@ class Proposal implements LogInterface
     /**
      * Get tag
      *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag
+     * @return Tag
      */
-    public function getTag()
+    public function getTag(): Tag
     {
         return $this->tag;
     }

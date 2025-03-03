@@ -8,46 +8,45 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Controller\ByFolder;
+namespace Lucca\Bundle\FolderBundle\Controller\ByFolder;
 
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
-use Lucca\MinuteBundle\Form\ByFolder\AnnexesType;
-use Lucca\SettingBundle\Utils\SettingManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\FolderBundle\Form\ByFolder\AnnexesType;
+use Lucca\Bundle\SettingBundle\Utils\SettingManager;
 
 /**
  * Class AnnexesController
- *
- * @Route("/minute-{minute_id}/folder-{folder_id}/annexes")
- * @Security("has_role('ROLE_USER')")
- * @ParamConverter("p_minute", class="LuccaMinuteBundle:Minute", options={"id" = "minute_id"})
- * @ParamConverter("p_folder", class="LuccaMinuteBundle:Folder", options={"id" = "folder_id"})
- *
- * @package Lucca\MinuteBundle\Controller\ByFolder
+ * @package Lucca\Bundle\FolderBundle\Controller\ByFolder
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
-class AnnexesController extends Controller
+#[Route('/minute-{minute_id}/folder-{folder_id}/annexes')]
+#[IsGranted('ROLE_USER')]
+class AnnexesController extends AbstractController
 {
     /**
      * Displays a form to edit Annexes in dropzone.
-     *
-     * @Route("/edit", name="lucca_annexes_edit", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
      *
      * @param Request $request
      * @param Minute $p_minute
      * @param Folder $p_folder
      * @return RedirectResponse|Response
      */
-    public function editAction(Request $request, Minute $p_minute, Folder $p_folder)
-    {
+    #[Route('/edit', name: 'lucca_annexes_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function editAction(
+        Request $request,
+        #[MapEntity(id: 'minute_id')] Minute $p_minute,
+        #[MapEntity(id: 'folder_id')] Folder $p_folder
+    ): RedirectResponse|Response {
         /** Check if the user can access to the annexes functionality */
         if(SettingManager::get('setting.module.annexes.name') == false){
             $this->addFlash('danger', 'flash.adherent.accessDenied');

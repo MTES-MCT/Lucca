@@ -7,20 +7,20 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Tests\Controller\Admin;
+namespace Lucca\Bundle\MinuteBundle\Tests\Controller\Admin;
 
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
 use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
- * Class FolderControllerTest
- * Test Lucca\MinuteBundle\Controller\Admin\MinuteController
+ * Class TagControllerTest
+ * Test Lucca\Bundle\MinuteBundle\Controller\Admin\MinuteController
  *
- * @package Lucca\MinuteBundle\Tests\Controller\Admin
+ * @package Lucca\Bundle\MinuteBundle\Tests\Controller\Admin
  * @author Terence <terence@numeric-wave.tech>
+ * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
-class FolderControllerTest extends WebTestCase
+class TagControllerTest extends WebTestCase
 {
     /**
      * @var $urls
@@ -64,26 +64,19 @@ class FolderControllerTest extends WebTestCase
         /**
          * Entity who was analysed
          */
-        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Folder')->findOneBy(array(
-            'type' => Folder::TYPE_FOLDER
-        ));
-
-        $minute = $this->entity->getMinute();
+        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Tag')->findOneBy(array());
 
         /**
          * Urls who was analyzed
          */
-        $basicUrl = 'lucca_folder_';
+        $basicUrl = 'lucca_tag_';
         $this->urls = array(
-            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'new', array('minute_id' => $minute->getId()))),
-            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'step1', array('minute_id' => $minute->getId(), 'id' => $this->entity->getId()))),
-            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'step2', array('minute_id' => $minute->getId(), 'id' => $this->entity->getId()))),
-            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'step3', array('minute_id' => $minute->getId(), 'id' => $this->entity->getId()))),
-            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'edit', array('minute_id' => $minute->getId(), 'id' => $this->entity->getId()))),
-            array('expectedCode' => 302, 'route' => $this->getUrl($basicUrl . 'fence', array('minute_id' => $minute->getId(), 'id' => $this->entity->getId()))),
-            array('expectedCode' => 302, 'route' => $this->getUrl($basicUrl . 'open', array('minute_id' => $minute->getId(), 'id' => $this->entity->getId()))),
-            array('expectedCode' => 302, 'route' => $this->getUrl($basicUrl . 'reread', array('minute_id' => $minute->getId(), 'id' => $this->entity->getId()))),
-            array('expectedCode' => 302, 'route' => $this->getUrl($basicUrl . 'unreread', array('minute_id' => $minute->getId(), 'id' => $this->entity->getId()))),
+            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'index', array())),
+            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'new', array())),
+            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'show', array('id' => $this->entity->getId()))),
+            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'edit', array('id' => $this->entity->getId()))),
+            array('expectedCode' => 302, 'route' => $this->getUrl($basicUrl . 'enable', array('id' => $this->entity->getId()))),
+            array('expectedCode' => 302, 'route' => $this->getUrl($basicUrl . 'enable', array('id' => $this->entity->getId()))),
         );
     }
 

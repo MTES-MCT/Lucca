@@ -8,30 +8,31 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Controller\ManualEdit;
+namespace Lucca\Bundle\FolderBundle\Controller\ManualEdit;
 
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
-use Lucca\MinuteBundle\Form\Folder\FolderEditionType;
-use Lucca\SettingBundle\Utils\SettingManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\FolderBundle\Form\Folder\FolderEditionType;
+use Lucca\Bundle\SettingBundle\Utils\SettingManager;
 
 /**
  * Class FolderController
  *
- * @Route("/minute-{minute_id}/folder-")
- * @Security("has_role('ROLE_LUCCA')")
- * @ParamConverter("minute", class="LuccaMinuteBundle:Minute", options={"id" = "minute_id"})
- *
- * @package Lucca\MinuteBundle\Controller\ManualEdit
+ * @package Lucca\Bundle\FolderBundle\Controller\ManualEdit
  * @author Terence <terence@numeric-wave.tech>
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
-class FolderController extends Controller
+#[IsGranted('ROLE_LUCCA')]
+#[Route('/minute-{minute_id}/folder-')]
+class FolderController extends AbstractController
 {
     /** Setting if use agent of refresh or minute agent */
     private $useRefreshAgentForRefreshSignature;
@@ -50,17 +51,22 @@ class FolderController extends Controller
      * @param Request $request
      * @param Minute $minute
      * @param Folder $folder
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
-    public function manualEditingAction(Request $request, Minute $minute, Folder $folder)
-    {
+    #[Route('{id}/edit-manually', name: 'lucca_folder_manual', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function manualEditingAction(
+        Request $request,
+        #[MapEntity(id: 'minute_id')] Minute $minute,
+        #[MapEntity(id: 'id')] Folder $folder
+    ): RedirectResponse|Response {
         if ($folder->getDateClosure()) {
             $this->addFlash('warning', 'flash.folder.alreadyFenced');
             return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId()));
         }
 
         $em = $this->getDoctrine()->getManager();
-        $update = $em->getRepository('LuccaMinuteBundle:Updating')->findUpdatingByControl($folder->getControl());
+        $update = $em->getRepository('LuccaFolderBundle:Updating')->findUpdatingByControl($folder->getControl());
 
         $edition = $folder->getEdition();
         $logo = $this->get('lucca.utils.printer.control')->defineLogo($minute->getAdherent());
@@ -75,17 +81,17 @@ class FolderController extends Controller
 
             if ($folder->getNature() === Folder::NATURE_OBSTACLE) {
                 if (SettingManager::get('setting.folder.docContentObstacle.name')) {
-                    $docName = 'LuccaMinuteBundle:Folder/Printing/Custom:doc_obstacle_content-' .
+                    $docName = '@LuccaFolder/Folder/Printing/Custom:doc_obstacle_content-' .
                         SettingManager::get('setting.general.departement.name') . '.html.twig';
                 } else {
-                    $docName = 'LuccaMinuteBundle:Folder/Printing/Basic:doc_obstacle_content.html.twig';
+                    $docName = '@LuccaFolder/Folder/Printing/Basic/doc_obstacle_content.html.twig';
                 }
             } else {
                 if (SettingManager::get('setting.folder.docContent.name')) {
-                    $docName = 'LuccaMinuteBundle:Folder/Printing/Custom:doc_content-' .
+                    $docName = '@LuccaFolder/Folder/Printing/Custom:doc_content-' .
                         SettingManager::get('setting.general.departement.name') . '.html.twig';
                 } else {
-                    $docName = 'LuccaMinuteBundle:Folder/Printing/Basic:doc_content.html.twig';
+                    $docName = '@LuccaFolder/Folder/Printing/Basic/doc_content.html.twig';
                 }
             }
 
@@ -121,7 +127,7 @@ class FolderController extends Controller
             return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId()));
         }
 
-        return $this->render('LuccaMinuteBundle:FolderEdition:editVersion.html.twig', array(
+        return $this->render('@LuccaFolder/FolderEdition/editVersion.html.twig', array(
             'agent' => $agent,
             'minute' => $minute,
             'adherent' => $minute->getAdherent(),

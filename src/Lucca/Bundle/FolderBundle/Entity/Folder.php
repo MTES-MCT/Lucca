@@ -7,229 +7,151 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\FolderBundle\Entity;
 
-namespace Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity;
-
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
-use Lucca\MediaBundle\Entity\Media;
-use Lucca\MediaBundle\Entity\MediaAsyncInterface;
-use Lucca\MediaBundle\Entity\MediaListAsyncInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\MediaBundle\Entity\Media;
+use Lucca\Bundle\MediaBundle\Entity\MediaAsyncInterface;
+use Lucca\Bundle\MediaBundle\Entity\MediaListAsyncInterface;
+use Lucca\Bundle\MinuteBundle\Entity\Control;
+use Lucca\Bundle\MinuteBundle\Entity\Human;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
 
 /**
  * Folder
  *
- * @ORM\Table(name="lucca_minute_folder")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\FolderRepository")
- *
- * @package Lucca\MinuteBundle\Entity
+ * @package Lucca\Bundle\FolderBundle\Entity
  * @author Terence <terence@numeric-wave.tech>
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
+#[ORM\Table(name: "lucca_minute_folder")]
+#[ORM\Entity(repositoryClass: "Lucca\Bundle\FolderBundle\Repository\FolderRepository")]
 class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterface
 {
-    /** Traits */
     use TimestampableTrait;
 
-    /** TYPE constants */
     const TYPE_FOLDER = 'choice.type.folder';
     const TYPE_REFRESH = 'choice.type.refresh';
-    /** NATURE constants */
     const NATURE_HUT = 'choice.nature.hut';
     const NATURE_OTHER = 'choice.nature.other';
     const NATURE_OBSTACLE = 'choice.nature.obstacle';
     const NATURE_FORMAL_OFFENSE = 'choice.nature.formalOffense';
     const NATURE_SUBSTANTIVE_OFFENSE = 'choice.nature.substantiveOffense';
-    /** REASON OBSTACLE constants */
     const REASON_OBS_REFUSE_ACCESS_AFTER_LETTER = 'choice.reason_obs.refuseAccessAfterLetter';
     const REASON_OBS_REFUSE_BY_RECIPIENT = 'choice.reason_obs.refuseByRecipient';
     const REASON_OBS_UNCLAIMED_BY_RECIPIENT = 'choice.reason_obs.unclaimedByRecipient';
     const REASON_OBS_ACCESS_REFUSED = 'choice.reason_obs.accessRefused';
     const REASON_OBS_ABSENT_DURING_CONTROL = 'choice.reason_obs.absentDuringControl';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    private ?int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="num", type="string", length=25, unique=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     */
-    private $num;
+    #[ORM\Column(name: "num", type: "string", length: 25, unique: true)]
+    #[Assert\Type(type: "string", message: "constraint.type")]
+    private string $num;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\MinuteBundle\Entity\Minute")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $minute;
+    #[ORM\ManyToOne(targetEntity: Minute::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Minute $minute;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Lucca\MinuteBundle\Entity\Control", mappedBy="folder")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $control;
+    #[ORM\OneToOne(targetEntity: Control::class, mappedBy: "folder")]
+    #[ORM\JoinColumn(nullable: false)]
+    private Control $control;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Lucca\MinuteBundle\Entity\Natinf")
-     * @ORM\JoinTable(name="lucca_minute_folder_linked_natinf",
-     *      joinColumns={@ORM\JoinColumn(name="folder_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="natinf_id", referencedColumnName="id")}
-     * )
-     */
-    private $natinfs;
+    #[ORM\ManyToMany(targetEntity: Natinf::class)]
+    #[ORM\JoinTable(name: "lucca_minute_folder_linked_natinf",
+        joinColumns: [new ORM\JoinColumn(name: "folder_id", referencedColumnName: "id", onDelete: "CASCADE")],
+        inverseJoinColumns: [new ORM\JoinColumn(name: "natinf_id", referencedColumnName: "id")]
+    )]
+    private Collection $natinfs;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Lucca\MinuteBundle\Entity\Tag")
-     * @ORM\JoinTable(name="lucca_minute_folder_linked_tag_nature",
-     *      joinColumns={@ORM\JoinColumn(name="folder_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
-     * )
-     */
-    private $tagsNature;
+    #[ORM\ManyToMany(targetEntity: Tag::class)]
+    #[ORM\JoinTable(name: "lucca_minute_folder_linked_tag_nature",
+        joinColumns: [new ORM\JoinColumn(name: "folder_id", referencedColumnName: "id", onDelete: "CASCADE")],
+        inverseJoinColumns: [new ORM\JoinColumn(name: "tag_id", referencedColumnName: "id")]
+    )]
+    private Collection $tagsNature;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Lucca\MinuteBundle\Entity\Tag")
-     * @ORM\JoinTable(name="lucca_minute_folder_linked_tag_town",
-     *      joinColumns={@ORM\JoinColumn(name="folder_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
-     * )
-     */
-    private $tagsTown;
+    #[ORM\ManyToMany(targetEntity: Tag::class)]
+    #[ORM\JoinTable(name: "lucca_minute_folder_linked_tag_town",
+        joinColumns: [new ORM\JoinColumn(name: "folder_id", referencedColumnName: "id", onDelete: "CASCADE")],
+        inverseJoinColumns: [new ORM\JoinColumn(name: "tag_id", referencedColumnName: "id")]
+    )]
+    private Collection $tagsTown;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Lucca\MinuteBundle\Entity\Human")
-     * @ORM\JoinTable(name="lucca_minute_folder_linked_human_minute",
-     *      joinColumns={@ORM\JoinColumn(name="folder_id", referencedColumnName="id",onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="human_id", referencedColumnName="id")}
-     * )
-     */
-    private $humansByMinute;
+    #[ORM\ManyToMany(targetEntity: Human::class)]
+    #[ORM\JoinTable(name: "lucca_minute_folder_linked_human_minute",
+        joinColumns: [new ORM\JoinColumn(name: "folder_id", referencedColumnName: "id", onDelete: "CASCADE")],
+        inverseJoinColumns: [new ORM\JoinColumn(name: "human_id", referencedColumnName: "id")]
+    )]
+    private Collection $humansByMinute;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Lucca\MinuteBundle\Entity\Human", cascade={"persist"})
-     * @ORM\JoinTable(name="lucca_minute_folder_linked_human_folder",
-     *      joinColumns={@ORM\JoinColumn(name="folder_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="human_id", referencedColumnName="id")}
-     * )
-     */
-    private $humansByFolder;
+    #[ORM\ManyToMany(targetEntity: Human::class, cascade: ["persist"])]
+    #[ORM\JoinTable(name: "lucca_minute_folder_linked_human_folder",
+        joinColumns: [new ORM\JoinColumn(name: "folder_id", referencedColumnName: "id", onDelete: "CASCADE")],
+        inverseJoinColumns: [new ORM\JoinColumn(name: "human_id", referencedColumnName: "id")]
+    )]
+    private Collection $humansByFolder;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Lucca\MinuteBundle\Entity\Courier", inversedBy="folder", orphanRemoval=true)
-     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
-     */
-    private $courier;
+    #[ORM\OneToOne(targetEntity: Courier::class, inversedBy: "folder", orphanRemoval: true)]
+    #[ORM\JoinColumn(nullable: true, onDelete: "CASCADE")]
+    private ?Courier $courier = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", length=30, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     */
-    private $type;
+    #[ORM\Column(name: "type", type: "string", length: 30, nullable: true)]
+    #[Assert\Type(type: "string", message: "constraint.type")]
+    private ?string $type = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nature", type="string", length=100, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     */
-    private $nature;
+    #[ORM\Column(name: "nature", type: "string", length: 100, nullable: true)]
+    #[Assert\Type(type: "string", message: "constraint.type")]
+    private ?string $nature = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="reasonObstacle", type="string", length=50, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     */
-    private $reasonObstacle;
+    #[ORM\Column(name: "reasonObstacle", type: "string", length: 50, nullable: true)]
+    #[Assert\Type(type: "string", message: "constraint.type")]
+    private ?string $reasonObstacle = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateClosure", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateClosure;
+    #[ORM\Column(name: "dateClosure", type: "datetime", nullable: true)]
+    #[Assert\DateTime(message: "constraint.datetime")]
+    private ?\DateTime $dateClosure = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="ascertainment", type="text", nullable=true)
-     */
-    private $ascertainment;
+    #[ORM\Column(name: "ascertainment", type: "text", nullable: true)]
+    private ?string $ascertainment = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="details", type="text", nullable=true)
-     */
-    private $details;
+    #[ORM\Column(name: "details", type: "text", nullable: true)]
+    private ?string $details = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="violation", type="text", nullable=true)
-     */
-    private $violation;
+    #[ORM\Column(name: "violation", type: "text", nullable: true)]
+    private ?string $violation = null;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Lucca\MinuteBundle\Entity\FolderEdition", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $edition;
+    #[ORM\OneToOne(targetEntity: "Lucca\FolderBundle\Entity\FolderEdition", cascade: ["persist", "remove"])]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?FolderEdition $edition = null;
 
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="Lucca\MinuteBundle\Entity\ElementChecked", mappedBy="folder",
-     *     cascade={"persist", "remove"}, orphanRemoval=true
-     * )
-     * @ORM\OrderBy({"position" = "ASC"})
-     */
-    private $elements;
+    #[ORM\OneToMany(targetEntity: "Lucca\FolderBundle\Entity\ElementChecked", mappedBy: "folder", cascade: ["persist", "remove"], orphanRemoval: true)]
+    #[ORM\OrderBy(["position" => "ASC"])]
+    private Collection $elements;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="isReReaded", type="boolean")
-     * @Assert\Type(type="bool", message="constraint.type")
-     */
-    private $isReReaded;
+    #[ORM\Column(name: "isReReaded", type: "boolean")]
+    #[Assert\Type(type: "bool", message: "constraint.type")]
+    private bool $isReReaded = false;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\MediaBundle\Entity\Media", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $folderSigned;
+    #[ORM\ManyToOne(targetEntity: "Lucca\MediaBundle\Entity\Media", cascade: ["persist"])]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Media $folderSigned = null;
 
-    /**
-     * Many Folder entity can be associated to Many Media
-     * @ORM\ManyToMany(targetEntity="Lucca\MediaBundle\Entity\Media", cascade={"persist", "remove"})
-     * @ORM\JoinTable(name="lucca_folder_linked_media",
-     *      joinColumns={@ORM\JoinColumn(name="page_id", referencedColumnName="id", onDelete="cascade")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="media_id", referencedColumnName="id")}
-     * )
-     */
-    private $annexes;
+    #[ORM\ManyToMany(targetEntity: "Lucca\MediaBundle\Entity\Media", cascade: ["persist", "remove"])]
+    #[ORM\JoinTable(name: "lucca_folder_linked_media",
+        joinColumns: [new ORM\JoinColumn(name: "page_id", referencedColumnName: "id", onDelete: "cascade")],
+        inverseJoinColumns: [new ORM\JoinColumn(name: "media_id", referencedColumnName: "id")]
+    )]
+    private Collection $annexes;
 
     /************************************************************************ Custom functions ************************************************************************/
 
@@ -241,11 +163,9 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
         $this->natinfs = new ArrayCollection();
         $this->tagsNature = new ArrayCollection();
         $this->tagsTown = new ArrayCollection();
-
         $this->humansByFolder = new ArrayCollection();
         $this->humansByMinute = new ArrayCollection();
         $this->elements = new ArrayCollection();
-        $this->isReReaded = false;
         $this->annexes = new ArrayCollection();
     }
 
@@ -256,7 +176,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      * @param ElementChecked $element
      * @return Folder
      */
-    public function addElement(ElementChecked $element)
+    public function addElement(ElementChecked $element): static
     {
         $this->elements[] = $element;
         $element->setFolder($this);
@@ -271,7 +191,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Folder
      */
-    public function setControl(Control $control)
+    public function setControl(Control $control): static
     {
         $this->control = $control;
         $control->setFolder($this);
@@ -285,7 +205,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      * @param $string
      * @return bool
      */
-    public function hasTag($string)
+    public function hasTag($string): bool
     {
         foreach ($this->tagsNature as $element) {
             if ($element->getName() === $string)
@@ -306,7 +226,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      * @param $string
      * @return bool
      */
-    public function hasNatinf($string)
+    public function hasNatinf($string): bool
     {
         foreach ($this->getNatinfs() as $element) {
             if ($element->getNum() == $string)
@@ -323,7 +243,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Folder
      */
-    public function setFolderSigned(Media $folderSigned = null)
+    public function setFolderSigned(Media $folderSigned = null): static
     {
         $this->folderSigned = $folderSigned;
 
@@ -337,7 +257,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Folder
      */
-    public function setAsyncMedia(Media $media = null)
+    public function setAsyncMedia(Media $media = null): MediaAsyncInterface
     {
         $this->setFolderSigned($media);
 
@@ -349,7 +269,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Media|null
      */
-    public function getAsyncMedia()
+    public function getAsyncMedia(): ?Media
     {
         return $this->getFolderSigned();
     }
@@ -359,11 +279,13 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @param Media $media
      * @param string|null $vars
-     * @return void
+     * @return MediaListAsyncInterface
      */
-    public function addAsyncMedia(Media $media, string $vars = null)
+    public function addAsyncMedia(Media $media, string $vars = null): MediaListAsyncInterface
     {
         $this->addAnnex($media);
+
+        return $this;
     }
 
     /**
@@ -379,7 +301,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      * @param string|null $vars
      * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeAsyncMedia(Media $media, string $vars = null)
+    public function removeAsyncMedia(Media $media, string $vars = null): bool
     {
         return $this->removeAnnex($media);
     }
@@ -389,7 +311,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Collection
      */
-    public function getAsyncMedias()
+    public function getAsyncMedias(): Collection
     {
         return $this->getAnnexes();
     }
@@ -398,7 +320,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      * Log name of this Class
      * @return string
      */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Procès verbal';
     }
@@ -408,9 +330,9 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
     /**
      * Get id.
      *
-     * @return int
+     * @return int|null
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -422,7 +344,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Folder
      */
-    public function setNum($num)
+    public function setNum(string $num): static
     {
         $this->num = $num;
 
@@ -434,7 +356,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return string
      */
-    public function getNum()
+    public function getNum(): string
     {
         return $this->num;
     }
@@ -446,7 +368,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Folder
      */
-    public function setType($type = null)
+    public function setType(?string $type = null): static
     {
         $this->type = $type;
 
@@ -458,7 +380,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return string|null
      */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
@@ -470,7 +392,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Folder
      */
-    public function setNature($nature = null)
+    public function setNature(?string $nature = null): static
     {
         $this->nature = $nature;
 
@@ -482,7 +404,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return string|null
      */
-    public function getNature()
+    public function getNature(): ?string
     {
         return $this->nature;
     }
@@ -494,7 +416,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Folder
      */
-    public function setReasonObstacle($reasonObstacle = null)
+    public function setReasonObstacle(?string $reasonObstacle = null): static
     {
         $this->reasonObstacle = $reasonObstacle;
 
@@ -506,7 +428,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return string|null
      */
-    public function getReasonObstacle()
+    public function getReasonObstacle(): ?string
     {
         return $this->reasonObstacle;
     }
@@ -518,7 +440,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Folder
      */
-    public function setDateClosure($dateClosure = null)
+    public function setDateClosure(\DateTime $dateClosure = null): static
     {
         $this->dateClosure = $dateClosure;
 
@@ -530,7 +452,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return \DateTime|null
      */
-    public function getDateClosure()
+    public function getDateClosure(): ?\DateTime
     {
         return $this->dateClosure;
     }
@@ -542,7 +464,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Folder
      */
-    public function setAscertainment($ascertainment = null)
+    public function setAscertainment(?string $ascertainment = null): static
     {
         $this->ascertainment = $ascertainment;
 
@@ -554,7 +476,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return string|null
      */
-    public function getAscertainment()
+    public function getAscertainment(): ?string
     {
         return $this->ascertainment;
     }
@@ -566,7 +488,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Folder
      */
-    public function setDetails($details = null)
+    public function setDetails(?string $details = null): static
     {
         $this->details = $details;
 
@@ -578,7 +500,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return string|null
      */
-    public function getDetails()
+    public function getDetails(): ?string
     {
         return $this->details;
     }
@@ -590,7 +512,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Folder
      */
-    public function setViolation($violation = null)
+    public function setViolation(?string $violation = null): static
     {
         $this->violation = $violation;
 
@@ -602,7 +524,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return string|null
      */
-    public function getViolation()
+    public function getViolation(): ?string
     {
         return $this->violation;
     }
@@ -614,7 +536,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Folder
      */
-    public function setIsReReaded($isReReaded)
+    public function setIsReReaded(bool $isReReaded): static
     {
         $this->isReReaded = $isReReaded;
 
@@ -626,7 +548,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return bool
      */
-    public function getIsReReaded()
+    public function getIsReReaded(): bool
     {
         return $this->isReReaded;
     }
@@ -634,11 +556,11 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
     /**
      * Set minute.
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute $minute
+     * @param Minute $minute
      *
      * @return Folder
      */
-    public function setMinute(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute $minute)
+    public function setMinute(Minute $minute): static
     {
         $this->minute = $minute;
 
@@ -648,9 +570,9 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
     /**
      * Get minute.
      *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute
+     * @return Minute
      */
-    public function getMinute()
+    public function getMinute(): Minute
     {
         return $this->minute;
     }
@@ -660,7 +582,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Control
      */
-    public function getControl()
+    public function getControl(): Control
     {
         return $this->control;
     }
@@ -668,11 +590,11 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
     /**
      * Add natinf.
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Natinf $natinf
+     * @param Natinf $natinf
      *
      * @return Folder
      */
-    public function addNatinf(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Natinf $natinf)
+    public function addNatinf(Natinf $natinf): static
     {
         $this->natinfs[] = $natinf;
 
@@ -682,11 +604,11 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
     /**
      * Remove natinf.
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Natinf $natinf
+     * @param Natinf $natinf
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeNatinf(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Natinf $natinf)
+    public function removeNatinf(Natinf $natinf): bool
     {
         return $this->natinfs->removeElement($natinf);
     }
@@ -696,7 +618,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Collection
      */
-    public function getNatinfs()
+    public function getNatinfs(): ArrayCollection|Collection
     {
         return $this->natinfs;
     }
@@ -704,11 +626,11 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
     /**
      * Add tagsNature.
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag $tagsNature
+     * @param Tag $tagsNature
      *
      * @return Folder
      */
-    public function addTagsNature(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag $tagsNature)
+    public function addTagsNature(Tag $tagsNature): static
     {
         $this->tagsNature[] = $tagsNature;
 
@@ -718,11 +640,11 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
     /**
      * Remove tagsNature.
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag $tagsNature
+     * @param Tag $tagsNature
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeTagsNature(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag $tagsNature)
+    public function removeTagsNature(Tag $tagsNature): bool
     {
         return $this->tagsNature->removeElement($tagsNature);
     }
@@ -732,7 +654,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Collection
      */
-    public function getTagsNature()
+    public function getTagsNature(): ArrayCollection|Collection
     {
         return $this->tagsNature;
     }
@@ -740,11 +662,11 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
     /**
      * Add tagsTown.
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag $tagsTown
+     * @param Tag $tagsTown
      *
      * @return Folder
      */
-    public function addTagsTown(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag $tagsTown)
+    public function addTagsTown(Tag $tagsTown): static
     {
         $this->tagsTown[] = $tagsTown;
 
@@ -754,11 +676,11 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
     /**
      * Remove tagsTown.
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag $tagsTown
+     * @param Tag $tagsTown
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeTagsTown(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag $tagsTown)
+    public function removeTagsTown(Tag $tagsTown): bool
     {
         return $this->tagsTown->removeElement($tagsTown);
     }
@@ -768,7 +690,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Collection
      */
-    public function getTagsTown()
+    public function getTagsTown(): ArrayCollection|Collection
     {
         return $this->tagsTown;
     }
@@ -776,11 +698,11 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
     /**
      * Add humansByMinute.
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $humansByMinute
+     * @param Human $humansByMinute
      *
      * @return Folder
      */
-    public function addHumansByMinute(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $humansByMinute)
+    public function addHumansByMinute(Human $humansByMinute): static
     {
         $this->humansByMinute[] = $humansByMinute;
 
@@ -790,11 +712,11 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
     /**
      * Remove humansByMinute.
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $humansByMinute
+     * @param Human $humansByMinute
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeHumansByMinute(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $humansByMinute)
+    public function removeHumansByMinute(Human $humansByMinute): bool
     {
         return $this->humansByMinute->removeElement($humansByMinute);
     }
@@ -804,7 +726,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Collection
      */
-    public function getHumansByMinute()
+    public function getHumansByMinute(): ArrayCollection|Collection
     {
         return $this->humansByMinute;
     }
@@ -812,11 +734,11 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
     /**
      * Add humansByFolder.
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $humansByFolder
+     * @param Human $humansByFolder
      *
      * @return Folder
      */
-    public function addHumansByFolder(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $humansByFolder)
+    public function addHumansByFolder(Human $humansByFolder): static
     {
         $this->humansByFolder[] = $humansByFolder;
 
@@ -826,11 +748,11 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
     /**
      * Remove humansByFolder.
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $humansByFolder
+     * @param Human $humansByFolder
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeHumansByFolder(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $humansByFolder)
+    public function removeHumansByFolder(Human $humansByFolder): bool
     {
         return $this->humansByFolder->removeElement($humansByFolder);
     }
@@ -840,7 +762,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Collection
      */
-    public function getHumansByFolder()
+    public function getHumansByFolder(): ArrayCollection|Collection
     {
         return $this->humansByFolder;
     }
@@ -848,11 +770,11 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
     /**
      * Set courier.
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Courier|null $courier
+     * @param Courier|null $courier
      *
      * @return Folder
      */
-    public function setCourier(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Courier $courier = null)
+    public function setCourier(Courier $courier = null): static
     {
         $this->courier = $courier;
 
@@ -862,9 +784,9 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
     /**
      * Get courier.
      *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Courier|null
+     * @return Courier|null
      */
-    public function getCourier()
+    public function getCourier(): ?Courier
     {
         return $this->courier;
     }
@@ -872,11 +794,11 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
     /**
      * Set edition.
      *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\FolderEdition|null $edition
+     * @param FolderEdition|null $edition
      *
      * @return Folder
      */
-    public function setEdition(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\FolderEdition $edition = null)
+    public function setEdition(FolderEdition $edition = null): static
     {
         $this->edition = $edition;
 
@@ -886,9 +808,9 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
     /**
      * Get edition.
      *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\FolderEdition|null
+     * @return FolderEdition|null
      */
-    public function getEdition()
+    public function getEdition(): ?FolderEdition
     {
         return $this->edition;
     }
@@ -900,7 +822,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeElement(ElementChecked $element)
+    public function removeElement(ElementChecked $element): bool
     {
         return $this->elements->removeElement($element);
     }
@@ -910,7 +832,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Collection
      */
-    public function getElements()
+    public function getElements(): ArrayCollection|Collection
     {
         return $this->elements;
     }
@@ -920,7 +842,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Media|null
      */
-    public function getFolderSigned()
+    public function getFolderSigned(): ?Media
     {
         return $this->folderSigned;
     }
@@ -932,7 +854,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return Folder
      */
-    public function addAnnex(Media $annex)
+    public function addAnnex(Media $annex): static
     {
         $this->annexes[] = $annex;
 
@@ -946,7 +868,7 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeAnnex(Media $annex)
+    public function removeAnnex(Media $annex): bool
     {
         return $this->annexes->removeElement($annex);
     }
@@ -954,9 +876,9 @@ class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterfa
     /**
      * Get annexes.
      *
-     * @return Collection
+     * @return ArrayCollection|Collection
      */
-    public function getAnnexes()
+    public function getAnnexes(): ArrayCollection|Collection
     {
         return $this->annexes;
     }

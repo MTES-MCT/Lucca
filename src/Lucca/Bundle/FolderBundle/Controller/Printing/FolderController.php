@@ -8,45 +8,46 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Controller\Printing;
+namespace Lucca\Bundle\FolderBundle\Controller\Printing;
 
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Exception;
-use Lucca\ModelBundle\Entity\Model;
+use Lucca\Bundle\ModelBundle\Entity\Model;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * Class FolderController
  *
- * @Route("/minute-{minute_id}/folder-")
- * @Security("has_role('ROLE_LUCCA')")
- * @ParamConverter("minute", class="LuccaMinuteBundle:Minute", options={"id" = "minute_id"})
- *
- * @package Lucca\MinuteBundle\Folderler\Printing
+ * @package Lucca\Bundle\FolderBundle\Folderler\Printing
  * @author Terence <terence@numeric-wave.tech>
  */
-class FolderController extends Controller
+#[Route('/minute-{minute_id}/folder-')]
+#[IsGranted('ROLE_LUCCA')]
+class FolderController extends AbstractController
 {
     /**
      * Print a Folder
-     *
-     * @Route("{id}/document/print", name="lucca_folder_doc_print", methods={"GET"})
-     * @Route("{id}/document/preprint", name="lucca_folder_doc_preprint", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
      *
      * @param Minute $minute
      * @param Folder $folder
      * @param Request $p_request
      * @return Response
      */
-    public function folderDocPrintAction(Minute $minute, Folder $folder, Request $p_request)
-    {
+    #[Route('{id}/document/print', name: 'lucca_folder_doc_print', methods: ['GET'])]
+    #[Route('{id}/document/preprint', name: 'lucca_folder_doc_preprint', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function folderDocPrintAction(
+        #[MapEntity(id: 'minute_id')] Minute $minute,
+        #[MapEntity(id: 'id')] Folder $folder,
+        Request $p_request
+    ): Response {
         /** Check in route if it's preprint route that is called */
         $isPrePrint = str_contains($p_request->attributes->get('_route'), "preprint");
 
@@ -56,7 +57,7 @@ class FolderController extends Controller
 
         $filename = sprintf('Folder %s', $folder->getNum());
 
-        $update = $em->getRepository('LuccaMinuteBundle:Updating')->findUpdatingByControl($folder->getControl());
+        $update = $em->getRepository('LuccaFolderBundle:Updating')->findUpdatingByControl($folder->getControl());
 
         /** Step 2 : Get adherent and model corresponding*/
         $adherent = $minute->getAdherent();

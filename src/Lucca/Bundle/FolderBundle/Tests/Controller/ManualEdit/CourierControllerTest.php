@@ -7,19 +7,19 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Tests\Controller\ManualEdit;
+namespace Lucca\Bundle\MinuteBundle\Tests\Controller\ManualEdit;
 
 use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Courier;
 use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\CourierHumanEdition;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * Class CourierControllerTest
- * Test Lucca\MinuteBundle\Controller\ManualEdit\CourierController
+ * Test Lucca\Bundle\MinuteBundle\Controller\ManualEdit\CourierController
  *
- * @package Lucca\MinuteBundle\Tests\Controller\ManualEdit
+ * @package Lucca\Bundle\MinuteBundle\Tests\Controller\ManualEdit
  * @author Terence <terence@numeric-wave.tech>
  */
 class CourierControllerTest extends WebTestCase

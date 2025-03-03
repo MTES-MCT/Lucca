@@ -7,22 +7,22 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Utils;
+namespace Lucca\Bundle\MinuteBundle\Utils;
 
 use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\ElementChecked;
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\Control;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
-use Lucca\ChecklistBundle\Entity\Checklist;
-use Lucca\MinuteBundle\Generator\NumFolderGenerator;
+use Lucca\Bundle\ChecklistBundle\Entity\Checklist;
+use Lucca\Bundle\MinuteBundle\Generator\NumFolderGenerator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class FolderManager
  *
- * @package Lucca\MinuteBundle\Utils
+ * @package Lucca\Bundle\MinuteBundle\Utils
  * @author Térence <terence@numeric-wave.tech>
  */
 class FolderManager

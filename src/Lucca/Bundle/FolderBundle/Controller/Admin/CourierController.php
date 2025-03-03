@@ -8,39 +8,33 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Controller\Admin;
+namespace Lucca\Bundle\FolderBundle\Controller\Admin;
 
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Courier;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\FolderBundle\Entity\Courier;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Doctrine\ORM\ORMException;
-use Lucca\MinuteBundle\Form\CourierType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Lucca\Bundle\FolderBundle\Form\CourierType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * Class CourierController
  *
- * @Route("/minute-{minute_id}/courier")
- * @Security("has_role('ROLE_LUCCA')")
- * @ParamConverter("minute", class="LuccaMinuteBundle:Minute", options={"id" = "minute_id"})
- *
- * @package Lucca\MinuteBundle\Controller\Admin
+ * @package Lucca\Bundle\FolderBundle\Controller\Admin
  * @author Terence <terence@numeric-wave.tech>
  */
-class CourierController extends Controller
+#[IsGranted('ROLE_LUCCA')]
+#[Route('/minute-{minute_id}/courier')]
+class CourierController extends AbstractController
 {
     /*************************** Judicial ***************************/
 
     /**
      * Judicial Date
-     *
-     * @Route("-{id}/judicial-date", name="lucca_courier_judicial_date", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
      *
      * @param Request $request
      * @param Minute $minute
@@ -48,7 +42,9 @@ class CourierController extends Controller
      * @return RedirectResponse|Response|null
      * @throws ORMException
      */
-    public function judicialDateAction(Request $request, Minute $minute, Courier $courier)
+    #[IsGranted('ROLE_LUCCA')]
+    #[Route('/minute-{minute_id}/courier')]
+    public function judicialDateAction(Request $request, Minute $minute, Courier $courier): RedirectResponse|Response|null
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -77,7 +73,7 @@ class CourierController extends Controller
             return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId()));
         }
 
-        return $this->render('LuccaMinuteBundle:Courier:judicial.html.twig', array(
+        return $this->render('@LuccaFolder/Courier/judicial.html.twig', array(
             'minute' => $minute,
             'courier' => $courier,
             'form' => $form->createView(),

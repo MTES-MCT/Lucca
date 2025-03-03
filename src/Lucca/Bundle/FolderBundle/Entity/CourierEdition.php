@@ -7,73 +7,43 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
-
-namespace Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity;
+namespace Lucca\Bundle\FolderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * CourierEdition
  *
- * @ORM\Table(name="lucca_minute_courier_edition")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\CourierEditionRepository")
- *
- * @package Lucca\MinuteBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
+ * @package Lucca\Bundle\FolderBundle\Entity
  */
+#[ORM\Table(name: 'lucca_minute_courier_edition')]
+#[ORM\Entity(repositoryClass: 'Lucca\Bundle\FolderBundle\Repository\CourierEditionRepository')]
 class CourierEdition implements LogInterface
 {
     /** Traits */
     use TimestampableTrait;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(name: 'id', type: 'integer')]
+    private ?int $id;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="judicialEdited", type="boolean")
-     * @Assert\Type(type="bool", message="constraint.type")
-     */
-    private $judicialEdited = false;
+    #[ORM\Column(name: 'judicialEdited', type: 'boolean')]
+    #[Assert\Type(type: 'bool', message: 'constraint.type')]
+    private bool $judicialEdited = false;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="letterJudicial", type="text", nullable=true)
-     */
-    private $letterJudicial;
+    #[ORM\Column(name: 'letterJudicial', type: 'text', nullable: true)]
+    private ?string $letterJudicial = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="ddtmEdited", type="boolean")
-     * @Assert\Type(type="bool", message="constraint.type")
-     */
-    private $ddtmEdited = false;
+    #[ORM\Column(name: 'ddtmEdited', type: 'boolean')]
+    #[Assert\Type(type: 'bool', message: 'constraint.type')]
+    private bool $ddtmEdited = false;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="letterDdtm", type="text", nullable=true)
-     */
-    private $letterDdtm;
+    #[ORM\Column(name: 'letterDdtm', type: 'text', nullable: true)]
+    private ?string $letterDdtm = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
@@ -81,115 +51,58 @@ class CourierEdition implements LogInterface
      * Log name of this Class
      * @return string
      */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Courrier édition';
     }
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * Set judicialEdited.
-     *
-     * @param bool $judicialEdited
-     *
-     * @return CourierEdition
-     */
-    public function setJudicialEdited($judicialEdited)
+    public function setJudicialEdited(bool $judicialEdited): self
     {
         $this->judicialEdited = $judicialEdited;
-
         return $this;
     }
 
-    /**
-     * Get judicialEdited.
-     *
-     * @return bool
-     */
-    public function getJudicialEdited()
+    public function getJudicialEdited(): bool
     {
         return $this->judicialEdited;
     }
 
-    /**
-     * Set letterJudicial.
-     *
-     * @param string|null $letterJudicial
-     *
-     * @return CourierEdition
-     */
-    public function setLetterJudicial($letterJudicial = null)
+    public function setLetterJudicial(?string $letterJudicial): self
     {
         $this->letterJudicial = $letterJudicial;
-
         return $this;
     }
 
-    /**
-     * Get letterJudicial.
-     *
-     * @return string|null
-     */
-    public function getLetterJudicial()
+    public function getLetterJudicial(): ?string
     {
         return $this->letterJudicial;
     }
 
-    /**
-     * Set ddtmEdited.
-     *
-     * @param bool $ddtmEdited
-     *
-     * @return CourierEdition
-     */
-    public function setDdtmEdited($ddtmEdited)
+    public function setDdtmEdited(bool $ddtmEdited): self
     {
         $this->ddtmEdited = $ddtmEdited;
-
         return $this;
     }
 
-    /**
-     * Get ddtmEdited.
-     *
-     * @return bool
-     */
-    public function getDdtmEdited()
+    public function getDdtmEdited(): bool
     {
         return $this->ddtmEdited;
     }
 
-    /**
-     * Set letterDdtm.
-     *
-     * @param string|null $letterDdtm
-     *
-     * @return CourierEdition
-     */
-    public function setLetterDdtm($letterDdtm = null)
+    public function setLetterDdtm(?string $letterDdtm): self
     {
         $this->letterDdtm = $letterDdtm;
-
         return $this;
     }
 
-    /**
-     * Get letterDdtm.
-     *
-     * @return string|null
-     */
-    public function getLetterDdtm()
+    public function getLetterDdtm(): ?string
     {
         return $this->letterDdtm;
     }
