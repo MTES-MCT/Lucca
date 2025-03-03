@@ -1,0 +1,16 @@
+# LuccaParameterBundle parameters
+parameters:
+    path.lucca: "%kernel.root_dir%/../../lucca.doc/"
+    path.import: "%path.lucca%/importFile/"
+    path.historic: "%path.lucca%/historic/"
+
+    file.town: "town.csv"
+    file.intercommunal: "intercommunal.csv"
+    file.partner: "partner.csv"
+    file.service: "service.csv"
+    file.tribunal: "tribunal.csv"
+
+services:
+#    lucca_location.example:
+#        class: Lucca\ParameterBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

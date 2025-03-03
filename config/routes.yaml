@@ -30,6 +30,10 @@ LuccaModelBundle:
     resource: "@LuccaModelBundle/Resources/config/routing.yaml"
     prefix:   /
     
+LuccaParameterBundle:
+    resource: "@LuccaParameterBundle/Resources/config/routing.yaml"
+    prefix: /
+
 LuccaSecurityBundle:
     resource: "@LuccaSecurityBundle/Resources/config/routing.yaml"
     prefix:   /
