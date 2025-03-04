@@ -81,7 +81,7 @@ class PlotManager
                 $p_plot->setAddress($addrRoute);
             }
 
-            $town = $this->em->getRepository(Town')->findOneBy(array(
+            $town = $this->em->getRepository(Town::class)->findOneBy(array(
                 'zipcode' => $address['addrCode'],
                 'name' => $address['addrCity']
             ));
@@ -96,12 +96,12 @@ class PlotManager
             /** Use geolocator service to find city */
             $address = $this->geoLocator->getAddressFromGeocode($p_plot->getLatitude(), $p_plot->getLongitude());
             if ($address['addrCode'])
-                $town = $this->em->getRepository(Town')->findOneBy(array(
+                $town = $this->em->getRepository(Town::class)->findOneBy(array(
                     'zipcode' => $address['addrCode'],
                     'name' => $address['addrCity']
                 ));
             else
-                $town = $this->em->getRepository(Town')->findOneBy(array(
+                $town = $this->em->getRepository(Town::class)->findOneBy(array(
                     'name' => $address['addrCity']
                 ));
 

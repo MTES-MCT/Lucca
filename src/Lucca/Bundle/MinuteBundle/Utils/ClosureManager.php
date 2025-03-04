@@ -9,6 +9,9 @@
 
 namespace Lucca\Bundle\MinuteBundle\Utils;
 
+use Lucca\Bundle\FolderBundle\Entity\Courier;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\Control;
 use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Doctrine\ORM\EntityManager;
 
@@ -74,19 +77,19 @@ class ClosureManager
         $couriers = array();
 
         foreach ($minute->getControls() as $control) {
-            $loopControls = $this->em->getRepository(Control')->find($control->getId());
+            $loopControls = $this->em->getRepository(Control::class)->find($control->getId());
 
             foreach ($loopControls as $loopControl)
                 $controls[] = $loopControl;
 
-            $loopFolders = $this->em->getRepository(Folder')->findFolderByControl($control);
+            $loopFolders = $this->em->getRepository(Folder::class)->findFolderByControl($control);
 
             foreach ($loopFolders as $loopFolder)
                 $folders[] = $loopFolder;
         }
 
         foreach ($folders as $loopFolder) {
-            $loopCouriers = $this->em->getRepository(Courier')->findCouriersByFolder($loopFolder);
+            $loopCouriers = $this->em->getRepository(Courier::class)->findCouriersByFolder($loopFolder);
 
             foreach ($loopCouriers as $loopCourier)
                 $couriers[] = $loopCourier;
@@ -110,7 +113,7 @@ class ClosureManager
         }
 
         /** Get updating values to Frame 6 */
-        $updates = $this->em->getRepository(Updating')->findByMinute($minute);
+        $updates = $this->em->getRepository(Updating::class)->findByMinute($minute);
 
         $up_controls = array();
         $up_folders = array();
@@ -120,19 +123,19 @@ class ClosureManager
 
             foreach ($update->getControls() as $control) {
 
-                $loopControls = $this->em->getRepository(Control')->find($control->getId());
+                $loopControls = $this->em->getRepository(Control::class)->find($control->getId());
 
                 foreach ($loopControls as $loopControl)
                     $up_controls[] = $loopControl;
 
-                $loopFolders = $this->em->getRepository(Folder')->findFolderByControl($control);
+                $loopFolders = $this->em->getRepository(Folder::class)->findFolderByControl($control);
 
                 foreach ($loopFolders as $loopFolder)
                     $up_folders[] = $loopFolder;
             }
 
             foreach ($up_folders as $loopFolder) {
-                $loopCouriers = $this->em->getRepository(Courier')->findCouriersByFolder($loopFolder);
+                $loopCouriers = $this->em->getRepository(Courier::class)->findCouriersByFolder($loopFolder);
 
                 foreach ($loopCouriers as $loopCourier)
                     $up_couriers[] = $loopCourier;

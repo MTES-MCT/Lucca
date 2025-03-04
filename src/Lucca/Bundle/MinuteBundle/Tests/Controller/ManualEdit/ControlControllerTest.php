@@ -11,7 +11,7 @@ namespace Lucca\Bundle\MinuteBundle\Tests\Controller\ManualEdit;
 
 use Lucca\Bundle\MinuteBundle\Entity\Control;
 use Doctrine\ORM\EntityManager;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
 
 /**
  * Class ControlControllerTest
@@ -20,7 +20,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
  * @package Lucca\Bundle\MinuteBundle\Tests\Controller\ManualEdit
  * @author Terence <terence@numeric-wave.tech>
  */
-class ControlControllerTest extends WebTestCase
+class ControlControllerTest extends BasicLuccaTestCase
 {
     /**
      * @var $urls
@@ -57,18 +57,18 @@ class ControlControllerTest extends WebTestCase
         /**
          * Client who can authenticated in firewall
          */
-        $this->clientAuthenticated = $this->em->getRepository('LuccaUserBundle:User')->findOneBy(array(
+        $this->clientAuthenticated = $this->em->getRepository(User::Class)->findOneBy(array(
             'username' => 'lucca-nw-01'
         ));
 
         /**
          * Entity who was analysed
          */
-        $this->entity = $this->em->getRepository(Control')->findOneBy(array(
+        $this->entity = $this->em->getRepository(Control::class)->findOneBy(array(
             'type' => Control::TYPE_FOLDER
         ));
 
-        $minute = $this->em->getRepository(Minute')->findMinuteByControl($this->entity);
+        $minute = $this->em->getRepository(Minute::class)->findMinuteByControl($this->entity);
 
         /**
          * Urls who was analyzed

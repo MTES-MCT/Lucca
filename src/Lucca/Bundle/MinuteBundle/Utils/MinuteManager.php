@@ -142,7 +142,7 @@ class MinuteManager
         /** init steps */
         $controls = $p_minute->getControls();
 
-        $folder = $this->em->getRepository(Folder')->findLastByMinute($p_minute, $p_isCommand);
+        $folder = $this->em->getRepository(Folder::class)->findLastByMinute($p_minute, $p_isCommand);
 
         $couriers = array();
         $updates = $p_minute->getUpdatings();
@@ -159,7 +159,7 @@ class MinuteManager
 
         /** Check if folder exist for this minute */
         if ($folder != null) {
-            $couriers = $this->em->getRepository(Courier')->findCouriersByFolder($folder[0]);
+            $couriers = $this->em->getRepository(Courier::class)->findCouriersByFolder($folder[0]);
             $status = 3;
         }
 
