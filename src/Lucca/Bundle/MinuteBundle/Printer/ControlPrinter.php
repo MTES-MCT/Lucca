@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,89 +10,69 @@
 
 namespace Lucca\Bundle\MinuteBundle\Printer;
 
-use Lucca\Bundle\MinuteBundle\Entity\Control;
-use Lucca\Bundle\AdherentBundle\Entity\Adherent;
-use Lucca\Bundle\AdherentBundle\Finder\LogoFinder;
-use Lucca\Bundle\SettingBundle\Utils\SettingManager;
-use Symfony\Bundle\TwigBundle\TwigEngine;
+use DateTime;
+use Lucca\Bundle\MediaBundle\Entity\Media;
+use Twig\Environment;
 use Twig\Error\Error;
 
-/**
- * Class ControlPrinter
- *
- * @package Lucca\Bundle\MinuteBundle\Printer
- * @author Terence <terence@numeric-wave.tech>
- */
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\AdherentBundle\Finder\LogoFinder;
+use Lucca\Bundle\MinuteBundle\Entity\Control;
+use Lucca\Bundle\SettingBundle\Manager\SettingManager;
+
 class ControlPrinter
 {
     /**
-     * @var TwigEngine
-     */
-    private $templating;
-
-    /**
-     * @var LogoFinder
-     */
-    private $logoFinder;
-
-    /**
      * List of options => WkhtmlToPdf
      */
-    private $options;
+    private array $options;
 
     /**
      *  Get info from parameters
      */
     private $logoInHeader;
 
-    /**
-     * ControlPrinter constructor.
-     * @param TwigEngine $templating
-     * @param LogoFinder $logoFinder
-     */
-    public function __construct(TwigEngine $templating, LogoFinder $logoFinder)
+    public function __construct(
+        private readonly Environment $twig,
+        private readonly LogoFinder $logoFinder,
+    )
     {
-        $this->templating = $templating;
-        $this->logoFinder = $logoFinder;
         $this->logoInHeader = SettingManager::get('setting.pdf.logoInHeader.name');
 
-        $this->options = array(
+        $this->options = [
             'margin-top' => 11, 'margin-right' => 11,
             'margin-bottom' => 11, 'margin-left' => 11,
-        );
+        ];
     }
 
     /**
      * Create a basic model Access Letter with Knp options
-     *
-     * @param Control $p_control
-     * @return array
      */
-    public function createAccessLetterOptions(Control $p_control)
+    public function createAccessLetterOptions(Control $control): array
     {
         /** Access Letter have a specific footer */
         $this->options['margin-bottom'] = 55;
 
-        /** @var Adherent $adherent */
-        $adherent = $p_control->getMinute()->getAdherent();
+        $adherent = $control->getMinute()->getAdherent();
 
         /** Define Logo and set margin */
         $logo = $this->defineLogo($adherent);
 
         try {
-            $header = $this->templating->render('LuccaAdherentBundle:Adherent/Printing:header-pdf.html.twig', array(
+            $header = $this->twig->render('@LuccaAdherent/Adherent/Printing/header-pdf.html.twig', [
                 'adherent' => $adherent, 'officialLogo' => $logo
-            ));
+            ]);
         } catch (Error $twig_Error) {
             echo 'Twig_Error has been thrown - Header Access Letter ' . $twig_Error->getMessage();
         }
 
         try {
             $departement = SettingManager::get('setting.general.departement.name');
-            if (SettingManager::get('setting.control.footer.name') == true)
-                $footer = $this->templating->render('LuccaMinuteBundle:Control/Printing/Custom:footer-' . $departement . '.html.twig');
-            else
-                $footer = $this->templating->render('LuccaMinuteBundle:Control/Printing/Basic:footer.html.twig');
+            if (SettingManager::get('setting.control.footer.name') == true) {
+                $footer = $this->twig->render('LuccaMinute/Control/Printing/Custom:footer-' . $departement . '.html.twig');
+            } else {
+                $footer = $this->twig->render('@LuccaMinute/Control/Printing/Basic/footer.html.twig');
+            }
         } catch (Error $twig_Error) {
             echo 'Twig_Error has been thrown - Footer Access Letter ' . $twig_Error->getMessage();
         }
@@ -104,11 +85,8 @@ class ControlPrinter
 
     /**
      * Create a basic model to Convocation with Knp options
-     *
-     * @param Control $p_control
-     * @return array
      */
-    public function createConvocationLetterOptions(Control $p_control)
+    public function createConvocationLetterOptions(Control $control): array
     {
         /** TODO The following code is only here as temporary fix */
         /** The issue was : old document didn't have a logo displayed after we implement the new
@@ -120,27 +98,27 @@ class ControlPrinter
          *  PLEASE : Remove this code when a good solution is created
          */
         /** Start of the temporary code */
-        $dateUpdate = (new \DateTime())->createFromFormat('d/m/Y', '09/03/2021');
+        $dateUpdate = (new DateTime())->createFromFormat('d/m/Y', '09/03/2021');
         $header = null;
 
         $isEdited = false;
-        foreach ($p_control->getEditions() as $edition) {
-            if ($edition->getConvocationEdited())
+        foreach ($control->getEditions() as $edition) {
+            if ($edition->getConvocationEdited()) {
                 $isEdited = true;
+            }
         }
 
-        if ($this->logoInHeader || ($p_control->getCreatedAt() < $dateUpdate && $isEdited)) {
+        if ($this->logoInHeader || ($control->getCreatedAt() < $dateUpdate && $isEdited)) {
             /**************************** End of the temporary code *******************************************/
 
 //        if ($this->logoInHeader == true) { /** Uncomment this code when you remove the previous code */
-            /** @var Adherent $adherent */
-            $adherent = $p_control->getMinute()->getAdherent();
+            $adherent = $control->getMinute()->getAdherent();
 
             /** Define Logo and set margin */
             $logo = $this->defineLogo($adherent);
 
             try {
-                $header = $this->templating->render('LuccaAdherentBundle:Adherent/Printing:header-pdf.html.twig', array(
+                $header = $this->twig->render('@LuccaAdherent/Adherent/Printing/header-pdf.html.twig', array(
                     'adherent' => $adherent, 'officialLogo' => $logo
                 ));
             } catch (Error $twig_Error) {
@@ -150,33 +128,28 @@ class ControlPrinter
             $this->options['header-html'] = $header;
 
             return $this->options;
-        } else {
-            return array();
         }
+
+        return [];
     }
 
     /**
      * Define specific logo who was used
      * Increase Margin top if a logo is used
-     *
-     * @param Adherent $p_adherent
-     * @return \Lucca\MediaBundle\Entity\Media|null
      */
-    public function defineLogo(Adherent $p_adherent)
+    public function defineLogo(Adherent $adherent): ?Media
     {
-        $logo = $this->logoFinder->findLogo($p_adherent);
+        $logo = $this->logoFinder->findLogo($adherent);
 
         /** Increase margin-top */
-        if ($logo)
+        if ($logo) {
             $this->options['margin-top'] = 35;
+        }
 
         return $logo;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'lucca.utils.printer.control';
     }

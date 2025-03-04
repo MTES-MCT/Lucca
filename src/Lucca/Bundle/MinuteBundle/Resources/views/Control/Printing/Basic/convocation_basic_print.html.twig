@@ -1,5 +1,5 @@
 {#-- Extends view --#}
-{% extends "LuccaModelBundle:Printing:base.html.twig" %}
+{% extends "@LuccaModel/Printing/base.html.twig" %}
 
 {#-- Translation domain --#}
 {% trans_default_domain 'LuccaControlBundle' %}
@@ -12,10 +12,10 @@
 {% block lucca_model_content %}
 
     {% if 'setting.control.convocationContent.name'|setting == true %}
-        {% set filename = 'LuccaMinuteBundle:Control/Printing/Custom:convocation_content-' ~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+        {% set filename = '@LuccaMinute/Control/Printing/Custom/convocation_content-' ~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
         {% include filename with {'minute': minute, 'control': control, 'human': human} %}
     {% else %}
-        {% include 'LuccaMinuteBundle:Control/Printing/Basic:convocation_content.html.twig' with {'minute': minute, 'control': control, 'human': human} %}
+        {% include '@LuccaMinute/Control/Printing/Basic/convocation_content.html.twig' with {'minute': minute, 'control': control, 'human': human} %}
     {% endif %}
 
 {% endblock lucca_model_content %}

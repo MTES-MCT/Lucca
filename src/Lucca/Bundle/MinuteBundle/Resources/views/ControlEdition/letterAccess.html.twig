@@ -1,4 +1,4 @@
-{% extends 'LuccaThemeAngleBundle:SubLayout:edit.html.twig' %}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig' %}
 {% trans_default_domain 'LuccaMinuteBundle' %}
 
 {% set param_entity='entity.control'|transchoice(1) %}
@@ -14,7 +14,7 @@
 
     {# Form theme apply for child only #}
     {% form_theme form '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig' %}
-    {% form_theme form.editions 'LuccaMinuteBundle:ControlEdition:editionAccess-theme.html.twig' %}
+    {% form_theme form.editions '@LuccaMinute/ControlEdition/editionAccess-theme.html.twig' %}
 
     <div class="row">
 

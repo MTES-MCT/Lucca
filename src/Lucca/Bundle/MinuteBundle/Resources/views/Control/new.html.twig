@@ -1,5 +1,5 @@
 {#-- Extends view --#}
-{% extends "LuccaThemeAngleBundle:SubLayout:new.html.twig" %}
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
 
 {#-- Translation domain --#}
 {% trans_default_domain 'LuccaMinuteBundle' %}
@@ -20,8 +20,8 @@
 
     {# Form theme apply for child only #}
     {% form_theme form  '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig' %}
-    {% form_theme form.humansByControl 'LuccaMinuteBundle:Human:human-theme.html.twig' %}
-    {% form_theme form.agentAttendants 'LuccaMinuteBundle:Agent:agent-attendant-theme.html.twig' %}
+    {% form_theme form.humansByControl '@LuccaMinute/Human/human-theme.html.twig' %}
+    {% form_theme form.agentAttendants '@LuccaMinute/Agent/agent-attendant-theme.html.twig' %}
 
     <div class="row">
         {#-- Panel - main --#}
@@ -263,7 +263,7 @@
 {% block lucca_css %}
     {{ parent() }}
 
-    <link href="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
+    <link href="{{ asset('plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
           rel="stylesheet">
     <link href="{{ asset('plugins/material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}"
           rel="stylesheet">
@@ -273,8 +273,8 @@
 {% block lucca_js %}
     {{ parent() }}
 
-    <script src="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js') }}"></script>
-    <script src="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/lang/bootstrap-datepicker.fr.js') }}"></script>
+    <script src="{{ asset('plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('plugins/bootstrap-datepicker/lang/bootstrap-datepicker.fr.js') }}"></script>
 
     <script src="{{ asset('plugins/symfony-collection/jquery.collection.js') }}"></script>
     <script src="{{ asset('plugins/momentjs/moment.js') }}"></script>
@@ -312,17 +312,17 @@
 
             $(".control-accepted").hide('slow');
 
-            if ($('#lucca_minuteBundle_minute_control_accepted').val() === 'choice.accepted.none')
+            if ($('#lucca_minutebundle_minute_control_accepted').val() === 'choice.accepted.none')
                 $(".control-accepted-null").show('slow');
 
-            else if ($('#lucca_minuteBundle_minute_control_accepted').val() === 'choice.accepted.nok')
+            else if ($('#lucca_minutebundle_minute_control_accepted').val() === 'choice.accepted.nok')
                 $(".control-accepted-false").show('slow');
 
-            else if ($('#lucca_minuteBundle_minute_control_accepted').val() === 'choice.accepted.ok')
+            else if ($('#lucca_minutebundle_minute_control_accepted').val() === 'choice.accepted.ok')
                 $(".control-accepted-true").show('slow');
         });
 
-        $('#lucca_minuteBundle_minute_control_accepted').on('change', function () {
+        $('#lucca_minutebundle_minute_control_accepted').on('change', function () {
             $(".control-accepted").hide('slow');
 
             {# Accepted true #}
@@ -342,20 +342,20 @@
         {#--------------------------------------------------------------------#}
         $(document).ready(function () {
             if ($('input[name*="[summoned]"]:checked').val() === '1') {
-                $("#lucca_minuteBundle_minute_control_stateControl_0").prop("disabled", false);
-                $("#lucca_minuteBundle_minute_control_stateControl_1").prop("disabled", true);
-                $("#lucca_minuteBundle_minute_control_stateControl_2").prop("disabled", true);
-                $("#lucca_minuteBundle_minute_control_stateControl_3").prop("disabled", true);
+                $("#lucca_minutebundle_minute_control_stateControl_0").prop("disabled", false);
+                $("#lucca_minutebundle_minute_control_stateControl_1").prop("disabled", true);
+                $("#lucca_minutebundle_minute_control_stateControl_2").prop("disabled", true);
+                $("#lucca_minutebundle_minute_control_stateControl_3").prop("disabled", true);
             } else if ($('input[name*="[summoned]"]:checked').val() === '0') {
-                $("#lucca_minuteBundle_minute_control_stateControl_0").prop("disabled", true);
-                $("#lucca_minuteBundle_minute_control_stateControl_1").prop("disabled", false);
-                $("#lucca_minuteBundle_minute_control_stateControl_2").prop("disabled", false);
-                $("#lucca_minuteBundle_minute_control_stateControl_3").prop("disabled", false);
+                $("#lucca_minutebundle_minute_control_stateControl_0").prop("disabled", true);
+                $("#lucca_minutebundle_minute_control_stateControl_1").prop("disabled", false);
+                $("#lucca_minutebundle_minute_control_stateControl_2").prop("disabled", false);
+                $("#lucca_minutebundle_minute_control_stateControl_3").prop("disabled", false);
             } else {
-                $("#lucca_minuteBundle_minute_control_stateControl_0").prop("disabled", true);
-                $("#lucca_minuteBundle_minute_control_stateControl_1").prop("disabled", true);
-                $("#lucca_minuteBundle_minute_control_stateControl_2").prop("disabled", true);
-                $("#lucca_minuteBundle_minute_control_stateControl_3").prop("disabled", true);
+                $("#lucca_minutebundle_minute_control_stateControl_0").prop("disabled", true);
+                $("#lucca_minutebundle_minute_control_stateControl_1").prop("disabled", true);
+                $("#lucca_minutebundle_minute_control_stateControl_2").prop("disabled", true);
+                $("#lucca_minutebundle_minute_control_stateControl_3").prop("disabled", true);
             }
         });
 
@@ -369,7 +369,7 @@
                 $('input[id*="control_stateControl_1"]').prop("disabled", true);
                 $('input[id*="control_stateControl_2"]').prop("disabled", true);
                 $('input[id*="control_stateControl_3"]').prop("disabled", true);
-                $("#lucca_minuteBundle_minute_control_stateControl_0").prop("checked", true).change();
+                $("#lucca_minutebundle_minute_control_stateControl_0").prop("checked", true).change();
             } else {
                 console.log('0');
                 {# Summoned false #}
@@ -377,8 +377,8 @@
                 $('input[id*="control_stateControl_1"]').prop("disabled", false);
                 $('input[id*="control_stateControl_2"]').prop("disabled", false);
                 $('input[id*="control_stateControl_3"]').prop("disabled", false);
-                if ($("#lucca_minuteBundle_minute_control_stateControl_0").prop("checked")){
-                    $("#lucca_minuteBundle_minute_control_stateControl_1").prop("checked", true).change();
+                if ($("#lucca_minutebundle_minute_control_stateControl_0").prop("checked")){
+                    $("#lucca_minutebundle_minute_control_stateControl_1").prop("checked", true).change();
                 }
             }
         });
@@ -419,11 +419,11 @@
         {#--------------------------------------------------------------------#}
         $(document).ready(function () {
             {% if control.agent is null or control.agent == minute.agent %}
-            $("#lucca_minuteBundle_updating_control_sameAgent_0").prop("checked", true);
+            $("#lucca_minutebundle_updating_control_sameAgent_0").prop("checked", true);
             $(".agent-same").show('slow');
             $(".agent-new").hide('slow');
             {% else %}
-            $("#lucca_minuteBundle_updating_control_sameAgent_1").prop("checked", true);
+            $("#lucca_minutebundle_updating_control_sameAgent_1").prop("checked", true);
             $(".agent-new").show('slow');
             {% endif %}
         });
@@ -461,11 +461,11 @@
 
             const abort = ["choice.reason.error_adress", "choice.reason.unknown_adress"];
 
-            $("#lucca_minuteBundle_minute_control_reason").on("change", function () {
+            $("#lucca_minutebundle_minute_control_reason").on("change", function () {
                 var isInArrayAbort = jQuery.inArray($(this).val(), abort);
                 if (isInArrayAbort >= 0) {
-                    $("#lucca_minuteBundle_minute_control_accepted option").prop("selected", null);
-                    $("#lucca_minuteBundle_minute_control_accepted option[value='choice.accepted.none']").prop("selected", "selected");
+                    $("#lucca_minutebundle_minute_control_accepted option").prop("selected", null);
+                    $("#lucca_minutebundle_minute_control_accepted option[value='choice.accepted.none']").prop("selected", "selected");
                     if ($(".control-accepted-null").css('display') === 'none') {
                         $(".control-accepted").hide('slow');
                         $(".control-accepted-null").show('slow');
@@ -473,8 +473,8 @@
                 } else if (!$(this).val()) {
 
                 } else {
-                    $("#lucca_minuteBundle_minute_control_accepted option").prop("selected", null);
-                    $("#lucca_minuteBundle_minute_control_accepted option[value='choice.accepted.nok']").prop("selected", "selected");
+                    $("#lucca_minutebundle_minute_control_accepted option").prop("selected", null);
+                    $("#lucca_minutebundle_minute_control_accepted option[value='choice.accepted.nok']").prop("selected", "selected");
                     if ($(".control-accepted-false").css('display') === 'none') {
                         $(".control-accepted").hide('slow');
                         $(".control-accepted-false").show('slow');

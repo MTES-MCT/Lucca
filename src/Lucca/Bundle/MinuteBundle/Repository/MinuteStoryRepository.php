@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,11 +10,9 @@
 
 namespace Lucca\Bundle\MinuteBundle\Repository;
 
-use Lucca\Bundle\MinuteBundle\Entity\Minute;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteStory;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\{EntityRepository, NonUniqueResultException, QueryBuilder};
+
+use Lucca\Bundle\MinuteBundle\Entity\{Minute, MinuteStory};
 
 /**
  * MinuteStoryRepository
@@ -26,23 +25,18 @@ class MinuteStoryRepository extends EntityRepository
     /**
      * Override findAll
      * Get the last minute story of all minutes in the date range
-     *
-     * @param $p_dateStart
-     * @param $p_dateEnd
-     * @param null $p_minutes
-     * @return int|mixed|string
      */
-    public function findClosureBetween($p_dateStart, $p_dateEnd, $p_minutes = null)
+    public function findClosureBetween($dateStart, $dateEnd, $minutes = null): mixed
     {
         /** If minutes are defined get closure corresponding to these minute */
-        if ($p_minutes != null && count($p_minutes) > 0) {
+        if ($minutes != null && count($minutes) > 0) {
             $qb = $this->queryMinuteStory();
 
             $qb->andWhere($qb->expr()->in('minute', ':q_minute'))
-                ->setParameter(':q_minute', $p_minutes);
-        }else{
+                ->setParameter(':q_minute', $minutes);
+        } else {
             /** Else get minutes with date updating between the given dates */
-            $qb = $this->getLast($p_dateStart, $p_dateEnd);
+            $qb = $this->getLast($dateStart, $dateEnd);
         }
 
         $qb->andWhere($qb->expr()->eq('minuteStory.status', ':q_status'))
@@ -61,26 +55,20 @@ class MinuteStoryRepository extends EntityRepository
     /**
      * Get the last minute story of all minutes in the date range
      * If needed we can filter by status also
-     *
-     * @param $p_dateStart
-     * @param $p_dateEnd
-     * @param null $p_status
-     * @param null $p_minutes
-     * @return int|mixed|string
      */
-    public function findLast($p_dateStart, $p_dateEnd, $p_status = null, $p_minutes = null)
+    public function findLast($dateStart, $dateEnd, $status = null, $minutes = null): mixed
     {
-        $qb = $this->getLast($p_dateStart, $p_dateEnd);
+        $qb = $this->getLast($dateStart, $dateEnd);
 
-        if ($p_status && count($p_status) > 0) {
+        if ($status && count($status) > 0) {
             $qb->andWhere($qb->expr()->in('minuteStory.status', ':q_status'))
-                ->setParameter(':q_status', $p_status);
+                ->setParameter(':q_status', $status);
         }
 
         /************** Filters on minute to get story only for given minutes ******************/
-        if ($p_minutes && count($p_minutes) > 0) {
+        if ($minutes && count($minutes) > 0) {
             $qb->andWhere($qb->expr()->in('minute', ':q_minutes'))
-                ->setParameter(':q_minutes', $p_minutes);
+                ->setParameter(':q_minutes', $minutes);
         }
 
         $qb->select([
@@ -95,11 +83,8 @@ class MinuteStoryRepository extends EntityRepository
     /**
      * Override findAll
      * Get the last minute story for a minute
-     *
-     * @param Minute|null $p_minute
-     * @return array
      */
-    public function findLastByMinute(?Minute $p_minute)
+    public function findLastByMinute(?Minute $p_minute): array
     {
         $qb = $this->queryMinuteStory();
 
@@ -116,20 +101,17 @@ class MinuteStoryRepository extends EntityRepository
     /*******************************************************************************************/
     /********************* Custom get *****/
     /*******************************************************************************************/
+
     /**
      * Get the last minute story of all minutes in the date range
-     *
-     * @param $p_dateStart
-     * @param $p_dateEnd
-     * @return int|mixed|string
      */
-    public function getLast($p_dateStart, $p_dateEnd)
+    public function getLast($dateStart, $dateEnd): QueryBuilder
     {
         $qb = $this->queryMinuteStory();
 
         $qb->andWhere($qb->expr()->between('minuteStory.dateUpdate', ':q_start', ':q_end'))
-            ->setParameter(':q_start', $p_dateStart)
-            ->setParameter(':q_end', $p_dateEnd);
+            ->setParameter(':q_start', $dateStart)
+            ->setParameter(':q_end', $dateEnd);
 
         return $qb;
     }
@@ -141,10 +123,8 @@ class MinuteStoryRepository extends EntityRepository
     /**
      * Override findAll method
      * with MinuteStory dependencies
-     *
-     * @return array
      */
-    public function findAll()
+    public function findAll(): array
     {
         $qb = $this->queryMinuteStory();
 
@@ -154,13 +134,8 @@ class MinuteStoryRepository extends EntityRepository
     /**
      * Override find method
      * with MinuteStory dependencies
-     *
-     * @param mixed $id
-     * @param null $lockMode
-     * @param null $lockVersion
-     * @return false|int|mixed|object|string|null
      */
-    public function find($id, $lockMode = null, $lockVersion = null)
+    public function find(mixed $id, $lockMode = null, $lockVersion = null): ?object
     {
         $qb = $this->queryMinuteStory();
 
@@ -171,7 +146,8 @@ class MinuteStoryRepository extends EntityRepository
             return $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             echo 'NonUniqueResultException has been thrown - MinuteStory Repository - ' . $e->getMessage();
-            return false;
+
+            return null;
         }
     }
 
@@ -181,16 +157,12 @@ class MinuteStoryRepository extends EntityRepository
 
     /**
      * Classic dependencies
-     *
-     * @return QueryBuilder
      */
-    private function queryMinuteStory()
+    private function queryMinuteStory(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('minuteStory')
+        return $this->createQueryBuilder('minuteStory')
             ->leftJoin('minuteStory.updatingBy', 'updatingBy')->addSelect('updatingBy')
             ->leftJoin('minuteStory.minute', 'minute')->addSelect('minute')
             ->leftJoin('minute.closure', 'closure')->addSelect('closure');
-
-        return $qb;
     }
 }

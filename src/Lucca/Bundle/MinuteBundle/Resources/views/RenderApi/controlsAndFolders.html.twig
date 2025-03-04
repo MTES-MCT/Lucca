@@ -6,7 +6,7 @@
         <strong>{{ 'title.control_historic'|trans }}</strong>
 
         {% for control in loopControls %}
-            {% include "LuccaMinuteBundle:Control:frameNoAction.html.twig" with { 'control': control } %}
+            {% include "@LuccaMinute/Control/frameNoAction.html.twig" with { 'control': control } %}
         {% endfor %}
     {% endif %}
 </div> {#-- End Panel - Controls --#}
@@ -17,7 +17,7 @@
         <strong>{{ 'title.folder_historic'|trans }}</strong>
 
         {% for folder in loopFolders %}
-            {% include "LuccaMinuteBundle:Folder:frameNoAction.html.twig" with { 'folder': folder } %}
+            {% include "@LuccaMinute/Folder/frameNoAction.html.twig" with { 'folder': folder } %}
         {% endfor %}
     {% endif %}
 </div> {#-- End Panel - Folders --#}

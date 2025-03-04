@@ -63,7 +63,7 @@
                     <th>{{ 'text.updating.control'|trans }}</th>
                     <td>
                         {% for control in controlsF6 %}
-                            {% include "LuccaMinuteBundle:Control:frame.html.twig" with { 'control': control, 'frame_update': true } %}
+                            {% include "@LuccaMinute/Control/frame.html.twig" with { 'control': control, 'frame_update': true } %}
                         {% endfor %}
 
                         {% if is_granted("ROLE_LUCCA") and not closure and controlsF6|length == 0 %}
@@ -120,7 +120,7 @@
                     <th>{{ 'text.updating.folder'|trans }}</th>
                     <td>
                         {% for folder in foldersF6 %}
-                            {% include "LuccaMinuteBundle:Folder:frame.html.twig" with { 'folder': folder } %}
+                            {% include "@LuccaMinute/Folder/frame.html.twig" with { 'folder': folder } %}
                         {% endfor %}
 
                         {% if is_granted("ROLE_LUCCA") and not closure and foldersF6|length == 0 %}
@@ -138,7 +138,7 @@
                     <td>
                         {% for folder in foldersF6 %}
                             {% if folder.courier %}
-                                {% include "LuccaMinuteBundle:Courier:frame.html.twig" with { 'courier': folder.courier, 'frame_update': true } %}
+                                {% include "@LuccaMinute/Courier/frame.html.twig" with { 'courier': folder.courier, 'frame_update': true } %}
                             {% endif %}
                         {% endfor %}
                     </td>

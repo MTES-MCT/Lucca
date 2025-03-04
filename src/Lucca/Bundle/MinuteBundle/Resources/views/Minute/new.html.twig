@@ -1,4 +1,4 @@
-{% extends "LuccaThemeAngleBundle:SubLayout:new.html.twig" %}
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
 {% trans_default_domain 'LuccaMinuteBundle' %}
 
 {% set param_entity='entity.minute'|transchoice(1) %}
@@ -13,7 +13,7 @@
 
     {#Form theme apply for child only#}
     {% form_theme form '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig' %}
-    {% form_theme form.humans 'LuccaMinuteBundle:Human:human-theme.html.twig' %}
+    {% form_theme form.humans '@LuccaMinute/Human/human-theme.html.twig' %}
 
     {{ form_errors(form) }}
 
@@ -160,7 +160,7 @@
 {% block lucca_css %}
     {{ parent() }}
 
-    <link href="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
+    <link href="{{ asset('plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
           rel="stylesheet">
     <link href="{{ asset('bundles/luccacore/css/lucca_map.css') }}" rel="stylesheet">
     {#-- Plugin sweet alert 2 --#}
@@ -171,8 +171,8 @@
 {% block lucca_js %}
     {{ parent() }}
 
-    <script src="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js') }}"></script>
-    <script src="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/lang/bootstrap-datepicker.fr.js') }}"></script>
+    <script src="{{ asset('plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('plugins/bootstrap-datepicker/lang/bootstrap-datepicker.fr.js') }}"></script>
 
     <script src="{{ asset('plugins/symfony-collection/jquery.collection.js') }}"></script>
 
@@ -189,7 +189,7 @@
     <script>
 
         {#-- Contain all js needed for the modal map --#}
-        {% include('LuccaMinuteBundle:Minute/Js:formMap.js.twig' ) %}
+        {% include('@LuccaMinute/Minute/Js/formMap.js.twig' ) %}
 
         {#Datepicker#}
         $('.date-picker').datepicker({

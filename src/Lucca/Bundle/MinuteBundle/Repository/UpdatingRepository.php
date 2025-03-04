@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,51 +10,37 @@
 
 namespace Lucca\Bundle\MinuteBundle\Repository;
 
-use Lucca\Bundle\MinuteBundle\Entity\Control;
-use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
-use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 
-/**
- * Class UpdatingRepository
- *
- * @package Lucca\Bundle\MinuteBundle\Repository
- * @author Terence <terence@numeric-wave.tech>
- */
+use Doctrine\ORM\QueryBuilder;
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\MinuteBundle\Entity\{Control, Minute};
+
 class UpdatingRepository extends EntityRepository
 {
     /**
      * Method used to find all updating with geo code in a specific area and by adherent
-     *
-     * @param $p_minLat
-     * @param $p_maxLat
-     * @param $p_minLon
-     * @param $p_maxLon
-     * @param Adherent|null $p_adherent
-     * @param null $p_maxResults
-     * @param null $p_minutes
-     * @return int|mixed|string
      */
-    public function findAllInArea($p_minLat, $p_maxLat, $p_minLon, $p_maxLon, Adherent $p_adherent = null, $p_maxResults = null, $p_minutes = null)
+    public function findAllInArea($minLat, $maxLat, $minLon, $maxLon, Adherent $adherent = null, $maxResults = null, $minutes = null): mixed
     {
-        $qb = $this->getLocalized($p_adherent);
+        $qb = $this->getLocalized($adherent);
 
         $qb->andWhere($qb->expr()->between('plot.latitude', ':q_minLat', ':q_maxLat'))
             ->andWhere($qb->expr()->between('plot.longitude', ':q_minLon', ':q_maxLon'))
-            ->setParameter('q_minLat', $p_minLat)
-            ->setParameter('q_maxLat', $p_maxLat)
-            ->setParameter('q_minLon', $p_minLon)
-            ->setParameter('q_maxLon', $p_maxLon);
+            ->setParameter('q_minLat', $minLat)
+            ->setParameter('q_maxLat', $maxLat)
+            ->setParameter('q_minLon', $minLon)
+            ->setParameter('q_maxLon', $maxLon);
 
-        if ($p_minutes && count($p_minutes) > 0) {
+        if ($minutes && count($minutes) > 0) {
             $qb->andwhere($qb->expr()->in('updating.minute', ':q_minutes'))
-                ->setParameter(':q_minutes', $p_minutes);
+                ->setParameter(':q_minutes', $minutes);
         }
 
-        if($p_maxResults){
+        if ($maxResults){
             $qb->groupBy('updating');
-            $qb->setMaxResults($p_maxResults);
+            $qb->setMaxResults($maxResults);
         }
 
         return $qb->getQuery()->getResult();
@@ -61,18 +48,15 @@ class UpdatingRepository extends EntityRepository
 
     /**
      * Method used to find all updating with geo code and by adherent
-     *
-     * @param Adherent|null $p_adherent
-     * @return mixed
      */
-    public function findAllWithGeocodeDashboard(Adherent $p_adherent = null)
+    public function findAllWithGeocodeDashboard(?Adherent $p_adherent = null): mixed
     {
         $qb = $this->getLocalized($p_adherent);
 
         $qb->select('updating.id,
-        minute.id as minuteId, minute.num as minuteNum, 
+        minute.id as minuteId, minute.num as minuteNum,
         plot.latitude as plotLat, plot.longitude as plotLng, plot.address as plotAddr, plot.place as plotPlace,
-        plot.parcel as plotParcel, plot_town.name as plotTownName, plot_town.code as plotTownCode, 
+        plot.parcel as plotParcel, plot_town.name as plotTownName, plot_town.code as plotTownCode,
         agent.name as agentName, agent.firstname as agentFirstname');
 
         return $qb->getQuery()->getResult();
@@ -80,11 +64,8 @@ class UpdatingRepository extends EntityRepository
 
     /**
      * Method used to find all updating with geo code and by adherent
-     *
-     * @param Adherent|null $p_adherent
-     * @return mixed
      */
-    public function findAllWithGeocode(Adherent $p_adherent = null)
+    public function findAllWithGeocode(?Adherent $p_adherent = null): mixed
     {
         $qb = $this->getLocalized($p_adherent);
 
@@ -94,21 +75,19 @@ class UpdatingRepository extends EntityRepository
     /**
      * Find updating entity by Control
      * used for Folder document
-     *
-     * @param Control $control
-     * @return bool|mixed
      */
-    public function findUpdatingByControl(Control $control)
+    public function findUpdatingByControl(Control $control): mixed
     {
         $qb = $this->queryUpdating();
 
-        $qb->where($qb->expr()->in('controls', ':control'))
-            ->setParameter(':control', $control);
+        $qb->where($qb->expr()->in('controls', ':q_control'))
+            ->setParameter(':q_control', $control);
 
         try {
             return $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             echo 'NonUniqueResultException has been thrown - Updating Repository - ' . $e->getMessage();
+
             return false;
         }
     }
@@ -116,16 +95,13 @@ class UpdatingRepository extends EntityRepository
     /**
      * Find complete Updates associated to Minute
      * use on Minute show
-     *
-     * @param Minute $minute
-     * @return array
      */
-    public function findByMinute(Minute $minute)
+    public function findByMinute(Minute $minute): array
     {
         $qb = $this->queryUpdating();
 
-        $qb->where($qb->expr()->eq('updating.minute', ':minute'))
-            ->setParameter(':minute', $minute);
+        $qb->where($qb->expr()->eq('updating.minute', ':q_minute'))
+            ->setParameter(':q_minute', $minute);
 
         $qb->orderBy('updating.num', 'ASC');
 
@@ -136,16 +112,14 @@ class UpdatingRepository extends EntityRepository
      * Find max num used for 1 minute
      * Use on Code generator
      *
-     * @param $prefix
-     * @return mixed
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findMaxNumForMinute($prefix)
+    public function findMaxNumForMinute($prefix): mixed
     {
         $qb = $this->createQueryBuilder('updating');
 
-        $qb->where($qb->expr()->like('updating.num', ':num'))
-            ->setParameter('num', '%' . $prefix . '%');
+        $qb->where($qb->expr()->like('updating.num', ':q_num'))
+            ->setParameter('q_num', '%' . $prefix . '%');
 
         $qb->select($qb->expr()->max('updating.num'));
 
@@ -157,25 +131,23 @@ class UpdatingRepository extends EntityRepository
     /*******************************************************************************************/
     /**
      * Get updating with geo code and with closure date and by adherent
-     *
-     * @param Adherent|null $p_adherent
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    private function getLocalized(Adherent $p_adherent = null)
+    private function getLocalized(?Adherent $adherent = null): QueryBuilder
     {
         $qb = $this->queryUpdating();
 
         $qb->where($qb->expr()->isNotNull('plot.latitude'))
             ->andWhere($qb->expr()->isNotNull('plot.longitude'));
 
-        if ($p_adherent) {
-            if ($p_adherent->getIntercommunal())
+        if ($adherent) {
+            if ($adherent->getIntercommunal()) {
                 $qb->andWhere($qb->expr()->eq('plot_intercommunal', ':q_intercommunal'))
-                    ->setParameter('q_intercommunal', $p_adherent->getIntercommunal());
-
-            elseif ($p_adherent->getTown())
+                    ->setParameter('q_intercommunal', $adherent->getIntercommunal());
+            }
+            elseif ($adherent->getTown()) {
                 $qb->andWhere($qb->expr()->eq('plot_town', ':q_town'))
-                    ->setParameter(':q_town', $p_adherent->getTown());
+                    ->setParameter(':q_town', $adherent->getTown());
+            }
         }
 
         return $qb;
@@ -188,10 +160,8 @@ class UpdatingRepository extends EntityRepository
     /**
      * Override findAll method
      * with Updating dependencies
-     *
-     * @return array
      */
-    public function findAll()
+    public function findAll(): array
     {
         $qb = $this->queryUpdating();
 
@@ -201,13 +171,8 @@ class UpdatingRepository extends EntityRepository
     /**
      * Override find method
      * with Updating dependencies
-     *
-     * @param mixed $id
-     * @param null $lockMode
-     * @param null $lockVersion
-     * @return bool|mixed|object|null
      */
-    public function find($id, $lockMode = null, $lockVersion = null)
+    public function find(mixed $id, $lockMode = null, $lockVersion = null): ?object
     {
         $qb = $this->queryUpdating();
 
@@ -218,7 +183,8 @@ class UpdatingRepository extends EntityRepository
             return $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             echo 'NonUniqueResultException has been thrown - Updating Repository - ' . $e->getMessage();
-            return false;
+
+            return null;
         }
     }
 
@@ -228,12 +194,10 @@ class UpdatingRepository extends EntityRepository
 
     /**
      * Classic dependencies
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    private function queryUpdating()
+    private function queryUpdating(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('updating')
+        return $this->createQueryBuilder('updating')
             ->leftJoin('updating.minute', 'minute')->addSelect('minute')
             ->leftJoin('minute.plot', 'plot')->addSelect('plot')
             ->leftJoin('plot.town', 'plot_town')->addSelect('plot_town')
@@ -248,7 +212,5 @@ class UpdatingRepository extends EntityRepository
             ->leftJoin('controls.humansByMinute', 'humansByMinute')->addSelect('humansByMinute')
             ->leftJoin('controls.humansByControl', 'humansByControl')->addSelect('humansByControl')
             ->leftJoin('controls.editions', 'editions')->addSelect('editions');
-
-        return $qb;
     }
 }

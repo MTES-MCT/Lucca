@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,18 +10,12 @@
 
 namespace Lucca\Bundle\MinuteBundle\Repository;
 
-use Lucca\Bundle\MinuteBundle\Entity\Control;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\{EntityRepository, NonUniqueResultException, QueryBuilder};
+
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\CoreBundle\Repository\AdherentRepository;
+use Lucca\Bundle\MinuteBundle\Entity\Control;
 
-/**
- * Class MinuteRepository
- *
- * @package Lucca\Bundle\MinuteBundle\Repository
- * @author Terence <terence@numeric-wave.tech>
- */
 class MinuteRepository extends EntityRepository
 {
     /** Traits */
@@ -33,54 +28,44 @@ class MinuteRepository extends EntityRepository
     /**
      * Stat for overall reports
      * Use on overall Stat
-     *
-     * @param $p_dateStart
-     * @param $p_dateEnd
-     * @param null $p_adherent
-     * @param null $p_town
-     * @param null $p_interco
-     * @param null $p_service
-     * @param null $p_townAdherent
-     * @return int|mixed|string
      */
-    public function statMinuteOverall($p_dateStart, $p_dateEnd,
-                                      $p_adherent = null, $p_town = null, $p_interco = null, $p_service = null, $p_townAdherent = null)
+    public function statMinuteOverall($dateStart, $dateEnd,
+                                      $adherent = null, $town = null, $interco = null, $service = null, $townAdherent = null): mixed
     {
         $qb = $this->queryMinute();
 
         $qb->andWhere($qb->expr()->between('minute.dateOpening', ':q_start', ':q_end'))
-            ->setParameter(':q_start', $p_dateStart)
-            ->setParameter(':q_end', $p_dateEnd);
+            ->setParameter(':q_start', $dateStart)
+            ->setParameter(':q_end', $dateEnd);
 
         $qb->orderBy('minute.dateOpening', 'ASC');
 
-        if ($p_adherent && count($p_adherent) > 0) {
+        if ($adherent && count($adherent) > 0) {
             $qb->andWhere($qb->expr()->in('adherent', ':q_adherent'))
-                ->setParameter(':q_adherent', $p_adherent);
+                ->setParameter(':q_adherent', $adherent);
         }
 
         /** Filter on minute location */
-        if ($p_town && count($p_town) > 0) {
+        if ($town && count($town) > 0) {
             $qb->andWhere($qb->expr()->in('plot_town', ':q_townPlot'))
-                ->setParameter(':q_townPlot', $p_town);
+                ->setParameter(':q_townPlot', $town);
         }
 
         /** Filter on adherent data */
-        if ($p_townAdherent && count($p_townAdherent) > 0) {
+        if ($townAdherent && count($townAdherent) > 0) {
             $qb->andWhere($qb->expr()->in('town', ':q_townAdherent'))
-                ->setParameter(':q_townAdherent', $p_townAdherent);
+                ->setParameter(':q_townAdherent', $townAdherent);
         }
 
-        if ($p_interco && count($p_interco) > 0) {
+        if ($interco && count($interco) > 0) {
             $qb->andWhere($qb->expr()->in('intercommunal', ':q_intercommunal'))
-                ->setParameter(':q_intercommunal', $p_interco);
+                ->setParameter(':q_intercommunal', $interco);
         }
 
-        if ($p_service && count($p_service) > 0) {
+        if ($service && count($service) > 0) {
             $qb->andWhere($qb->expr()->in('service', ':q_service'))
-                ->setParameter(':q_service', $p_service);
+                ->setParameter(':q_service', $service);
         }
-
 
         $qb->select(array(
             'partial minute.{id, num, dateOpening}',
@@ -100,72 +85,61 @@ class MinuteRepository extends EntityRepository
     /**
      * Stat for overall reports
      * Use on table Stat
-     *
-     * @param null $p_dateStart
-     * @param null $p_dateEnd
-     * @param null $p_adherent
-     * @param null $p_town
-     * @param null $p_interco
-     * @param null $p_service
-     * @param null $p_origin
-     * @param null $p_risk
-     * @param null $p_folders
-     * @return int|mixed|string
      */
-    public function statMinutes($p_dateStart = null, $p_dateEnd = null,
-                                $p_adherent = null, $p_town = null, $p_interco = null, $p_service = null,
-                                $p_origin = null, $p_risk = null, $p_townAdherent = null, $p_folders = null)
+    public function statMinutes($dateStart = null, $dateEnd = null,
+                                $adherent = null, $town = null, $interco = null, $service = null,
+                                $origin = null, $risk = null, $townAdherent = null, $folders = null): mixed
     {
         $qb = $this->queryMinute();
 
-        if ($p_dateStart != null && $p_dateEnd != null) {
+        if ($dateStart != null && $dateEnd != null) {
             $qb->andWhere($qb->expr()->between('minute.dateOpening', ':q_start', ':q_end'))
-                ->setParameter(':q_start', $p_dateStart)
-                ->setParameter(':q_end', $p_dateEnd);
+                ->setParameter(':q_start', $dateStart)
+                ->setParameter(':q_end', $dateEnd);
         }
 
         $qb->orderBy('minute.dateOpening', 'ASC');
 
-        if ($p_adherent != null && count($p_adherent) > 0) {
+        if ($adherent != null && count($adherent) > 0) {
             $qb->andWhere($qb->expr()->in('adherent', ':q_adherent'))
-                ->setParameter(':q_adherent', $p_adherent);
+                ->setParameter(':q_adherent', $adherent);
         }
 
         /** Filter on minute location */
-        if ($p_town && count($p_town) > 0) {
+        if ($town && count($town) > 0) {
             $qb->andWhere($qb->expr()->in('plot_town', ':q_townPlot'))
-                ->setParameter(':q_townPlot', $p_town);
+                ->setParameter(':q_townPlot', $town);
         }
 
         /** Filter on adherent data */
-        if ($p_townAdherent && count($p_townAdherent) > 0) {
+        if ($townAdherent && count($townAdherent) > 0) {
             $qb->andWhere($qb->expr()->in('town', ':q_townAdherent'))
-                ->setParameter(':q_townAdherent', $p_townAdherent);
+                ->setParameter(':q_townAdherent', $townAdherent);
         }
 
-        if ($p_interco != null && count($p_interco) > 0) {
+        if ($interco != null && count($interco) > 0) {
             $qb->andWhere($qb->expr()->in('intercommunal', ':q_intercommunal'))
-                ->setParameter(':q_intercommunal', $p_interco);
+                ->setParameter(':q_intercommunal', $interco);
         }
 
-        if ($p_service != null && count($p_service) > 0) {
+        if ($service != null && count($service) > 0) {
             $qb->andWhere($qb->expr()->in('service', ':q_service'))
-                ->setParameter(':q_service', $p_service);
+                ->setParameter(':q_service', $service);
         }
 
-        if ($p_origin != null && count($p_origin) > 0) {
+        if ($origin != null && count($origin) > 0) {
             $qb->andWhere($qb->expr()->in('minute.origin', ':q_origin'))
-                ->setParameter(':q_origin', $p_origin);
+                ->setParameter(':q_origin', $origin);
         }
 
-        if ($p_risk != null && count($p_risk) > 0) {
+        if ($risk != null && count($risk) > 0) {
             $qb->andWhere($qb->expr()->in('plot.risk', ':q_risk'))
-                ->setParameter(':q_risk', $p_risk);
+                ->setParameter(':q_risk', $risk);
         }
 
-        if ($p_folders != null && count($p_folders) > 0) {
+        if ($folders != null && count($folders) > 0) {
             $qb->andWhere($qb->expr()->in('folder', ':q_folder'))
-                ->setParameter(':q_folder', $p_folders);
+                ->setParameter(':q_folder', $folders);
         }
 
         $qb->select(array(
@@ -186,17 +160,14 @@ class MinuteRepository extends EntityRepository
     /**
      * Stat for overall reports
      * Use on table Stat
-     *
-     * @param null $p_adherents
-     * @return int|mixed|string
      */
-    public function statMinutesByAdherents($p_adherents = null)
+    public function statMinutesByAdherents($adherents = null): mixed
     {
         $qb = $this->queryMinute();
 
-        if ($p_adherents != null && count($p_adherents) > 0) {
+        if ($adherents != null && count($adherents) > 0) {
             $qb->andWhere($qb->expr()->in('adherent', ':q_adherent'))
-                ->setParameter(':q_adherent', $p_adherents);
+                ->setParameter(':q_adherent', $adherents);
         }
 
         $qb->select(array(
@@ -216,54 +187,40 @@ class MinuteRepository extends EntityRepository
 
     /**
      * Find all minutes between 2 ids to avoid issues when work on huge database
-     *
-     * @param $p_startId
-     * @param $p_endId
-     * @return int|mixed|string
      */
-    public function findAllBetweenId($p_startId, $p_endId)
+    public function findAllBetweenId($startId, $endId): mixed
     {
         $qb = $this->queryMinuteCommand();
 
         $qb->andWhere($qb->expr()->between('minute.id', ':q_startId', ':q_endId'))
-            ->setParameter('q_startId', $p_startId)
-            ->setParameter('q_endId', $p_endId);
+            ->setParameter('q_startId', $startId)
+            ->setParameter('q_endId', $endId);
 
         return $qb->getQuery()->getResult();
     }
 
     /**
      * Method used to find all closed folders with geo code in a specific area and by adherent
-     *
-     * @param $p_minLat
-     * @param $p_maxLat
-     * @param $p_minLon
-     * @param $p_maxLon
-     * @param Adherent|null $p_adherent
-     * @param null $p_closed
-     * @param null $p_maxResults
-     * @param null $p_minutes
-     * @return int|mixed|string
      */
-    public function findAllInArea($p_minLat, $p_maxLat, $p_minLon, $p_maxLon, Adherent $p_adherent = null, $p_closed = null, $p_maxResults = null, $p_minutes = null)
+    public function findAllInArea($minLat, $maxLat, $minLon, $maxLon, Adherent $adherent = null, $closed = null, $maxResults = null, $minutes = null): mixed
     {
-        $qb = $this->getLocalized($p_adherent, $p_closed);
+        $qb = $this->getLocalized($adherent, $closed);
 
         $qb->andWhere($qb->expr()->between('plot.latitude', ':q_minLat', ':q_maxLat'))
             ->andWhere($qb->expr()->between('plot.longitude', ':q_minLon', ':q_maxLon'))
-            ->setParameter('q_minLat', $p_minLat)
-            ->setParameter('q_maxLat', $p_maxLat)
-            ->setParameter('q_minLon', $p_minLon)
-            ->setParameter('q_maxLon', $p_maxLon);
+            ->setParameter('q_minLat', $minLat)
+            ->setParameter('q_maxLat', $maxLat)
+            ->setParameter('q_minLon', $minLon)
+            ->setParameter('q_maxLon', $maxLon);
 
-        if ($p_minutes && count($p_minutes) > 0) {
+        if ($minutes && count($minutes) > 0) {
             $qb->andwhere($qb->expr()->in('minute.id', ':q_minutes'))
-                ->setParameter(':q_minutes', $p_minutes);
+                ->setParameter(':q_minutes', $minutes);
         }
 
-        if ($p_maxResults) {
+        if ($maxResults) {
             $qb->groupBy('minute');
-            $qb->setMaxResults($p_maxResults);
+            $qb->setMaxResults($maxResults);
         }
 
         return $qb->getQuery()->getResult();
@@ -271,19 +228,15 @@ class MinuteRepository extends EntityRepository
 
     /**
      * Method used to find all minutes with geo code and by adherent
-     *
-     * @param Adherent|null $p_adherent
-     * @param null $p_stateClosed
-     * @return mixed
      */
-    public function findAllWithGeocodeDashboard(Adherent $p_adherent = null, $p_stateClosed = null)
+    public function findAllWithGeocodeDashboard(?Adherent $adherent = null, $stateClosed = null): array
     {
-        $qb = $this->getLocalized($p_adherent, $p_stateClosed);
+        $qb = $this->getLocalized($adherent, $stateClosed);
 
         $qb->select('minute.num, minute.id, minute.dateComplaint,
         plot.latitude as plotLat, plot.longitude as plotLng, plot.address as plotAddr, plot.place as plotPlace,
-        plot.parcel as plotParcel, plot_town.name as plotTownName, plot_town.code as plotTownCode, 
-        controls.id as ctrlsId, updatings.id as updatingsId, decisions.id as decisionsId, 
+        plot.parcel as plotParcel, plot_town.name as plotTownName, plot_town.code as plotTownCode,
+        controls.id as ctrlsId, updatings.id as updatingsId, decisions.id as decisionsId,
         agent.name as agentName, agent.firstname as agentFirstname');
 
         $qb->groupBy('minute.num');
@@ -293,14 +246,10 @@ class MinuteRepository extends EntityRepository
 
     /**
      * Method used to find all minutes with geo code and by adherent
-     *
-     * @param Adherent|null $p_adherent
-     * @param null $p_stateClosed
-     * @return mixed
      */
-    public function findAllSpottingWithGeocode(Adherent $p_adherent = null, $p_stateClosed = null)
+    public function findAllSpottingWithGeocode(Adherent $adherent = null, $stateClosed = null): array
     {
-        $qb = $this->getLocalized($p_adherent, $p_stateClosed);
+        $qb = $this->getLocalized($adherent, $stateClosed);
 
         $qb->andWhere($qb->expr()->eq('SIZE(minute.controls)', 0))
             ->andWhere($qb->expr()->eq('SIZE(minute.updatings)', 0))
@@ -314,99 +263,99 @@ class MinuteRepository extends EntityRepository
      * Used on Minute browser view
      *
      * @param Adherent|null $adherent
-     * @param null $p_fdateStart
-     * @param null $p_fdateEnd
-     * @param null $p_fnum
-     * @param null $p_fstatus
-     * @param null $p_fadherent
-     * @param null $p_ftown
-     * @param null $p_finterco
-     * @param null $p_aservice
-     * @param null $p_atown
-     * @param null $p_ainterco
+     * @param null $dateStart
+     * @param null $dateEnd
+     * @param null $num
+     * @param null $status
+     * @param null $p_adherent
+     * @param null $town
+     * @param null $interco
+     * @param null $service
+     * @param null $towns
+     * @param null $intercos
      * @return mixed
      */
     public function findMinutesBrowser(
-        Adherent $adherent = null, $p_fdateStart = null, $p_fdateEnd = null, $p_fnum = null, $p_fstatus = null,
-                 $p_fadherent = null, $p_ftown = null, $p_finterco = null, $p_aservice = null, $p_atown = null, $p_ainterco = null
+        Adherent $adherent = null, $dateStart = null, $dateEnd = null, $num = null, $status = null,
+                 $p_adherent = null, $town = null, $interco = null, $service = null, $towns = null, $intercos = null
     )
     {
         $qb = $this->queryMinuteBrowser();
 
         $qb->andWhere($qb->expr()->between('minute.dateOpening', ':q_start', ':q_end'))
-            ->setParameter(':q_start', $p_fdateStart)
-            ->setParameter(':q_end', $p_fdateEnd);
+            ->setParameter(':q_start', $dateStart)
+            ->setParameter(':q_end', $dateEnd);
 
         $qb->orderBy('minute.dateOpening', 'ASC');
 
-        if ($p_fnum) {
+        if ($num) {
             $qb->andWhere($qb->expr()->like('minute.num', ':q_num'))
-                ->setParameter(':q_num', '%' . $p_fnum . '%');
+                ->setParameter(':q_num', '%' . $num . '%');
         }
 
-        if ($p_fstatus && count($p_fstatus) > 0) {
+        if ($status && count($status) > 0) {
             $qb->andWhere($qb->expr()->in('minute.status', ':q_status'))
-                ->setParameter(':q_status', $p_fstatus);
+                ->setParameter(':q_status', $status);
         }
 
         /** use xor to enter only if have $p_ftown or $p_finterco but not both */
-        if ($p_ftown && count($p_ftown) > 0 xor $p_finterco && count($p_finterco) > 0) {
+        if ($town && count($town) > 0 xor $interco && count($interco) > 0) {
 
-            if ($p_ftown && count($p_ftown) > 0) {
+            if ($town && count($town) > 0) {
                 $qb->andWhere(
                     $qb->expr()->in('plot_town', ':q_folder_town'))
-                    ->setParameter(':q_folder_town', $p_ftown);
+                    ->setParameter(':q_folder_town', $town);
             }
 
-            if ($p_finterco && count($p_finterco) > 0) {
+            if ($interco && count($interco) > 0) {
                 $qb->andWhere($qb->expr()->in('plot_intercommunal', ':q_folder_intercommunal'))
-                    ->setParameter(':q_folder_intercommunal', $p_finterco);
+                    ->setParameter(':q_folder_intercommunal', $interco);
             }
-        } else if ($p_ftown && count($p_ftown) > 0 && $p_finterco && count($p_finterco) > 0) {
+        } else if ($town && count($town) > 0 && $interco && count($interco) > 0) {
             $qb->andWhere(
                 $qb->expr()->orX(
                     $qb->expr()->in('plot_intercommunal', ':q_folder_intercommunal'),
                     $qb->expr()->in('plot_town', ':q_folder_town')
                 ))
-                ->setParameter(':q_folder_town', $p_ftown)
-                ->setParameter(':q_folder_intercommunal', $p_finterco);
+                ->setParameter(':q_folder_town', $town)
+                ->setParameter(':q_folder_intercommunal', $interco);
         }
 
         if ($adherent) {
             // Call Trait
             $qb = $this->getValuesAdherent($adherent, $qb);
         } else {
-            if ($p_fadherent && count($p_fadherent) > 0) {
+            if ($p_adherent && count($p_adherent) > 0) {
                 $qb->andWhere($qb->expr()->in('adherent', ':q_adherent'))
-                    ->setParameter(':q_adherent', $p_fadherent);
+                    ->setParameter(':q_adherent', $p_adherent);
             }
 
             /** use xor to enter only if have $p_atown or $p_ainterco but not both */
-            if ($p_atown && count($p_atown) > 0 xor $p_ainterco && count($p_ainterco) > 0) {
-                if ($p_atown && count($p_atown) > 0) {
+            if ($towns && count($towns) > 0 xor $intercos && count($intercos) > 0) {
+                if ($towns && count($towns) > 0) {
                     $qb->andWhere(
                         $qb->expr()->in('town', ':q_adherent_town')
                     )
-                        ->setParameter(':q_adherent_town', $p_atown);
+                        ->setParameter(':q_adherent_town', $towns);
                 }
 
-                if ($p_ainterco && count($p_ainterco) > 0) {
+                if ($intercos && count($intercos) > 0) {
                     $qb->andWhere($qb->expr()->in('intercommunal', ':q_adherent_intercommunal'))
-                        ->setParameter(':q_adherent_intercommunal', $p_ainterco);
+                        ->setParameter(':q_adherent_intercommunal', $intercos);
                 }
-            } else if ($p_atown && count($p_atown) > 0 && $p_ainterco && count($p_ainterco) > 0) {
+            } else if ($towns && count($towns) > 0 && $intercos && count($intercos) > 0) {
                 $qb->andWhere(
                     $qb->expr()->orX(
                         $qb->expr()->in('intercommunal', ':q_adherent_intercommunal'),
                         $qb->expr()->in('town', ':q_adherent_town')
                     ))
-                    ->setParameter(':q_adherent_town', $p_atown)
-                    ->setParameter(':q_adherent_intercommunal', $p_ainterco);
+                    ->setParameter(':q_adherent_town', $towns)
+                    ->setParameter(':q_adherent_intercommunal', $intercos);
             }
 
-            if ($p_aservice && count($p_aservice) > 0) {
+            if ($service && count($service) > 0) {
                 $qb->andWhere($qb->expr()->in('service', ':q_service'))
-                    ->setParameter(':q_service', $p_aservice);
+                    ->setParameter(':q_service', $service);
             }
 
         }
@@ -440,21 +389,19 @@ class MinuteRepository extends EntityRepository
     /**
      * Find a minute entity with Control entity
      * Used on Test Controller
-     *
-     * @param Control $p_control
-     * @return mixed
      */
-    public function findMinuteByControl(Control $p_control)
+    public function findMinuteByControl(Control $control): mixed
     {
         $qb = $this->queryMinute();
 
         $qb->where($qb->expr()->in('controls', ':q_control'))
-            ->setParameter(':q_control', $p_control);
+            ->setParameter(':q_control', $control);
 
         try {
             return $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             echo 'NonUniqueResultException has been thrown - Minute Repository - ' . $e->getMessage();
+
             return false;
         }
     }
@@ -462,16 +409,13 @@ class MinuteRepository extends EntityRepository
     /**
      * Find max num used for 1 year
      * Use on Code generator
-     *
-     * @param $year
-     * @return mixed
      */
-    public function findMaxNumForYear($year)
+    public function findMaxNumForYear($year): mixed
     {
         $qb = $this->createQueryBuilder('minute');
 
-        $qb->where($qb->expr()->like('minute.num', ':num'))
-            ->setParameter('num', '%' . $year . '%');
+        $qb->where($qb->expr()->like('minute.num', ':q_num'))
+            ->setParameter('q_num', '%' . $year . '%');
 
         $qb->select($qb->expr()->max('minute.num'));
 
@@ -479,6 +423,7 @@ class MinuteRepository extends EntityRepository
             return $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             echo 'NonUniqueResultException has been thrown - Minute Repository - ' . $e->getMessage();
+
             return false;
         }
     }
@@ -486,35 +431,36 @@ class MinuteRepository extends EntityRepository
     /*******************************************************************************************/
     /********************* Get specifics queries *****/
     /*******************************************************************************************/
+
     /**
      * Get folder with geo code and with closure date and by adherent and by state (open or closed)
-     *
-     * @param Adherent|null $p_adherent
-     * @param null $p_stateClosed
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    private function getLocalized(Adherent $p_adherent = null, $p_stateClosed = null)
+    private function getLocalized(?Adherent $adherent = null, $stateClosed = null): QueryBuilder
     {
         $qb = $this->queryMinute();
 
         $qb->where($qb->expr()->isNotNull('plot.latitude'))
             ->andWhere($qb->expr()->isNotNull('plot.longitude'));
 
-        if ($p_adherent) {
-            if ($p_adherent->getIntercommunal())
+        if ($adherent) {
+            if ($adherent->getIntercommunal()) {
                 $qb->andWhere($qb->expr()->eq('plot_intercommunal', ':q_intercommunal'))
-                    ->setParameter('q_intercommunal', $p_adherent->getIntercommunal());
+                    ->setParameter('q_intercommunal', $adherent->getIntercommunal());
+            }
 
-            elseif ($p_adherent->getTown())
+            elseif ($adherent->getTown()) {
                 $qb->andWhere($qb->expr()->eq('plot_town', ':q_town'))
-                    ->setParameter(':q_town', $p_adherent->getTown());
+                    ->setParameter(':q_town', $adherent->getTown());
+            }
         }
 
-        if ($p_stateClosed != null && count($p_stateClosed) > 0)
+        if ($stateClosed != null && count($stateClosed) > 0) {
             $qb->andWhere($qb->expr()->in('closure.status', ':q_state'))
-                ->setParameter('q_state', $p_stateClosed);
-        else
+                ->setParameter('q_state', $stateClosed);
+        }
+        else {
             $qb->andWhere($qb->expr()->isNull('closure'));
+        }
 
         return $qb;
     }
@@ -526,10 +472,8 @@ class MinuteRepository extends EntityRepository
     /**
      * Override findAll method
      * with Minute dependencies
-     *
-     * @return array
      */
-    public function findAll()
+    public function findAll(): array
     {
         $qb = $this->queryMinuteBrowser();
 
@@ -539,13 +483,8 @@ class MinuteRepository extends EntityRepository
     /**
      * Override find method
      * with Minute dependencies
-     *
-     * @param mixed $id
-     * @param null $lockMode
-     * @param null $lockVersion
-     * @return bool|mixed|object|null
      */
-    public function find($id, $lockMode = null, $lockVersion = null)
+    public function find(mixed $id, $lockMode = null, $lockVersion = null): ?object
     {
         $qb = $this->queryMinuteShow();
 
@@ -556,7 +495,8 @@ class MinuteRepository extends EntityRepository
             return $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             echo 'NonUniqueResultException has been thrown - Minute Repository - ' . $e->getMessage();
-            return false;
+
+            return null;
         }
     }
 
@@ -566,12 +506,10 @@ class MinuteRepository extends EntityRepository
 
     /**
      * Classic dependencies
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    private function queryMinute()
+    private function queryMinute(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('minute')
+        return $this->createQueryBuilder('minute')
             ->leftJoin('minute.closure', 'closure')->addSelect('closure')
             ->leftJoin('minute.controls', 'controls')->addSelect('controls')
             ->leftJoin('controls.folder', 'folder')->addSelect('folder')
@@ -591,33 +529,25 @@ class MinuteRepository extends EntityRepository
             ->leftJoin('minute.tribunal', 'tribunal')->addSelect('tribunal')
             ->leftJoin('minute.updatings', 'updatings')->addSelect('updatings')
             ->leftJoin('minute.decisions', 'decisions')->addSelect('decisions');
-
-        return $qb;
     }
 
     /**
      * Query for command
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    private function queryMinuteCommand()
+    private function queryMinuteCommand(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('minute')
+        return $this->createQueryBuilder('minute')
             ->leftJoin('minute.closure', 'closure')->addSelect('closure')
             ->leftJoin('minute.controls', 'controls')->addSelect('controls')
             ->leftJoin('controls.folder', 'folder')->addSelect('folder')
             ->leftJoin('minute.updatings', 'updatings')->addSelect('updatings')
             ->leftJoin('minute.decisions', 'decisions')->addSelect('decisions');
-
-        return $qb;
     }
 
     /**
      * All dependencies to display one Minute Entity
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    private function queryMinuteShow()
+    private function queryMinuteShow(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('minute')
             ->leftJoin('minute.adherent', 'adherent')->addSelect('adherent')
@@ -659,10 +589,8 @@ class MinuteRepository extends EntityRepository
 
     /**
      * All dependencies to display one Minute Entity
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    private function queryMinuteBrowser()
+    private function queryMinuteBrowser(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('minute')
             ->leftJoin('minute.adherent', 'adherent')
@@ -701,4 +629,3 @@ class MinuteRepository extends EntityRepository
         return $qb;
     }
 }
-

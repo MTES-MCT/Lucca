@@ -24,14 +24,14 @@
                 {% set filename = 'LuccaMinuteBundle:Control/Printing/Custom:access_empty-'~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
                 {% include filename with { 'human': edition.human } %}
             {% else %}
-                {% include 'LuccaMinuteBundle:Control/Printing/Basic:access_empty.html.twig' with { 'human': edition.human } %}
+                {% include '@LuccaMinute/Control/Printing/Basic/access_empty.html.twig' with { 'human': edition.human } %}
             {% endif %}
         {% else %}
             {% if 'setting.control.accessContent.name'|setting == true %}
-                {% set filename = 'LuccaMinuteBundle:Control/Printing/Custom:access_content-'~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+                {% set filename = 'LuccaMinute/Control/Printing/Custom/access_content-'~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
                 {% include filename with { 'human': edition.human } %}
             {% else %}
-                {% include 'LuccaMinuteBundle:Control/Printing/Basic:access_content.html.twig' with { 'human': edition.human } %}
+                {% include '@LuccaMinute/Control/Printing/Basic/access_content.html.twig' with { 'human': edition.human } %}
             {% endif %}
         {% endif %}
     {% endif %}

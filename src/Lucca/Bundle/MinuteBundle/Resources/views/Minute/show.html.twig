@@ -1,4 +1,4 @@
-{% extends 'LuccaThemeAngleBundle:SubLayout:show.html.twig' %}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
 {% trans_default_domain 'LuccaMinuteBundle' %}
 
 {% set param_entity='entity.minute'|transchoice(1) %}
@@ -184,7 +184,7 @@
                     <div class="card-wrapper">
                         <div class="card-body">
                             {% for control in minute.controls if control.type is constant('TYPE_FOLDER', control) %}
-                                {% include "LuccaMinuteBundle:Control:frame.html.twig" with { 'control': control, 'frame_update': false } %}
+                                {% include "@LuccaMinute/Control/frame.html.twig" with { 'control': control, 'frame_update': false } %}
                             {% endfor %}
 
 
@@ -208,7 +208,7 @@
                     <div class="card-wrapper">
                         <div class="card-body">
                             {% for folder in foldersF3 if folder.type is constant('TYPE_FOLDER', folder) %}
-                                {% include "LuccaMinuteBundle:Folder:frame.html.twig" with { 'folder': folder } %}
+                                {% include "@LuccaMinute/Folder/frame.html.twig" with { 'folder': folder } %}
                             {% endfor %}
 
                             {% if app.user and is_granted("ROLE_LUCCA") and not closure %}
@@ -232,7 +232,7 @@
                         <div class="card-body">
                             {% for folder in foldersF3 if folder.type is constant('TYPE_FOLDER', folder) %}
                                 {% if folder.courier %}
-                                    {% include "LuccaMinuteBundle:Courier:frame.html.twig" with { 'courier': folder.courier, 'frame_update': false } %}
+                                    {% include "@LuccaMinute/Courier/frame.html.twig" with { 'courier': folder.courier, 'frame_update': false } %}
                                 {% endif %}
                             {% endfor %}
                         </div>
@@ -272,7 +272,7 @@
                         <div class="card-body">
                             {% if minute.updatings|length > 0 %}
                                 {% for updating in minute.updatings %}
-                                    {% include "LuccaMinuteBundle:Updating:frame.html.twig" with { 'updating': updating } %}
+                                    {% include "@LuccaMinute/Updating/frame.html.twig" with { 'updating': updating } %}
                                 {% endfor %}
                             {% endif %}
 
@@ -300,13 +300,13 @@
                             <div class="text-justify text-warning">
                                 <small>Ce cadre est réservé à la {{ 'setting.general.ddtAcronym.name'|setting }}. Si vous avez connaissance d'une décision
                                     spécifique, n'hésitez pas à prendre contact avec la <a
-                                            href="mailto:{{'setting.general.emailLegaleDepartement.name'| setting }}"> {{ 'setting.general.ddtAcronym.name'|setting}} -
+                                        href="mailto:{{'setting.general.emailLegaleDepartement.name'| setting }}"> {{ 'setting.general.ddtAcronym.name'|setting}} -
                                         Affaires Juridiques</a></small>
                             </div>
 
                             {% if decisions %}
                                 {% for decision in decisions %}
-                                    {% include "LuccaMinuteBundle:Decision:frame.html.twig" with { 'decision': decision } %}
+                                    {% include "@LuccaMinute/Decision/frame.html.twig" with { 'decision': decision } %}
                                 {% endfor %}
                             {% endif %}
 
@@ -330,7 +330,7 @@
                     <div class="card-wrapper">
                         <div class="card-body">
                             {% if closure %}
-                                {% include "LuccaMinuteBundle:Closure:frame.html.twig" with { 'closure': closure } %}
+                                {% include "@LuccaMinute/Closure/frame.html.twig" with { 'closure': closure } %}
                             {% elseif app.user and is_granted("ROLE_LUCCA") %}
                                 <a class="btn btn-primary btn-lg"
                                    href="{{ path('lucca_minute_close', { 'id': minute.id }) }}"
@@ -357,19 +357,19 @@
     {{ parent() }}
 
     {#Modal - Minute delete#}
-    {% include 'LuccaThemeAngleBundle:Modal:delete.html.twig' with {'id': 'minute-' ~ minute.id, 'name': minute.num, 'delForm': delete_form} %}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': 'minute-' ~ minute.id, 'name': minute.num, 'delForm': delete_form} %}
 
     {#Modal - Map#}
     {% include '@LuccaMinute/Minute/map-modal.html.twig' %}
 
     {#Modal - Folder fence#}
     {% for folder in foldersF3 %}
-        {% include 'LuccaThemeAngleBundle:Modal:fence.html.twig' with {'name': folder.num, 'id': 'folder3-' ~ folder.id,
+        {% include '@LuccaThemeStreamDashboardUiKit/Modal/fence.html.twig' with {'name': folder.num, 'id': 'folder3-' ~ folder.id,
             'link': path('lucca_folder_fence', {'minute_id': minute.id, 'id': folder.id })} %}
 
         {#Modal - Reopen folder#}
         {% if is_granted("ROLE_FOLDER_OPEN") and folder.dateClosure is not null %}
-            {% include 'LuccaThemeAngleBundle:Modal:open.html.twig' with {'name': folder.num, 'id': 'open-folder3-' ~ folder.id,
+            {% include '@LuccaThemeStreamDashboardUiKit/Modal/open.html.twig' with {'name': folder.num, 'id': 'open-folder3-' ~ folder.id,
                 'link': path('lucca_folder_open', {'minute_id': minute.id, 'id': folder.id })} %}
         {% endif %}
 
@@ -378,17 +378,17 @@
             {% set courier = folder.courier %}
 
             {% if courier.dateJudicial is null %}
-                {% include 'LuccaThemeAngleBundle:Modal:dateCourier.html.twig' with {'name': 'help.courier.judicial'|trans,
+                {% include '@LuccaThemeStreamDashboardUiKit/Modal/dateCourier.html.twig' with {'name': 'help.courier.judicial'|trans,
                     'id': 'courier-judicial-' ~ courier.id, 'link': path('lucca_courier_judicial_print', {'minute_id': minute.id, 'id': courier.id })} %}
             {% endif %}
 
             {% if courier.dateDdtm is null %}
-                {% include 'LuccaThemeAngleBundle:Modal:dateCourier.html.twig' with {'name': 'help.courier.ddtm'|trans( {'%DDTM%': 'setting.general.ddtAcronym.name'|setting } ),
+                {% include '@LuccaThemeStreamDashboardUiKit/Modal/dateCourier.html.twig' with {'name': 'help.courier.ddtm'|trans( {'%DDTM%': 'setting.general.ddtAcronym.name'|setting } ),
                     'id': 'courier-ddtm-' ~ courier.id, 'link': path('lucca_courier_ddtm_print', {'minute_id': minute.id, 'id': courier.id })} %}
             {% endif %}
 
             {% if courier.dateOffender is null %}
-                {% include 'LuccaThemeAngleBundle:Modal:dateCourier.html.twig' with {'name': 'help.courier.offender'|trans,
+                {% include '@LuccaThemeStreamDashboardUiKit/Modal/dateCourier.html.twig' with {'name': 'help.courier.offender'|trans,
                     'id': 'courier-offender-' ~ courier.id, 'link': path('lucca_courier_offender_print', {'minute_id': minute.id, 'id': courier.id })} %}
             {% endif %}
         {% endif %}
@@ -402,7 +402,7 @@
         {% for control in updating.controls %}
             {% if control.folder %}
                 {% set folder = control.folder %}
-                {% include 'LuccaThemeAngleBundle:Modal:fence.html.twig' with {'name': folder.num, 'id': 'folder6-' ~ folder.id,
+                {% include '@LuccaThemeStreamDashboardUiKit/Modal/fence.html.twig' with {'name': folder.num, 'id': 'folder6-' ~ folder.id,
                     'link': path('lucca_folder_fence', {'minute_id': minute.id, 'id': folder.id })} %}
 
                 {#Modal - Courier date and print#}
@@ -410,17 +410,17 @@
                     {% set courier = folder.courier %}
 
                     {% if courier.dateJudicial is null %}
-                        {% include 'LuccaThemeAngleBundle:Modal:dateCourier.html.twig' with {'name': 'help.courier.judicial'|trans,
+                        {% include '@LuccaThemeStreamDashboardUiKit/Modal/dateCourier.html.twig' with {'name': 'help.courier.judicial'|trans,
                             'id': 'courier-judicial-' ~ courier.id, 'link': path('lucca_courier_judicial_print', {'minute_id': minute.id, 'id': courier.id })} %}
                     {% endif %}
 
                     {% if courier.dateDdtm is null %}
-                        {% include 'LuccaThemeAngleBundle:Modal:dateCourier.html.twig' with {'name': 'help.courier.ddtm'|trans( {'%DDTM%': 'setting.general.ddtAcronym.name'|setting } ),
+                        {% include '@LuccaThemeStreamDashboardUiKit/Modal/dateCourier.html.twig' with {'name': 'help.courier.ddtm'|trans( {'%DDTM%': 'setting.general.ddtAcronym.name'|setting } ),
                             'id': 'courier-ddtm-' ~ courier.id, 'link': path('lucca_courier_ddtm_print', {'minute_id': minute.id, 'id': courier.id })} %}
                     {% endif %}
 
                     {% if courier.dateOffender is null %}
-                        {% include 'LuccaThemeAngleBundle:Modal:dateCourier.html.twig' with {'name': 'help.courier.offender'|trans,
+                        {% include '@LuccaThemeStreamDashboardUiKit/Modal/dateCourier.html.twig' with {'name': 'help.courier.offender'|trans,
                             'id': 'courier-offender-' ~ courier.id, 'link': path('lucca_courier_offender_print', {'minute_id': minute.id, 'id': courier.id })} %}
                     {% endif %}
                 {% endif %}

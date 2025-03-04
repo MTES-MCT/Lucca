@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,37 +10,28 @@
 
 namespace Lucca\Bundle\MinuteBundle\Repository;
 
-use Lucca\Bundle\MinuteBundle\Entity\Control;
-use Lucca\Bundle\MinuteBundle\Entity\Minute;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
-use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Doctrine\ORM\{EntityRepository, NonUniqueResultException, QueryBuilder};
 
-/**
- * Class ControlRepository
- *
- * @package Lucca\Bundle\MinuteBundle\Repository
- * @author Terence <terence@numeric-wave.tech>
- */
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\MinuteBundle\Entity\{Control, Minute};
+
 class ControlRepository extends EntityRepository
 {
     /*******************************************************************************************/
     /********************* Stats methods *****/
     /*******************************************************************************************/
+
     /**
      * Count type of decision between date of minute opening
-     *
-     * @param null $p_minutes
-     * @return int|mixed|string
      */
-    public function findBetweenDates($p_minutes = null, $p_state = [Control::STATE_INSIDE, Control::STATE_INSIDE_WITHOUT_CONVOCATION])
+    public function findBetweenDates($minutes = null, $p_state = [Control::STATE_INSIDE, Control::STATE_INSIDE_WITHOUT_CONVOCATION]): mixed
     {
         $qb = $this->queryControlSimple();
 
         /************** Filters on minute to get ******************/
-        if ($p_minutes && count($p_minutes) > 0) {
+        if ($minutes && count($minutes) > 0) {
             $qb->andWhere($qb->expr()->in('minute', ':q_minutes'))
-                ->setParameter(':q_minutes', $p_minutes);
+                ->setParameter(':q_minutes', $minutes);
         }
 
         if ($p_state && count($p_state) > 0) {
@@ -57,17 +49,14 @@ class ControlRepository extends EntityRepository
 
     /**
      * Stat for overall minutes reports
-     *
-     * @param null $p_stateControl
-     * @return int|mixed|string
      */
-    public function statControl($p_stateControl = null)
+    public function statControl($stateControl = null): mixed
     {
         $qb = $this->queryControlSimple();
 
-        if ($p_stateControl != null && count($p_stateControl) > 0) {
+        if ($stateControl != null && count($stateControl) > 0) {
             $qb->andWhere($qb->expr()->in('control.stateControl', ':q_stateControl'))
-                ->setParameter(':q_stateControl', $p_stateControl);
+                ->setParameter(':q_stateControl', $stateControl);
         }
 
         $qb->select(array(
@@ -80,37 +69,29 @@ class ControlRepository extends EntityRepository
     /*******************************************************************************************/
     /********************* Custom findAll methods *****/
     /*******************************************************************************************/
+
     /**
      * Method used to find all closed folders with geo code in a specific area
-     *
-     * @param $p_minLat
-     * @param $p_maxLat
-     * @param $p_minLon
-     * @param $p_maxLon
-     * @param Adherent|null $p_adherent
-     * @param null $p_maxResults
-     * @param null $p_minutes
-     * @return int|mixed|string
      */
-    public function findAllInArea($p_minLat, $p_maxLat, $p_minLon, $p_maxLon, Adherent $p_adherent = null, $p_maxResults = null, $p_minutes = null)
+    public function findAllInArea($minLat, $maxLat, $minLon, $maxLon, Adherent $adherent = null, $maxResults = null, $minutes = null): mixed
     {
-        $qb = $this->getLocalized($p_adherent);
+        $qb = $this->getLocalized($adherent);
 
         $qb->andWhere($qb->expr()->between('plot.latitude', ':q_minLat', ':q_maxLat'))
             ->andWhere($qb->expr()->between('plot.longitude', ':q_minLon', ':q_maxLon'))
-            ->setParameter('q_minLat', $p_minLat)
-            ->setParameter('q_maxLat', $p_maxLat)
-            ->setParameter('q_minLon', $p_minLon)
-            ->setParameter('q_maxLon', $p_maxLon);
+            ->setParameter('q_minLat', $minLat)
+            ->setParameter('q_maxLat', $maxLat)
+            ->setParameter('q_minLon', $minLon)
+            ->setParameter('q_maxLon', $maxLon);
 
-        if ($p_minutes && count($p_minutes) > 0) {
+        if ($minutes && count($minutes) > 0) {
             $qb->andwhere($qb->expr()->in('control.minute', ':q_minutes'))
-                ->setParameter(':q_minutes', $p_minutes);
+                ->setParameter(':q_minutes', $minutes);
         }
 
-        if ($p_maxResults) {
+        if ($maxResults) {
             $qb->groupBy('control');
-            $qb->setMaxResults($p_maxResults);
+            $qb->setMaxResults($maxResults);
         }
 
         return $qb->getQuery()->getResult();
@@ -118,13 +99,10 @@ class ControlRepository extends EntityRepository
 
     /**
      * Method used to find all minutes with geo code
-     *
-     * @param Adherent|null $p_adherent
-     * @return array
      */
-    public function findAllWithGeocodeDashboard(Adherent $p_adherent = null)
+    public function findAllWithGeocodeDashboard(?Adherent $adherent = null): array
     {
-        $qb = $this->getLocalized($p_adherent);
+        $qb = $this->getLocalized($adherent);
 
         $qb->select([
             'partial control.{id, dateControl}',
@@ -141,24 +119,18 @@ class ControlRepository extends EntityRepository
 
     /**
      * Method used to find all minutes with geo code
-     *
-     * @param Adherent|null $p_adherent
-     * @return array
      */
-    public function findAllWithGeocode(Adherent $p_adherent = null)
+    public function findAllWithGeocode(?Adherent $adherent = null): array
     {
-        $qb = $this->getLocalized($p_adherent);
+        $qb = $this->getLocalized($adherent);
 
         return $qb->getQuery()->getResult();
     }
 
     /**
      * Find Control linked to a Minute entity
-     *
-     * @param Minute $minute
-     * @return mixed
      */
-    public function findByMinute(Minute $minute)
+    public function findByMinute(Minute $minute): array
     {
         $qb = $this->queryControl();
 
@@ -174,18 +146,15 @@ class ControlRepository extends EntityRepository
     /**
      * Override findAll method
      * with Courier dependencies
-     *
-     * @param $p_type
-     * @return int|mixed|string
      */
-    public function findOneForTest($p_type)
+    public function findOneForTest($type): ?object
     {
         $qb = $this->queryControl();
 
         $qb->where($qb->expr()->isNull('adherent.logo'));
 
         $qb->andWhere($qb->expr()->eq('control.type', ':q_type'))
-            ->setParameter(':q_type', $p_type);
+            ->setParameter(':q_type', $type);
 
         $qb->setMaxResults(1);
 
@@ -193,7 +162,8 @@ class ControlRepository extends EntityRepository
             return $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             echo 'NonUniqueResultException has been thrown - Folder Repository - ' . $e->getMessage();
-            return false;
+
+            return null;
         }
     }
 
@@ -204,10 +174,8 @@ class ControlRepository extends EntityRepository
     /**
      * Override findAll method
      * with Control dependencies
-     *
-     * @return array
      */
-    public function findAll()
+    public function findAll(): array
     {
         $qb = $this->queryControl();
 
@@ -217,13 +185,8 @@ class ControlRepository extends EntityRepository
     /**
      * Override find method
      * with Control dependencies
-     *
-     * @param mixed $id
-     * @param null $lockMode
-     * @param null $lockVersion
-     * @return bool|mixed|object|null
      */
-    public function find($id, $lockMode = null, $lockVersion = null)
+    public function find(mixed $id, $lockMode = null, $lockVersion = null): ?object
     {
         $qb = $this->queryControl();
 
@@ -234,35 +197,36 @@ class ControlRepository extends EntityRepository
             return $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             echo 'NonUniqueResultException has been thrown - Control Repository - ' . $e->getMessage();
-            return false;
+
+            return null;
         }
     }
 
     /*******************************************************************************************/
     /********************* Get specifics queries *****/
     /*******************************************************************************************/
+
     /**
      * Get folder with geo code and with closure date and by adherent
-     *
-     * @param Adherent|null $p_adherent
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    private function getLocalized(Adherent $p_adherent = null)
+    private function getLocalized(?Adherent $adherent = null): QueryBuilder
     {
         $qb = $this->queryControl();
 
         $qb->where($qb->expr()->isNotNull('plot.latitude'))
             ->andWhere($qb->expr()->isNotNull('plot.longitude'));
 
-        if ($p_adherent) {
-            if ($p_adherent->getIntercommunal())
+        if ($adherent) {
+            if ($adherent->getIntercommunal()) {
                 $qb->andWhere($qb->expr()->eq('plot_intercommunal', ':q_intercommunal'))
-                    ->setParameter('q_intercommunal', $p_adherent->getIntercommunal());
-
-            elseif ($p_adherent->getTown())
+                    ->setParameter('q_intercommunal', $adherent->getIntercommunal());
+            }
+            elseif ($adherent->getTown()) {
                 $qb->andWhere($qb->expr()->eq('plot_town', ':q_town'))
-                    ->setParameter(':q_town', $p_adherent->getTown());
+                    ->setParameter(':q_town', $adherent->getTown());
+            }
         }
+
         return $qb;
     }
 
@@ -272,25 +236,19 @@ class ControlRepository extends EntityRepository
 
     /**
      * Classic dependencies
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    private function queryControlSimple()
+    private function queryControlSimple(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('control')
+        return $this->createQueryBuilder('control')
             ->leftJoin('control.minute', 'minute')->addSelect('minute');
-
-        return $qb;
     }
 
     /**
      * Classic dependencies
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    private function queryControl()
+    private function queryControl(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('control')
+        return $this->createQueryBuilder('control')
             ->leftJoin('control.minute', 'minute')->addSelect('minute')
             ->leftJoin('minute.plot', 'plot')->addSelect('plot')
             ->leftJoin('plot.town', 'plot_town')->addSelect('plot_town')
@@ -302,7 +260,5 @@ class ControlRepository extends EntityRepository
             ->leftJoin('control.agentAttendants', 'agentAttendants')->addSelect('agentAttendants')
             ->leftJoin('control.editions', 'editions')->addSelect('editions')
             ->leftJoin('control.folder', 'folder')->addSelect('folder');
-
-        return $qb;
     }
 }

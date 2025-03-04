@@ -19,10 +19,10 @@
         {% endif %}
     {% else %}
         {% if 'setting.control.convocationContent.name'|setting == true %}
-            {% set filename = 'LuccaMinuteBundle:Control/Printing/Custom:convocation_content-'~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+            {% set filename = '@LuccaMinute/Control/Printing/Custom/convocation_content-'~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
             {% include filename with {'minute': minute, 'control': control, 'human': edition.human} %}
         {% else %}
-            {% include 'LuccaMinuteBundle:Control/Printing/Basic:convocation_content.html.twig' with {'minute': minute, 'control': control, 'human': edition.human} %}
+            {% include '@LuccaMinute/Control/Printing/Basic/convocation_content.html.twig' with {'minute': minute, 'control': control, 'human': edition.human} %}
         {% endif %}
     {% endif %}
 {% endblock lucca_model_content %}

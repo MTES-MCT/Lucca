@@ -1,201 +1,64 @@
-{% extends 'LuccaThemeAngleBundle:SubLayout:browser.html.twig' %}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig' %}
 {% trans_default_domain 'LuccaMinuteBundle' %}
 
-{% set param_entity='entity.minute'|transchoice(1) %}
-{% set param_entities='entity.minute'|transchoice(2) %}
+{% set param_entity='entity.control'|transchoice(1) %}
+{% set param_entities='entity.control'|transchoice(2) %}
 
 {% block menuActive_minute %}class="active"{% endblock %}
 
-{% block lucca_description %}
-{% endblock lucca_description %}
 
-{% block lucca_filters_form %}
+{% block lucca_panels %}
+
     {{ form_start(form) }}
+    {{ form_errors(form) }}
 
-    {% if is_granted("ROLE_ADMIN") %}
-        <div class="row">
-            <div class="col-12">
-                <h3>{{ 'text.filter.folder'|trans }}</h3>
+    {# Form theme apply for child only #}
+    {% form_theme form '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig' %}
+    {% form_theme form.editions '@LuccaMinute/ControlEdition/editionConvocation-theme.html.twig' %}
+
+    <div class="row">
+
+        {#-- Panel - main --#}
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            <div class="card card-default">
+                <div class="card-header"><strong>{{ 'title.control.letterConvocation'|trans }}</strong></div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+
+                        {{ form_widget(form.editions) }}
+
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"
+                           title="{{ 'link.backMinute'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <button type="submit" class="btn btn-success btn-lg" title="{{ 'link.control.manual.convocationUpdate'|trans }}">
+                            <i class="fa fa-check"></i></button>
+
+                    </div>
+                </div>
             </div>
-        </div>
-    {% endif %}
 
-    <div class="row">
-        <div class="col-6">
-            {{ form_row(form.dateStart) }}
-            {{ form_row(form.dateEnd) }}
-            {% if form.folder_intercommunal is defined %}
-                {{ form_row(form.folder_intercommunal) }}
-            {% endif %}
         </div>
-        <div class="col-6">
-            {{ form_row(form.num) }}
-            {{ form_row(form.status) }}
-            {% if form.folder_town is defined %}
-                {{ form_row(form.folder_town) }}
-            {% endif %}
-        </div>
-    </div>
+        {#-- End Panel - main --#}
 
-    {% if form.adherent is defined %}
-    <hr/>
-    <div class="row">
-        <div class="col-12">
-            <h3>{{ 'text.filter.adherent'|trans }}</h3>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            <p class="col-sm-10 col-sm-offset-2">Sélectionner un adhérent :</p>
-            {{ form_row(form.adherent) }}
-        </div>
-
-            <div class="col-6">
-                <p class="col-sm-10 col-sm-offset-2">Ou sélectionner le maillage territorial concerné :</p>
-                {{ form_row(form.adherent_intercommunal) }}
-                {{ form_row(form.adherent_town) }}
-                {{ form_row(form.service) }}
-            </div>
-    </div>
-    {% endif %}
-
-    <div class="row">
-
-        <div class="col-12">
-            <a class="btn btn-secondary btn-md" href="{{ path('lucca_core_dashboard') }}"
-               title="{{ 'link.back'|trans }}"><i class="fa fa-reply"></i></a>
-            <button type="submit" class="btn btn-success btn-md" title="{{ 'link.minute.filter'|trans }}">
-                <i class="fa fa-check"></i>
-            </button>
-        </div>
     </div>
 
     {{ form_rest(form) }}
     {{ form_end(form) }}
 
-{% endblock lucca_filters_form %}
+{% endblock lucca_panels %}
 
-{% block lucca_results_list %}
+{% block lucca_js %}
+    {{ parent() }}
 
-    {% if app.user and is_granted("ROLE_LUCCA") %}
-        <div class="col-xs-12 text-center">
-            <a href="{{ path('lucca_minute_new') }}" class="btn btn-primary btn-labeled text-right"
-               title="{{ 'link.minute.new'|trans }}">
-                <span class="btn-label"><i class="fa fa-plus"></i></span>
-                {{ 'link.minute.new'|trans }}
-            </a>
-        </div>
-    {% endif %}
+    <script src="{{ asset('plugins/symfony-collection/jquery.collection.js') }}"></script>
 
-    <table class="table table-striped table-hover dataTables responsive">
-        <thead>
-        <tr>
-            <th>{{ 'label.town'|trans }}</th>
-            <th><i class="fas fa-folder-open"></i> {{ 'label.num'|trans }}</th>
-            <th>{{ 'label.dateOpening'|trans }}</th>
-            <th>{{ 'label.responsible'|trans }}</th>
-            <th>{{ 'label.plot'|trans }}</th>
-            <th>{{ 'label.nature'|trans }}</th>
-            <th>{{ 'label.dateFolder3'|trans }}</th>
-            <th>{{ 'label.dateFolder6'|trans }}</th>
-            <th>{{ 'label.dateHearingTribunal'|trans }}</th>
-            <th>{{ 'label.dateHearingAppeal'|trans }}</th>
-            <th>{{ 'label.dateClosing'|trans }}</th>
-            <th>{{ 'label.displayOnMap'|trans }}</th>
-            <th><i class="fa fa-cogs"></i> {{ 'label.actions'|trans }}</th>
-        </tr>
-        </thead>
+    <script>
 
-        <tbody>
-        {% for minute in minutes %}
-
-            {% set foldersF3 = [] %}
-            {% for control in minute.controls %}
-                {% if control.folder %}{% set foldersF3 = foldersF3|merge([control.folder]) %}{% endif %}
-            {% endfor %}
-
-            <tr {% if minute.closure %}class="table-info"{% endif %}>
-                <td>{{ minute.plot.town.name }}</td>
-                <td>{{ minute.num }}</td>
-                <td>{{ minute.dateOpening|date('d/m/Y') }}</td>
-                <td>
-                    {% for human in minute.humans %}
-                        {{ human.officialName }}
-                        {% if not loop.last %}<br>{% endif %}
-                    {% endfor %}
-                </td>
-                <td>{{ minute.plot.parcel }}</td>
-                <td>
-                    {% for folder in foldersF3 if folder.type is constant('TYPE_FOLDER', folder) %}
-                        {% for tag in folder.tagsNature %}
-                            {{ tag.name }}
-                            {% if not loop.last %}<br>{% endif %}
-                        {% endfor %}
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for folder in foldersF3 if folder.type is constant('TYPE_FOLDER', folder) %}
-                        {% if folder.dateClosure %}{{ folder.dateClosure|date('d/m/Y') }}{% endif %}
-                        <br>
-                    {% endfor %}
-                </td>
-                <td>
-                    {% if minute.updatings|length > 0 %}
-                        {% set updating = minute.updatings|last %}
-
-                        {% if updating.controls|length > 0 %}
-                            {% set control = updating.controls|last %}
-
-                            {% if control.folder %}
-                                {% set folder = control.folder %}
-                                {% if folder.dateClosure %}{{ folder.dateClosure|date('d/m/Y') }}{% endif %}
-                            {% endif %}
-
-                        {% endif %}
-                    {% endif %}
-                </td>
-                <td>
-                    {% for decision in minute.decisions %}
-                        {% if decision.tribunalCommission and decision.tribunalCommission.dateJudicialDesision %}
-                            {{ decision.tribunalCommission.dateJudicialDesision|date('d/m/Y') }}
-                            <br>
-                            <span class="badge badge-info">{{ decision.tribunalCommission.statusDecision|trans }}</span>
-                            <br>
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for decision in minute.decisions %}
-                        {% if decision.appealCommission and decision.appealCommission.dateJudicialDesision %}
-                            {{ decision.appealCommission.dateJudicialDesision|date('d/m/Y') }}
-                            <br>
-                            <span class="badge badge-info">{{ decision.appealCommission.statusDecision|trans }}</span>
-                            <br>
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td>{% if minute.closure %}{{ minute.closure.dateClosing|date('d/m/Y') }}{% endif %}</td>
-                <td>
-                    {% if minute.plot.latitude != NULL and minute.plot.longitude != NULL %}
-                        <i class="fa fa-check"></i>
-                    {% else %}
-                        <i class="fa fa-times"></i>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if app.user and is_granted("ROLE_VISU") %}
-                        <a href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"
-                           title="{{ 'link.minute.show'|trans }}" class="btn btn-primary btn-sm">
-                            <i class="fa fa-eye"></i>
-                        </a>
-                    {% endif %}
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-{% endblock lucca_results_list %}
-
-
-
+        {# Collection form #}
+        $('.editions-collection').collection({
+            allow_duplicate: false, allow_up: false, allow_down: false, allow_add: false, allow_delete: false,
+        });
+    </script>
+{% endblock lucca_js %}

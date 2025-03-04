@@ -14,12 +14,6 @@ use Doctrine\ORM\EntityRepository;
 
 use Lucca\Bundle\CoreBundle\Repository\ToggleableRepository;
 
-/**
- * Class ClosureRepository
- *
- * @package Lucca\Bundle\MinuteBundle\Repository
- * @author Terence <terence@numeric-wave.tech>
- */
 class ClosureRepository extends EntityRepository
 {
     /** Traits */

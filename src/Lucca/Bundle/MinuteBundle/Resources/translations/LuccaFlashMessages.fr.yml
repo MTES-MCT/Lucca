@@ -1,7 +1,6 @@
 ####################################
 ## Flash Domain
-##
-## Author Terence <terence@numeric-wave.tech>
+## Locale: fr
 ####################################
 
 flash:
@@ -11,7 +10,7 @@ flash:
         deletedSuccessfully: "Le dossier a bien été supprimé."
 
         create_agent_before_minute: "Avant de créer un dossier, ajouter un agent verbalisateur à votre profil adhérent."
-        filters_too_large: "Les dates selectionnées sont trop larges. Veuillez sélectionner des dates qui n'excèdent pas un an d'écart. Les dates par défaut ont été appliqués pour la récupération de données."
+        filters_too_large: "Les dates sélectionnées sont trop larges. Veuillez sélectionner des dates qui n'excèdent pas un an d'écart. Les dates par défaut ont été appliqués pour la récupération de données."
         cantAccess: "Vous n'avez pas accès à ce dosier."
 
     control:
@@ -43,7 +42,7 @@ flash:
         openSuccessfully: "Le dossier a bien été ouvert."
 
     plot:
-        townNotAuthorize: "Vous n'etes pas autorisé à saisir des dossiers sur cette ville. (Dans le cas de coordonées vérifier à ne pas être proche de la bordure de la ville)"
+        townNotAuthorize: "Vous n'êtes pas autorisé à saisir des dossiers sur cette ville. (Dans le cas de coordonnées vérifier à ne pas être proche de la bordure de la ville)"
 
     filters:
         datesIncorrect: "Les dates saisie sont incorrect. Il est obligatoire de saisir une période."

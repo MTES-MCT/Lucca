@@ -12,12 +12,6 @@ namespace Lucca\Bundle\MinuteBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-/**
- * Class HumanRepository
- *
- * @package Lucca\Bundle\MinuteBundle\Repository
- * @author Terence <terence@numeric-wave.tech>
- */
 class HumanRepository extends EntityRepository
 {
 }

@@ -10,22 +10,14 @@
 
 namespace Lucca\Bundle\MinuteBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\{EntityRepository, QueryBuilder};
 
-/**
- * Class PlotRepository
- *
- * @package Lucca\Bundle\MinuteBundle\Repository
- * @author Terence <terence@numeric-wave.tech>
- */
 class PlotRepository extends EntityRepository
 {
     /**
      * Method used to find all plot never login and not lock
-     *
-     * @return array
      */
-    public function findAllWithoutGeocode()
+    public function findAllWithoutGeocode(): array
     {
         $qb = $this->queryPlot();
 
@@ -36,10 +28,8 @@ class PlotRepository extends EntityRepository
 
     /**
      * Method used to find all plot without location from
-     *
-     * @return array
      */
-    public function findAllWithoutLocationFrom()
+    public function findAllWithoutLocationFrom(): array
     {
         $qb = $this->queryPlot();
 
@@ -57,13 +47,9 @@ class PlotRepository extends EntityRepository
 
     /**
      * Classic dependencies
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    private function queryPlot()
+    private function queryPlot(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('plot');
-
-        return $qb;
+        return $this->createQueryBuilder('plot');
     }
 }
