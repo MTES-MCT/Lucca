@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,66 +10,50 @@
 
 namespace Lucca\Bundle\MinuteBundle\Twig;
 
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+
 use Lucca\Bundle\MinuteBundle\Entity\Human;
-use Symfony\Component\Translation\TranslatorInterface;
 
-/**
- * Class EntityHumanExtension
- *
- * @package Lucca\Bundle\MinuteBundle\Twig
- * @author Térence <terence@numeric-wave.eu>
- */
-class EntityHumanExtension extends \Twig_Extension
+class EntityHumanExtension extends AbstractExtension
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * FolderCreator constructor.
-     *
-     * @param TranslatorInterface $translator
-     */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+    )
     {
-        $this->translator = $translator;
     }
 
     /**
-     * Get twig filters
-     * @return array|\Twig_SimpleFilter[]
+     * @inheritdoc
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return array(
-            new \Twig_SimpleFilter('human_inlineDescription', array($this, 'getInlineDescription'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFilter('human_inlineName', array($this, 'getInlineName'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFilter('human_genderName', array($this, 'getGenderName'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFilter('human_gender', array($this, 'getGender'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFilter('human_address', array($this, 'getAddress'), array('is_safe' => array('html'))),
+            new TwigFilter('human_inlineDescription', [$this, 'getInlineDescription'], ['is_safe' => ['html']]),
+            new TwigFilter('human_inlineName', [$this, 'getInlineName'], ['is_safe' => ['html']]),
+            new TwigFilter('human_genderName', [$this, 'getGenderName'], ['is_safe' => ['html']]),
+            new TwigFilter('human_gender', [$this, 'getGender'], ['is_safe' => ['html']]),
+            new TwigFilter('human_address', [$this, 'getAddress'], ['is_safe' => ['html']]),
         );
     }
 
     /**
      * Format Json data
-     *
-     * @param $json
-     * @return mixed
      */
-    public function getInlineDescription(Human $human)
+    public function getInlineDescription(Human $human): string
     {
         $inlineDescription = '';
 
         if ($human->getPerson() === Human::PERSON_CORPORATION) {
             $inlineDescription .= $human->getCompany() . ' ';
-            $inlineDescription .= '(' . $this->translator->trans($human->getStatusCompany(), array(), 'LuccaMinuteBundle') . ') <br>';
+            $inlineDescription .= '(' . $this->translator->trans($human->getStatusCompany(), [], 'LuccaMinuteBundle') . ') <br>';
             $inlineDescription .= $human->getAddressCompany() . ' <br>';
         }
 
-        $inlineDescription .= $this->translator->trans($human->getGender(), array(), 'LuccaMinuteBundle') . ' ';
+        $inlineDescription .= $this->translator->trans($human->getGender(), [], 'LuccaMinuteBundle') . ' ';
         $inlineDescription .= $human->getOfficialName();
-        $inlineDescription .= '(' . $this->translator->trans($human->getStatus(), array(), 'LuccaMinuteBundle') . ')  <br>';
+        $inlineDescription .= '(' . $this->translator->trans($human->getStatus(), [], 'LuccaMinuteBundle') . ')  <br>';
         $inlineDescription .= $human->getAddress();
 
         return $inlineDescription;
@@ -76,20 +61,17 @@ class EntityHumanExtension extends \Twig_Extension
 
     /**
      * Inline name of Human
-     *
-     * @param Human $human
-     * @return string
      */
-    public function getInlineName(Human $human)
+    public function getInlineName(Human $human): string
     {
         $inlineDescription = '';
 
         if ($human->getPerson() === Human::PERSON_CORPORATION) {
-            $inlineDescription .= $this->translator->trans('label.company', array(), 'LuccaMinuteBundle') . ' ';
+            $inlineDescription .= $this->translator->trans('label.company', [], 'LuccaMinuteBundle') . ' ';
             $inlineDescription .= $human->getCompany() . ' représenté par ';
         }
 
-        $inlineDescription .= $this->translator->trans($human->getGender(), array(), 'LuccaMinuteBundle') . ' ';
+        $inlineDescription .= $this->translator->trans($human->getGender(), [], 'LuccaMinuteBundle') . ' ';
         $inlineDescription .= $human->getOfficialName();
 
         return $inlineDescription;
@@ -97,20 +79,16 @@ class EntityHumanExtension extends \Twig_Extension
 
     /**
      * Return gender + name of human
-     *
-     * @param Human $human
-     * @param bool $flagRepresentant
-     * @return string
      */
-    public function getGenderName(Human $human, $flagRepresentant = true)
+    public function getGenderName(Human $human, bool $flagRepresentant = true): string
     {
         $inlineDescription = '';
 
         if ($human->getPerson() === Human::PERSON_CORPORATION && $flagRepresentant) {
-            $inlineDescription .= $this->translator->trans('label.company', array(), 'LuccaMinuteBundle') . ' ';
+            $inlineDescription .= $this->translator->trans('label.company', [], 'LuccaMinuteBundle') . ' ';
             $inlineDescription .= $human->getCompany();
         } else {
-            $inlineDescription .= $this->translator->trans($human->getGender(), array(), 'LuccaMinuteBundle') . ' ';
+            $inlineDescription .= $this->translator->trans($human->getGender(), [], 'LuccaMinuteBundle') . ' ';
             $inlineDescription .= $human->getOfficialName();
         }
 
@@ -119,30 +97,24 @@ class EntityHumanExtension extends \Twig_Extension
 
     /**
      * Return Gender of a Human Entity
-     *
-     * @param Human $human
-     * @return string
      */
-    public function getGender(Human $human)
+    public function getGender(Human $human): string
     {
         $inlineDescription = '';
 
-        if ($human->getGender() === Human::GENDER_MALE)
+        if ($human->getGender() === Human::GENDER_MALE) {
             $inlineDescription .= $this->translator->trans('choice.gender.male', array(), 'LuccaMinuteBundle');
-        else
+        } else {
             $inlineDescription .= $this->translator->trans('choice.gender.female', array(), 'LuccaMinuteBundle');
+        }
 
         return $inlineDescription;
     }
 
     /**
      * Return gender + name of human
-     *
-     * @param Human $human
-     * @param bool $flagRepresentant
-     * @return string
      */
-    public function getAddress(Human $human, $flagRepresentant = true)
+    public function getAddress(Human $human, bool $flagRepresentant = true): string
     {
         $inlineDescription = '';
 
@@ -155,10 +127,7 @@ class EntityHumanExtension extends \Twig_Extension
         return $inlineDescription;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'lucca.twig.entity.human';
     }

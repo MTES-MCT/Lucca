@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -7,45 +8,27 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\Bundle\MinuteBundle\Utils;
+namespace Lucca\Bundle\MinuteBundle\Manager;
 
-/**
- * Class MinuteManager
- *
- * @package Lucca\Bundle\MinuteBundle\Utils
- * @author Alizee Meyer <alizee.m@numeric-wave.eu>
- */
+use DateInterval, DatePeriod;
+
 class StatisticsManager
 {
-    /**
-     * StatisticsManager constructor
-     *
-     */
-    public function __construct()
-    {
-    }
 
     /**
      * Create array useful in stats
-     *
-     * @param $p_dateStart
-     * @param $p_dateEnd
-     * @param array $p_folders
-     * @param array $p_controls
-     * @param array $p_decisions
-     * @return array
      */
-    public function createOverallArray($p_dateStart, $p_dateEnd, array $p_folders, array $p_controls, array $p_decisions)
+    public function createOverallArray($dateStart, $dateEnd, array $folders, array $controls, array $decisions): array
     {
         /** Create array that will be useful */
-        $result = array();
+        $result = [];
 
         /** We need to keep the list of month in order to display it, use the dates of the filter to get the full list */
-        $start = (clone($p_dateStart));
-        $end = (clone($p_dateEnd));
-        $interval = \DateInterval::createFromDateString('1 month');
-        $period = new \DatePeriod($start, $interval, $end);
-        $arrayMonth = array();
+        $start = (clone($dateStart));
+        $end = (clone($dateEnd));
+        $interval = DateInterval::createFromDateString('1 month');
+        $period = new DatePeriod($start, $interval, $end);
+        $arrayMonth = [];
 
         /** Create an array containing all the months */
         foreach ($period as $item) {
@@ -54,7 +37,7 @@ class StatisticsManager
 
         /** Add all month in the final array and init counters to 0 */
         foreach ($arrayMonth as $month) {
-            $result[$month] = array();
+            $result[$month] = [];
             $result[$month]['folder'] = 0;
             $result[$month]['control'] = 0;
             $result[$month]['decision'] = 0;
@@ -64,32 +47,36 @@ class StatisticsManager
         }
 
         /** Add number of folder in result array */
-        foreach ($p_folders as $folder) {
+        foreach ($folders as $folder) {
             $month = $folder->getMinute()->getDateOpening()->format('Y-m');
             if (array_key_exists($month, $result)) {
-                if ($folder->getNatinfs() !== null && count($folder->getNatinfs()) === 0)
+                if ($folder->getNatinfs() !== null && count($folder->getNatinfs()) === 0) {
                     $result[$month]['ascertainment'] += 1;
-                else
+                }
+                else {
                     $result[$month]['folder'] += 1;
+                }
             }
         }
 
         /** Add number of control in result array */
-        foreach ($p_controls as $control) {
+        foreach ($controls as $control) {
             $month = $control->getMinute()->getDateOpening()->format('Y-m');
-            if (array_key_exists($month, $result))
+            if (array_key_exists($month, $result)) {
                 $result[$month]['control'] += 1;
+            }
         }
 
         /** Add number of decision in result array */
-        foreach ($p_decisions as $decision) {
+        foreach ($decisions as $decision) {
             $month = $decision->getMinute()->getDateOpening()->format('Y-m');
-            if (array_key_exists($month, $result))
-                $result[$month]['decision'] += 1;
+            if (array_key_exists($month, $result)) {
+            }
         }
 
         /** Return a table like :
          *  "2021-01" => array(
+         * $result[$month]['decision'] += 1;
          *      "folder" => 4
          *      "control" => 10
          *      "decision" => 7
@@ -104,19 +91,16 @@ class StatisticsManager
 
     /**
      * Create array containing number of closed and unclosed minutes
-     *
-     * @param $p_minutes
-     * @return array
      */
-    public function createCloseUnclosedArray($p_minutes)
+    public function createCloseUnclosedArray($minutes): array
     {
         /** Init array and counters */
-        $res = array();
+        $res = [];
         $res['unclosed'] = 0;
         $res['closed'] = 0;
 
         /** Update counter depend on if there is a closure linked to the minute */
-        foreach ($p_minutes as $minute) {
+        foreach ($minutes as $minute) {
             if ($minute->getClosure() == null) {
                 $res['unclosed'] += 1;
             } else {
@@ -130,23 +114,20 @@ class StatisticsManager
     /**
      * Create array useful in stats minutes
      * This function is used to create array containing data bout control and folder of each minute
-     *
-     * @param $p_minutes
-     * @return array
      */
-    public function createMinuteDataArray($p_minutes)
+    public function createMinuteDataArray($minutes): array
     {
         /** init data array */
-        $data = array();
+        $data = [];
 
         /** Go across each minutes */
-        foreach ($p_minutes as $minute) {
+        foreach ($minutes as $minute) {
             /** For each minute init needed array and counters */
-            $data[$minute->getNum()] = array();
-            $data[$minute->getNum()]['controlState'] = array();
-            $data[$minute->getNum()]['folderNature'] = array();
-            $data[$minute->getNum()]['folderDateClosure'] = array();
-            $data[$minute->getNum()]['folderNatinf'] = array();
+            $data[$minute->getNum()] = [];
+            $data[$minute->getNum()]['controlState'] = [];
+            $data[$minute->getNum()]['folderNature'] = [];
+            $data[$minute->getNum()]['folderDateClosure'] = [];
+            $data[$minute->getNum()]['folderNatinf'] = [];
             $data[$minute->getNum()]['countFolders'] = 0;
 
             /** Check all controls */
@@ -165,12 +146,14 @@ class StatisticsManager
                     if (!in_array($folder->getNature(), $data[$minute->getNum()]['folderNature'])) {
                         $data[$minute->getNum()]['folderNature'][] = $folder->getNature();
                     }
+
                     /** If the closure date of the current folder is not yet in data array for the current minute save it */
                     if ($folder->getDateClosure()) {
                         if (!in_array($folder->getDateClosure()->format('d/m/Y'), $data[$minute->getNum()]['folderDateClosure'])) {
                             $data[$minute->getNum()]['folderDateClosure'][] = $folder->getDateClosure()->format('d/m/Y');
                         }
                     }
+
                     /** If the natinfs of the current folder is not yet in data array for the current minute save it */
                     foreach ($folder->getNatinfs() as $natinf) {
                         if (!array_key_exists($natinf->getNum(), $data[$minute->getNum()]['folderNatinf'])) {
@@ -207,27 +190,24 @@ class StatisticsManager
     }
 
     /**
-     *Depend on filters return if filters data are correct or not
-     *
-     * @param $p_filters
-     * @return bool
+     * Depend on filters return if filters data are correct or not
      */
-    public function checkDatesFilters($p_filters)
+    public function checkDatesFilters($filters): bool
     {
 
         /** Check if the 2 date filters date are filling */
-        if ($p_filters['dateStart'] != null && $p_filters['dateEnd'] == null) {
+        if ($filters['dateStart'] != null && $filters['dateEnd'] == null) {
             return false;
         }
-        if ($p_filters['dateStart'] == null && $p_filters['dateEnd'] != null) {
+        if ($filters['dateStart'] == null && $filters['dateEnd'] != null) {
             return false;
         }
 
         /** Check if the 2 date closure filters date are filling */
-        if ($p_filters['dateStartClosure'] != null && $p_filters['dateEndClosure'] == null) {
+        if ($filters['dateStartClosure'] != null && $filters['dateEndClosure'] == null) {
             return false;
         }
-        if ($p_filters['dateStartClosure'] == null && $p_filters['dateEndClosure'] != null) {
+        if ($filters['dateStartClosure'] == null && $filters['dateEndClosure'] != null) {
             return false;
         }
 
@@ -236,25 +216,21 @@ class StatisticsManager
 
     /**
      * Count the number of folder without natinfs
-     *
-     * @param $p_folders
-     * @return int
      */
-    public function countFolderWithoutNatinfs($p_folders)
+    public function countFolderWithoutNatinfs($folders): int
     {
         $count = 0;
-        foreach ($p_folders as $folder) {
+
+        foreach ($folders as $folder) {
             if ($folder->getNatinfs() !== null && count($folder->getNatinfs()) === 0) {
                 $count += 1;
             }
         }
+
         return $count;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'lucca.manager.minute_statistics';
     }

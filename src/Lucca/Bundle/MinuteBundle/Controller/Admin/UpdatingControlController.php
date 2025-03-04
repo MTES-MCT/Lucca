@@ -9,6 +9,15 @@
 
 namespace Lucca\Bundle\MinuteBundle\Controller\Admin;
 
+use App\Lucca\Bundle\MinuteBundle\Manager\ControlEditionManager;
+use App\Lucca\Bundle\MinuteBundle\Manager\ControlManager;
+use App\Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\Control;
+use Lucca\Bundle\MinuteBundle\Entity\Updating;
+use Lucca\Bundle\MinuteBundle\Form\UpdatingControlType;
+use Lucca\Bundle\MinuteBundle\Utils\FolderManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -16,16 +25,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Doctrine\ORM\EntityManagerInterface;
-
-use Lucca\Bundle\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\Control;
-use Lucca\Bundle\MinuteBundle\Entity\Updating;
-use Lucca\Bundle\MinuteBundle\Form\UpdatingControlType;
-use Lucca\Bundle\MinuteBundle\Utils\ControlEditionManager;
-use Lucca\Bundle\MinuteBundle\Utils\ControlManager;
-use Lucca\Bundle\MinuteBundle\Utils\FolderManager;
-use Lucca\Bundle\MinuteBundle\Utils\MinuteStoryManager;
 
 #[Route('/updating-{updating_id}/control')]
 #[IsGranted('ROLE_LUCCA')]

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,22 +10,12 @@
 
 namespace Lucca\Bundle\MinuteBundle\Utils;
 
-/**
- * Class HtmlCleaner
- *
- * @package Lucca\Bundle\MinuteBundle\Utils
- * @author Alizee Meyer <alizee.m@numeric-wave.eu>
- */
 class HtmlCleaner
 {
     /**
      * This function will remove specific regex given from the html given
-     *
-     * @param $p_regex
-     * @param $p_html
-     * @return mixed|string|string[]
      */
-    private function removeRegexFromHtml($p_regex, $p_html)
+    private function removeRegexFromHtml($p_regex, $p_html): array|string
     {
         $match = null;
         /** While the asking regex is find in html remove it */
@@ -41,11 +32,8 @@ class HtmlCleaner
 
     /**
      * Remove all font family from html
-     *
-     * @param $p_html
-     * @return mixed
      */
-    public function removeAllFonts($p_html)
+    public function removeAllFonts($p_html): array|string
     {
         // TODO Create an array with all the regex
         //****************************** Clean from font family ***************************************/
@@ -94,18 +82,21 @@ class HtmlCleaner
      * Clean all html field in Folder
      * -> ascertainment + details + violation
      * Edition -> FolderVersion
-     *
-     * @param $p_folder
      */
-    public function cleanHtmlFolder($p_folder)
+    public function cleanHtmlFolder($p_folder): void
     {
         // Clean Folder
-        if ($p_folder->getAscertainment())
+        if ($p_folder->getAscertainment()) {
             $p_folder->setAscertainment($this->removeAllFonts($p_folder->getAscertainment()));
-        if ($p_folder->getViolation())
+        }
+
+        if ($p_folder->getViolation()) {
             $p_folder->setViolation($this->removeAllFonts($p_folder->getViolation()));
-        if ($p_folder->getDetails())
+        }
+
+        if ($p_folder->getDetails()) {
             $p_folder->setDetails($this->removeAllFonts($p_folder->getDetails()));
+        }
 
         /** Clean html of edition if exist */
         $editionFolder = $p_folder->getEdition();
@@ -118,10 +109,8 @@ class HtmlCleaner
     /**
      * Clean all html field in Control associated to Folder
      *  Edition -> letterConvocation + letterAccess
-     *
-     * @param $p_control
      */
-    public function cleanHtmlControl($p_control)
+    public function cleanHtmlControl($p_control): void
     {
         /** Clean html of control edition if exist */
         // Clean Control Edition
@@ -143,10 +132,8 @@ class HtmlCleaner
      * Clean all html field in Courier associated to Folder
      *  Edition -> letterJudicial + letterDDTM
      *  Human Edition -> letterOffender
-     *
-     * @param $p_courier
      */
-    public function cleanHtmlCourier($p_courier)
+    public function cleanHtmlCourier($p_courier): void
     {
         // Clean Courier
         $p_courier->setContext($this->removeAllFonts($p_courier->getContext()));
@@ -183,8 +170,6 @@ class HtmlCleaner
      * tribunalCommission -> restitution
      * appealCommission -> restitution
      * cassationComission -> restitution
-     *
-     * @param $p_decision
      */
     public function cleanHtmlDecision($p_decision)
     {
@@ -193,13 +178,15 @@ class HtmlCleaner
 
         // Clean Expulsion
         $expulsion = $p_decision->getExpulsion();
-        if ($expulsion)
+        if ($expulsion) {
             $expulsion->setComment($this->removeAllFonts($expulsion->getComment()));
+        }
 
         // Clean Demolition
         $demolition = $p_decision->getDemolition();
-        if ($demolition)
+        if ($demolition) {
             $demolition->setComment($this->removeAllFonts($demolition->getComment()));
+        }
 
         // Clean all Contradictory
         $contradictories = $p_decision->getContradictories();
@@ -211,27 +198,26 @@ class HtmlCleaner
 
         // Clean tribunalCommission
         $tribunalCommission = $p_decision->getTribunalCommission();
-        if ($tribunalCommission)
+        if ($tribunalCommission) {
             $tribunalCommission->setRestitution($this->removeAllFonts($tribunalCommission->getRestitution()));
+        }
 
 
         // Clean appealCommission
         $appealCommission = $p_decision->getAppealCommission();
-        if ($appealCommission)
+        if ($appealCommission) {
             $appealCommission->setRestitution($this->removeAllFonts($appealCommission->getRestitution()));
+        }
 
 
         // Clean cassationComission
         $cassationComission = $p_decision->getCassationComission();
-        if ($cassationComission)
+        if ($cassationComission) {
             $cassationComission->setRestitution($this->removeAllFonts($cassationComission->getRestitution()));
-
+        }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'lucca.utils.html_cleaner';
     }

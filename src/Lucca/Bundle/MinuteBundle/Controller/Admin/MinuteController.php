@@ -9,7 +9,23 @@
 
 namespace Lucca\Bundle\MinuteBundle\Controller\Admin;
 
+use App\Lucca\Bundle\MinuteBundle\Manager\MinuteManager;
+use App\Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
+use App\Lucca\Bundle\MinuteBundle\Manager\PlotManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
+use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
+use Lucca\Bundle\DecisionBundle\Entity\Decision;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\MinuteBundle\Entity\MinuteStory;
+use Lucca\Bundle\MinuteBundle\Entity\Plot;
+use Lucca\Bundle\MinuteBundle\Form\MinuteBrowserType;
+use Lucca\Bundle\MinuteBundle\Form\MinuteType;
+use Lucca\Bundle\MinuteBundle\Generator\NumMinuteGenerator;
+use Lucca\Bundle\ParameterBundle\Entity\Intercommunal;
+use Lucca\Bundle\ParameterBundle\Entity\Town;
+use Lucca\Bundle\ParameterBundle\Utils\GeneralUtils;
+use Lucca\Bundle\SettingBundle\Manager\SettingManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -18,23 +34,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Doctrine\ORM\EntityManagerInterface;
-
-use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
-use Lucca\Bundle\MinuteBundle\Entity\Minute;
-use Lucca\Bundle\MinuteBundle\Entity\Plot;
-use Lucca\Bundle\MinuteBundle\Form\MinuteBrowserType;
-use Lucca\Bundle\MinuteBundle\Form\MinuteType;
-use Lucca\Bundle\MinuteBundle\Utils\MinuteStoryManager;
-use Lucca\Bundle\ParameterBundle\Entity\Intercommunal;
-use Lucca\Bundle\ParameterBundle\Entity\Town;
-use Lucca\Bundle\ParameterBundle\Utils\GeneralUtils;
-use Lucca\Bundle\SettingBundle\Manager\SettingManager;
-use Lucca\Bundle\DecisionBundle\Entity\Decision;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteStory;
-use Lucca\Bundle\MinuteBundle\Utils\PlotManager;
-use Lucca\Bundle\MinuteBundle\Utils\MinuteManager;
-use Lucca\Bundle\MinuteBundle\Generator\NumMinuteGenerator;
 
 #[Route('/minute')]
 #[IsGranted('ROLE_USER')]

@@ -9,17 +9,15 @@
 
 namespace Lucca\Bundle\MinuteBundle\Command;
 
+use App\Lucca\Bundle\MinuteBundle\Manager\MinuteManager;
 use Doctrine\ORM\EntityManagerInterface;
-
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
-
-use Lucca\Bundle\MinuteBundle\Entity\Minute;
-use Lucca\Bundle\MinuteBundle\Utils\MinuteManager;
 
 /**
  * Class LuccaInitStatusCommand

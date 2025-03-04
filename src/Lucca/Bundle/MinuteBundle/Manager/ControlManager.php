@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -7,45 +8,36 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\Bundle\MinuteBundle\Utils;
+namespace Lucca\Bundle\MinuteBundle\Manager;
 
 use Lucca\Bundle\MinuteBundle\Entity\Control;
 
-/**
- * Class ControlManager
- *
- * @package Lucca\Bundle\MinuteBundle\Utils
- * @author Térence <terence@numeric-wave.tech>
- */
 class ControlManager
 {
     /**
      * Define Automatically accepted
-     *
-     * @param Control $control
-     * @return Control
      */
-    public function defineAcceptedAutomatically(Control $control)
+    public function defineAcceptedAutomatically(Control $control): Control
     {
         /** Automatically accepted  */
-        if ($control->getStateControl() !== Control::STATE_INSIDE)
+        if ($control->getStateControl() !== Control::STATE_INSIDE) {
             $control->setAccepted(Control::ACCEPTED_OK);
+        }
 
         /** For this reasons - Control is automatically refused */
-        if (in_array($control->getReason(), array(Control::REASON_REFUSED_LETTER, Control::REASON_UNCLAIMED_LETTER)))
+        if (in_array($control->getReason(), array(Control::REASON_REFUSED_LETTER, Control::REASON_UNCLAIMED_LETTER))) {
             $control->setAccepted(Control::ACCEPTED_NOK);
+        }
 
         /** For this reasons - Control is automatically none completed */
-        elseif (in_array($control->getReason(), array(Control::REASON_ERROR_ADRESS, Control::REASON_UNKNOW_ADRESS)))
+        elseif (in_array($control->getReason(), array(Control::REASON_ERROR_ADRESS, Control::REASON_UNKNOW_ADRESS))) {
             $control->setAccepted(Control::ACCEPTED_NONE);
+        }
 
         return $control;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'lucca.manager.control';
     }

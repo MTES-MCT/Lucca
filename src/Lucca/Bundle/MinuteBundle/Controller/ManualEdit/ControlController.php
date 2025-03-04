@@ -10,13 +10,7 @@
 
 namespace Lucca\Bundle\MinuteBundle\Controller\ManualEdit;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
-
+use App\Lucca\Bundle\MinuteBundle\Manager\ControlEditionManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Lucca\Bundle\MinuteBundle\Entity\Control;
 use Lucca\Bundle\MinuteBundle\Entity\ControlEdition;
@@ -24,9 +18,14 @@ use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Lucca\Bundle\MinuteBundle\Form\Control\ControlAccessType;
 use Lucca\Bundle\MinuteBundle\Form\Control\ControlConvocationType;
 use Lucca\Bundle\MinuteBundle\Printer\ControlPrinter;
-use Lucca\Bundle\MinuteBundle\Utils\ControlEditionManager;
 use Lucca\Bundle\MinuteBundle\Utils\HtmlCleaner;
 use Lucca\Bundle\SettingBundle\Manager\SettingManager;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/minute-{minute_id}/control-')]
 #[IsGranted('ROLE_LUCCA')]

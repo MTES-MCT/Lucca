@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -7,61 +8,43 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\Bundle\MinuteBundle\Utils;
+namespace Lucca\Bundle\MinuteBundle\Manager;
 
-use Lucca\Bundle\MinuteBundle\Entity\Minute;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteStory;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\ORMException;
+use DateTime, DateInterval, DatePeriod;
 use Exception;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\EntityManager;
+
 use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
+use Lucca\Bundle\DecisionBundle\Entity\Decision;
+use Lucca\Bundle\FolderBundle\Entity\{Courier, Folder};
+use Lucca\Bundle\MinuteBundle\Entity\{Closure, Control, Minute, MinuteStory, Updating};
 
-/**
- * Class MinuteManager
- *
- * @package Lucca\Bundle\MinuteBundle\Utils
- * @author Alizee Meyer <alizee.m@numeric-wave.eu>
- */
-class MinuteStoryManager
+readonly class MinuteStoryManager
 {
-    /**
-     * @var EntityManager
-     */
-    private $em;
-
-    /**
-     * @var AdherentFinder
-     */
-    private $adherentFinder;
-
-    /**
-     * MinuteStoryManager constructor
-     *
-     * @param EntityManager $entityManager
-     * @param AdherentFinder $p_adherentFinder
-     */
-    public function __construct(EntityManager $entityManager, AdherentFinder $p_adherentFinder)
+    public function __construct(
+        private EntityManager  $em,
+        private AdherentFinder $adherentFinder,
+    )
     {
-        $this->em = $entityManager;
-        $this->adherentFinder = $p_adherentFinder;
     }
 
     /**
      * Check and update Minute status
      *
      * This function is called in each controller that add object to the minute
-     * @param Minute $p_minute
+     *
      * @throws ORMException
      */
-    public function manage(Minute $p_minute)
+    public function manage(Minute $minute): void
     {
         /** init steps */
-        $controls = $this->em->getRepository(Control::class)->findByMinute($p_minute);
-        $folders = $this->em->getRepository(Folder::class)->findSmallFolderByMinute($p_minute);
+        $controls = $this->em->getRepository(Control::class)->findByMinute($minute);
+        $folders = $this->em->getRepository(Folder::class)->findSmallFolderByMinute($minute);
         $couriers = array();
-        $updates = $this->em->getRepository(Updating::class)->findByMinute($p_minute);
-        $decisions = $this->em->getRepository(Decision::class)->findByMinute($p_minute);
-        $closure = $this->em->getRepository(Closure::class)->findByMinute($p_minute);
+        $updates = $this->em->getRepository(Updating::class)->findByMinute($minute);
+        $decisions = $this->em->getRepository(Decision::class)->findByMinute($minute);
+        $closure = $this->em->getRepository(Closure::class)->findByMinute($minute);
 
         $status = 1;
 
@@ -79,7 +62,7 @@ class MinuteStoryManager
         }
 
         /** Get the last correct minute in order to be able to save or not a new minuteStory */
-        $lastMinuteStory = $this->em->getRepository(MinuteStory::class)->findLastByMinute($p_minute);
+        $lastMinuteStory = $this->em->getRepository(MinuteStory::class)->findLastByMinute($minute);
 
         /** Depend on the objects linked to the minute set the status */
         /** The status will always be the most close to the closure */
@@ -87,7 +70,7 @@ class MinuteStoryManager
         $newStatus = -1;
 
         /** Init status minute with the current status in order to avoid errors */
-        $statusMinute = $p_minute->getStatus();
+        $statusMinute = $minute->getStatus();
         switch (true) {
             case ($closure == !null):
                 $status = MinuteStory::STATUS_CLOSURE;
@@ -158,10 +141,10 @@ class MinuteStoryManager
         if ($lastMinuteStory == null || $oldStatus != $newStatus) {
             $minuteStory = new MinuteStory();
             $minuteStory->setStatus($status);
-            $minuteStory->setMinute($p_minute);
+            $minuteStory->setMinute($minute);
 
             /** Set the update date to now */
-            $now = new \DateTime();
+            $now = new DateTime();
             $minuteStory->setDateUpdate($now);
 
             /** Set the adherent who as update the status */
@@ -169,31 +152,27 @@ class MinuteStoryManager
             $this->em->persist($minuteStory);
 
             /** We need to also, update the status stored in the minute */
-            $p_minute->setStatus($statusMinute);
-            $this->em->persist($p_minute);
+            $minute->setStatus($statusMinute);
+            $this->em->persist($minute);
         }
     }
 
     /**
      * Keep only the last stories for each minute
      *
-     * @param array $p_minutesStories
-     * @param $p_dateStart
-     * @param $p_dateEnd
-     * @return array
      * @throws Exception
      */
-    public function keepLastStories(array $p_minutesStories, $p_dateStart, $p_dateEnd)
+    public function keepLastStories(array $minutesStories, $dateStart, $dateEnd): array
     {
         /** Create array that will be useful */
-        $result = array();
+        $result = [];
         /** Create a sub array stories in order to use it easily in twig */
-        $result['stories'] = array();
-        $temp = array();
+        $result['stories'] = [];
+        $temp = [];
 
         /** Group stories by minute */
         /** @var MinuteStory $latestStory */
-        foreach ($p_minutesStories as $minuteStory) {
+        foreach ($minutesStories as $minuteStory) {
             $temp[$minuteStory->getMinute()->getId()][] = $minuteStory;
         }
 
@@ -207,23 +186,24 @@ class MinuteStoryManager
             }
             /** Sort stories in result array depend on the status */
             if (!array_key_exists($latestStory->getStatus(), $result['stories'])) {
-                $result['stories'][$latestStory->getStatus()] = array();
+                $result['stories'][$latestStory->getStatus()] = [];
             }
 
             /** We need to order the sub array by month, we only count how much stories there are we don't keep details */
             if (!array_key_exists($latestStory->getDateUpdate()->format('Y-m'), $result['stories'][$latestStory->getStatus()])) {
                 $result['stories'][$latestStory->getStatus()][$latestStory->getDateUpdate()->format('Y-m')] = 0;
             }
+
             $result['stories'][$latestStory->getStatus()][$latestStory->getDateUpdate()->format('Y-m')] += 1;
         }
 
 
         /** We need to keep the list of month in order to display it, use the dates of the filter to get the full list */
-        $start = (clone($p_dateStart));
-        $end = (clone($p_dateEnd));
-        $interval = \DateInterval::createFromDateString('1 month');
-        $period = new \DatePeriod($start, $interval, $end);
-        $arrayMonth = array();
+        $start = (clone($dateStart));
+        $end = (clone($dateEnd));
+        $interval = DateInterval::createFromDateString('1 month');
+        $period = new DatePeriod($start, $interval, $end);
+        $arrayMonth = [];
 
         foreach ($period as $item) {
             array_push($arrayMonth, $item->format('Y-m'));
@@ -276,16 +256,11 @@ class MinuteStoryManager
 
     /**
      * Create an array with the diagram of reason of closure
-     *
-     * @param $p_dateStart
-     * @param $p_dateEnd
-     * @param null $p_minutes
-     * @return array
      */
-    public function manageClosureData($p_dateStart, $p_dateEnd, $p_minutes = null)
+    public function manageClosureData($dateStart, $dateEnd, $p_minutes = null): array
     {
         /** Get all the stories that are in the range of date and with the status close */
-        $minutesStoriesClosure = $this->em->getRepository(MinuteStory::class)->findClosureBetween($p_dateStart, $p_dateEnd, $p_minutes);
+        $minutesStoriesClosure = $this->em->getRepository(MinuteStory::class)->findClosureBetween($dateStart, $dateEnd, $p_minutes);
 
         $result = array();
         /** Construct an array with key (from closure entity) :
@@ -329,10 +304,7 @@ class MinuteStoryManager
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'lucca.manager.minute_story';
     }

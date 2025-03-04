@@ -10,18 +10,18 @@
 
 namespace Lucca\Bundle\DecisionBundle\Controller\Admin;
 
+use App\Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
+use Lucca\Bundle\DecisionBundle\Entity\Decision;
+use Lucca\Bundle\DecisionBundle\Form\DecisionType;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\MinuteBundle\Utils\{HtmlCleaner};
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-
-use Lucca\Bundle\DecisionBundle\Entity\Decision;
-use Lucca\Bundle\MinuteBundle\Entity\Minute;
-use Lucca\Bundle\MinuteBundle\Utils\{HtmlCleaner, MinuteStoryManager};
-use Lucca\Bundle\DecisionBundle\Form\DecisionType;
 
 #[IsGranted('ROLE_LUCCA')]
 #[Route(path: '/minute-{minute_id}/decision')]

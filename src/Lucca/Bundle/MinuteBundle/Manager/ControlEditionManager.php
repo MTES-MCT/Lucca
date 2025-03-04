@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -7,49 +8,31 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\Bundle\MinuteBundle\Utils;
+namespace Lucca\Bundle\MinuteBundle\Manager;
 
-use Lucca\Bundle\MinuteBundle\Entity\Control;
-use Lucca\Bundle\MinuteBundle\Entity\ControlEdition;
-use Lucca\Bundle\MinuteBundle\Entity\Human;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Exception\ORMException;
 
-/**
- * Class ControlEditionManager
- *
- * @package Lucca\Bundle\MinuteBundle\Utils
- * @author Térence <terence@numeric-wave.tech>
- */
-class ControlEditionManager
+use Lucca\Bundle\MinuteBundle\Entity\{Control, ControlEdition, Human};
+
+readonly class ControlEditionManager
 {
-    /**
-     * @var EntityManager
-     */
-    private $em;
-
-    /**
-     * ControlEditionManager constructor
-     *
-     * @param EntityManager $entityManager
-     */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(
+        private EntityManager $em,
+    )
     {
-        $this->em = $entityManager;
     }
 
     /**
      * Manage ControlEdition after a form submission
-     *
-     * @param Control $control
-     * @return Control
      */
-    public function manageEditionsOnFormSubmission(Control $control)
+    public function manageEditionsOnFormSubmission(Control $control): Control
     {
         $editions = $control->getEditions();
 
         if ($control->getEditions() === null || $control->getEditions()->count() === 0) {
             $this->createEditions($control);
+
             return $control;
         }
 
@@ -66,8 +49,9 @@ class ControlEditionManager
             }
 
             /**  If an edition does not exist then create one */
-            if (!$flagEditionExist)
+            if (!$flagEditionExist) {
                 $this->createOneEdition($control, $human);
+            }
         }
 
         /** 2 - Loop for Humans defined in Control */
@@ -83,14 +67,16 @@ class ControlEditionManager
             }
 
             /**  If an edition does not exist then create one */
-            if (!$flagEditionExist)
+            if (!$flagEditionExist) {
                 $this->createOneEdition($control, $human);
+            }
         }
 
         /**  If an edition stay after loops - then a human has been deleted then delete all rest editions */
         if (sizeof($editions) > 0) {
-            foreach ($editions as $edition)
+            foreach ($editions as $edition) {
                 $this->removeOneEdition($control, $edition);
+            }
         }
 
         return $control;
@@ -99,29 +85,24 @@ class ControlEditionManager
     /**
      * Create all editions required for a specific Control
      * One ControlEdition per Human
-     *
-     * @param Control $p_control
      */
-    public function createEditions(Control $p_control)
+    public function createEditions(Control $control): void
     {
         /** 1 - Loop for Humans defined in Minute list */
-        foreach ($p_control->getHumansByMinute() as $human) {
-            $this->createOneEdition($p_control, $human);
+        foreach ($control->getHumansByMinute() as $human) {
+            $this->createOneEdition($control, $human);
         }
 
         /** 2 - Loop for Humans defined in Control */
-        foreach ($p_control->getHumansByControl() as $human) {
-            $this->createOneEdition($p_control, $human);
+        foreach ($control->getHumansByControl() as $human) {
+            $this->createOneEdition($control, $human);
         }
     }
 
     /**
      * Purge empty editions on Control entity
-     *
-     * @param Control $control
-     * @return Control
      */
-    public function purgeEditions(Control $control)
+    public function purgeEditions(Control $control): Control
     {
         /** Loop for Editions founded */
         foreach ($control->getEditions() as $edition) {
@@ -136,16 +117,12 @@ class ControlEditionManager
 
     /**
      * Create one Edition and linked this to Control
-     *
-     * @param Control $p_control
-     * @param Human $p_human
-     * @return Control
      */
-    private function createOneEdition(Control $p_control, Human $p_human)
+    private function createOneEdition(Control $control, Human $human): Control
     {
         $edition = new ControlEdition();
-        $p_control->addEdition($edition);
-        $edition->setHuman($p_human);
+        $control->addEdition($edition);
+        $edition->setHuman($human);
 
         try {
             $this->em->persist($edition);
@@ -153,33 +130,26 @@ class ControlEditionManager
             echo 'New exception thrown when created Control Edition - ' . $ORMException->getMessage();
         }
 
-        return $p_control;
+        return $control;
     }
 
     /**
      * Remove on Edition of Control
-     *
-     * @param Control $p_control
-     * @param ControlEdition $p_controlEdition
-     * @return Control
      */
-    private function removeOneEdition(Control $p_control, ControlEdition $p_controlEdition)
+    private function removeOneEdition(Control $control, ControlEdition $controlEdition): Control
     {
-        $p_control->removeEdition($p_controlEdition);
+        $control->removeEdition($controlEdition);
 
         try {
-            $this->em->remove($p_controlEdition);
+            $this->em->remove($controlEdition);
         } catch (ORMException $ORMException) {
             echo 'New exception thrown when remove Control Edition - ' . $ORMException->getMessage();
         }
 
-        return $p_control;
+        return $control;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'lucca.manager.control_edition';
     }

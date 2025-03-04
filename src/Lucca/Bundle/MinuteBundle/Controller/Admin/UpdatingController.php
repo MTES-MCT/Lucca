@@ -9,7 +9,14 @@
 
 namespace Lucca\Bundle\MinuteBundle\Controller\Admin;
 
+use App\Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\MinuteBundle\Entity\Updating;
+use Lucca\Bundle\MinuteBundle\Form\UpdatingType;
 use Lucca\Bundle\MinuteBundle\Generator\NumUpdatingGenerator;
+use Lucca\Bundle\MinuteBundle\Utils\HtmlCleaner;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,14 +24,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Doctrine\ORM\EntityManagerInterface;
-
-use Lucca\Bundle\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\Minute;
-use Lucca\Bundle\MinuteBundle\Entity\Updating;
-use Lucca\Bundle\MinuteBundle\Form\UpdatingType;
-use Lucca\Bundle\MinuteBundle\Utils\HtmlCleaner;
-use Lucca\Bundle\MinuteBundle\Utils\MinuteStoryManager;
 
 #[Route('/minute-{minute_id}/updating')]
 #[IsGranted('ROLE_LUCCA')]

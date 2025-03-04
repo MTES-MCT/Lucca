@@ -9,21 +9,20 @@
 
 namespace Lucca\Bundle\MinuteBundle\Controller\Admin;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
+use App\Lucca\Bundle\MinuteBundle\Manager\StatisticsManager;
 use Doctrine\ORM\EntityManagerInterface;
-
 use Lucca\Bundle\DecisionBundle\Entity\Decision;
 use Lucca\Bundle\FolderBundle\Entity\Folder;
 use Lucca\Bundle\MinuteBundle\Entity\Control;
 use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Lucca\Bundle\MinuteBundle\Form\Statistics\BrowserMinuteType;
 use Lucca\Bundle\MinuteBundle\Form\Statistics\StatsGraphMinuteType;
-use Lucca\Bundle\MinuteBundle\Utils\MinuteStoryManager;
-use Lucca\Bundle\MinuteBundle\Utils\StatisticsManager;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/statistics')]
 #[IsGranted('ROLE_ADMIN')]
