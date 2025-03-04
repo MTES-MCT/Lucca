@@ -9,18 +9,17 @@
 
 namespace Lucca\Bundle\MinuteBundle\Tests\Controller\Admin;
 
-use Lucca\Bundle\MinuteBundle\Entity\Control;
 use Doctrine\ORM\EntityManager;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
 
 /**
- * Class MinuteControlControllerTest
+ * Class MinuteControllerTest
  * Test Lucca\Bundle\MinuteBundle\Controller\Admin\MinuteController
  *
  * @package Lucca\Bundle\MinuteBundle\Tests\Controller\Admin
  * @author Terence <terence@numeric-wave.tech>
  */
-class MinuteControlControllerTest extends WebTestCase
+class MinuteControllerTest extends BasicLuccaTestCase
 {
     /**
      * @var $urls
@@ -57,26 +56,24 @@ class MinuteControlControllerTest extends WebTestCase
         /**
          * Client who can authenticated in firewall
          */
-        $this->clientAuthenticated = $this->em->getRepository('LuccaUserBundle:User')->findOneBy(array(
+        $this->clientAuthenticated = $this->em->getRepository(User::Class)->findOneBy(array(
             'username' => 'lucca-nw-01'
         ));
 
         /**
          * Entity who was analysed
          */
-        $this->entity = $this->em->getRepository(Control')->findOneBy(array(
-            'type' => Control::TYPE_FOLDER
-        ));
-
-        $minute = $this->em->getRepository(Minute')->findMinuteByControl($this->entity);
+        $this->entity = $this->em->getRepository(Minute::class)->findOneBy(array());
 
         /**
          * Urls who was analyzed
          */
-        $basicUrl = 'lucca_minute_control_';
+        $basicUrl = 'lucca_minute_';
         $this->urls = array(
-            $this->getUrl($basicUrl . 'new', array('minute_id' => $minute->getId() )),
-            $this->getUrl($basicUrl . 'edit', array('minute_id' => $minute->getId() , 'id' => $this->entity->getId())),
+            $this->getUrl($basicUrl . 'index', array()),
+            $this->getUrl($basicUrl . 'new', array()),
+            $this->getUrl($basicUrl . 'show', array('id' => $this->entity->getId())),
+            $this->getUrl($basicUrl . 'edit', array('id' => $this->entity->getId())),
         );
     }
 

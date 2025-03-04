@@ -9,17 +9,18 @@
 
 namespace Lucca\Bundle\MinuteBundle\Tests\Controller\Admin;
 
+use Lucca\Bundle\MinuteBundle\Entity\Control;
 use Doctrine\ORM\EntityManager;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
 
 /**
- * Class ClosureControllerTest
+ * Class MinuteControlControllerTest
  * Test Lucca\Bundle\MinuteBundle\Controller\Admin\MinuteController
  *
  * @package Lucca\Bundle\MinuteBundle\Tests\Controller\Admin
- * @author Alizee Meyer <alizee.m@numeric-wave.eu>
+ * @author Terence <terence@numeric-wave.tech>
  */
-class ClosureControllerTest extends WebTestCase
+class MinuteControlControllerTest extends BasicLuccaTestCase
 {
     /**
      * @var $urls
@@ -56,28 +57,33 @@ class ClosureControllerTest extends WebTestCase
         /**
          * Client who can authenticated in firewall
          */
-        $this->clientAuthenticated = $this->em->getRepository('LuccaUserBundle:User')->findOneBy(array(
+        $this->clientAuthenticated = $this->em->getRepository(User::Class)->findOneBy(array(
             'username' => 'lucca-nw-01'
         ));
 
         /**
          * Entity who was analysed
          */
-        $this->entity = $this->em->getRepository(Closure')->findOneBy(array());
+        $this->entity = $this->em->getRepository(Control::class)->findOneBy(array(
+            'type' => Control::TYPE_FOLDER
+        ));
+
+        $minute = $this->em->getRepository(Minute::class)->findMinuteByControl($this->entity);
 
         /**
          * Urls who was analyzed
          */
-        $basicUrl = "lucca_minute_";
+        $basicUrl = 'lucca_minute_control_';
         $this->urls = array(
-//            array('expectedCode' => 302, 'route' => $this->getUrl($basicUrl . 'open', array('id' => $this->entity->getMinute()->getId()))),
-            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'close', array('id' => $this->entity->getMinute()->getId()))),
+            $this->getUrl($basicUrl . 'new', array('minute_id' => $minute->getId() )),
+            $this->getUrl($basicUrl . 'edit', array('minute_id' => $minute->getId() , 'id' => $this->entity->getId())),
         );
     }
 
     /************************************ Test - routes reachable ************************************/
+
     /**
-     * Test n°1 - No User authenticated
+     * Test n°1 - No user authenticated
      * If basic urls are blocked
      */
     public function testBasicUrlsAnonymous()
@@ -85,12 +91,13 @@ class ClosureControllerTest extends WebTestCase
         $this->defineBasicParams();
 
         /** Create client which test this action */
-        $client = self::createClient();
+        $client = $this->createClient();
 
         foreach ($this->urls as $url) {
-            $client->request('GET', $url['route']);
+            $client->request('GET', $url);
+
             /** HTTP code attempted */
-            self::assertStatusCode(302, $client);
+            $this->assertStatusCode(302, $client);
         }
 
         /** Close database connection */
@@ -105,14 +112,15 @@ class ClosureControllerTest extends WebTestCase
     {
         $this->defineBasicParams();
 
-        /** Log Log object + Create client which test this action */
+        /** Log User object + Create client which test this action */
         $this->loginAs($this->clientAuthenticated, 'main');
         $client = $this->makeClient();
 
         foreach ($this->urls as $url) {
-            $client->request('GET', $url['route']);
+            $client->request('GET', $url);
+
             /** HTTP code attempted */
-            self::assertStatusCode($url['expectedCode'], $client);
+            $this->assertStatusCode(200, $client);
         }
 
         /** Close database connection */

@@ -10,16 +10,18 @@
 namespace Lucca\Bundle\MinuteBundle\Tests\Controller\Admin;
 
 use Doctrine\ORM\EntityManager;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
+use Lucca\Bundle\MinuteBundle\Entity\Closure;
+use Lucca\Bundle\UserBundle\Entity\User;
 
 /**
- * Class UpdatingControllerTest
+ * Class ClosureControllerTest
  * Test Lucca\Bundle\MinuteBundle\Controller\Admin\MinuteController
  *
  * @package Lucca\Bundle\MinuteBundle\Tests\Controller\Admin
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
-class UpdatingControllerTest extends WebTestCase
+class ClosureControllerTest extends BasicLuccaTestCase
 {
     /**
      * @var $urls
@@ -56,22 +58,22 @@ class UpdatingControllerTest extends WebTestCase
         /**
          * Client who can authenticated in firewall
          */
-        $this->clientAuthenticated = $this->em->getRepository('LuccaUserBundle:User')->findOneBy(array(
+        $this->clientAuthenticated = $this->em->getRepository(User::class)->findOneBy(array(
             'username' => 'lucca-nw-01'
         ));
 
         /**
          * Entity who was analysed
          */
-        $this->entity = $this->em->getRepository(Updating')->findOneBy(array());
+        $this->entity = $this->em->getRepository(Closure::class)->findOneBy(array());
 
         /**
          * Urls who was analyzed
          */
-        $basicUrl = 'lucca_updating_';
+        $basicUrl = "lucca_minute_";
         $this->urls = array(
-            array('expectedCode' => 302, 'route' => $this->getUrl($basicUrl . 'new', array('minute_id' => $this->entity->getMinute()->getId()))),
-            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'step1', array('id' => $this->entity->getId() , 'minute_id' => $this->entity->getMinute()->getId()))),
+//            array('expectedCode' => 302, 'route' => $this->getUrl($basicUrl . 'open', array('id' => $this->entity->getMinute()->getId()))),
+            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'close', array('id' => $this->entity->getMinute()->getId()))),
         );
     }
 

@@ -9,18 +9,17 @@
 
 namespace Lucca\Bundle\MinuteBundle\Tests\Controller\Admin;
 
-use Lucca\Bundle\MinuteBundle\Entity\Control;
 use Doctrine\ORM\EntityManager;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
 
 /**
- * Class UpdatingControlControllerTest
- * Test Lucca\Bundle\MinuteBundle\Controller\Admin\MinuteController
+ * Class StatisticsControllerTest
+ * Test Lucca\Bundle\MinuteBundle\Controller\Admin\StatisticsController
  *
  * @package Lucca\Bundle\MinuteBundle\Tests\Controller\Admin
- * @author Terence <terence@numeric-wave.tech>
+ * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
-class UpdatingControlControllerTest extends WebTestCase
+class StatisticsControllerTest extends BasicLuccaTestCase
 {
     /**
      * @var $urls
@@ -33,12 +32,6 @@ class UpdatingControlControllerTest extends WebTestCase
      * Client which can authenticated
      */
     private $clientAuthenticated;
-
-    /**
-     * @var $entity
-     * Entity to test
-     */
-    private $entity;
 
     /**
      * @var EntityManager
@@ -57,26 +50,17 @@ class UpdatingControlControllerTest extends WebTestCase
         /**
          * Client who can authenticated in firewall
          */
-        $this->clientAuthenticated = $this->em->getRepository('LuccaUserBundle:User')->findOneBy(array(
+        $this->clientAuthenticated = $this->em->getRepository(User::Class)->findOneBy(array(
             'username' => 'lucca-nw-01'
         ));
 
         /**
-         * Entity who was analysed
-         */
-        $this->entity = $this->em->getRepository(Control')->findOneBy(array(
-            'type' => Control::TYPE_REFRESH
-        ));
-
-        $updating = $this->em->getRepository(Updating')->findUpdatingByControl($this->entity);
-
-        /**
          * Urls who was analyzed
          */
-        $basicUrl = 'lucca_updating_control_';
+        $basicUrl = 'lucca_statistics_minutes_';
         $this->urls = array(
-            $this->getUrl($basicUrl . 'new', array('updating_id' => $updating->getId() )),
-            $this->getUrl($basicUrl . 'edit', array('updating_id' => $updating->getId() , 'id' => $this->entity->getId())),
+            $this->getUrl($basicUrl . 'overall', array()),
+            $this->getUrl($basicUrl . 'table', array()),
         );
     }
 
