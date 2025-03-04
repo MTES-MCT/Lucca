@@ -10,13 +10,17 @@
 
 namespace Lucca\Bundle\FolderBundle\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\{ArrayCollection, Collection};
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Lucca\Bundle\AdherentBundle\Entity\{Adherent, Agent};
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\FolderBundle\Repository\MayorLetterRepository;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+use Lucca\Bundle\ParameterBundle\Entity\Town;
 
 #[ORM\Table(name: "lucca_minute_mayor_letter")]
 #[ORM\Entity(repositoryClass: MayorLetterRepository::class)]
@@ -27,31 +31,31 @@ class MayorLetter implements LoggableInterface
     const GENDER_MALE = 'choice.gender.male';
     const GENDER_FEMALE = 'choice.gender.female';
 
-    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Column]
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "AUTO")]
-    private ?int $id;
+    #[ORM\GeneratedValue]
+    private ?int $id = null;
 
-    #[ORM\Column(name: "gender", type: "string", length: 30)]
+    #[ORM\Column(length: 30)]
     #[Assert\NotNull(message: "constraint.not_null")]
     #[Assert\Type(type: "string", message: "constraint.type")]
     #[Assert\Length(min: 2, max: 30, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
     private string $gender;
 
-    #[ORM\Column(name: "name", type: "string", length: 150)]
+    #[ORM\Column(length: 150)]
     #[Assert\NotNull(message: "constraint.not_null")]
     #[Assert\Type(type: "string", message: "constraint.type")]
     #[Assert\Length(min: 2, max: 150, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
     private string $name;
 
-    #[ORM\Column(name: "address", type: "string", length: 255, nullable: false)]
+    #[ORM\Column(nullable: false)]
     #[Assert\Type(type: "string", message: "constraint.type")]
     #[Assert\Length(min: 2, max: 255, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
     private string $address;
 
-    #[ORM\Column(name: "dateSended", type: "datetime", nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
-    private ?\DateTime $dateSended = null;
+    private ?DateTime $dateSended = null;
 
     #[ORM\ManyToOne(targetEntity: Town::class)]
     #[ORM\JoinColumn(nullable: false)]
@@ -62,7 +66,6 @@ class MayorLetter implements LoggableInterface
     private Adherent $adherent;
 
     #[ORM\ManyToOne(targetEntity: Agent::class)]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Agent $agent = null;
 
     #[ORM\ManyToMany(targetEntity: Folder::class, cascade: ["persist"])]
@@ -70,251 +73,127 @@ class MayorLetter implements LoggableInterface
         joinColumns: [new ORM\JoinColumn(name: "mayor_letter_id", referencedColumnName: "id", onDelete: "CASCADE")],
         inverseJoinColumns: [new ORM\JoinColumn(name: "folder_id", referencedColumnName: "id", onDelete: "CASCADE")]
     )]
-    private $folders;
+    private Collection $folders;
 
     /************************************************************************ Custom functions ************************************************************************/
 
-    /**
-     * Log name of this Class
-     * Same as "Lettre au maire"
-     * @return string
-     */
-    public function getLogName(): string
-    {
-        return 'Courrier de rattachement';
-    }
-
-    /**
-     * ! Set folders overwrite all folders previously add
-     *
-     * @param array $folders
-     */
-    public function setFolders(array $folders): void
-    {
-        $this->folders = new ArrayCollection($folders);
-    }
-
-    /********************************************************************* Automatic Getters & Setters *********************************************************************/
-
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->folders = new ArrayCollection();
     }
 
     /**
-     * Get id.
-     *
-     * @return int|null
+     * ! Set folders overwrite all folders previously add
      */
+    public function setFolders(array $folders): void
+    {
+        $this->folders = new ArrayCollection($folders);
+    }
+
+    /**
+     * @ihneritdoc
+     */
+    public function getLogName(): string
+    {
+        return 'Courrier de rattachement';
+    }
+
+    /********************************************************************* Automatic Getters & Setters *********************************************************************/
+
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set gender.
-     *
-     * @param string $gender
-     *
-     * @return MayorLetter
-     */
-    public function setGender(string $gender): static
+    public function getGender(): string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(string $gender): self
     {
         $this->gender = $gender;
 
         return $this;
     }
 
-    /**
-     * Get gender.
-     *
-     * @return string
-     */
-    public function getGender(): string
-    {
-        return $this->gender;
-    }
-
-    /**
-     * Set name.
-     *
-     * @param string $name
-     *
-     * @return MayorLetter
-     */
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name.
-     *
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * Set address.
-     *
-     * @param string $address
-     *
-     * @return MayorLetter
-     */
-    public function setAddress(string $address): static
+    public function setName(string $name): self
     {
-        $this->address = $address;
-
-        return $this;
+        $this->name = $name;
     }
 
-    /**
-     * Get address.
-     *
-     * @return string
-     */
     public function getAddress(): string
     {
         return $this->address;
     }
 
-    /**
-     * Set dateSended.
-     *
-     * @param \DateTime $dateSended
-     *
-     * @return MayorLetter
-     */
-    public function setDateSended(\DateTime $dateSended): static
+    public function setAddress(string $address): self
     {
-        $this->dateSended = $dateSended;
-
-        return $this;
+        $this->address = $address;
     }
 
-    /**
-     * Get dateSended.
-     *
-     * @return \DateTime
-     */
-    public function getDateSended(): ?\DateTime
+    public function getDateSended(): ?DateTime
     {
         return $this->dateSended;
     }
 
-    /**
-     * Set town.
-     *
-     * @param Town $town
-     *
-     * @return MayorLetter
-     */
-    public function setTown(Town $town): static
+    public function setDateSended(?DateTime $dateSended): self
     {
-        $this->town = $town;
-
-        return $this;
+        $this->dateSended = $dateSended;
     }
 
-    /**
-     * Get town.
-     *
-     * @return Town
-     */
     public function getTown(): Town
     {
         return $this->town;
     }
 
-    /**
-     * Set adherent.
-     *
-     * @param Adherent $adherent
-     *
-     * @return MayorLetter
-     */
-    public function setAdherent(Adherent $adherent): static
+    public function setTown(Town $town): self
     {
-        $this->adherent = $adherent;
-
-        return $this;
+        $this->town = $town;
     }
 
-    /**
-     * Get adherent.
-     *
-     * @return Adherent
-     */
     public function getAdherent(): Adherent
     {
         return $this->adherent;
     }
 
-    /**
-     * Set agent.
-     *
-     * @param Agent|null $agent
-     *
-     * @return MayorLetter
-     */
-    public function setAgent(Agent $agent = null): static
+    public function setAdherent(Adherent $adherent): self
     {
-        $this->agent = $agent;
-
-        return $this;
+        $this->adherent = $adherent;
     }
 
-    /**
-     * Get agent.
-     *
-     * @return Agent|null
-     */
-    public function getAgent(): Agent|null
+    public function getAgent(): ?Agent
     {
         return $this->agent;
     }
 
-    /**
-     * Add folder.
-     *
-     * @param Folder $folder
-     *
-     * @return MayorLetter
-     */
-    public function addFolder(Folder $folder): static
+    public function setAgent(?Agent $agent): self
     {
-        $this->folders[] = $folder;
+        $this->agent = $agent;
+    }
+
+    public function getFolders(): Collection
+    {
+        return $this->folders;
+    }
+
+    public function addFolder(Folder $folder): self
+    {
+        if (!$this->folders->contains($folder)) {
+            $this->folders->add($folder);
+        }
 
         return $this;
     }
 
-    /**
-     * Remove folder.
-     *
-     * @param Folder $folder
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeFolder(Folder $folder): bool
+    public function removeFolder(Folder $folder): void
     {
-        return $this->folders->removeElement($folder);
-    }
-
-    /**
-     * Get folders.
-     *
-     * @return ArrayCollection|Collection
-     */
-    public function getFolders(): ArrayCollection|Collection
-    {
-        return $this->folders;
+        $this->folders->removeElement($folder);
     }
 }

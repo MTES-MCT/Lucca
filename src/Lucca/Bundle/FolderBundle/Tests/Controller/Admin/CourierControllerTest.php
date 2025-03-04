@@ -8,7 +8,7 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\Bundle\FolderBundle\Tests\Controller\Printing;
+namespace Lucca\Bundle\FolderBundle\Tests\Controller\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -17,7 +17,7 @@ use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
 use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
 use Lucca\Bundle\FolderBundle\Entity\Folder;
 
-class ControlControllerTest extends BasicLuccaTestCase
+class CourierControllerTest extends BasicLuccaTestCase
 {
     /**
      * Create all urls which been tests
@@ -27,21 +27,13 @@ class ControlControllerTest extends BasicLuccaTestCase
         /**
          * Entity to use for the tests
          */
-        $folder = $em->getRepository(Folder::class)->findOneForTest();
-
-        $attemptedCode = 200;
-        if (empty($folder->getHumansByMinute() && empty($folder->getHumansByControl()))) {
-            $attemptedCode = 302;
-        }
+        $folder = $em->getRepository(Folder::class)->findOneBy([]);
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_control_access_print', [
+            new UrlTest($router->generate('lucca_courier_judicial_date', [
                 'minute_id' => $folder->getMinute()->getId(), 'id' => $folder->getId(),
-            ]), 302, $attemptedCode),
-            new UrlTest($router->generate('lucca_control_letter_print', [
-                'minute_id' => $folder->getMinute()->getId(), 'id' => $folder->getId(),
-            ]), 302, $attemptedCode),
+            ])),
         ];
     }
 }

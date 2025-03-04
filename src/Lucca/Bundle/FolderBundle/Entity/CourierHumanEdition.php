@@ -24,10 +24,10 @@ class CourierHumanEdition implements LoggableInterface
 {
     use TimestampableTrait;
 
-    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Column]
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "AUTO")]
-    private ?int $id;
+    #[ORM\GeneratedValue]
+    private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Courier::class, inversedBy: "humansEditions")]
     #[ORM\JoinColumn(nullable: false)]
@@ -46,12 +46,16 @@ class CourierHumanEdition implements LoggableInterface
 
     /************************************************************************ Custom functions ************************************************************************/
 
+    /**
+     * @inheritDoc
+     */
     public function getLogName(): string
     {
         return 'Courrier édition par humain';
     }
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
+
     public function getId(): int
     {
         return $this->id;
@@ -60,6 +64,7 @@ class CourierHumanEdition implements LoggableInterface
     public function setLetterOffenderEdited(bool $letterOffenderEdited): self
     {
         $this->letterOffenderEdited = $letterOffenderEdited;
+
         return $this;
     }
 
@@ -71,6 +76,7 @@ class CourierHumanEdition implements LoggableInterface
     public function setLetterOffender(?string $letterOffender): self
     {
         $this->letterOffender = $letterOffender;
+
         return $this;
     }
 
@@ -82,6 +88,7 @@ class CourierHumanEdition implements LoggableInterface
     public function setCourier(Courier $courier): self
     {
         $this->courier = $courier;
+
         return $this;
     }
 
@@ -93,6 +100,7 @@ class CourierHumanEdition implements LoggableInterface
     public function setHuman(Human $human): self
     {
         $this->human = $human;
+
         return $this;
     }
 

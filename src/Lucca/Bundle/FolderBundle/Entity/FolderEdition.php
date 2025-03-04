@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\FolderBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -23,23 +24,22 @@ class FolderEdition implements LoggableInterface
     /** Traits */
     use TimestampableTrait;
 
-    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Column]
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "AUTO")]
-    private ?int $id;
+    #[ORM\GeneratedValue]
+    private ?int $id = null;
 
-    #[ORM\Column(name: "folderEdited", type: "boolean")]
+    #[ORM\Column(type: Types::BOOLEAN)]
     #[Assert\Type(type: "bool", message: "constraint.type")]
     private bool $folderEdited = false;
 
-    #[ORM\Column(name: "folderVersion", type: "text", nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $folderVersion = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
     /**
-     * Log name of this Class
-     * @return string
+     * @inheritdoc
      */
     public function getLogName(): string
     {
@@ -48,61 +48,32 @@ class FolderEdition implements LoggableInterface
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
-    /**
-     * Get id
-     *
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set folderEdited
-     *
-     * @param boolean $folderEdited
-     *
-     * @return FolderEdition
-     */
-    public function setFolderEdited(bool $folderEdited): static
+    public function getFolderEdited(): bool
+    {
+        return $this->folderEdited;
+    }
+
+    public function setFolderEdited(bool $folderEdited): self
     {
         $this->folderEdited = $folderEdited;
 
         return $this;
     }
 
-    /**
-     * Get folderEdited
-     *
-     * @return boolean
-     */
-    public function getFolderEdited(): bool
+    public function getFolderVersion(): ?string
     {
-        return $this->folderEdited;
+        return $this->folderVersion;
     }
 
-    /**
-     * Set folderVersion
-     *
-     * @param string $folderVersion
-     *
-     * @return FolderEdition
-     */
-    public function setFolderVersion(string $folderVersion): static
+    public function setFolderVersion(?string $folderVersion): self
     {
         $this->folderVersion = $folderVersion;
 
         return $this;
-    }
-
-    /**
-     * Get folderVersion
-     *
-     * @return string
-     */
-    public function getFolderVersion(): ?string
-    {
-        return $this->folderVersion;
     }
 }

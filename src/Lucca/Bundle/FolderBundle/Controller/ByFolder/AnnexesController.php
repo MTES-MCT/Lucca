@@ -31,7 +31,6 @@ class AnnexesController extends AbstractController
         private readonly EntityManagerInterface $em
     )
     {
-
     }
 
     /**

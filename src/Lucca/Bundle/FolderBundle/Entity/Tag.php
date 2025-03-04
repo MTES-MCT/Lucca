@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\FolderBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\ORM\Mapping as ORM;
@@ -29,27 +30,27 @@ class Tag implements LoggableInterface
     const CATEGORY_TOWN = 'choice.category.town';
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "AUTO")]
-    #[ORM\Column(name: "id", type: "integer")]
-    private ?int $id;
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(name: "num", type: "smallint")]
+    #[ORM\Column(type: Types::SMALLINT)]
     #[Assert\NotNull(message: "constraint.not_null")]
     #[Assert\Type(type: "int", message: "constraint.type")]
     private int $num;
 
-    #[ORM\Column(name: "name", type: "string", length: 50)]
+    #[ORM\Column(length: 50)]
     #[Assert\NotNull(message: "constraint.not_null")]
     #[Assert\Type(type: "string", message: "constraint.type")]
     #[Assert\Length(min: 2, max: 50, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
     private string $name;
 
-    #[ORM\Column(name: "category", type: "string", length: 30, nullable: true)]
+    #[ORM\Column(length: 30, nullable: true)]
     #[Assert\Type(type: "string", message: "constraint.type")]
     #[Assert\Length(min: 2, max: 30, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
     private ?string $category = null;
 
-    #[ORM\Column(name: "description", type: "text", nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     #[ORM\OneToMany(targetEntity: Proposal::class, mappedBy: "tag", cascade: ["persist", "remove"], orphanRemoval: true)]
@@ -57,32 +58,13 @@ class Tag implements LoggableInterface
 
     /************************************************************************ Custom functions ************************************************************************/
 
-    /**
-     * Tag constructor
-     */
     public function __construct()
     {
         $this->proposals = new ArrayCollection();
     }
 
     /**
-     * Add proposal
-     * Override function
-     *
-     * @param Proposal $proposal
-     * @return Tag
-     */
-    public function addProposal(Proposal $proposal): static
-    {
-        $this->proposals[] = $proposal;
-        $proposal->setTag($this);
-
-        return $this;
-    }
-
-    /**
-     * Log name of this Class
-     * @return string
+     * @ihneritdoc
      */
     public function getLogName(): string
     {
@@ -91,139 +73,77 @@ class Tag implements LoggableInterface
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId(): int
+
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set num
-     *
-     * @param integer $num
-     *
-     * @return Tag
-     */
-    public function setNum($num): static
+    public function getNum(): int
+    {
+        return $this->num;
+    }
+
+    public function setNum(int $num): self
     {
         $this->num = $num;
 
         return $this;
     }
 
-    /**
-     * Get num
-     *
-     * @return integer
-     */
-    public function getNum(): int
+    public function getName(): string
     {
-        return $this->num;
+        return $this->name;
     }
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Tag
-     */
-    public function setName($name): static
+    public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName(): string
+    public function getCategory(): ?string
     {
-        return $this->name;
+        return $this->category;
     }
 
-    /**
-     * Set category
-     *
-     * @param string $category
-     *
-     * @return Tag
-     */
-    public function setCategory(string $category): static
+    public function setCategory(?string $category): self
     {
         $this->category = $category;
 
         return $this;
     }
 
-    /**
-     * Get category
-     *
-     * @return string
-     */
-    public function getCategory(): ?string
+    public function getDescription(): ?string
     {
-        return $this->category;
+        return $this->description;
     }
 
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return Tag
-     */
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription(): ?string
+    public function getProposals(): Collection
     {
-        return $this->description;
+        return $this->proposals;
     }
 
-    /**
-     * Get enabled
-     *
-     * @return boolean
-     */
-    public function getEnabled(): bool
+    public function addProposal(Proposal $proposal): self
     {
-        return $this->enabled;
+        if (!$this->proposals->contains($proposal)) {
+            $this->proposals[] = $proposal;
+            $proposal->setTag($this);
+        }
+
+        return $this;
     }
 
-    /**
-     * Remove proposal
-     *
-     * @param Proposal $proposal
-     */
     public function removeProposal(Proposal $proposal): void
     {
         $this->proposals->removeElement($proposal);
-    }
-
-    /**
-     * Get proposals
-     *
-     * @return Collection
-     */
-    public function getProposals(): ArrayCollection|Collection
-    {
-        return $this->proposals;
     }
 }

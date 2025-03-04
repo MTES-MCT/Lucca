@@ -10,14 +10,16 @@
 
 namespace Lucca\Bundle\FolderBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\FolderBundle\Repository\CourierEditionRepository;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 
+#[ORM\Entity(repositoryClass: CourierEditionRepository::class)]
 #[ORM\Table(name: 'lucca_minute_courier_edition')]
-#[ORM\Entity(repositoryClass: 'Lucca\Bundle\FolderBundle\Repository\CourierEditionRepository')]
 class CourierEdition implements LoggableInterface
 {
     /** Traits */
@@ -26,27 +28,26 @@ class CourierEdition implements LoggableInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id;
+    private ?int $id = null;
 
-    #[ORM\Column(name: 'judicialEdited', type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
     private bool $judicialEdited = false;
 
-    #[ORM\Column(name: 'letterJudicial', type: 'text', nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $letterJudicial = null;
 
-    #[ORM\Column(name: 'ddtmEdited', type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
     private bool $ddtmEdited = false;
 
-    #[ORM\Column(name: 'letterDdtm', type: 'text', nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $letterDdtm = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
     /**
-     * Log name of this Class
-     * @return string
+     * @inheritdoc
      */
     public function getLogName(): string
     {
@@ -63,6 +64,7 @@ class CourierEdition implements LoggableInterface
     public function setJudicialEdited(bool $judicialEdited): self
     {
         $this->judicialEdited = $judicialEdited;
+
         return $this;
     }
 
@@ -74,6 +76,7 @@ class CourierEdition implements LoggableInterface
     public function setLetterJudicial(?string $letterJudicial): self
     {
         $this->letterJudicial = $letterJudicial;
+
         return $this;
     }
 
@@ -85,6 +88,7 @@ class CourierEdition implements LoggableInterface
     public function setDdtmEdited(bool $ddtmEdited): self
     {
         $this->ddtmEdited = $ddtmEdited;
+
         return $this;
     }
 
@@ -96,6 +100,7 @@ class CourierEdition implements LoggableInterface
     public function setLetterDdtm(?string $letterDdtm): self
     {
         $this->letterDdtm = $letterDdtm;
+
         return $this;
     }
 
