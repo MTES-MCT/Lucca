@@ -7,50 +7,41 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\MinuteBundle\Controller\Admin;
 
-namespace Lucca\MinuteBundle\Controller\Admin;
-
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Closure;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
-use Doctrine\ORM\ORMException;
-use Lucca\MinuteBundle\Form\ClosureType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Doctrine\ORM\EntityManagerInterface;
+use Lucca\Bundle\MinuteBundle\Utils\ClosureManager;
+use Lucca\Bundle\MinuteBundle\Utils\HtmlCleaner;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-/**
- * Class ClosureController
- *
- * @Security("has_role('ROLE_LUCCA')")
- * @Route("/minute")
- *
- * @package Lucca\MinuteBundle\Controller\Admin
- * @author Terence <terence@numeric-wave.tech>
- */
-class ClosureController extends Controller
+use Lucca\Bundle\MinuteBundle\Entity\Closure;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\MinuteBundle\Form\ClosureType;
+use Lucca\Bundle\MinuteBundle\Utils\MinuteStoryManager;
+
+#[Route('/minute')]
+#[IsGranted('ROLE_LUCCA')]
+class ClosureController extends AbstractController
 {
-    /**
-     * Close a Minute entity.
-     *
-     * @Route("-{id}/close", name="lucca_minute_close", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
-     * @param Request $request
-     * @param Minute $minute
-     * @return RedirectResponse|Response|null
-     * @throws ORMException
-     */
-    public function closeAction(Request $request, Minute $minute)
+
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly MinuteStoryManager $minuteStoryManager,
+        private readonly ClosureManager $closureManager,
+        private readonly htmlCleaner $htmlCleaner
+    )
+    {
+    }
+
+    #[Route('-{id}/close', name: 'lucca_minute_close', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function closeAction(Request $request, #[MapEntity(id: 'id')] Minute $minute): RedirectResponse|Response|null
     {
         $closure = new Closure();
         $closure->setMinute($minute);
@@ -59,46 +50,38 @@ class ClosureController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->entityManager;
 
-            $this->get('lucca.manager.closure')->closeMinute($minute);
+            $this->closureManager->closeMinute($minute);
 
             /** Call service to clean all html of this step from useless fonts */
-            $closure->setObservation($this->get('lucca.utils.html_cleaner')->removeAllFonts($closure->getObservation()));
+            $closure->setObservation($this->htmlCleaner->removeAllFonts($closure->getObservation()));
 
             $em->persist($closure);
             $em->persist($minute);
             $em->flush();
 
             /** update status of the minute */
-            $this->get('lucca.manager.minute_story')->manage($minute);
+            $this->minuteStoryManager->manage($minute);
             $em->flush();
 
             $this->addFlash('info', 'flash.closure.closedSuccessfully');
             return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId(), '_fragment' => 'closure-' . $closure->getId()));
         }
 
-        return $this->render('LuccaMinuteBundle:Closure:close.html.twig', array(
+        return $this->render('@LuccaMinute/Closure/close.html.twig', array(
             'minute' => $minute,
             'closure' => $closure,
             'form' => $form->createView(),
         ));
     }
 
-    /**
-     * Open a Minute entity.
-     *
-     * @Route("-{id}/open", name="lucca_minute_open", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_SUPER_ADMIN')")
-     *
-     * @param Minute $minute
-     * @return RedirectResponse
-     * @throws ORMException
-     */
-    public function openAction(Minute $minute)
+    #[Route('-{id}/open', name: 'lucca_minute_open', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_SUPER_ADMIN')]
+    public function openAction(#[MapEntity(id: 'id')] Minute $minute): RedirectResponse
     {
-        $em = $this->getDoctrine()->getManager();
-        $closure = $em->getRepository('LuccaMinuteBundle:Closure')->findOneBy(array(
+        $em = $this->entityManager;;
+        $closure = $em->getRepository(Closure::class)->findOneBy(array(
             'minute' => $minute
         ));
         $closure->setMinuteOpen($minute);
@@ -109,7 +92,7 @@ class ClosureController extends Controller
         $em->flush();
 
         /** update status of the minute */
-        $this->get('lucca.manager.minute_story')->manage($minute);
+        $this->minuteStoryManager->manage($minute);
         $em->flush();
 
         $this->addFlash('warning', 'flash.closure.openSuccessfully');

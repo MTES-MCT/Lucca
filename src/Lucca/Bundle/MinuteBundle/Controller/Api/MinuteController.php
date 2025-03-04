@@ -7,51 +7,41 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\MinuteBundle\Controller\Api;
 
-namespace Lucca\MinuteBundle\Controller\Api;
-
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Plot;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-/**
- * Class DashboardController
- *
- * @Route("/")
- * @Security("has_role('ROLE_USER')")
- *
- * @package Lucca\MinuteBundle\Controller\Api
- * @author Alizée Meyer <alizee.m@numeric-wave.eu>
- */
-class MinuteController extends Controller
+use Lucca\Bundle\CoreBundle\Service\GeoLocator;
+use Lucca\Bundle\MinuteBundle\Entity\Plot;
+use Lucca\Bundle\ParameterBundle\Entity\Town;
+
+#[Route('/')]
+#[IsGranted('ROLE_USER')]
+class MinuteController extends AbstractController
 {
-    /**
-     * Search geocode corresponding to address
-     *
-     * @Route("/getGeocode", name="lucca_get_geocode", methods={"GET"}, options = { "expose" = true })
-     * @Security("has_role('ROLE_USER')")
-     *
-     * @param Request $p_request
-     * @return Response
-     */
-    public function getGeoCode(Request $p_request)
+
+    public function __construct(
+        private readonly GeoLocator             $geoLocator,
+        private readonly EntityManagerInterface $entityManager
+    )
+    {
+    }
+
+    #[Route('/getGeocode', name: 'lucca_get_geocode', options: ['expose' => true], methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
+    public function getGeoCode(Request $p_request): Response
     {
         $addr = $p_request->get('address');
         $plot = new Plot();
         $plot->setAddress($addr);
 
-        $this->get('lucca.utils.geo_locator')->addGeocodeFromAddress($plot);
+        $this->geoLocator->addGeocodeFromAddress($plot);
 
         if ($plot->getLatitude() === NULL || $plot->getLongitude() === NULL) {
             return new JsonResponse([
@@ -67,20 +57,13 @@ class MinuteController extends Controller
         return new Response(json_encode($data), 200);
     }
 
-    /**
-     * Get address from coordinates
-     *
-     * @Route("/getAddress", name="lucca_get_adress", methods={"GET"}, options = { "expose" = true })
-     * @Security("has_role('ROLE_USER')")
-     *
-     * @param Request $p_request
-     * @return Response
-     */
-    public function getAddress(Request $p_request)
+    #[Route('/getAddress', name: 'lucca_get_adress', options: ['expose' => true], methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
+    public function getAddress(Request $p_request): Response
     {
         $lat = $p_request->get('lat');
         $lng = $p_request->get('lng');
-        $address = $this->get('lucca.utils.geo_locator')->getAddressFromGeocode($lat, $lng);
+        $address = $this->geoLocator->getAddressFromGeocode($lat, $lng);
         if (!$address or !is_array($address)) {
             return new JsonResponse([
                 'success' => false,
@@ -102,16 +85,9 @@ class MinuteController extends Controller
         return new Response(json_encode($data), 200);
     }
 
-    /**
-     * Get id city to update the city field
-     *
-     * @Route("/getTownId", name="lucca_get_townId", methods={"GET"}, options = { "expose" = true })
-     * @Security("has_role('ROLE_USER')")
-     *
-     * @param Request $p_request
-     * @return Response
-     */
-    public function getTownId(Request $p_request)
+    #[Route('/getTownId', name: 'lucca_get_townId', options: ['expose' => true], methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
+    public function getTownId(Request $p_request): Response
     {
         $city = $p_request->get('city');
 
@@ -122,17 +98,17 @@ class MinuteController extends Controller
         /** Keep only letters, spaces and -  */
         $name = preg_replace('/ *[^ a-zA-ZÀ-ÿ-]+ */', '', $city);
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->entityManager;;
 
         /** First try to find city by using the name */
-        $town = $em->getRepository('LuccaParameterBundle:Town')->findOneByName($name);
+        $town = $em->getRepository(Town::class)->findOneByName($name);
 
         /** If we can't find a town try to replace space by - */
         if (!isset($town)) {
             /** Keep only letters */
             $name2 = preg_replace('/ /', '-', $name);
             /** First try to find city by using the name */
-            $town = $em->getRepository('LuccaParameterBundle:Town')->findOneByName($name2);
+            $town = $em->getRepository(Town::class)->findOneByName($name2);
         }
 
         /** If we can't find a town try to replace - by space */
@@ -140,12 +116,12 @@ class MinuteController extends Controller
             /** Keep only letters */
             $name2 = preg_replace('/-/', ' ', $name);
             /** First try to find city by using the name */
-            $town = $em->getRepository('LuccaParameterBundle:Town')->findOneByName($name2);
+            $town = $em->getRepository(Town::class)->findOneByName($name2);
         }
 
         /** If the town can't be found with name try to find with zipcode */
         if (!isset($town)) {
-            $town = $em->getRepository('LuccaParameterBundle:Town')->findByZipCode($zipCode);
+            $town = $em->getRepository(Town::class)->findByZipCode($zipCode);
 
             /** We need to test like it and don't use find one because we need to choose what will be send to js code */
             if (count($town) > 1) {

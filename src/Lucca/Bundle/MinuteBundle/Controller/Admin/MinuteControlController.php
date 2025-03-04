@@ -7,53 +7,43 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\MinuteBundle\Controller\Admin;
 
-namespace Lucca\MinuteBundle\Controller\Admin;
-
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
-use Doctrine\ORM\ORMException;
-use Lucca\MinuteBundle\Form\MinuteControlType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-/**
- * Class MinuteControlController
- *
- * @Route("/minute-{minute_id}/control")
- * @Security("has_role('ROLE_LUCCA')")
- * @ParamConverter("minute", class="LuccaMinuteBundle:Minute", options={"id" = "minute_id"})
- *
- * @package Lucca\MinuteBundle\Controller\Admin
- * @author Terence <terence@numeric-wave.tech>
- */
-class MinuteControlController extends Controller
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\Control;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\MinuteBundle\Form\MinuteControlType;
+use Lucca\Bundle\MinuteBundle\Utils\MinuteStoryManager;
+use Lucca\Bundle\MinuteBundle\Utils\ControlEditionManager;
+use Lucca\Bundle\MinuteBundle\Utils\ControlManager;
+use Lucca\Bundle\MinuteBundle\Utils\FolderManager;
+
+#[Route('/minute-{minute_id}/control')]
+#[IsGranted('ROLE_LUCCA')]
+class MinuteControlController extends AbstractController
 {
-    /**
-     * Creates a new Control entity.
-     *
-     * @Route("/new", name="lucca_minute_control_new", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
-     * @param Minute $minute
-     * @param Request $request
-     * @return RedirectResponse|Response|null
-     * @throws ORMException
-     */
-    public function newAction(Minute $minute, Request $request)
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly MinuteStoryManager $minuteStoryManager,
+        private readonly ControlManager $controlManager,
+        private readonly FolderManager $folderManager,
+        private readonly ControlEditionManager $controlEditionManager
+    )
+    {
+    }
+
+    #[Route('/new', name: 'lucca_minute_control_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function newAction(Minute $minute, Request $request): RedirectResponse|Response
     {
         $control = new Control(Control::TYPE_FOLDER);
 
@@ -63,10 +53,10 @@ class MinuteControlController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->entityManager;;
 
             /** Define Automatically accepted  */
-            $control = $this->get('lucca.manager.control')->defineAcceptedAutomatically($control);
+            $control = $this->controlManager->defineAcceptedAutomatically($control);
 
             /** Add Control to Minute list */
             $control->setMinute($minute);
@@ -75,12 +65,12 @@ class MinuteControlController extends Controller
 
             /** If control is refused - Generate Obstacle folder */
             if ($control->getAccepted() === Control::ACCEPTED_NOK) {
-                $this->get('lucca.manager.folder')->createObstacleFolder($minute, $control, Folder::TYPE_FOLDER);
+                $this->folderManager->createObstacleFolder($minute, $control, Folder::TYPE_FOLDER);
                 $this->addFlash('warning', 'flash.control.refused');
             }
 
             /** Create / update / delete editions if needed */
-            $this->get('lucca.manager.control_edition')->createEditions($control);
+            $this->controlEditionManager->createEditions($control);
             $em->persist($control);
 
             try {
@@ -88,7 +78,7 @@ class MinuteControlController extends Controller
                 $this->addFlash('success', 'flash.control.minute.createdSuccessfully');
 
                 /** update status of the minute */
-                $this->get('lucca.manager.minute_story')->manage($minute);
+                $this->minuteStoryManager->manage($minute);
                 $em->flush();
 
                 return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId(), '_fragment' => 'control-' . $control->getId()));
@@ -98,7 +88,7 @@ class MinuteControlController extends Controller
             }
         }
 
-        return $this->render('LuccaMinuteBundle:Control:new.html.twig', array(
+        return $this->render('@LuccaMinute/Control/new.html.twig', array(
             'control' => $control,
             'minute' => $minute,
             'adherent' => $minute->getAdherent(),
@@ -107,18 +97,9 @@ class MinuteControlController extends Controller
         ));
     }
 
-    /**
-     * Displays a form to edit an existing Control entity.
-     *
-     * @Route("-{id}/edit", name="lucca_minute_control_edit", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
-     * @param Request $request
-     * @param Minute $minute
-     * @param Control $control
-     * @return RedirectResponse|Response
-     */
-    public function editAction(Request $request, Minute $minute, Control $control)
+    #[Route('-{id}/edit', name: 'lucca_minute_control_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function editAction(Request $request, Minute $minute, Control $control): RedirectResponse|Response
     {
         $deleteForm = $this->createDeleteForm($minute, $control);
 
@@ -128,22 +109,22 @@ class MinuteControlController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->entityManager;;
 
             /** Define Automatically accepted  */
-            $control = $this->get('lucca.manager.control')->defineAcceptedAutomatically($control);
+            $control = $this->controlManager->defineAcceptedAutomatically($control);
             /** Fix a bug on 26/09/2024 thant cause 34 version to have wrong agent */
             $control->setAgent($minute->getAgent());
 
             /** If control is refused - Generate Obstacle folder */
             if ($control->getAccepted() === Control::ACCEPTED_NOK) {
 
-                $this->get('lucca.manager.folder')->createObstacleFolder($minute, $control, Folder::TYPE_FOLDER);
+                $this->folderManager->createObstacleFolder($minute, $control, Folder::TYPE_FOLDER);
                 $this->addFlash('warning', 'flash.control.refused');
             }
 
             /** Create / update / delete editions if needed */
-            $this->get('lucca.manager.control_edition')->manageEditionsOnFormSubmission($control);
+            $this->controlEditionManager->manageEditionsOnFormSubmission($control);
 
             $em->persist($control);
             try {
@@ -156,7 +137,7 @@ class MinuteControlController extends Controller
             }
         }
 
-        return $this->render('LuccaMinuteBundle:Control:edit.html.twig', array(
+        return $this->render('@LuccaMinute/Control/edit.html.twig', array(
             'control' => $control,
             'minute' => $minute,
             'adherent' => $minute->getAdherent(),
@@ -166,28 +147,18 @@ class MinuteControlController extends Controller
         ));
     }
 
-    /**
-     * Deletes a Control entity.
-     *
-     * @Route("-{id}/delete", name="lucca_minute_control_delete", methods={"GET", "DELETE"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
-     * @param Request $request
-     * @param Minute $minute
-     * @param Control $control
-     * @return RedirectResponse
-     * @throws ORMException
-     */
-    public function deleteAction(Request $request, Minute $minute, Control $control)
+    #[Route('-{id}/delete', name: 'lucca_minute_control_delete', methods: ['GET', 'DELETE'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function deleteAction(Request $request, Minute $minute, Control $control): RedirectResponse
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->entityManager;;
         $minute->removeControl($control);
 
         $em->remove($control);
         $em->flush();
 
         /** update status of the minute */
-        $this->get('lucca.manager.minute_story')->manage($minute);
+        $this->minuteStoryManager->manage($minute);
         $em->flush();
 
         $this->addFlash('danger', 'flash.control.minute.deletedSuccessfully');
@@ -199,9 +170,9 @@ class MinuteControlController extends Controller
      *
      * @param Minute $minute
      * @param Control $control
-     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
-    private function createDeleteForm(Minute $minute, Control $control)
+    private function createDeleteForm(Minute $minute, Control $control): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('lucca_minute_control_delete', array('minute_id' => $minute->getId(), 'id' => $control->getId())))

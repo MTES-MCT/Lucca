@@ -7,95 +7,90 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\MinuteBundle\Controller\Admin;
 
-namespace Lucca\MinuteBundle\Controller\Admin;
-
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Plot;
 use Doctrine\ORM\ORMException;
-use Lucca\MinuteBundle\Form\MinuteBrowserType;
-use Lucca\MinuteBundle\Form\MinuteType;
-use Lucca\ParameterBundle\Entity\Intercommunal;
-use Lucca\ParameterBundle\Entity\Town;
-use Lucca\SettingBundle\Utils\SettingManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * Class MinuteController
- *
- * @Route("/minute")
- * @Security("has_role('ROLE_USER')")
- *
- * @package Lucca\MinuteBundle\Controller\Admin
- * @author Terence <terence@numeric-wave.tech>
- */
-class MinuteController extends Controller
+use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\MinuteBundle\Entity\Plot;
+use Lucca\Bundle\MinuteBundle\Form\MinuteBrowserType;
+use Lucca\Bundle\MinuteBundle\Form\MinuteType;
+use Lucca\Bundle\MinuteBundle\Utils\MinuteStoryManager;
+use Lucca\Bundle\ParameterBundle\Entity\Intercommunal;
+use Lucca\Bundle\ParameterBundle\Entity\Town;
+use Lucca\Bundle\ParameterBundle\Utils\GeneralUtils;
+use Lucca\Bundle\SettingBundle\Manager\SettingManager;
+use Lucca\Bundle\DecisionBundle\Entity\Decision;
+use Lucca\Bundle\MinuteBundle\Entity\MinuteStory;
+use Lucca\Bundle\MinuteBundle\Utils\PlotManager;
+use Lucca\Bundle\MinuteBundle\Utils\MinuteManager;
+use Lucca\Bundle\MinuteBundle\Generator\NumMinuteGenerator;
+
+#[Route('/minute')]
+#[IsGranted('ROLE_USER')]
+class MinuteController extends AbstractController
 {
 
     /**
      * Filter by rolling year
      * @var bool
      */
-    private $filterByRollingYear;
+    private bool $filterByRollingYear;
 
     /**
      * Add current adherent to filter
      * @var bool
      */
-    private $presetAdherentByConnectedUser;
+    private bool $presetAdherentByConnectedUser;
 
-    /**
-     * MinuteController constructor.
-     */
-    public function __construct()
+
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly MinuteStoryManager $minuteStoryManager,
+        private readonly AdherentFinder $adherentFinder,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly GeneralUtils $generalUtils,
+        private readonly PlotManager $plotManager,
+        private readonly MinuteManager $minuteManager,
+        private readonly NumMinuteGenerator $numMinuteGenerator
+    )
     {
         $this->filterByRollingYear = SettingManager::get('setting.folder.indexFilterByRollingOrCalendarYear.name');
         $this->presetAdherentByConnectedUser = SettingManager::get('setting.folder.presetFilterAdherentByConnectedUser.name');
     }
 
-    /**
-     * List of Minute
-     *
-     * @Route("/", name="lucca_minute_index", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_USER')")
-     *
-     * @param Request $request
-     * @return Response
-     * @throws \Exception
-     */
-    public function indexAction(Request $request)
+    #[Route('/', name: 'lucca_minute_index', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
+    public function indexAction(Request $request): Response
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->entityManager;;
 
         /** Who is connected ;) */
-        $adherent = $this->get('lucca.finder.adherent')->whoAmI();
+        $adherent = $this->adherentFinder->whoAmI();
 
         $adherentTowns = null;
         $adherentIntercommunals = null;
 
-        /** @var array $filters - Init default filters */
         $filters = array();
 
         /** if is not admin get all town and intercommunal form adherent*/
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if (!$this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             //  If the adherent is link to a service it's mean he can see all the town
             if ($adherent->getService()) {
                 $adherentTowns = $em->getRepository(Town::class)->findAll();
                 $adherentIntercommunals = $em->getRepository(Intercommunal::class)->findAll();
             } else {
-                $adherentTowns = $this->get('lucca.utils.parameter')->getTownByAdherents(array($adherent));
+                $adherentTowns = $this->generalUtils->getTownByAdherents(array($adherent));
                 $adherentIntercommunals = $adherent->getIntercommunal() ? array($adherent->getIntercommunal()) : array();
             }
         }
@@ -126,7 +121,7 @@ class MinuteController extends Controller
             $filters['folder_intercommunal'] = null;
 
         //  If the adherent is link to a service it's mean he can see all filters
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || $adherent->getService()) {
+        if ($this->authorizationChecker->isGranted('ROLE_ADMIN') || $adherent->getService()) {
             $filters['adherent'] = $this->presetAdherentByConnectedUser ? array($adherent) : null;
         } else {
             $filters['adherent'] = array($adherent);
@@ -163,7 +158,7 @@ class MinuteController extends Controller
             if ($form->has('folder_intercommunal'))
                 $filters['folder_intercommunal'] = $form->get('folder_intercommunal')->getData();
 
-            if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || $adherent->getService()) {
+            if ($this->authorizationChecker->isGranted('ROLE_ADMIN') || $adherent->getService()) {
                 $filters['adherent'] = $form->get('adherent')->getData();
                 $filters['service'] = $form->get('service')->getData();
                 $filters['adherent_intercommunal'] = $form->get('adherent_intercommunal')->getData();
@@ -171,7 +166,7 @@ class MinuteController extends Controller
             }
 
             // check filters interval date
-            if (!$this->get('lucca.manager.minute')->checkFilters($filters)) {
+            if (!$this->minuteManager->checkFilters($filters)) {
                 $this->addFlash('danger', 'flash.minute.filters_too_large');
                 /** Init default filters */
                 $filters['dateStart'] = new \DateTime($this->filterByRollingYear ? 'last day of this month - 1 year' : 'first day of January');
@@ -183,13 +178,13 @@ class MinuteController extends Controller
 
         /** Get minutes in Repo with filters */
         //  If the adherent is link to a service it's mean he can see all the data
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || $adherent->getService())
-            $minutes = $em->getRepository('LuccaMinuteBundle:Minute')->findMinutesBrowser(null,
+        if ($this->authorizationChecker->isGranted('ROLE_ADMIN') || $adherent->getService())
+            $minutes = $em->getRepository(Minute::class)->findMinutesBrowser(null,
                 $filters['dateStart'],
                 $filters['dateEnd'],
                 $filters['num'], $filters['status'], $filters['adherent'], $filters['folder_town'], $filters['folder_intercommunal'], $filters['service'], $filters['adherent_town'], $filters['adherent_intercommunal']);
         else
-            $minutes = $em->getRepository('LuccaMinuteBundle:Minute')->findMinutesBrowser($adherent,
+            $minutes = $em->getRepository(Minute::class)->findMinutesBrowser($adherent,
                 $filters['dateStart'], $filters['dateEnd'], $filters['num'], $filters['status'], null, $filters['folder_town'], $filters['folder_intercommunal']);
 
         return $this->render('@LuccaMinute/Minute/browser.html.twig', array(
@@ -200,22 +195,14 @@ class MinuteController extends Controller
         ));
     }
 
-    /**
-     * Creates a new Minute entity.
-     *
-     * @Route("/new", name="lucca_minute_new", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
-     * @param Request $request
-     * @return RedirectResponse|Response
-     * @throws ORMException
-     */
-    public function newAction(Request $request)
+    #[Route('/new', name: 'lucca_minute_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function newAction(Request $request): RedirectResponse|Response
     {
         $minute = new Minute();
 
         /** Who is connected ;) */
-        $adherent = $this->get('lucca.finder.adherent')->whoAmI();
+        $adherent = $this->adherentFinder->whoAmI();
         if ($adherent)
             $minute->setAdherent($adherent);
 
@@ -225,7 +212,7 @@ class MinuteController extends Controller
             return $this->redirectToRoute('lucca_myagent_new');
         }
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->entityManager;;
 
         /** If the this action is call by right click on map */
         if (!empty($_SESSION)
@@ -233,9 +220,9 @@ class MinuteController extends Controller
             $minute->setPlot(new Plot());
             $minute->getPlot()->setAddress($_SESSION["addrRoute"]);
             /** @var Town $town */
-            $town = $em->getRepository('LuccaParameterBundle:Town')->findOneBy(['code' => $_SESSION["addrCode"]]);
+            $town = $em->getRepository(Town::class)->findOneBy(['code' => $_SESSION["addrCode"]]);
             if (!$town)
-                $town = $em->getRepository('LuccaParameterBundle:Town')->findOneBy(['name' => strtoupper($_SESSION["addrCity"])]);
+                $town = $em->getRepository(Town::class)->findOneBy(['name' => strtoupper($_SESSION["addrCity"])]);
             $minute->getPlot()->setTown($town);
 
             /** Clear address data from session */
@@ -251,18 +238,18 @@ class MinuteController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid() &&
-            $this->get('lucca.manager.minute')->checkMinute($minute)) {
+            $this->minuteManager->checkMinute($minute)) {
 
-            $minute->setNum($this->get('lucca.generator.minute_num')->generate($minute));
+            $minute->setNum($this->numMinuteGenerator->generate($minute));
 
             if ($minute->getDateComplaint())
                 $minute->setDateOpening($minute->getDateComplaint());
 
             /** Call geo locator service to set latitude and longitude of plot */
             $plot = $minute->getPlot();
-            $this->get('lucca.manager.plot')->manageLocation($plot);
+            $this->plotManager->manageLocation($plot);
 
-            if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') &&
+            if (!$this->authorizationChecker->isGranted('ROLE_ADMIN') &&
                 $adherent->getTown() && $adherent->getTown() !== $plot->getTown()) {
                 $this->addFlash('warning', 'flash.plot.townNotAuthorize');
             } else {
@@ -270,7 +257,7 @@ class MinuteController extends Controller
                 $em->flush();
 
                 /** update status of the minute */
-                $this->get('lucca.manager.minute_story')->manage($minute);
+                $this->minuteStoryManager->manage($minute);
                 $em->flush();
 
                 $this->addFlash('success', 'flash.minute.createdSuccessfully');
@@ -278,7 +265,7 @@ class MinuteController extends Controller
             }
         }
 
-        return $this->render('LuccaMinuteBundle:Minute:new.html.twig', array(
+        return $this->render('@LuccaMinute/Minute/new.html.twig', array(
             'minute' => $minute,
             'adherent' => $adherent,
             'form' => $form->createView(),
@@ -286,46 +273,41 @@ class MinuteController extends Controller
     }
 
     /**
-     * Finds and displays a Minute entity.
-     *
-     * @Route("-{id}", name="lucca_minute_show", methods={"GET"})
-     * @Security("has_role('ROLE_VISU')")
-     *
-     * @param Minute $minute
-     * @return Response|null
      * @throws ORMException
      */
-    public function showAction(Minute $minute)
+    #[Route('-{id}', name: 'lucca_minute_show', methods: ['GET'])]
+    #[IsGranted('ROLE_VISU')]
+    public function showAction(Request $request, Minute $minute): RedirectResponse|Response
     {
         /** Who is connected ;) */
-        $adherent = $this->get('lucca.finder.adherent')->whoAmI();
+        $adherent = $this->adherentFinder->whoAmI();
 
         /** Check if the adherent can access to the minute */
-        if (!$this->get('lucca.manager.minute')->checkAccessMinute($minute, $adherent)) {
+        if (!$this->minuteManager->checkAccessMinute($minute, $adherent)) {
             $this->addFlash('warning', 'flash.minute.cantAccess');
             return $this->redirectToRoute('lucca_minute_index');
         }
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->entityManager;;
 
-        $session = $this->get('session');
+        $session = $request->getSession();
         $session->set('refresh', false);
 
         $deleteForm = $this->createDeleteForm($minute);
 
         /** Get Decision value */
-        $decisions = $em->getRepository('LuccaMinuteBundle:Decision')->findDecisionsByMinute($minute);
+        $decisions = $em->getRepository(Decision::class)->findDecisionsByMinute($minute);
 
         /** Verify first if status exist */
         if ($minute->getStatus() === null) {
-            $this->get('lucca.manager.minute')->updateStatusAction($minute);
-            $this->get('lucca.manager.minute_story')->manage($minute);
+            $this->minuteManager->updateStatusAction($minute);
+            $this->minuteStoryManager->manage($minute);
             $em->flush();
         }
         /** Get Minute Story to get status of the minute */
-        $minuteStory = $em->getRepository('LuccaMinuteBundle:MinuteStory')->findLastByMinute($minute)[0];
+        $minuteStory = $em->getRepository(MinuteStory::class)->findLastByMinute($minute)[0];
 
-        return $this->render('LuccaMinuteBundle:Minute:show.html.twig', array(
+        return $this->render('@LuccaMinute/Minute/show.html.twig', array(
             'minute' => $minute,
             'minuteStory' => $minuteStory,
             'decisions' => $decisions,
@@ -334,23 +316,15 @@ class MinuteController extends Controller
         ));
     }
 
-    /**
-     * Displays a form to edit an existing Minute entity.
-     *
-     * @Route("-{id}/edit", name="lucca_minute_edit", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
-     * @param Request $request
-     * @param Minute $minute
-     * @return RedirectResponse|Response
-     */
-    public function editAction(Request $request, Minute $minute)
+    #[Route('-{id}/edit', name: 'lucca_minute_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function editAction(Request $request, Minute $minute): RedirectResponse|Response
     {
         /** Who is connected ;) */
-        $adherent = $this->get('lucca.finder.adherent')->whoAmI();
+        $adherent = $this->adherentFinder->whoAmI();
 
         /** Check if the adherent can access to the minute */
-        if (!$this->get('lucca.manager.minute')->checkAccessMinute($minute, $adherent)) {
+        if (!$this->minuteManager->checkAccessMinute($minute, $adherent)) {
             $this->addFlash('warning', 'flash.minute.cantAccess');
             return $this->redirectToRoute('lucca_minute_index');
         }
@@ -362,14 +336,14 @@ class MinuteController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid() &&
-            $this->get('lucca.manager.minute')->checkMinute($minute)) {
-            $em = $this->getDoctrine()->getManager();
+            $this->minuteManager->checkMinute($minute)) {
+            $em = $this->entityManager;;
 
             /** Call geo locator service to set latitude and longitude of plot */
             $plot = $minute->getPlot();
-            $this->get('lucca.manager.plot')->manageLocation($plot);
+            $this->plotManager->manageLocation($plot);
 
-            if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') &&
+            if (!$this->authorizationChecker->isGranted('ROLE_ADMIN') &&
                 $adherent->getTown() && $adherent->getTown() !== $plot->getTown()) {
                 $this->addFlash('warning', 'flash.plot.townNotAuthorize');
             } else {
@@ -381,29 +355,21 @@ class MinuteController extends Controller
             }
         }
 
-        return $this->render('LuccaMinuteBundle:Minute:edit.html.twig', array(
+        return $this->render('@LuccaMinute/Minute/edit.html.twig', array(
             'minute' => $minute,
             'edit_form' => $editForm->createView(),
         ));
     }
 
-    /**
-     * Deletes a Minute entity.
-     *
-     * @Route("-{id}", name="lucca_minute_delete", methods={"DELETE"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
-     * @param Request $request
-     * @param Minute $minute
-     * @return RedirectResponse
-     */
-    public function deleteAction(Request $request, Minute $minute)
+    #[Route('-{id}', name: 'lucca_minute_delete', methods: ['DELETE'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function deleteAction(Request $request, Minute $minute): RedirectResponse
     {
         $form = $this->createDeleteForm($minute);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->entityManager;;
 
             $em->remove($minute);
             $em->flush();
@@ -417,9 +383,9 @@ class MinuteController extends Controller
      * Creates a form to delete a Minute entity.
      *
      * @param Minute $minute
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
-    private function createDeleteForm(Minute $minute)
+    private function createDeleteForm(Minute $minute): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('lucca_minute_delete', array('id' => $minute->getId())))

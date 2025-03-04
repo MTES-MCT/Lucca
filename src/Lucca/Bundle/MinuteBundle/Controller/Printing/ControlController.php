@@ -7,69 +7,53 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\MinuteBundle\Controller\Printing;
 
-namespace Lucca\MinuteBundle\Controller\Printing;
-
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\ControlEdition;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
-use Exception;
-use Lucca\ModelBundle\Entity\Model;
-use Lucca\SettingBundle\Utils\SettingManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Knp\Snappy\Pdf;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfReader\PdfReaderException;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Tomsgu\PdfMerger\Exception\FileNotFoundException;
 use Tomsgu\PdfMerger\Exception\InvalidArgumentException;
 use Tomsgu\PdfMerger\PdfCollection;
 use Tomsgu\PdfMerger\PdfFile;
 use Tomsgu\PdfMerger\PdfMerger;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class ControlController
- *
- * @Route("/minute-{minute_id}/control-")
- * @Security("has_role('ROLE_LUCCA')")
- * @ParamConverter("minute", class="LuccaMinuteBundle:Minute", options={"id" = "minute_id"})
- *
- * @package Lucca\MinuteBundle\Controller\Admin\Printing
- * @author Terence <terence@numeric-wave.tech>
- */
-class ControlController extends Controller
+use Lucca\Bundle\ModelBundle\Entity\Model;
+use Lucca\Bundle\ModelBundle\Printer\PagePrinter;
+use Lucca\Bundle\SettingBundle\Manager\SettingManager;
+use Lucca\Bundle\MinuteBundle\Entity\Control;
+use Lucca\Bundle\MinuteBundle\Entity\ControlEdition;
+use Lucca\Bundle\MinuteBundle\Entity\Human;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\ModelBundle\Service\ModelFinder;
+
+#[Route('/minute-{minute_id}/control-')]
+#[IsGranted('ROLE_LUCCA')]
+class ControlController extends AbstractController
 {
     /** Setting if use agent of refresh or minute agent */
-    private $useRefreshAgentForRefreshSignature;
+    private mixed $useRefreshAgentForRefreshSignature;
 
-    public function __construct()
+    public function __construct(
+        private readonly PagePrinter         $pagePrinter,
+        private readonly TranslatorInterface $translator,
+        private readonly Pdf                 $snappy,
+        private readonly ModelFinder         $modelFinder
+    )
     {
         $this->useRefreshAgentForRefreshSignature = SettingManager::get('setting.folder.useRefreshAgentForRefreshSignature.name');
     }
 
-    /**
-     * Print an Access letter
-     *
-     * @Route("{id}/letter-access/print", name="lucca_control_access_print", methods={"GET"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
-     * @param Minute $minute
-     * @param Control $control
-     * @return Response
-     * @throws Exception
-     */
-    public function accessLetterPrintAction(Minute $minute, Control $control)
+    #[Route('{id}/letter-access/print', name: 'lucca_control_access_print', methods: ['GET'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function accessLetterPrintAction(#[MapEntity(id: 'minute_id')] Minute $minute, #[MapEntity(id: 'id')] Control $control): Response
     {
         $filename = sprintf('Access - %s', $minute->getNum());
 
@@ -77,7 +61,7 @@ class ControlController extends Controller
         $adherent = $minute->getAdherent();
 
         /** Try to find the model corresponding to the document */
-        $model = $this->get('lucca.finder.model')->findModel(Model::DOCUMENTS_ACCESS_LETTER, $adherent);
+        $model = $this->modelFinder->findModel(Model::DOCUMENTS_ACCESS_LETTER, $adherent);
 
         /** If model is null it's mean there is no model created, so we can't generate the PDF */
         if ($model === null) {
@@ -113,14 +97,14 @@ class ControlController extends Controller
      * @throws InvalidArgumentException
      * @throws PdfReaderException
      */
-    private function generatePdfAccess(Model $p_model, Minute $p_minute, Control $p_control)
+    private function generatePdfAccess(Model $p_model, Minute $p_minute, Control $p_control): ?string
     {
         /** Init var with tools need to merge pdf */
         $pdf = new PdfCollection();
         $filesystem = new Filesystem();
         $fpdi = new Fpdi();
         $merger = new PdfMerger($fpdi);
-        $snappy = $this->get('knp_snappy.pdf');
+        $snappy = $this->snappy;
 
         if ($this->useRefreshAgentForRefreshSignature)
             $agent = $p_control->getAgent();
@@ -159,7 +143,7 @@ class ControlController extends Controller
         ];
 
         /** Create the model option in loop in order to be able to interact with header */
-        $options = $this->get('lucca.utils.printer.model.page')->createModelOption($p_model, $var, $adherent);
+        $options = $this->pagePrinter->createModelOption($p_model, $var, $adherent);
 
         /** If there is edition with edition template */
         if (count($p_control->getEditions()) > 0) {
@@ -225,24 +209,15 @@ class ControlController extends Controller
     }
 
 
-    /**
-     * Print a Control letter
-     *
-     * @Route("{id}/letter-convocation/print", name="lucca_control_letter_print", methods={"GET"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
-     * @param Minute $minute
-     * @param Control $control
-     * @return Response
-     * @throws Exception
-     */
-    public function convocationLetterPrintAction(Minute $minute, Control $control)
+    #[Route('{id}/letter-convocation/print', name: 'lucca_control_letter_print', methods: ['GET'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function convocationLetterPrintAction(#[MapEntity(id: 'minute_id')] Minute $minute, #[MapEntity(id: 'id')] Control $control): Response
     {
         /** Get adherent and model corresponding*/
         $adherent = $minute->getAdherent();
 
         /** Try to find the model corresponding to the document */
-        $model = $this->get('lucca.finder.model')->findModel(Model::DOCUMENTS_CONVOCATION_LETTER, $adherent);
+        $model = $this->modelFinder->findModel(Model::DOCUMENTS_CONVOCATION_LETTER, $adherent);
 
         /** If model is null it's mean there is no model created, so we can't generate the PDF */
         if ($model === null) {
@@ -274,17 +249,19 @@ class ControlController extends Controller
      * @param Model $p_model
      * @param Minute $p_minute
      * @param Control $p_control
-     * @return string
-     * @throws exception
+     * @return string|null
+     * @throws FileNotFoundException
+     * @throws InvalidArgumentException
+     * @throws PdfReaderException
      */
-    private function generatePdfConvocation(Model $p_model, Minute $p_minute, Control $p_control)
+    private function generatePdfConvocation(Model $p_model, Minute $p_minute, Control $p_control): ?string
     {
         /** Init var with tools need to merge pdf */
         $pdf = new PdfCollection();
         $filesystem = new Filesystem();
         $fpdi = new Fpdi();
         $merger = new PdfMerger($fpdi);
-        $snappy = $this->get('knp_snappy.pdf');
+        $snappy = $this->snappy;
 
         /** Init var with data useful in loop */
         $adherent = $p_minute->getAdherent();
@@ -326,7 +303,7 @@ class ControlController extends Controller
                 $human = $edition->getHuman();
 
                 $var['placeControl'] = $edition->getControl()->getMinute()->getPlot()->getTown()->getName();
-                $var['humanGender'] = $this->get("translator")->trans($human->getGender(), [], 'LuccaMinuteBundle');
+                $var['humanGender'] = $this->translator->trans($human->getGender(), [], 'LuccaMinuteBundle');
                 $var['humanName'] = $human->getOfficialName();
                 $var['humanAddress'] = $human->getAddress();
                 $var['humanCompany'] = "";
@@ -335,7 +312,7 @@ class ControlController extends Controller
                 }
 
                 /** Create the model option in loop to be able to interact with header */
-                $options = $this->get('lucca.utils.printer.model.page')->createModelOption($p_model, $var, $adherent);
+                $options = $this->pagePrinter->createModelOption($p_model, $var, $adherent);
 
                 /** Create html for current edition */
                 $html = $this->renderView('@LuccaMinute/Control/Printing/Basic/convocation_edition_print.html.twig', [
@@ -360,7 +337,7 @@ class ControlController extends Controller
             foreach ($humans as $human) {
 
                 $var['placeControl'] = $p_control->getMinute()->getPlot()->getTown()->getName();
-                $var['humanGender'] = $this->get("translator")->trans($human->getGender(), [], 'LuccaMinuteBundle');
+                $var['humanGender'] = $this->translator->trans($human->getGender(), [], 'LuccaMinuteBundle');
                 $var['humanName'] = $human->getOfficialName();
                 $var['humanAddress'] = $human->getAddress();
                 $var['humanCompany'] = "";
@@ -369,7 +346,7 @@ class ControlController extends Controller
                 }
 
                 /** Create the model option in loop to be able to interact with header */
-                $options = $this->get('lucca.utils.printer.model.page')->createModelOption($p_model, $var, $adherent);
+                $options = $this->pagePrinter->createModelOption($p_model, $var, $adherent);
 
                 /** Create html for current human */
                 $html = $this->renderView('@LuccaMinute/Control/Printing/Basic/convocation_basic_print.html.twig', [

@@ -7,32 +7,25 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
-
-namespace Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity;
+namespace Lucca\Bundle\MinuteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+use Lucca\Bundle\ParameterBundle\Entity\Town;
+use Lucca\Bundle\MinuteBundle\Repository\PlotRepository;
 
 /**
  * Plot
  *
- * @ORM\Table(name="lucca_minute_plot")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\PlotRepository")
- *
- * @package Lucca\MinuteBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
+ * @package Lucca\Bundle\MinuteBundle\Entity
  */
-class Plot implements LogInterface
+#[ORM\Table(name: 'lucca_minute_plot')]
+#[ORM\Entity(repositoryClass: PlotRepository::class)]
+class Plot implements LoggableInterface
 {
     /** Traits */
     use TimestampableTrait;
@@ -50,120 +43,58 @@ class Plot implements LogInterface
     const LOCATION_FROM_COORDINATES = 'choice.locationFrom.coordinates';
     const LOCATION_FROM_MANUAL = 'choice.locationFrom.manual';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\ParameterBundle\Entity\Town")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $town;
+    #[ORM\ManyToOne(targetEntity: Town::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Town $town;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="parcel", type="string", length=50, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 50,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $parcel;
+    #[ORM\Column(name: 'parcel', type: 'string', length: 50, nullable: true)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
+    private ?string $parcel = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="address", type="string", length=255, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 255,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $address;
+    #[ORM\Column(name: 'address', type: 'string', length: 255, nullable: true)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    #[Assert\Length(min: 2, max: 255, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
+    private ?string $address = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="isRiskZone", type="boolean", nullable=true)
-     * @Assert\Type(type="bool", message="constraint.type")
-     */
-    private $isRiskZone;
+    #[ORM\Column(name: 'isRiskZone', type: 'boolean', nullable: true)]
+    #[Assert\Type(type: 'bool', message: 'constraint.type')]
+    private ?bool $isRiskZone = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="risk", type="string", length=50, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 50,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $risk;
+    #[ORM\Column(name: 'risk', type: 'string', length: 50, nullable: true)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
+    private ?string $risk = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="place", type="string", length=50, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 50,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $place;
+    #[ORM\Column(name: 'place', type: 'string', length: 50, nullable: true)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
+    private ?string $place = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="latitude", type="decimal", precision=40, scale=30, nullable=true)
-     */
-    private $latitude;
+    #[ORM\Column(name: 'latitude', type: 'decimal', precision: 40, scale: 30, nullable: true)]
+    private ?string $latitude = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="longitude", type="decimal", precision=40, scale=30, nullable=true)
-     */
-    private $longitude;
+    #[ORM\Column(name: 'longitude', type: 'decimal', precision: 40, scale: 30, nullable: true)]
+    private ?string $longitude = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="locationFrom", type="string", length=50, nullable=false)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Choice(
-     *      choices = {
-     *          Plot::LOCATION_FROM_ADDRESS,
-     *          Plot::LOCATION_FROM_COORDINATES,
-     *          Plot::LOCATION_FROM_MANUAL
-     *      }, message = "constraint.choice.status"
-     * )
-     */
-    private $locationFrom;
+    #[ORM\Column(name: 'locationFrom', type: 'string', length: 50, nullable: false)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    #[Assert\Choice(choices: [
+        self::LOCATION_FROM_ADDRESS,
+        self::LOCATION_FROM_COORDINATES,
+        self::LOCATION_FROM_MANUAL
+    ], message: 'constraint.choice.status')]
+    private string $locationFrom;
 
     /************************************************************************ Custom functions ************************************************************************/
 
-    /**
-     * Constraint on Plot
-     * Plot Address or Plot Place must be filled
-     *
-     * @Assert\Callback()
-     * @param ExecutionContextInterface $context
-     */
-    public function plotConstraint(ExecutionContextInterface $context)
+    #[Assert\Callback]
+    public function plotConstraint(ExecutionContextInterface $context): void
     {
         if (!$this->getAddress() && !$this->getPlace() && !$this->getLongitude() && !$this->getLatitude())
             $context->buildViolation('constraint.plot.address_or_parcel')
@@ -185,20 +116,12 @@ class Plot implements LogInterface
                 ->addViolation();
     }
 
-    /**
-     * Log name of this Class
-     * @return string
-     */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Parcelle';
     }
 
-    /**
-     * Get full address
-     * @return string
-     */
-    public function getFullAddress()
+    public function getFullAddress(): string
     {
         $address = '';
         if ($this->getAddress())
@@ -213,228 +136,115 @@ class Plot implements LogInterface
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set parcel.
-     *
-     * @param string|null $parcel
-     *
-     * @return Plot
-     */
-    public function setParcel($parcel = null)
+    public function setParcel(?string $parcel): self
     {
         $this->parcel = $parcel;
 
         return $this;
     }
 
-    /**
-     * Get parcel.
-     *
-     * @return string|null
-     */
-    public function getParcel()
+    public function getParcel(): ?string
     {
         return $this->parcel;
     }
 
-    /**
-     * Set address.
-     *
-     * @param string|null $address
-     *
-     * @return Plot
-     */
-    public function setAddress($address = null)
+    public function setAddress(?string $address): self
     {
         $this->address = $address;
 
         return $this;
     }
 
-    /**
-     * Get address.
-     *
-     * @return string|null
-     */
-    public function getAddress()
+    public function getAddress(): ?string
     {
         return $this->address;
     }
 
-    /**
-     * Set isRiskZone.
-     *
-     * @param bool|null $isRiskZone
-     *
-     * @return Plot
-     */
-    public function setIsRiskZone($isRiskZone = null)
+    public function setIsRiskZone(?bool $isRiskZone): self
     {
         $this->isRiskZone = $isRiskZone;
 
         return $this;
     }
 
-    /**
-     * Get isRiskZone.
-     *
-     * @return bool|null
-     */
-    public function getIsRiskZone()
+    public function getIsRiskZone(): ?bool
     {
         return $this->isRiskZone;
     }
 
-    /**
-     * Set risk.
-     *
-     * @param string|null $risk
-     *
-     * @return Plot
-     */
-    public function setRisk($risk = null)
+    public function setRisk(?string $risk): self
     {
         $this->risk = $risk;
 
         return $this;
     }
 
-    /**
-     * Get risk.
-     *
-     * @return string|null
-     */
-    public function getRisk()
+    public function getRisk(): ?string
     {
         return $this->risk;
     }
 
-    /**
-     * Set place.
-     *
-     * @param string|null $place
-     *
-     * @return Plot
-     */
-    public function setPlace($place = null)
+    public function setPlace(?string $place): self
     {
         $this->place = $place;
 
         return $this;
     }
 
-    /**
-     * Get place.
-     *
-     * @return string|null
-     */
-    public function getPlace()
+    public function getPlace(): ?string
     {
         return $this->place;
     }
 
-    /**
-     * Set latitude.
-     *
-     * @param string|null $latitude
-     *
-     * @return Plot
-     */
-    public function setLatitude($latitude = null)
+    public function setLatitude(?string $latitude): self
     {
         $this->latitude = $latitude;
 
         return $this;
     }
 
-    /**
-     * Get latitude.
-     *
-     * @return string|null
-     */
-    public function getLatitude()
+    public function getLatitude(): ?string
     {
         return $this->latitude;
     }
 
-    /**
-     * Set longitude.
-     *
-     * @param string|null $longitude
-     *
-     * @return Plot
-     */
-    public function setLongitude($longitude = null)
+    public function setLongitude(?string $longitude): self
     {
         $this->longitude = $longitude;
 
         return $this;
     }
 
-    /**
-     * Get longitude.
-     *
-     * @return string|null
-     */
-    public function getLongitude()
+    public function getLongitude(): ?string
     {
         return $this->longitude;
     }
 
-    /**
-     * Set locationFrom.
-     *
-     * @param string $locationFrom
-     *
-     * @return Plot
-     */
-    public function setLocationFrom($locationFrom)
+    public function setLocationFrom(string $locationFrom): self
     {
         $this->locationFrom = $locationFrom;
 
         return $this;
     }
 
-    /**
-     * Get locationFrom.
-     *
-     * @return string
-     */
-    public function getLocationFrom()
+    public function getLocationFrom(): string
     {
         return $this->locationFrom;
     }
 
-    /**
-     * Set town.
-     *
-     * @param \Lucca\ParameterBundle\Entity\Town $town
-     *
-     * @return Plot
-     */
-    public function setTown(\Lucca\ParameterBundle\Entity\Town $town)
+    public function setTown(Town $town): self
     {
         $this->town = $town;
 
         return $this;
     }
 
-    /**
-     * Get town.
-     *
-     * @return \Lucca\ParameterBundle\Entity\Town
-     */
-    public function getTown()
+    public function getTown(): Town
     {
         return $this->town;
     }

@@ -7,32 +7,24 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
-
-namespace Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity;
+namespace Lucca\Bundle\MinuteBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+use Lucca\Bundle\MinuteBundle\Repository\UpdatingRepository;
 
 /**
  * Updating
  *
- * @ORM\Table(name="lucca_minute_updating")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\UpdatingRepository")
- *
- * @package Lucca\MinuteBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
+ * @package Lucca\Bundle\MinuteBundle\Entity
  */
-class Updating implements LogInterface
+#[ORM\Table(name: 'lucca_minute_updating')]
+#[ORM\Entity(repositoryClass: UpdatingRepository::class)]
+class Updating implements LoggableInterface
 {
     /** Traits */
     use TimestampableTrait;
@@ -42,70 +34,41 @@ class Updating implements LogInterface
     const NATURE_UNCHANGED = 'choice.nature.unchanged';
     const NATURE_REGULARIZED = 'choice.nature.regularized';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="num", type="string", length=25)
-     * @Assert\Type(type="string", message="constraint.type")
-     */
-    private $num;
+    #[ORM\Column(name: 'num', type: 'string', length: 25)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    private string $num;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\MinuteBundle\Entity\Minute", inversedBy="updatings")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $minute;
+    #[ORM\ManyToOne(targetEntity: Minute::class, inversedBy: 'updatings')]
+    #[ORM\JoinColumn(nullable: false)]
+    private Minute $minute;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Lucca\MinuteBundle\Entity\Control", cascade={"persist", "remove"})
-     * @ORM\JoinTable(name="lucca_minute_updating_linked_control",
-     *      joinColumns={@ORM\JoinColumn(name="updating_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="control_id", referencedColumnName="id")}
-     * )
-     */
+    #[ORM\ManyToMany(targetEntity: Control::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinTable(name: 'lucca_minute_updating_linked_control',
+        joinColumns: [new ORM\JoinColumn(name: 'updating_id', referencedColumnName: 'id')],
+        inverseJoinColumns: [new ORM\JoinColumn(name: 'control_id', referencedColumnName: 'id')]
+    )]
     private $controls;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nature", type="string", length=30, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     */
-    private $nature;
+    #[ORM\Column(name: 'nature', type: 'string', length: 30, nullable: true)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    private ?string $nature = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text", nullable=true)
-     */
-    private $description;
+    #[ORM\Column(name: 'description', type: 'text', nullable: true)]
+    private ?string $description = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->controls = new ArrayCollection();
     }
 
-    /**
-     * Set minute
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute $minute
-     * @return Updating
-     */
-    public function setMinute(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute $minute)
+    public function setMinute(Minute $minute): self
     {
         $this->minute = $minute;
         $minute->addUpdating($this);
@@ -113,17 +76,11 @@ class Updating implements LogInterface
         return $this;
     }
 
-    /**
-     * Get Contol with date and hour set for create a new folder
-     *
-     * @return array
-     */
-    public function getControlsForFolder()
+    public function getControlsForFolder(): array
     {
-        $result = array();
+        $result = [];
 
         foreach ($this->controls as $control) {
-            /** Condition - Control have a date and hour + control is accepted + control is not already used */
             if (($control instanceof Control && $control->getDateControl() && $control->getHourControl())
                 && ($control->getAccepted() !== null && $control->getAccepted() === Control::ACCEPTED_NONE)
                 or $control->getIsFenced() === false)
@@ -133,138 +90,71 @@ class Updating implements LogInterface
         return $result;
     }
 
-    /**
-     * Log name of this Class
-     * @return string
-     */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Actualisation';
     }
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set num
-     *
-     * @param string $num
-     *
-     * @return Updating
-     */
-    public function setNum($num)
+    public function setNum(string $num): self
     {
         $this->num = $num;
 
         return $this;
     }
 
-    /**
-     * Get num
-     *
-     * @return string
-     */
-    public function getNum()
+    public function getNum(): string
     {
         return $this->num;
     }
 
-    /**
-     * Set nature
-     *
-     * @param string $nature
-     *
-     * @return Updating
-     */
-    public function setNature($nature)
+    public function setNature(?string $nature): self
     {
         $this->nature = $nature;
 
         return $this;
     }
 
-    /**
-     * Get nature
-     *
-     * @return string
-     */
-    public function getNature()
+    public function getNature(): ?string
     {
         return $this->nature;
     }
 
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return Updating
-     */
-    public function setDescription($description)
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * Get minute
-     *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute
-     */
-    public function getMinute()
+    public function getMinute(): Minute
     {
         return $this->minute;
     }
 
-    /**
-     * Add control
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control $control
-     *
-     * @return Updating
-     */
-    public function addControl(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control $control)
+    public function addControl(Control $control): self
     {
         $this->controls[] = $control;
 
         return $this;
     }
 
-    /**
-     * Remove control
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control $control
-     */
-    public function removeControl(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control $control)
+    public function removeControl(Control $control): bool
     {
-        $this->controls->removeElement($control);
+        return $this->controls->removeElement($control);
     }
 
-    /**
-     * Get controls
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
     public function getControls()
     {
         return $this->controls;

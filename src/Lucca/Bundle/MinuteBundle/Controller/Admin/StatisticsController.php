@@ -7,53 +7,42 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\MinuteBundle\Controller\Admin;
 
-namespace Lucca\MinuteBundle\Controller\Admin;
-
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control;
-use Exception;
-use Lucca\MinuteBundle\Form\Statistics\BrowserMinuteType;
-use Lucca\MinuteBundle\Form\Statistics\StatsGraphMinuteType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * Class StatisticsController
- *
- * @Security("has_role('ROLE_ADMIN')")
- * @Route("/statistics")
- *
- * @package Lucca\MinuteBundle\Controller\Admin
- * @author Terence <terence@numeric-wave.tech>
- * @author Alizee Meyer <alizee.m@numeric-wave.eu>
- */
-class StatisticsController extends Controller
+use Lucca\Bundle\DecisionBundle\Entity\Decision;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\Control;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\MinuteBundle\Form\Statistics\BrowserMinuteType;
+use Lucca\Bundle\MinuteBundle\Form\Statistics\StatsGraphMinuteType;
+use Lucca\Bundle\MinuteBundle\Utils\MinuteStoryManager;
+use Lucca\Bundle\MinuteBundle\Utils\StatisticsManager;
+
+#[Route('/statistics')]
+#[IsGranted('ROLE_ADMIN')]
+class StatisticsController extends AbstractController
 {
-    /**
-     * Statistics on minute step 1 2 and 3 of a minute organised in table
-     *
-     * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/overall", name="lucca_statistics_minutes_overall")
-     *
-     * @param Request $request
-     * @return Response
-     * @throws Exception
-     */
-    public function overallAction(Request $request)
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly MinuteStoryManager $minuteStoryManager,
+        private readonly StatisticsManager $statisticsManager
+    )
     {
-        $em = $this->getDoctrine()->getManager();
 
-        /** @var array $filters - Init default filters */
+    }
+
+    #[Route('/overall', name: 'lucca_statistics_minutes_overall', methods: ['GET', 'POST'])]
+    public function overallAction(Request $request): Response
+    {
+        $em = $this->entityManager;
+
         $filters = array();
 
         $form = $this->createForm(StatsGraphMinuteType::class);
@@ -90,36 +79,36 @@ class StatisticsController extends Controller
         }
 
         /** First start by finding all minute that correspond to filter in order to use filter only in one request */
-        $minutes = $em->getRepository('LuccaMinuteBundle:Minute')->statMinuteOverall(
+        $minutes = $em->getRepository(Minute::class)->statMinuteOverall(
             $filters['dateStart'], $filters['dateEnd'], $filters['adherent'], $filters['town'],
             $filters['intercommunal'], $filters['service'], $filters['townAdherent']
         );
 
         if (count($minutes) > 0) {
             /** Set up the closure array in order to display the graph 'Reason of closure' */
-            $closures = $this->get('lucca.manager.minute_story')->manageClosureData($filters['dateStart'], $filters['dateEnd'], $minutes);
+            $closures = $this->minuteStoryManager->manageClosureData($filters['dateStart'], $filters['dateEnd'], $minutes);
 
             /** Set up the $closeUnclosed array in order to display counter of close and unclosed minutes */
-            $closeUnclosed = $this->get('lucca.utils.minute_statistics')->createCloseUnclosedArray($minutes);
+            $closeUnclosed = $this->statisticsManager->createCloseUnclosedArray($minutes);
 
             /** Find all the needed data that are linked to minute we can find in the minutes array */
             /** Used to display graph 'Type of decisions' */
-            $decisionsTypeCounters = $em->getRepository('LuccaMinuteBundle:Decision')->countTypesBetweenDates($minutes);
+            $decisionsTypeCounters = $em->getRepository(Decision::class)->countTypesBetweenDates($minutes);
             /** Used to display graph 'Decisions' */
-            $decisionsCounters = $em->getRepository('LuccaMinuteBundle:Decision')->countBetweenDates($minutes);
+            $decisionsCounters = $em->getRepository(Decision::class)->countBetweenDates($minutes);
 
             /** Find all the needed data that are linked to minute we can find in the minutes array */
-            $folders = $em->getRepository('LuccaMinuteBundle:Folder')->findBetweenDates($minutes);
+            $folders = $em->getRepository(Folder::class)->findBetweenDates($minutes);
 
             /** Number of folder without Natinfs */
-            $nbFolderWithEmptyNatinfs = $this->get('lucca.utils.minute_statistics')->countFolderWithoutNatinfs($folders);
+            $nbFolderWithEmptyNatinfs = $this->statisticsManager->countFolderWithoutNatinfs($folders);
 
             /** We need to get data for all state of control in this stat */
-            $controls = $em->getRepository('LuccaMinuteBundle:Control')->findBetweenDates($minutes, [Control::STATE_INSIDE ,Control::STATE_INSIDE_WITHOUT_CONVOCATION, Control::STATE_NEIGHBOUR, Control::STATE_OUTSIDE]);
-            $decisions = $em->getRepository('LuccaMinuteBundle:Decision')->findBetweenDates($minutes);
+            $controls = $em->getRepository(Control::class)->findBetweenDates($minutes, [Control::STATE_INSIDE ,Control::STATE_INSIDE_WITHOUT_CONVOCATION, Control::STATE_NEIGHBOUR, Control::STATE_OUTSIDE]);
+            $decisions = $em->getRepository(Decision::class)->findBetweenDates($minutes);
 
             /** Create the final array used to display histogram 'Historic' */
-            $finalArray = $this->get('lucca.utils.minute_statistics')->createOverallArray($filters['dateStart'], $filters['dateEnd'],
+            $finalArray = $this->statisticsManager->createOverallArray($filters['dateStart'], $filters['dateEnd'],
                 $folders, $controls, $decisions);
         } else {
             /** If minute array is empty init all result array to empty array */
@@ -132,7 +121,7 @@ class StatisticsController extends Controller
             $finalArray = null;
         }
 
-        return $this->render('LuccaMinuteBundle:Statistics:overall.html.twig', array(
+        return $this->render('@LuccaMinute/Statistics/overall.html.twig', array(
             'form' => $form->createView(),
             'filters' => $filters,
             'closures' => $closures,
@@ -145,21 +134,11 @@ class StatisticsController extends Controller
         ));
     }
 
-    /**
-     * Statistics on minutes organised in table
-     *
-     * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/minutes", name="lucca_statistics_minutes_table")
-     *
-     * @param Request $request
-     * @return Response
-     * @throws Exception
-     */
-    public function minutesAction(Request $request)
+    #[Route('/minutes', name: 'lucca_statistics_minutes_table', methods: ['GET', 'POST'])]
+    public function minutesAction(Request $request): Response
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->entityManager;;
 
-        /** @var array $filters - Init default filters */
         $filters = array();
 
         $form = $this->createForm(BrowserMinuteType::class);
@@ -192,7 +171,7 @@ class StatisticsController extends Controller
         $filters['dateEndClosure'] = $form->get('dateEndClosure')->getData();
         $filters['townAdherent'] = $form->get('townAdherent')->getData();
 
-        if (!$this->get('lucca.utils.minute_statistics')->checkDatesFilters($filters)) {
+        if (!$this->statisticsManager->checkDatesFilters($filters)) {
             $this->addFlash('warning', 'flash.filters.datesIncorrect');
 
             /** Init default filters */
@@ -215,7 +194,7 @@ class StatisticsController extends Controller
 
         /** First get all controls filtered */
         if ($filters['stateControl'] !== null)
-            $controls = $em->getRepository('LuccaMinuteBundle:Control')->statControl($filters['stateControl']);
+            $controls = $em->getRepository(Control::class)->statControl($filters['stateControl']);
         else
             $controls = null;
 
@@ -228,7 +207,7 @@ class StatisticsController extends Controller
                 $filters['dateStartClosure'] !== null ||
                 $filters['dateEndClosure'] !== null
             ) {
-                $folders = $em->getRepository('LuccaMinuteBundle:Folder')->statFolders(
+                $folders = $em->getRepository(Folder::class)->statFolders(
                     $filters['natinfs'], $filters['nature'], $filters['dateStartClosure'], $filters['dateEndClosure'], $controls
                 );
             } else {
@@ -241,19 +220,19 @@ class StatisticsController extends Controller
         /** Test folders in order to look for minutes only if we didn't use filter on folders or if there is some folders returned */
         if (!empty($folders) || $folders === null) {
             /** Then get all minutes filtered and based on folders selected */
-            $minutes = $em->getRepository('LuccaMinuteBundle:Minute')->statMinutes(
+            $minutes = $em->getRepository(Minute::class)->statMinutes(
                 $filters['dateStart'], $filters['dateEnd'], $filters['adherent'], $filters['town'], $filters['intercommunal'],
                 $filters['service'], $filters['origin'], $filters['risk'], $filters['townAdherent'], $folders
             );
 
             /** Create an array containing data about each minutes */
-            $data = $this->get('lucca.utils.minute_statistics')->createMinuteDataArray($minutes);
+            $data = $this->statisticsManager->createMinuteDataArray($minutes);
         } else {
             $minutes = array();
             $data = array();
         }
 
-        return $this->render('LuccaMinuteBundle:Statistics:minutes.html.twig', array(
+        return $this->render('@LuccaMinute/Statistics/minutes.html.twig', array(
             'form' => $form->createView(),
             'filters' => $filters,
             'minutes' => $minutes,

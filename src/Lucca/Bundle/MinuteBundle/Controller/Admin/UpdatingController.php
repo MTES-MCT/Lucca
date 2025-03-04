@@ -7,63 +7,49 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\MinuteBundle\Controller\Admin;
 
-namespace Lucca\MinuteBundle\Controller\Admin;
-
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Updating;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\ORMException;
-use Lucca\MinuteBundle\Form\UpdatingType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Lucca\Bundle\MinuteBundle\Generator\NumUpdatingGenerator;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * Class UpdatingController
- *
- * @Security("has_role('ROLE_LUCCA')")
- * @Route("/minute-{minute_id}/updating")
- * @ParamConverter("minute", class="LuccaMinuteBundle:Minute", options={"id" = "minute_id"})
- *
- * @package Lucca\MinuteBundle\Controller\Admin
- * @author Terence <terence@numeric-wave.tech>
- */
-class UpdatingController extends Controller
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\MinuteBundle\Entity\Updating;
+use Lucca\Bundle\MinuteBundle\Form\UpdatingType;
+use Lucca\Bundle\MinuteBundle\Utils\HtmlCleaner;
+use Lucca\Bundle\MinuteBundle\Utils\MinuteStoryManager;
+
+#[Route('/minute-{minute_id}/updating')]
+#[IsGranted('ROLE_LUCCA')]
+class UpdatingController extends AbstractController
 {
-    /**
-     * Creates a new Folder entity.
-     *
-     * @Route("/new", name="lucca_updating_new")
-     * @Method({"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
-     * @param Minute $minute
-     * @return RedirectResponse
-     * @throws NonUniqueResultException|ORMException
-     */
-    public function newAction(Minute $minute)
+
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly MinuteStoryManager     $minuteStoryManager,
+        private readonly HtmlCleaner            $htmlCleaner,
+        private readonly NumUpdatingGenerator   $numUpdatingGenerator
+    ) {
+    }
+
+    #[Route('/new', name: 'lucca_updating_new', methods: ['GET', 'POST'])]
+    public function newAction(#[MapEntity(id: 'minute_id')] Minute $minute): RedirectResponse
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->entityManager;;
 
         $updating = new Updating();
         $updating->setMinute($minute);
-        $updating->setNum($this->get('lucca.generator.updating_num')->generate($updating));
+        $updating->setNum($this->numUpdatingGenerator->generate($updating));
 
         /** update status of the minute */
-        $this->get('lucca.manager.minute_story')->manage($minute);
+        $this->minuteStoryManager->manage($minute);
 
         $this->addFlash('success', 'flash.updating.createdSuccessfully');
         $em->persist($updating);
@@ -72,28 +58,17 @@ class UpdatingController extends Controller
         return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId(), '_fragment' => 'updating-' . $updating->getId()));
     }
 
-    /**
-     * Edit or create Step 1 - Folder
-     *
-     * @Route("-{id}/step-1", name="lucca_updating_step1")
-     * @Method({"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
-     * @param Minute $minute
-     * @param Updating $updating
-     * @param Request $request
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function step1Action(Request $request, Minute $minute, Updating $updating)
+    #[Route('-{id}/step-1', name: 'lucca_updating_step1', methods: ['GET', 'POST'])]
+    public function step1Action(Request $request, #[MapEntity(id: 'minute_id')] Minute $minute, #[MapEntity(id: 'id')] Updating $updating): RedirectResponse|Response
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->entityManager;;
         $form = $this->createForm(UpdatingType::class, $updating, array());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             /** Clean html from useless font and empty span */
-            $updating->setDescription($this->get('lucca.utils.html_cleaner')->removeAllFonts($updating->getDescription()));
+            $updating->setDescription($this->htmlCleaner->removeAllFonts($updating->getDescription()));
 
             $em->persist($updating);
             $em->flush();
@@ -108,33 +83,22 @@ class UpdatingController extends Controller
             return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId(), '_fragment' => 'updating-' . $updating->getId()));
         }
 
-        return $this->render('LuccaMinuteBundle:Updating:step1.html.twig', array(
+        return $this->render('@LuccaMinute/Updating/step1.html.twig', array(
             'updating' => $updating,
             'minute' => $minute,
             'form' => $form->createView(),
         ));
     }
 
-    /**
-     * Deletes a Folder entity.
-     *
-     * @Route("-{id}/delete", name="lucca_updating_delete")
-     * @Security("has_role('ROLE_LUCCA')")
-     *
-     * @param Request $request
-     * @param Minute $minute
-     * @param Updating $updating
-     * @return RedirectResponse
-     * @throws ORMException
-     */
-    public function deleteAction(Request $request, Minute $minute, Updating $updating)
+    #[Route('-{id}/delete', name: 'lucca_updating_delete', methods: ['DELETE'])]
+    public function deleteAction(Request $request, #[MapEntity(id: 'minute_id')] Minute $minute, #[MapEntity(id: 'id')] Updating $updating): RedirectResponse
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->entityManager;;
 
         $em->remove($updating);
         $em->flush();
 
-        $this->get('lucca.manager.minute_story')->manage($minute);
+        $this->minuteStoryManager->manage($minute);
         $em->flush();
 
         $this->addFlash('danger', 'flash.updating.deletedSuccessfully');

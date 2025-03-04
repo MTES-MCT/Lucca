@@ -7,249 +7,128 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\MinuteBundle\Entity;
 
-namespace Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping as ORM;
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 
-/**
- * ControlEdition
- *
- * @ORM\Table(name="lucca_minute_control_edition")
- * @ORM\Entity()
- *
- * @package Lucca\MinuteBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
- */
-class ControlEdition implements LogInterface
+#[ORM\Table(name: 'lucca_minute_control_edition')]
+class ControlEdition implements LoggableInterface
 {
     /** Traits */
     use TimestampableTrait;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\MinuteBundle\Entity\Control", inversedBy="editions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $control;
+    #[ORM\ManyToOne(targetEntity: Control::class, inversedBy: 'editions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private Control $control;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\MinuteBundle\Entity\Human")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $human;
+    #[ORM\ManyToOne(targetEntity: Human::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Human $human;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="convocationEdited", type="boolean")
-     * @Assert\Type(type="bool", message="constraint.type")
-     */
-    private $convocationEdited = false;
+    #[ORM\Column(name: 'convocationEdited', type: 'boolean')]
+    #[Assert\Type(type: 'bool', message: 'constraint.type')]
+    private bool $convocationEdited = false;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="letterConvocation", type="text", nullable=true)
-     */
-    private $letterConvocation;
+    #[ORM\Column(name: 'letterConvocation', type: 'text', nullable: true)]
+    private ?string $letterConvocation = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="accessEdited", type="boolean")
-     * @Assert\Type(type="bool", message="constraint.type")
-     */
-    private $accessEdited = false;
+    #[ORM\Column(name: 'accessEdited', type: 'boolean')]
+    #[Assert\Type(type: 'bool', message: 'constraint.type')]
+    private bool $accessEdited = false;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="letterAccess", type="text", nullable=true)
-     */
-    private $letterAccess;
+    #[ORM\Column(name: 'letterAccess', type: 'text', nullable: true)]
+    private ?string $letterAccess = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
-    /**
-     * Log name of this Class
-     * @return string
-     */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Contrôle édition';
     }
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set convocationEdited
-     *
-     * @param boolean $convocationEdited
-     *
-     * @return ControlEdition
-     */
-    public function setConvocationEdited($convocationEdited)
+    public function setConvocationEdited(bool $convocationEdited): self
     {
         $this->convocationEdited = $convocationEdited;
 
         return $this;
     }
 
-    /**
-     * Get convocationEdited
-     *
-     * @return boolean
-     */
-    public function getConvocationEdited()
+    public function getConvocationEdited(): bool
     {
         return $this->convocationEdited;
     }
 
-    /**
-     * Set letterConvocation
-     *
-     * @param string $letterConvocation
-     *
-     * @return ControlEdition
-     */
-    public function setLetterConvocation($letterConvocation)
+    public function setLetterConvocation(?string $letterConvocation): self
     {
         $this->letterConvocation = $letterConvocation;
 
         return $this;
     }
 
-    /**
-     * Get letterConvocation
-     *
-     * @return string
-     */
-    public function getLetterConvocation()
+    public function getLetterConvocation(): ?string
     {
         return $this->letterConvocation;
     }
 
-    /**
-     * Set accessEdited
-     *
-     * @param boolean $accessEdited
-     *
-     * @return ControlEdition
-     */
-    public function setAccessEdited($accessEdited)
+    public function setAccessEdited(bool $accessEdited): self
     {
         $this->accessEdited = $accessEdited;
 
         return $this;
     }
 
-    /**
-     * Get accessEdited
-     *
-     * @return boolean
-     */
-    public function getAccessEdited()
+    public function getAccessEdited(): bool
     {
         return $this->accessEdited;
     }
 
-    /**
-     * Set letterAccess
-     *
-     * @param string $letterAccess
-     *
-     * @return ControlEdition
-     */
-    public function setLetterAccess($letterAccess)
+    public function setLetterAccess(?string $letterAccess): self
     {
         $this->letterAccess = $letterAccess;
 
         return $this;
     }
 
-    /**
-     * Get letterAccess
-     *
-     * @return string
-     */
-    public function getLetterAccess()
+    public function getLetterAccess(): ?string
     {
         return $this->letterAccess;
     }
 
-    /**
-     * Set control
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control $control
-     *
-     * @return ControlEdition
-     */
-    public function setControl(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control $control)
+    public function setControl(Control $control): self
     {
         $this->control = $control;
 
         return $this;
     }
 
-    /**
-     * Get control
-     *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control
-     */
-    public function getControl()
+    public function getControl(): Control
     {
         return $this->control;
     }
 
-    /**
-     * Set human
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $human
-     *
-     * @return ControlEdition
-     */
-    public function setHuman(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $human)
+    public function setHuman(Human $human): self
     {
         $this->human = $human;
 
         return $this;
     }
 
-    /**
-     * Get human
-     *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human
-     */
-    public function getHuman()
+    public function getHuman(): Human
     {
         return $this->human;
     }

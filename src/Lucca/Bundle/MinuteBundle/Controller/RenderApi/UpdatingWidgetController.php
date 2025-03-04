@@ -8,44 +8,40 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Controller\RenderApi;
+namespace Lucca\Bundle\MinuteBundle\Controller\RenderApi;
 
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Updating;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-/**
- * Class UpdatingWidgetController
- *
- * @Route("/updating-{updating_id}/widget-")
- * @Security("has_role('ROLE_LUCCA')")
- * @ParamConverter("updating", class="LuccaMinuteBundle:Updating", options={"id" = "updating_id"})
- *
- * @package Lucca\MinuteBundle\Controller\RenderApi
- * @author Terence <terence@numeric-wave.tech>
- */
-class UpdatingWidgetController extends Controller
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\Control;
+use Lucca\Bundle\MinuteBundle\Entity\Updating;
+
+#[Route('/updating-{updating_id}/widget-')]
+#[IsGranted('ROLE_LUCCA')]
+class UpdatingWidgetController extends AbstractController
 {
-    /**
-     * Find and siplay all Controls and Folders
-     *
-     * @Route("display-controls-folders", name="lucca_updating_display_controls_folders", methods={"GET"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
-     * @param Updating $updating
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function displayControlsAndFoldersAction(Updating $updating)
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager
+    )
     {
-        $em = $this->getDoctrine()->getManager();
+    }
+
+    #[Route('display-controls-folders', name: 'lucca_updating_display_controls_folders', methods: ['GET'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function displayControlsAndFoldersAction(#[MapEntity(id: 'updating_id')] Updating $updating): Response
+    {
+        $em = $this->entityManager;;
 
         /** If form is not submitted - find Control and Folder on this Minute */
-        $controls = $em->getRepository('LuccaMinuteBundle:Control')->findByMinute($updating->getMinute());
-        $folders = $em->getRepository('LuccaMinuteBundle:Folder')->findByMinute($updating->getMinute());
+        $controls = $em->getRepository(Control::class)->findByMinute($updating->getMinute());
+        $folders = $em->getRepository(Folder::class)->findByMinute($updating->getMinute());
 
-        return $this->render('LuccaMinuteBundle:RenderApi:controlsAndFolders.html.twig', array(
+        return $this->render('@LuccaMinute/RenderApi/controlsAndFolders.html.twig', array(
             'loopControls' => $controls,
             'loopFolders' => $folders,
         ));

@@ -7,31 +7,22 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
-
-namespace Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity;
+namespace Lucca\Bundle\MinuteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+use Lucca\Bundle\MinuteBundle\Repository\HumanRepository;
 
 /**
  * Human
  *
- * @ORM\Table(name="lucca_minute_human")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\HumanRepository")
- *
- * @package Lucca\MinuteBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
+ * @package Lucca\Bundle\MinuteBundle\Entity
  */
-class Human implements LogInterface
+#[ORM\Table(name: 'lucca_minute_human')]
+#[ORM\Entity(repositoryClass: HumanRepository::class)]
+class Human implements LoggableInterface
 {
     /** Traits */
     use TimestampableTrait;
@@ -55,376 +46,181 @@ class Human implements LogInterface
     const PERSON_PHYSICAL = 'choice.person.physical';
     const PERSON_CORPORATION = 'choice.person.corporation';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=50)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 50,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $name;
+    #[ORM\Column(name: 'name', type: 'string', length: 50)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
+    private string $name;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="firstname", type="string", length=50)
-     * @Assert\NotNull(message="constraint.not_null")
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 50,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $firstname;
+    #[ORM\Column(name: 'firstname', type: 'string', length: 50)]
+    #[Assert\NotNull(message: 'constraint.not_null')]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
+    private string $firstname;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="status", type="string", length=30)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 30,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $status;
+    #[ORM\Column(name: 'status', type: 'string', length: 30)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    #[Assert\Length(min: 2, max: 30, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
+    private string $status;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="gender", type="string", length=30)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 30,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $gender;
+    #[ORM\Column(name: 'gender', type: 'string', length: 30)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    #[Assert\Length(min: 2, max: 30, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
+    private string $gender;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="person", type="string", length=30)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 30,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $person;
+    #[ORM\Column(name: 'person', type: 'string', length: 30)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    #[Assert\Length(min: 2, max: 30, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
+    private string $person;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="address", type="text", nullable=true)
-     */
-    private $address;
+    #[ORM\Column(name: 'address', type: 'text', nullable: true)]
+    private ?string $address = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="company", type="string", length=50, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 50,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $company;
+    #[ORM\Column(name: 'company', type: 'string', length: 50, nullable: true)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
+    private ?string $company = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="addressCompany", type="text", nullable=true)
-     */
-    private $addressCompany;
+    #[ORM\Column(name: 'addressCompany', type: 'text', nullable: true)]
+    private ?string $addressCompany = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="statusCompany", type="string", length=30)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 30,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $statusCompany;
+    #[ORM\Column(name: 'statusCompany', type: 'string', length: 30)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    #[Assert\Length(min: 2, max: 30, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
+    private string $statusCompany;
 
     /************************************************************************ Custom functions ************************************************************************/
 
-    /**
-     * Get full name with official syntax
-     *
-     * @return string
-     */
-    public function getOfficialName()
+    public function getOfficialName(): string
     {
         return $this->getName() . ' ' . $this->getFirstname();
     }
 
-    /**
-     * Get label display on form
-     *
-     * @return string
-     */
-    public function getFormLabel()
+    public function getFormLabel(): string
     {
         return '(' . $this->getId() . ') ' . $this->getOfficialName();
     }
 
-    /**
-     * Log name of this Class
-     * @return string
-     */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Humain';
     }
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Human
-     */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * Set firstname
-     *
-     * @param string $firstname
-     *
-     * @return Human
-     */
-    public function setFirstname($firstname)
+    public function setFirstname(string $firstname): self
     {
         $this->firstname = $firstname;
 
         return $this;
     }
 
-    /**
-     * Get firstname
-     *
-     * @return string
-     */
-    public function getFirstname()
+    public function getFirstname(): string
     {
         return $this->firstname;
     }
 
-    /**
-     * Set status
-     *
-     * @param string $status
-     *
-     * @return Human
-     */
-    public function setStatus($status)
+    public function setStatus(string $status): self
     {
         $this->status = $status;
 
         return $this;
     }
 
-    /**
-     * Get status
-     *
-     * @return string
-     */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
 
-    /**
-     * Set gender
-     *
-     * @param string $gender
-     *
-     * @return Human
-     */
-    public function setGender($gender)
+    public function setGender(string $gender): self
     {
         $this->gender = $gender;
 
         return $this;
     }
 
-    /**
-     * Get gender
-     *
-     * @return string
-     */
-    public function getGender()
+    public function getGender(): string
     {
         return $this->gender;
     }
 
-    /**
-     * Set person
-     *
-     * @param string $person
-     *
-     * @return Human
-     */
-    public function setPerson($person)
+    public function setPerson(string $person): self
     {
         $this->person = $person;
 
         return $this;
     }
 
-    /**
-     * Get person
-     *
-     * @return string
-     */
-    public function getPerson()
+    public function getPerson(): string
     {
         return $this->person;
     }
 
-    /**
-     * Set address
-     *
-     * @param string $address
-     *
-     * @return Human
-     */
-    public function setAddress($address)
+    public function setAddress(?string $address): self
     {
         $this->address = $address;
 
         return $this;
     }
 
-    /**
-     * Get address
-     *
-     * @return string
-     */
-    public function getAddress()
+    public function getAddress(): ?string
     {
         return $this->address;
     }
 
-    /**
-     * Set company
-     *
-     * @param string $company
-     *
-     * @return Human
-     */
-    public function setCompany($company)
+    public function setCompany(?string $company): self
     {
         $this->company = $company;
 
         return $this;
     }
 
-    /**
-     * Get company
-     *
-     * @return string
-     */
-    public function getCompany()
+    public function getCompany(): ?string
     {
         return $this->company;
     }
 
-    /**
-     * Set addressCompany
-     *
-     * @param string $addressCompany
-     *
-     * @return Human
-     */
-    public function setAddressCompany($addressCompany)
+    public function setAddressCompany(?string $addressCompany): self
     {
         $this->addressCompany = $addressCompany;
 
         return $this;
     }
 
-    /**
-     * Get addressCompany
-     *
-     * @return string
-     */
-    public function getAddressCompany()
+    public function getAddressCompany(): ?string
     {
         return $this->addressCompany;
     }
 
-    /**
-     * Set statusCompany
-     *
-     * @param string $statusCompany
-     *
-     * @return Human
-     */
-    public function setStatusCompany($statusCompany)
+    public function setStatusCompany(string $statusCompany): self
     {
         $this->statusCompany = $statusCompany;
 
         return $this;
     }
 
-    /**
-     * Get statusCompany
-     *
-     * @return string
-     */
-    public function getStatusCompany()
+    public function getStatusCompany(): string
     {
         return $this->statusCompany;
     }

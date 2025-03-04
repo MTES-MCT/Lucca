@@ -7,33 +7,27 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
-
-namespace Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity;
+namespace Lucca\Bundle\MinuteBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
+use Lucca\Bundle\AdherentBundle\Entity\Agent;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Repository\ControlRepository;
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 
 /**
  * Control
  *
- * @ORM\Table(name="lucca_minute_control")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\ControlRepository")
- *
- * @package Lucca\MinuteBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
+ * @package Lucca\Bundle\MinuteBundle\Entity
  */
-class Control implements LogInterface
+#[ORM\Table(name: 'lucca_minute_control')]
+#[ORM\Entity(repositoryClass: ControlRepository::class)]
+class Control implements LoggableInterface
 {
     /** Traits */
     use TimestampableTrait;
@@ -56,239 +50,129 @@ class Control implements LogInterface
     const ACCEPTED_NOK = 'choice.accepted.nok';
     const ACCEPTED_NONE = 'choice.accepted.none';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\MinuteBundle\Entity\Minute", inversedBy="controls")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $minute;
+    #[ORM\ManyToOne(targetEntity: Minute::class, inversedBy: 'controls')]
+    #[ORM\JoinColumn(nullable: false)]
+    private Minute $minute;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Lucca\MinuteBundle\Entity\Human")
-     * @ORM\JoinTable(name="lucca_minute_control_linked_human_minute",
-     *      joinColumns={@ORM\JoinColumn(name="control_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="human_id", referencedColumnName="id")}
-     * )
-     */
-    private $humansByMinute;
+    #[ORM\ManyToMany(targetEntity: Human::class)]
+    #[ORM\JoinTable(name: 'lucca_minute_control_linked_human_minute',
+        joinColumns: [new ORM\JoinColumn(name: 'control_id', referencedColumnName: 'id', onDelete: 'CASCADE')],
+        inverseJoinColumns: [new ORM\JoinColumn(name: 'human_id', referencedColumnName: 'id')]
+    )]
+    private ArrayCollection $humansByMinute;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Lucca\MinuteBundle\Entity\Human", cascade={"persist"})
-     * @ORM\JoinTable(name="lucca_minute_control_linked_human_control",
-     *      joinColumns={@ORM\JoinColumn(name="control_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="human_id", referencedColumnName="id")}
-     * )
-     */
-    private $humansByControl;
+    #[ORM\ManyToMany(targetEntity: Human::class, cascade: ['persist'])]
+    #[ORM\JoinTable(name: 'lucca_minute_control_linked_human_control',
+        joinColumns: [new ORM\JoinColumn(name: 'control_id', referencedColumnName: 'id', onDelete: 'CASCADE')],
+        inverseJoinColumns: [new ORM\JoinColumn(name: 'human_id', referencedColumnName: 'id')]
+    )]
+    private ArrayCollection $humansByControl;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\AdherentBundle\Entity\Agent")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $agent;
+    #[ORM\ManyToOne(targetEntity: Agent::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Agent $agent;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Lucca\MinuteBundle\Entity\AgentAttendant", cascade={"persist"})
-     * @ORM\JoinTable(name="lucca_minute_control_linked_agent_attendant",
-     *      joinColumns={@ORM\JoinColumn(name="control_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="agent_attendant_id", referencedColumnName="id")}
-     * )
-     */
-    private $agentAttendants;
+    #[ORM\ManyToMany(targetEntity: AgentAttendant::class, cascade: ['persist'])]
+    #[ORM\JoinTable(name: 'lucca_minute_control_linked_agent_attendant',
+        joinColumns: [new ORM\JoinColumn(name: 'control_id', referencedColumnName: 'id', onDelete: 'CASCADE')],
+        inverseJoinColumns: [new ORM\JoinColumn(name: 'agent_attendant_id', referencedColumnName: 'id')]
+    )]
+    private ArrayCollection $agentAttendants;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", length=25)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 25,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $type;
+    #[ORM\Column(name: 'type', type: 'string', length: 25)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    #[Assert\Length(min: 2, max: 25, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
+    private string $type;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="datePostal", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $datePostal;
+    #[ORM\Column(name: 'datePostal', type: 'datetime', nullable: true)]
+    #[Assert\DateTime(message: 'constraint.datetime')]
+    private ?\DateTime $datePostal = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateSended", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateSended;
+    #[ORM\Column(name: 'dateSended', type: 'datetime', nullable: true)]
+    #[Assert\DateTime(message: 'constraint.datetime')]
+    private ?\DateTime $dateSended = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateNotified", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateNotified;
+    #[ORM\Column(name: 'dateNotified', type: 'datetime', nullable: true)]
+    #[Assert\DateTime(message: 'constraint.datetime')]
+    private ?\DateTime $dateNotified = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateReturned", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateReturned;
+    #[ORM\Column(name: 'dateReturned', type: 'datetime', nullable: true)]
+    #[Assert\DateTime(message: 'constraint.datetime')]
+    private ?\DateTime $dateReturned = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="reason", type="string", length=60, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 60,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $reason;
+    #[ORM\Column(name: 'reason', type: 'string', length: 60, nullable: true)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    #[Assert\Length(min: 2, max: 60, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
+    private ?string $reason = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateContact", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateContact;
+    #[ORM\Column(name: 'dateContact', type: 'datetime', nullable: true)]
+    #[Assert\DateTime(message: 'constraint.datetime')]
+    private ?\DateTime $dateContact = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="accepted", type="string", length=40, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 40,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $accepted;
+    #[ORM\Column(name: 'accepted', type: 'string', length: 40, nullable: true)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    #[Assert\Length(min: 2, max: 40, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
+    private ?string $accepted = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateControl", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateControl;
+    #[ORM\Column(name: 'dateControl', type: 'datetime', nullable: true)]
+    #[Assert\DateTime(message: 'constraint.datetime')]
+    private ?\DateTime $dateControl = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="hourControl", type="time", nullable=true)
-     * @Assert\Time(message = "constraint.time")
-     */
-    private $hourControl;
+    #[ORM\Column(name: 'hourControl', type: 'time', nullable: true)]
+    #[Assert\Time(message: 'constraint.time')]
+    private ?\DateTime $hourControl = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="stateControl", type="string", length=60)
-     * @Assert\NotNull(message="constraint.not_null")
-     * @Assert\Type(type="string", message="constraint.type")
-     */
-    private $stateControl;
+    #[ORM\Column(name: 'stateControl', type: 'string', length: 60)]
+    #[Assert\NotNull(message: 'constraint.not_null')]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    private string $stateControl;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="summoned", type="boolean", nullable=true)
-     * @Assert\Type(type="bool", message="constraint.type")
-     */
-    private $summoned;
+    #[ORM\Column(name: 'summoned', type: 'boolean', nullable: true)]
+    #[Assert\Type(type: 'bool', message: 'constraint.type')]
+    private ?bool $summoned = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="courierDelivery", type="string", length=50, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 50,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $courierDelivery;
+    #[ORM\Column(name: 'courierDelivery', type: 'string', length: 50, nullable: true)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
+    private ?string $courierDelivery = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="isFenced", type="boolean")
-     * @Assert\Type(type="bool", message="constraint.type")
-     */
-    private $isFenced = false;
+    #[ORM\Column(name: 'isFenced', type: 'boolean')]
+    #[Assert\Type(type: 'bool', message: 'constraint.type')]
+    private bool $isFenced = false;
 
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="Lucca\MinuteBundle\Entity\ControlEdition", mappedBy="control",
-     *     cascade={"persist", "remove"}, orphanRemoval=true
-     * )
-     */
-    private $editions;
+    #[ORM\OneToMany(targetEntity: ControlEdition::class, mappedBy: 'control', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private ArrayCollection $editions;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Lucca\MinuteBundle\Entity\Folder", inversedBy="control")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $folder;
+    #[ORM\OneToOne(targetEntity: Folder::class, inversedBy: 'control')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Folder $folder = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
-    /**
-     * Control constructor
-     *
-     * @param $type
-     */
     public function __construct($type)
     {
         $this->humansByMinute = new ArrayCollection();
         $this->humansByControl = new ArrayCollection();
-
         $this->agentAttendants = new ArrayCollection();
         $this->editions = new ArrayCollection();
-
         $this->setType($type);
     }
 
-    /**
-     * Get label displayed on form
-     *
-     * @return string
-     */
-    public function getFormLabel()
+    public function getFormLabel(): string
     {
-        if ($this->getDateControl() && $this->getHourControl())
+        if ($this->getDateControl() && $this->getHourControl()) {
             return $this->getDateControl()->format('d/m/Y') . ' ' . $this->getHourControl()->format('H:i');
-        else
+        } else {
             return 'Contrôle non défini';
+        }
     }
 
-    /**
-     * Add edition
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\ControlEdition $edition
-     * @return Control
-     */
-    public function addEdition(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\ControlEdition $edition)
+    public function addEdition(ControlEdition $edition): self
     {
         $this->editions[] = $edition;
         $edition->setControl($this);
@@ -296,13 +180,7 @@ class Control implements LogInterface
         return $this;
     }
 
-    /**
-     * Set minute
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute $minute
-     * @return Control
-     */
-    public function setMinute(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute $minute)
+    public function setMinute(Minute $minute): self
     {
         $this->minute = $minute;
         $minute->addControl($this);
@@ -310,634 +188,340 @@ class Control implements LogInterface
         return $this;
     }
 
-    /**
-     * Log name of this Class
-     * @return string
-     */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Contrôle';
     }
 
     /************************************************************************ Custom constraints ************************************************************************/
 
-    /**
-     * Constraint on date Sended
-     * If data is set, check others date
-     *
-     * @Assert\Callback
-     * @param ExecutionContextInterface $context
-     */
-    public function dateSendedConstraint(ExecutionContextInterface $context)
+    #[Assert\Callback]
+    public function dateSendedConstraint(ExecutionContextInterface $context): void
     {
         if ($this->getDateSended()) {
-
-            /** Date send must be greater or equal than date Postal */
-            if ($this->getDatePostal() && !($this->getDateSended() >= $this->getDatePostal()))
+            if ($this->getDatePostal() && !($this->getDateSended() >= $this->getDatePostal())) {
                 $context->buildViolation('constraint.control.send_greater_equal_postal')
                     ->atPath('dateSended')
                     ->addViolation();
-
-            /** Date send must be less than date Notified */
-            if ($this->getDateNotified() && !($this->getDateSended() < $this->getDateNotified()))
+            }
+            if ($this->getDateNotified() && !($this->getDateSended() < $this->getDateNotified())) {
                 $context->buildViolation('constraint.control.send_less_notified')
                     ->atPath('dateSended')
                     ->addViolation();
-
-            /** Date send must be less than date Control */
-            if ($this->getDateReturned() && !($this->getDateSended() < $this->getDateReturned()))
+            }
+            if ($this->getDateReturned() && !($this->getDateSended() < $this->getDateReturned())) {
                 $context->buildViolation('constraint.control.send_less_returned')
                     ->atPath('dateSended')
                     ->addViolation();
+            }
         }
     }
 
-    /**
-     * Constraint on date Notified
-     * If data is set, check others date
-     *
-     * @Assert\Callback
-     * @param ExecutionContextInterface $context
-     */
-    public function dateNotifiedConstraint(ExecutionContextInterface $context)
+    #[Assert\Callback]
+    public function dateNotifiedConstraint(ExecutionContextInterface $context): void
     {
         if ($this->getDateNotified()) {
-
-            /** Date notification must be greater than date Postal */
-            if ($this->getDatePostal() && !($this->getDateNotified() > $this->getDatePostal()))
+            if ($this->getDatePostal() && !($this->getDateNotified() > $this->getDatePostal())) {
                 $context->buildViolation('constraint.control.notified_greater_postal')
                     ->atPath('dateNotified')
                     ->addViolation();
-
-            /** Date notification must be greater than date Send */
-            if ($this->getDateSended() && !($this->getDateNotified() > $this->getDateSended()))
+            }
+            if ($this->getDateSended() && !($this->getDateNotified() > $this->getDateSended())) {
                 $context->buildViolation('constraint.control.notified_greater_sended')
                     ->atPath('dateNotified')
                     ->addViolation();
-
-            /** Date notification must be greater than date Control */
-            if ($this->getDateReturned() && !($this->getDateNotified() < $this->getDateReturned()))
+            }
+            if ($this->getDateReturned() && !($this->getDateNotified() < $this->getDateReturned())) {
                 $context->buildViolation('constraint.control.notified_less_returned')
                     ->atPath('dateNotified')
                     ->addViolation();
+            }
         }
     }
 
-    /**
-     * Constraint on date Control
-     * If data is set, check others date
-     *
-     * @Assert\Callback
-     * @param ExecutionContextInterface $context
-     */
-    public function dateControlConstraint(ExecutionContextInterface $context)
+    #[Assert\Callback]
+    public function dateControlConstraint(ExecutionContextInterface $context): void
     {
         if ($this->getDateReturned()) {
-
-            /** Date control must be greater than date Postal */
-            if ($this->getDatePostal() && !($this->getDateReturned() > $this->getDatePostal()))
+            if ($this->getDatePostal() && !($this->getDateReturned() > $this->getDatePostal())) {
                 $context->buildViolation('constraint.control.returned_greater_postal')
                     ->atPath('dateReturned')
                     ->addViolation();
-
-            /** Date control must be greater than date Send */
-            if ($this->getDateSended() && !($this->getDateReturned() > $this->getDateSended()))
+            }
+            if ($this->getDateSended() && !($this->getDateReturned() > $this->getDateSended())) {
                 $context->buildViolation('constraint.control.returned_greater_sended')
                     ->atPath('dateReturned')
                     ->addViolation();
-
-            /** Date control must be greater than date Notified */
-            if ($this->getDateNotified() && !($this->getDateReturned() > $this->getDateNotified()))
+            }
+            if ($this->getDateNotified() && !($this->getDateReturned() > $this->getDateNotified())) {
                 $context->buildViolation('constraint.control.returned_greater_notified')
                     ->atPath('dateControl')
                     ->addViolation();
+            }
         }
     }
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set type
-     *
-     * @param string $type
-     *
-     * @return Control
-     */
-    public function setType($type)
+    public function setType(string $type): self
     {
         $this->type = $type;
 
         return $this;
     }
 
-    /**
-     * Get type
-     *
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * Set datePostal
-     *
-     * @param \DateTime $datePostal
-     *
-     * @return Control
-     */
-    public function setDatePostal($datePostal)
+    public function setDatePostal(?\DateTime $datePostal): self
     {
         $this->datePostal = $datePostal;
 
         return $this;
     }
 
-    /**
-     * Get datePostal
-     *
-     * @return \DateTime
-     */
-    public function getDatePostal()
+    public function getDatePostal(): ?\DateTime
     {
         return $this->datePostal;
     }
 
-    /**
-     * Set dateSended
-     *
-     * @param \DateTime $dateSended
-     *
-     * @return Control
-     */
-    public function setDateSended($dateSended)
+    public function setDateSended(?\DateTime $dateSended): self
     {
         $this->dateSended = $dateSended;
 
         return $this;
     }
 
-    /**
-     * Get dateSended
-     *
-     * @return \DateTime
-     */
-    public function getDateSended()
+    public function getDateSended(): ?\DateTime
     {
         return $this->dateSended;
     }
 
-    /**
-     * Set dateNotified
-     *
-     * @param \DateTime $dateNotified
-     *
-     * @return Control
-     */
-    public function setDateNotified($dateNotified)
+    public function setDateNotified(?\DateTime $dateNotified): self
     {
         $this->dateNotified = $dateNotified;
 
         return $this;
     }
 
-    /**
-     * Get dateNotified
-     *
-     * @return \DateTime
-     */
-    public function getDateNotified()
+    public function getDateNotified(): ?\DateTime
     {
         return $this->dateNotified;
     }
 
-    /**
-     * Set dateReturned
-     *
-     * @param \DateTime $dateReturned
-     *
-     * @return Control
-     */
-    public function setDateReturned($dateReturned)
+    public function setDateReturned(?\DateTime $dateReturned): self
     {
         $this->dateReturned = $dateReturned;
 
         return $this;
     }
 
-    /**
-     * Get dateReturned
-     *
-     * @return \DateTime
-     */
-    public function getDateReturned()
+    public function getDateReturned(): ?\DateTime
     {
         return $this->dateReturned;
     }
 
-    /**
-     * Set reason
-     *
-     * @param string $reason
-     *
-     * @return Control
-     */
-    public function setReason($reason)
+    public function setReason(?string $reason): self
     {
         $this->reason = $reason;
 
         return $this;
     }
 
-    /**
-     * Get reason
-     *
-     * @return string
-     */
-    public function getReason()
+    public function getReason(): ?string
     {
         return $this->reason;
     }
 
-    /**
-     * Set dateContact
-     *
-     * @param \DateTime $dateContact
-     *
-     * @return Control
-     */
-    public function setDateContact($dateContact)
+    public function setDateContact(?\DateTime $dateContact): self
     {
         $this->dateContact = $dateContact;
 
         return $this;
     }
 
-    /**
-     * Get dateContact
-     *
-     * @return \DateTime
-     */
-    public function getDateContact()
+    public function getDateContact(): ?\DateTime
     {
         return $this->dateContact;
     }
 
-    /**
-     * Set accepted
-     *
-     * @param string $accepted
-     *
-     * @return Control
-     */
-    public function setAccepted($accepted)
+    public function setAccepted(?string $accepted): self
     {
         $this->accepted = $accepted;
 
         return $this;
     }
 
-    /**
-     * Get accepted
-     *
-     * @return string
-     */
-    public function getAccepted()
+    public function getAccepted(): ?string
     {
         return $this->accepted;
     }
 
-    /**
-     * Set dateControl
-     *
-     * @param \DateTime $dateControl
-     *
-     * @return Control
-     */
-    public function setDateControl($dateControl)
+    public function setDateControl(?\DateTime $dateControl): self
     {
         $this->dateControl = $dateControl;
 
         return $this;
     }
 
-    /**
-     * Get dateControl
-     *
-     * @return \DateTime
-     */
-    public function getDateControl()
+    public function getDateControl(): ?\DateTime
     {
         return $this->dateControl;
     }
 
-    /**
-     * Set hourControl
-     *
-     * @param \DateTime $hourControl
-     *
-     * @return Control
-     */
-    public function setHourControl($hourControl)
+    public function setHourControl(?\DateTime $hourControl): self
     {
         $this->hourControl = $hourControl;
 
         return $this;
     }
 
-    /**
-     * Get hourControl
-     *
-     * @return \DateTime
-     */
-    public function getHourControl()
+    public function getHourControl(): ?\DateTime
     {
         return $this->hourControl;
     }
 
-    /**
-     * Set stateControl
-     *
-     * @param string $stateControl
-     *
-     * @return Control
-     */
-    public function setStateControl($stateControl)
+    public function setStateControl(string $stateControl): self
     {
         $this->stateControl = $stateControl;
 
         return $this;
     }
 
-    /**
-     * Get stateControl
-     *
-     * @return string
-     */
-    public function getStateControl()
+    public function getStateControl(): string
     {
         return $this->stateControl;
     }
 
-    /**
-     * Set summoned
-     *
-     * @param boolean $summoned
-     *
-     * @return Control
-     */
-    public function setSummoned($summoned)
+    public function setSummoned(?bool $summoned): self
     {
         $this->summoned = $summoned;
 
         return $this;
     }
 
-    /**
-     * Get summoned
-     *
-     * @return boolean
-     */
-    public function getSummoned()
+    public function getSummoned(): ?bool
     {
         return $this->summoned;
     }
 
-    /**
-     * Set courierDelivery
-     *
-     * @param string $courierDelivery
-     *
-     * @return Control
-     */
-    public function setCourierDelivery($courierDelivery)
+    public function setCourierDelivery(?string $courierDelivery): self
     {
         $this->courierDelivery = $courierDelivery;
 
         return $this;
     }
 
-    /**
-     * Get courierDelivery
-     *
-     * @return string
-     */
-    public function getCourierDelivery()
+    public function getCourierDelivery(): ?string
     {
         return $this->courierDelivery;
     }
 
-    /**
-     * Set isFenced
-     *
-     * @param boolean $isFenced
-     *
-     * @return Control
-     */
-    public function setIsFenced($isFenced)
+    public function setIsFenced(bool $isFenced): self
     {
         $this->isFenced = $isFenced;
 
         return $this;
     }
 
-    /**
-     * Get isFenced
-     *
-     * @return boolean
-     */
-    public function getIsFenced()
+    public function getIsFenced(): bool
     {
         return $this->isFenced;
     }
 
-    /**
-     * Get minute
-     *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute
-     */
-    public function getMinute()
+    public function getMinute(): Minute
     {
         return $this->minute;
     }
 
-    /**
-     * Add humansByMinute
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $humansByMinute
-     *
-     * @return Control
-     */
-    public function addHumansByMinute(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $humansByMinute)
+    public function addHumansByMinute(Human $humansByMinute): self
     {
         $this->humansByMinute[] = $humansByMinute;
 
         return $this;
     }
 
-    /**
-     * Remove humansByMinute
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $humansByMinute
-     */
-    public function removeHumansByMinute(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $humansByMinute)
+    public function removeHumansByMinute(Human $humansByMinute): void
     {
         $this->humansByMinute->removeElement($humansByMinute);
     }
 
-    /**
-     * Get humansByMinute
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getHumansByMinute()
+    public function getHumansByMinute(): ArrayCollection
     {
         return $this->humansByMinute;
     }
 
-    /**
-     * Add humansByControl
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $humansByControl
-     *
-     * @return Control
-     */
-    public function addHumansByControl(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $humansByControl)
+    public function addHumansByControl(Human $humansByControl): self
     {
         $this->humansByControl[] = $humansByControl;
 
         return $this;
     }
 
-    /**
-     * Remove humansByControl
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $humansByControl
-     */
-    public function removeHumansByControl(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $humansByControl)
+    public function removeHumansByControl(Human $humansByControl): void
     {
         $this->humansByControl->removeElement($humansByControl);
     }
 
-    /**
-     * Get humansByControl
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getHumansByControl()
+    public function getHumansByControl(): ArrayCollection
     {
         return $this->humansByControl;
     }
 
-    /**
-     * Set agent
-     *
-     * @param \Lucca\AdherentBundle\Entity\Agent $agent
-     *
-     * @return Control
-     */
-    public function setAgent(\Lucca\AdherentBundle\Entity\Agent $agent)
+    public function setAgent(Agent $agent): self
     {
         $this->agent = $agent;
 
         return $this;
     }
 
-    /**
-     * Get agent
-     *
-     * @return \Lucca\AdherentBundle\Entity\Agent
-     */
-    public function getAgent()
+    public function getAgent(): Agent
     {
         return $this->agent;
     }
 
-    /**
-     * Add agentAttendant
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\AgentAttendant $agentAttendant
-     *
-     * @return Control
-     */
-    public function addAgentAttendant(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\AgentAttendant $agentAttendant)
+    public function addAgentAttendant(AgentAttendant $agentAttendant): self
     {
         $this->agentAttendants[] = $agentAttendant;
 
         return $this;
     }
 
-    /**
-     * Remove agentAttendant
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\AgentAttendant $agentAttendant
-     */
-    public function removeAgentAttendant(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\AgentAttendant $agentAttendant)
+    public function removeAgentAttendant(AgentAttendant $agentAttendant): void
     {
         $this->agentAttendants->removeElement($agentAttendant);
     }
 
-    /**
-     * Get agentAttendants
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAgentAttendants()
+    public function getAgentAttendants(): ArrayCollection
     {
         return $this->agentAttendants;
     }
 
-    /**
-     * Remove edition
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\ControlEdition $edition
-     */
-    public function removeEdition(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\ControlEdition $edition)
+    public function removeEdition(ControlEdition $edition): void
     {
         $this->editions->removeElement($edition);
     }
 
-    /**
-     * Get editions
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEditions()
+    public function getEditions(): ArrayCollection
     {
         return $this->editions;
     }
 
-    /**
-     * Set folder
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder $folder
-     *
-     * @return Control
-     */
-    public function setFolder(\Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder $folder = null)
+    public function setFolder(?Folder $folder): self
     {
         $this->folder = $folder;
 
         return $this;
     }
 
-    /**
-     * Get folder
-     *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder
-     */
-    public function getFolder()
+    public function getFolder(): ?Folder
     {
         return $this->folder;
     }

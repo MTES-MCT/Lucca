@@ -7,32 +7,28 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\MinuteBundle\Entity;
 
-namespace Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity;
-
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\CoreBundle\Entity\TimestampableTrait;
-use Lucca\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\AdherentBundle\Entity\Agent;
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\DecisionBundle\Entity\Decision;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+use Lucca\Bundle\MinuteBundle\Repository\MinuteRepository;
+use Lucca\Bundle\ParameterBundle\Entity\Tribunal;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Minute
  *
- * @ORM\Table(name="lucca_minute")
- * @ORM\Entity(repositoryClass="Lucca\MinuteBundle\Repository\MinuteRepository")
- *
- * @package Lucca\MinuteBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
+ * @package Lucca\Bundle\MinuteBundle\Entity
  */
-class Minute implements LogInterface
+#[ORM\Table(name: 'lucca_minute')]
+#[ORM\Entity(repositoryClass: MinuteRepository::class)]
+class Minute implements LoggableInterface
 {
     /** Traits */
     use TimestampableTrait;
@@ -45,255 +41,148 @@ class Minute implements LogInterface
     const ORIGIN_OTHER = 'choice.origin.other';
 
     /** STATUS constants */
-    const STATUS_OPEN       = 'choice.statusMinute.open';
-    const STATUS_CONTROL    = 'choice.statusMinute.control';
-    const STATUS_FOLDER     = 'choice.statusMinute.folder';
-    const STATUS_COURIER    = 'choice.statusMinute.courier';
-    const STATUS_AIT        = 'choice.statusMinute.ait';
-    const STATUS_UPDATING   = 'choice.statusMinute.updating';
-    const STATUS_DECISION   = 'choice.statusMinute.decision';
-    const STATUS_CLOSURE    = 'choice.statusMinute.closure';
+    const STATUS_OPEN = 'choice.statusMinute.open';
+    const STATUS_CONTROL = 'choice.statusMinute.control';
+    const STATUS_FOLDER = 'choice.statusMinute.folder';
+    const STATUS_COURIER = 'choice.statusMinute.courier';
+    const STATUS_AIT = 'choice.statusMinute.ait';
+    const STATUS_UPDATING = 'choice.statusMinute.updating';
+    const STATUS_DECISION = 'choice.statusMinute.decision';
+    const STATUS_CLOSURE = 'choice.statusMinute.closure';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="num", type="string", length=20)
-     * @Assert\Type(type="string", message="constraint.type")
-     */
-    private $num;
+    #[ORM\Column(name: 'num', type: 'string', length: 20)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    private string $num;
 
-    /**
-     * @var string
-     *
-     * ** this attr is on nullable=true  because it's an automatic attr
-     * @ORM\Column(name="status", type="string", length=50, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Choice(choices= {
-     *     Minute::STATUS_OPEN,
-     *     Minute::STATUS_CONTROL,
-     *     Minute::STATUS_FOLDER,
-     *     Minute::STATUS_COURIER,
-     *     Minute::STATUS_AIT,
-     *     Minute::STATUS_UPDATING,
-     *     Minute::STATUS_DECISION,
-     *     Minute::STATUS_CLOSURE,
-     *     }, message="constraint.closure.initiatingStructure"
-     * )
-     */
-    private $status;
+    #[ORM\Column(name: 'status', type: 'string', length: 50, nullable: true)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    #[Assert\Choice(choices: [
+        self::STATUS_OPEN,
+        self::STATUS_CONTROL,
+        self::STATUS_FOLDER,
+        self::STATUS_COURIER,
+        self::STATUS_AIT,
+        self::STATUS_UPDATING,
+        self::STATUS_DECISION,
+        self::STATUS_CLOSURE,
+    ], message: 'constraint.closure.initiatingStructure')]
+    private ?string $status = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\AdherentBundle\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $adherent;
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Adherent $adherent;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Lucca\MinuteBundle\Entity\Plot", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $plot;
+    #[ORM\OneToOne(targetEntity: Plot::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private Plot $plot;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\ParameterBundle\Entity\Tribunal")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $tribunal;
+    #[ORM\ManyToOne(targetEntity: Tribunal::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Tribunal $tribunal;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\ParameterBundle\Entity\Tribunal")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $tribunalCompetent;
+    #[ORM\ManyToOne(targetEntity: Tribunal::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Tribunal $tribunalCompetent;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Lucca\AdherentBundle\Entity\Agent")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $agent;
+    #[ORM\ManyToOne(targetEntity: Agent::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Agent $agent;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Lucca\MinuteBundle\Entity\Human", cascade={"persist", "remove"})
-     * @ORM\JoinTable(name="lucca_minute_linked_human",
-     *      joinColumns={@ORM\JoinColumn(name="minute_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="human_id", referencedColumnName="id")}
-     * )
-     */
-    private $humans;
+    #[ORM\ManyToMany(targetEntity: Human::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinTable(name: 'lucca_minute_linked_human',
+        joinColumns: [new ORM\JoinColumn(name: 'minute_id', referencedColumnName: 'id')],
+        inverseJoinColumns: [new ORM\JoinColumn(name: 'human_id', referencedColumnName: 'id')]
+    )]
+    private Collection $humans;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Lucca\MinuteBundle\Entity\Control", mappedBy="minute", orphanRemoval=true)
-     */
-    private $controls;
+    #[ORM\OneToMany(targetEntity: Control::class, mappedBy: 'minute', orphanRemoval: true)]
+    private Collection $controls;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Lucca\MinuteBundle\Entity\Updating", mappedBy="minute", orphanRemoval=true)
-     */
-    private $updatings;
+    #[ORM\OneToMany(targetEntity: Updating::class, mappedBy: 'minute', orphanRemoval: true)]
+    private Collection $updatings;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Lucca\MinuteBundle\Entity\Decision", mappedBy="minute", orphanRemoval=true)
-     */
-    private $decisions;
+    #[ORM\OneToMany(targetEntity: Decision::class, mappedBy: 'minute', orphanRemoval: true)]
+    private Collection $decisions;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateOpening", type="datetime")
-     * @Assert\NotNull(message="constraint.not_null")
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateOpening;
+    #[ORM\Column(name: 'dateOpening', type: 'datetime')]
+    #[Assert\NotNull(message: 'constraint.not_null')]
+    #[Assert\DateTime(message: 'constraint.datetime')]
+    private \DateTime $dateOpening;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateLastUpdate", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     */
-    private $dateLastUpdate;
+    #[ORM\Column(name: 'dateLastUpdate', type: 'datetime', nullable: true)]
+    #[Assert\DateTime(message: 'constraint.datetime')]
+    private ?\DateTime $dateLastUpdate = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateComplaint", type="datetime", nullable=true)
-     * @Assert\DateTime(message = "constraint.datetime")
-     * @Assert\Range(
-     *      min = "2000-01-01", max = "last day of December",
-     *      minMessage = "constraint.date.range.min",
-     *      maxMessage = "constraint.date.range.max",
-     * )
-     */
-    private $dateComplaint;
+    #[ORM\Column(name: 'dateComplaint', type: 'datetime', nullable: true)]
+    #[Assert\DateTime(message: 'constraint.datetime')]
+    #[Assert\Range(
+        minMessage: 'constraint.date.range.min', maxMessage: 'constraint.date.range.max',
+        min: '2000-01-01',
+        max: 'last day of December',
+    )]
+    private ?\DateTime $dateComplaint = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nameComplaint", type="string", length=60, nullable=true)
-     * @Assert\Type(type="string", message="constraint.type")
-     * @Assert\Length(
-     *      min = 2, max = 60,
-     *      minMessage = "constraint.length.min",
-     *      maxMessage = "constraint.length.max",
-     * )
-     */
-    private $nameComplaint;
+    #[ORM\Column(name: 'nameComplaint', type: 'string', length: 60, nullable: true)]
+    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    #[Assert\Length(
+        min: 2, max: 60,
+        minMessage: 'constraint.length.min',
+        maxMessage: 'constraint.length.max',
+    )]
+    private ?string $nameComplaint = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="isClosed", type="boolean")
-     * @Assert\Type(type="bool", message="constraint.type")
-     */
-    private $isClosed = false;
+    #[ORM\Column(name: 'isClosed', type: 'boolean')]
+    #[Assert\Type(type: 'bool', message: 'constraint.type')]
+    private bool $isClosed = false;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Lucca\MinuteBundle\Entity\Closure", inversedBy="minute")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $closure;
+    #[ORM\OneToOne(targetEntity: Closure::class, inversedBy: 'minute')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Closure $closure = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="reporting", type="text", nullable=true)
-     */
-    private $reporting;
+    #[ORM\Column(name: 'reporting', type: 'text', nullable: true)]
+    private ?string $reporting = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="origin", type="string", length=30, nullable=true)
-     * @Assert\Choice(
-     *      choices = {
-     *          Minute::ORIGIN_COURIER,
-     *          Minute::ORIGIN_PHONE,
-     *          Minute::ORIGIN_EAGLE,
-     *          Minute::ORIGIN_AGENT,
-     *          Minute::ORIGIN_OTHER
-     *      }, message = "constraint.choice.origin"
-     * )
-     */
-    private $origin;
+    #[ORM\Column(name: 'origin', type: 'string', length: 30, nullable: true)]
+    #[Assert\Choice(
+        choices: [
+            self::ORIGIN_COURIER,
+            self::ORIGIN_PHONE,
+            self::ORIGIN_EAGLE,
+            self::ORIGIN_AGENT,
+            self::ORIGIN_OTHER
+        ], message: 'constraint.choice.origin'
+    )]
+    private ?string $origin = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Lucca\MinuteBundle\Entity\MinuteStory", mappedBy="minute", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: MinuteStory::class, mappedBy: 'minute', orphanRemoval: true)]
     private $historic;
 
     /************************************************************************ Custom functions ************************************************************************/
 
-    /**
-     * Minute constructor
-     */
     public function __construct()
     {
         $this->dateOpening = new \DateTime('now');
-        $this->origin = Minute::ORIGIN_AGENT;
-        // Set the status to Open
-        $this->status = Minute::STATUS_OPEN;
+        $this->origin = self::ORIGIN_AGENT;
+        $this->status = self::STATUS_OPEN;
     }
 
-    /**
-     * Get Control with date and hour set for create a new folder
-     *
-     * @return array
-     */
-    public function getControlsForFolder()
+    #[Assert\Callback]
+    public function humanConstraint(ExecutionContextInterface $context): void
     {
-        $result = array();
-
-        foreach ($this->getControls() as $control) {
-            /** Available to Frame 3 */
-            if ($control->getType() === Control::TYPE_FOLDER) {
-                /** Condition - Control have a date and hour + control is accepted + control is not already used */
-                if (($control instanceof Control && $control->getDateControl() && $control->getHourControl())
-                    && ($control->getAccepted() !== null && $control->getAccepted() === Control::ACCEPTED_NONE)
-                    or $control->getIsFenced() === false && $control->getFolder() === null)
-                    $result[] = $control;
-            }
-        }
-
-        // Sort by createdAt method
-        usort($result, function ($a, $b) {
-            return $a->getCreatedAt() < $b->getCreatedAt();
-        });
-
-        return $result;
-    }
-
-    /**
-     * Constraint on date
-     * Dates cannot be minor than today
-     *
-     * @Assert\Callback
-     * @param ExecutionContextInterface $context
-     */
-    public function humanConstraint(ExecutionContextInterface $context)
-    {
-        if (!$this->getHumans())
+        if (!$this->getHumans()) {
             $context->buildViolation('constraint.minute.humans')
                 ->atPath('humans')
                 ->addViolation();
+        }
     }
 
-    /**
-     * Constraint on Plot
-     * Plot Address or Plot Place must be filled
-     *
-     * @Assert\Callback()
-     * @param ExecutionContextInterface $context
-     */
-    public function plotConstraint(ExecutionContextInterface $context)
+    #[Assert\Callback]
+    public function plotConstraint(ExecutionContextInterface $context): void
     {
         if (!$this->getPlot()->getAddress() && !$this->getPlot()->getPlace() && !$this->getPlot()->getLatitude() && !$this->getPlot()->getLongitude())
             $context->buildViolation('constraint.plot.address_or_parcel')
@@ -314,563 +203,279 @@ class Minute implements LogInterface
                 ->addViolation();
     }
 
-    /**
-     * Log name of this Class
-     * @return string
-     */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Dossier';
     }
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set num.
-     *
-     * @param string $num
-     *
-     * @return Minute
-     */
-    public function setNum($num)
+    public function setNum(string $num): self
     {
         $this->num = $num;
 
         return $this;
     }
 
-    /**
-     * Get num.
-     *
-     * @return string
-     */
-    public function getNum()
+    public function getNum(): string
     {
         return $this->num;
     }
 
-    /**
-     * Set status.
-     *
-     * @param string|null $status
-     *
-     * @return Minute
-     */
-    public function setStatus($status = null)
+    public function setStatus(?string $status): self
     {
         $this->status = $status;
 
         return $this;
     }
 
-    /**
-     * Get status.
-     *
-     * @return string|null
-     */
-    public function getStatus()
+    public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    /**
-     * Set dateOpening.
-     *
-     * @param \DateTime $dateOpening
-     *
-     * @return Minute
-     */
-    public function setDateOpening($dateOpening)
+    public function setDateOpening(\DateTime $dateOpening): self
     {
         $this->dateOpening = $dateOpening;
 
         return $this;
     }
 
-    /**
-     * Get dateOpening.
-     *
-     * @return \DateTime
-     */
-    public function getDateOpening()
+    public function getDateOpening(): \DateTime
     {
         return $this->dateOpening;
     }
 
-    /**
-     * Set dateComplaint.
-     *
-     * @param \DateTime|null $dateComplaint
-     *
-     * @return Minute
-     */
-    public function setDateComplaint($dateComplaint = null)
+    public function setDateComplaint(?\DateTime $dateComplaint): self
     {
         $this->dateComplaint = $dateComplaint;
 
         return $this;
     }
 
-    /**
-     * Get dateComplaint.
-     *
-     * @return \DateTime|null
-     */
-    public function getDateComplaint()
+    public function getDateComplaint(): ?\DateTime
     {
         return $this->dateComplaint;
     }
 
-    /**
-     * Set nameComplaint.
-     *
-     * @param string|null $nameComplaint
-     *
-     * @return Minute
-     */
-    public function setNameComplaint($nameComplaint = null)
+    public function setNameComplaint(?string $nameComplaint): self
     {
         $this->nameComplaint = $nameComplaint;
 
         return $this;
     }
 
-    /**
-     * Get nameComplaint.
-     *
-     * @return string|null
-     */
-    public function getNameComplaint()
+    public function getNameComplaint(): ?string
     {
         return $this->nameComplaint;
     }
 
-    /**
-     * Set isClosed.
-     *
-     * @param bool $isClosed
-     *
-     * @return Minute
-     */
-    public function setIsClosed($isClosed)
+    public function setIsClosed(bool $isClosed): self
     {
         $this->isClosed = $isClosed;
 
         return $this;
     }
 
-    /**
-     * Get isClosed.
-     *
-     * @return bool
-     */
-    public function getIsClosed()
+    public function getIsClosed(): bool
     {
         return $this->isClosed;
     }
 
-    /**
-     * Set reporting.
-     *
-     * @param string|null $reporting
-     *
-     * @return Minute
-     */
-    public function setReporting($reporting = null)
+    public function setReporting(?string $reporting): self
     {
         $this->reporting = $reporting;
 
         return $this;
     }
 
-    /**
-     * Get reporting.
-     *
-     * @return string|null
-     */
-    public function getReporting()
+    public function getReporting(): ?string
     {
         return $this->reporting;
     }
 
-    /**
-     * Set origin.
-     *
-     * @param string|null $origin
-     *
-     * @return Minute
-     */
-    public function setOrigin($origin = null)
+    public function setOrigin(?string $origin): self
     {
         $this->origin = $origin;
 
         return $this;
     }
 
-    /**
-     * Get origin.
-     *
-     * @return string|null
-     */
-    public function getOrigin()
+    public function getOrigin(): ?string
     {
         return $this->origin;
     }
 
-    /**
-     * Set adherent.
-     *
-     * @param \Lucca\AdherentBundle\Entity\Adherent $adherent
-     *
-     * @return Minute
-     */
-    public function setAdherent(\Lucca\AdherentBundle\Entity\Adherent $adherent)
+    public function setAdherent(Adherent $adherent): self
     {
         $this->adherent = $adherent;
 
         return $this;
     }
 
-    /**
-     * Get adherent.
-     *
-     * @return \Lucca\AdherentBundle\Entity\Adherent
-     */
-    public function getAdherent()
+    public function getAdherent(): Adherent
     {
         return $this->adherent;
     }
 
-    /**
-     * Set plot.
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Plot $plot
-     *
-     * @return Minute
-     */
-    public function setPlot(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Plot $plot)
+    public function setPlot(Plot $plot): self
     {
         $this->plot = $plot;
 
         return $this;
     }
 
-    /**
-     * Get plot.
-     *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Plot
-     */
-    public function getPlot()
+    public function getPlot(): Plot
     {
         return $this->plot;
     }
 
-    /**
-     * Set tribunal.
-     *
-     * @param \Lucca\ParameterBundle\Entity\Tribunal|null $tribunal
-     *
-     * @return Minute
-     */
-    public function setTribunal(\Lucca\ParameterBundle\Entity\Tribunal $tribunal = null)
+    public function setTribunal(?Tribunal $tribunal): self
     {
         $this->tribunal = $tribunal;
 
         return $this;
     }
 
-    /**
-     * Get tribunal.
-     *
-     * @return \Lucca\ParameterBundle\Entity\Tribunal|null
-     */
-    public function getTribunal()
+    public function getTribunal(): ?Tribunal
     {
         return $this->tribunal;
     }
 
-    /**
-     * Set tribunalCompetent.
-     *
-     * @param \Lucca\ParameterBundle\Entity\Tribunal|null $tribunalCompetent
-     *
-     * @return Minute
-     */
-    public function setTribunalCompetent(\Lucca\ParameterBundle\Entity\Tribunal $tribunalCompetent = null)
+    public function setTribunalCompetent(?Tribunal $tribunalCompetent): self
     {
         $this->tribunalCompetent = $tribunalCompetent;
 
         return $this;
     }
 
-    /**
-     * Get tribunalCompetent.
-     *
-     * @return \Lucca\ParameterBundle\Entity\Tribunal|null
-     */
-    public function getTribunalCompetent()
+    public function getTribunalCompetent(): ?Tribunal
     {
         return $this->tribunalCompetent;
     }
 
-    /**
-     * Set agent.
-     *
-     * @param \Lucca\AdherentBundle\Entity\Agent|null $agent
-     *
-     * @return Minute
-     */
-    public function setAgent(\Lucca\AdherentBundle\Entity\Agent $agent = null)
+    public function setAgent(?Agent $agent): self
     {
         $this->agent = $agent;
 
         return $this;
     }
 
-    /**
-     * Get agent.
-     *
-     * @return \Lucca\AdherentBundle\Entity\Agent|null
-     */
-    public function getAgent()
+    public function getAgent(): ?Agent
     {
         return $this->agent;
     }
 
-    /**
-     * Add human.
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $human
-     *
-     * @return Minute
-     */
-    public function addHuman(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $human)
+    public function addHuman(Human $human): self
     {
         $this->humans[] = $human;
 
         return $this;
     }
 
-    /**
-     * Remove human.
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $human
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeHuman(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human $human)
+    public function removeHuman(Human $human): bool
     {
         return $this->humans->removeElement($human);
     }
 
-    /**
-     * Get humans.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getHumans()
+    public function getHumans(): Collection
     {
         return $this->humans;
     }
 
-    /**
-     * Add control.
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control $control
-     *
-     * @return Minute
-     */
-    public function addControl(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control $control)
+    public function addControl(Control $control): self
     {
         $this->controls[] = $control;
 
         return $this;
     }
 
-    /**
-     * Remove control.
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control $control
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeControl(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control $control)
+    public function removeControl(Control $control): bool
     {
         return $this->controls->removeElement($control);
     }
 
-    /**
-     * Get controls.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getControls()
+    public function getControls(): Collection
     {
         return $this->controls;
     }
 
-    /**
-     * Add updating.
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Updating $updating
-     *
-     * @return Minute
-     */
-    public function addUpdating(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Updating $updating)
+    public function addUpdating(Updating $updating): self
     {
         $this->updatings[] = $updating;
 
         return $this;
     }
 
-    /**
-     * Remove updating.
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Updating $updating
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeUpdating(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Updating $updating)
+    public function removeUpdating(Updating $updating): bool
     {
         return $this->updatings->removeElement($updating);
     }
 
-    /**
-     * Get updatings.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getUpdatings()
+    public function getUpdatings(): Collection
     {
         return $this->updatings;
     }
 
-    /**
-     * Add decision.
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Decision $decision
-     *
-     * @return Minute
-     */
-    public function addDecision(\Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Decision $decision)
+    public function addDecision(Decision $decision): self
     {
         $this->decisions[] = $decision;
 
         return $this;
     }
 
-    /**
-     * Remove decision.
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Decision $decision
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeDecision(\Lucca\Bundle\MinuteBundle\Entity\DecisionBundle\Entity\Decision $decision)
+    public function removeDecision(Decision $decision): bool
     {
         return $this->decisions->removeElement($decision);
     }
 
-    /**
-     * Get decisions.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getDecisions()
+    public function getDecisions(): Collection
     {
         return $this->decisions;
     }
 
-    /**
-     * Set closure.
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Closure|null $closure
-     *
-     * @return Minute
-     */
-    public function setClosure(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Closure $closure = null)
+    public function setClosure(?Closure $closure): self
     {
         $this->closure = $closure;
 
         return $this;
     }
 
-    /**
-     * Get closure.
-     *
-     * @return \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Closure|null
-     */
-    public function getClosure()
+    public function getClosure(): ?Closure
     {
         return $this->closure;
     }
 
-    /**
-     * Add historic.
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\MinuteStory $historic
-     *
-     * @return Minute
-     */
-    public function addHistoric(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\MinuteStory $historic)
+    public function addHistoric(MinuteStory $historic): self
     {
         $this->historic[] = $historic;
 
         return $this;
     }
 
-    /**
-     * Remove historic.
-     *
-     * @param \Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\MinuteStory $historic
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeHistoric(\Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\MinuteStory $historic)
+    public function removeHistoric(MinuteStory $historic): bool
     {
         return $this->historic->removeElement($historic);
     }
 
-    /**
-     * Get historic.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
     public function getHistoric()
     {
         return $this->historic;
     }
 
-    /**
-     * Set dateLastUpdate.
-     *
-     * @param \DateTime|null $dateLastUpdate
-     *
-     * @return Minute
-     */
-    public function setDateLastUpdate($dateLastUpdate = null)
+    public function setDateLastUpdate(?\DateTime $dateLastUpdate): self
     {
         $this->dateLastUpdate = $dateLastUpdate;
 
         return $this;
     }
 
-    /**
-     * Get dateLastUpdate.
-     *
-     * @return \DateTime|null
-     */
-    public function getDateLastUpdate()
+    public function getDateLastUpdate(): ?\DateTime
     {
         return $this->dateLastUpdate;
     }
