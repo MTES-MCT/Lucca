@@ -12,12 +12,6 @@ namespace Lucca\Bundle\DecisionBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-/**
- * Class PenaltyAppealRepository
- *
- * @package Lucca\Bundle\DecisionBundle\Repository
- * @author Terence <terence@numeric-wave.tech>
- */
 class PenaltyAppealRepository extends EntityRepository
 {
 

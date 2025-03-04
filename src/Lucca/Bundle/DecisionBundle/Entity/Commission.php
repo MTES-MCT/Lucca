@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,23 +10,17 @@
 
 namespace Lucca\Bundle\DecisionBundle\Entity;
 
-
+use DateTime, DateMalformedStringException;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
-use Lucca\Bundle\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Commission
- *
- * @ORM\Table(name="lucca_minute_commission")
- * @ORM\Entity(repositoryClass="Lucca\Bundle\DecisionBundle\Repository\CommissionRepository")
- *
- * @package Lucca\Bundle\DecisionBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
- */
-class Commission implements LogInterface
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+
+#[ORM\Entity(repositoryClass: CommissionRepository::class)]
+#[ORM\Table(name: 'lucca_minute_commission')]
+class Commission implements LoggableInterface
 {
     use TimestampableTrait;
 
@@ -37,326 +32,200 @@ class Commission implements LogInterface
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: Types::INTEGER)]
-    private int $id;
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(name: "dateHearing", type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
-    private ?\DateTime $dateHearing = null;
+    private ?DateTime $dateHearing = null;
 
-    #[ORM\Column(name: "dateAdjournment", type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
-    private ?\DateTime $dateAdjournment = null;
+    private ?DateTime $dateAdjournment = null;
 
-    #[ORM\Column(name: "dateDeliberation", type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
-    private ?\DateTime $dateDeliberation = null;
+    private ?DateTime $dateDeliberation = null;
 
-    #[ORM\Column(name: "amountFine", type: Types::INTEGER, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\Type(type: "integer", message: "constraint.type")]
     private ?int $amountFine = null;
 
-    #[ORM\Column(name: "dateJudicialDesision", type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
-    private ?\DateTime $dateJudicialDesision = null;
+    private ?DateTime $dateJudicialDesision = null;
 
-    #[ORM\Column(name: "statusDecision", type: Types::STRING, length: 40, nullable: true)]
+    #[ORM\Column(length: 40, nullable: true)]
     #[Assert\Type(type: "string", message: "constraint.type")]
     private ?string $statusDecision = null;
 
-    #[ORM\Column(name: "amountPenalty", type: Types::INTEGER, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\Type(type: "integer", message: "constraint.type")]
     private ?int $amountPenalty = null;
 
-    #[ORM\Column(name: "dateExecution", type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
-    private ?\DateTime $dateExecution = null;
+    private ?DateTime $dateExecution = null;
 
-    #[ORM\Column(name: "restitution", type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $restitution = null;
 
-    #[ORM\Column(name: "dateStartPenality", type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
-    private ?\DateTime $dateStartPenality = null;
-
+    private ?DateTime $dateStartPenality = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
     /**
      * Automation for Date Start Penalty
      *
-     * @return bool|\DateTime
-     * @throws \DateMalformedStringException
+     * @throws DateMalformedStringException
      */
-    public function autoDateStartPenalty(): \DateTime|bool
+    public function autoDateStartPenalty(): DateTime|bool
     {
         if ($this->getDateExecution()) {
-            $dateStart = new \DateTime($this->getDateExecution()->format('Y-m-d H:i:s'));
+            $dateStart = new DateTime($this->getDateExecution()->format('Y-m-d H:i:s'));
             $dateStart->modify('+1 days');
             $this->setDateStartPenality($dateStart);
+
             return $dateStart;
         }
+
         return false;
     }
 
     /**
-     * Log name of this Class
-     * @return string
+     * @inheritdoc
      */
-    public function getLogName()
+    public function getLogName(): string
     {
         return 'Commission';
     }
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
-    /**
-     * Get id
-     *
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set dateHearing
-     *
-     * @param \DateTime $dateHearing
-     *
-     * @return Commission
-     */
-    public function setDateHearing(\DateTime $dateHearing): static
+    public function getDateHearing(): ?DateTime
+    {
+        return $this->dateHearing;
+    }
+
+    public function setDateHearing(?DateTime $dateHearing): self
     {
         $this->dateHearing = $dateHearing;
 
         return $this;
     }
 
-    /**
-     * Get dateHearing
-     *
-     * @return \DateTime
-     */
-    public function getDateHearing(): ?\DateTime
+    public function getDateAdjournment(): ?DateTime
     {
-        return $this->dateHearing;
+        return $this->dateAdjournment;
     }
 
-    /**
-     * Set dateAdjournment
-     *
-     * @param \DateTime $dateAdjournment
-     *
-     * @return Commission
-     */
-    public function setDateAdjournment($dateAdjournment): static
+    public function setDateAdjournment(?DateTime $dateAdjournment): self
     {
         $this->dateAdjournment = $dateAdjournment;
 
         return $this;
     }
 
-    /**
-     * Get dateAdjournment
-     *
-     * @return \DateTime
-     */
-    public function getDateAdjournment(): ?\DateTime
+    public function getDateDeliberation(): ?DateTime
     {
-        return $this->dateAdjournment;
+        return $this->dateDeliberation;
     }
 
-    /**
-     * Set dateDeliberation
-     *
-     * @param \DateTime $dateDeliberation
-     *
-     * @return Commission
-     */
-    public function setDateDeliberation($dateDeliberation): static
+    public function setDateDeliberation(?DateTime $dateDeliberation): self
     {
         $this->dateDeliberation = $dateDeliberation;
 
         return $this;
     }
 
-    /**
-     * Get dateDeliberation
-     *
-     * @return \DateTime
-     */
-    public function getDateDeliberation(): ?\DateTime
+    public function getAmountFine(): ?int
     {
-        return $this->dateDeliberation;
+        return $this->amountFine;
     }
 
-    /**
-     * Set amountFine
-     *
-     * @param integer $amountFine
-     *
-     * @return Commission
-     */
-    public function setAmountFine($amountFine): static
+    public function setAmountFine(?int $amountFine): self
     {
         $this->amountFine = $amountFine;
 
         return $this;
     }
 
-    /**
-     * Get amountFine
-     *
-     * @return integer
-     */
-    public function getAmountFine(): ?int
+    public function getDateJudicialDesision(): ?DateTime
     {
-        return $this->amountFine;
+        return $this->dateJudicialDesision;
     }
 
-    /**
-     * Set dateJudicialDesision
-     *
-     * @param \DateTime $dateJudicialDesision
-     *
-     * @return Commission
-     */
-    public function setDateJudicialDesision($dateJudicialDesision): static
+    public function setDateJudicialDesision(?DateTime $dateJudicialDesision): self
     {
         $this->dateJudicialDesision = $dateJudicialDesision;
 
         return $this;
     }
 
-    /**
-     * Get dateJudicialDesision
-     *
-     * @return \DateTime
-     */
-    public function getDateJudicialDesision(): ?\DateTime
+    public function getStatusDecision(): ?string
     {
-        return $this->dateJudicialDesision;
+        return $this->statusDecision;
     }
 
-    /**
-     * Set statusDecision
-     *
-     * @param string $statusDecision
-     *
-     * @return Commission
-     */
-    public function setStatusDecision(string $statusDecision): static
+    public function setStatusDecision(?string $statusDecision): self
     {
         $this->statusDecision = $statusDecision;
 
         return $this;
     }
 
-    /**
-     * Get statusDecision
-     *
-     * @return string
-     */
-    public function getStatusDecision(): ?string
+    public function getAmountPenalty(): ?int
     {
-        return $this->statusDecision;
+        return $this->amountPenalty;
     }
 
-    /**
-     * Set amountPenalty
-     *
-     * @param integer $amountPenalty
-     *
-     * @return Commission
-     */
-    public function setAmountPenalty($amountPenalty): static
+    public function setAmountPenalty(?int $amountPenalty): self
     {
         $this->amountPenalty = $amountPenalty;
 
         return $this;
     }
 
-    /**
-     * Get amountPenalty
-     *
-     * @return integer
-     */
-    public function getAmountPenalty(): ?int
+    public function getDateExecution(): ?DateTime
     {
-        return $this->amountPenalty;
+        return $this->dateExecution;
     }
 
-    /**
-     * Set dateExecution
-     *
-     * @param \DateTime $dateExecution
-     *
-     * @return Commission
-     */
-    public function setDateExecution($dateExecution): static
+    public function setDateExecution(?DateTime $dateExecution): self
     {
         $this->dateExecution = $dateExecution;
 
         return $this;
     }
 
-    /**
-     * Get dateExecution
-     *
-     * @return \DateTime
-     */
-    public function getDateExecution(): ?\DateTime
+    public function getRestitution(): ?string
     {
-        return $this->dateExecution;
+        return $this->restitution;
     }
 
-    /**
-     * Set restitution
-     *
-     * @param string $restitution
-     *
-     * @return Commission
-     */
-    public function setRestitution(string $restitution): static
+    public function setRestitution(?string $restitution): self
     {
         $this->restitution = $restitution;
 
         return $this;
     }
 
-    /**
-     * Get restitution
-     *
-     * @return string
-     */
-    public function getRestitution(): ?string
+    public function getDateStartPenality(): ?DateTime
     {
-        return $this->restitution;
+        return $this->dateStartPenality;
     }
 
-    /**
-     * Set dateStartPenality
-     *
-     * @param \DateTime $dateStartPenality
-     *
-     * @return Commission
-     */
-    public function setDateStartPenality(\DateTime $dateStartPenality): static
+    public function setDateStartPenality(?DateTime $dateStartPenality): self
     {
         $this->dateStartPenality = $dateStartPenality;
 
         return $this;
-    }
-
-    /**
-     * Get dateStartPenality
-     *
-     * @return \DateTime
-     */
-    public function getDateStartPenality(): ?\DateTime
-    {
-        return $this->dateStartPenality;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -23,115 +24,108 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class DecisionType
- *
- * @package Lucca\Bundle\DecisionBundle\Form
- * @author Terence <terence@numeric-wave.tech>
- */
 class DecisionType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             /** Tribunal */
-            ->add('tribunal', EntityType::class, array(
+            ->add('tribunal', EntityType::class, [
                 'class' => Tribunal::class, 'choice_label' => 'name', 'label' => 'label.jurisdiction', 'required' => true,
-                'multiple' => false, 'expanded' => false, 'attr' => array('class' => 'chosen-select')
-            ))
-            ->add('tribunalCommission', CommissionType::class, array(
+                'multiple' => false, 'expanded' => false, 'attr' => ['class' => 'chosen-select']
+            ])
+            ->add('tribunalCommission', CommissionType::class, [
                 'label' => 'label.tribunalCommission', 'required' => false
-            ))
+            ])
             /** Appeal */
-            ->add('appeal', ChoiceType::class, array(
-                'label' => 'label.appeal', 'choices' => array(
+            ->add('appeal', ChoiceType::class, [
+                'label' => 'label.appeal', 'choices' => [
                     'choice.enabled.yes' => true, 'choice.enabled.no' => false
-                ), 'required' => true, 'expanded' => true, 'multiple' => false,
-            ))
-            ->add('appealCommission', CommissionType::class, array(
+                ], 'required' => true, 'expanded' => true, 'multiple' => false,
+            ])
+            ->add('appealCommission', CommissionType::class, [
                 'label' => 'label.appealCommission', 'required' => false
-            ))
+            ])
             /** Cassation */
-            ->add('cassationComplaint', ChoiceType::class, array(
-                'label' => 'label.cassationComplaint', 'choices' => array(
+            ->add('cassationComplaint', ChoiceType::class, [
+                'label' => 'label.cassationComplaint', 'choices' => [
                     'choice.enabled.yes' => true, 'choice.enabled.no' => false, 'choice.enabled.dont_know' => null
-                ), 'required' => true, 'expanded' => true, 'multiple' => false
-            ))
-            ->add('dateAskCassation', DateType::class, array(
-                'label' => 'label.dateAskCassation', 'attr' => array('class' => 'date-picker'),
+                ], 'required' => true, 'expanded' => true, 'multiple' => false
+            ])
+            ->add('dateAskCassation', DateType::class, [
+                'label' => 'label.dateAskCassation', 'attr' => ['class' => 'date-picker'],
                 'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
-            ))
-            ->add('dateAnswerCassation', DateType::class, array(
-                'label' => 'label.dateAnswerCassation', 'attr' => array('class' => 'date-picker'),
+            ])
+            ->add('dateAnswerCassation', DateType::class, [
+                'label' => 'label.dateAnswerCassation', 'attr' => ['class' => 'date-picker'],
                 'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
-            ))
-            ->add('statusCassation', ChoiceType::class, array(
-                'label' => 'label.statusCassation', 'choices' => array(
+            ])
+            ->add('statusCassation', ChoiceType::class, [
+                'label' => 'label.statusCassation', 'choices' => [
                     'choice.admission.yes' => true, 'choice.admission.no' => false, 'choice.enabled.dont_know' => null
-                ), 'required' => true, 'expanded' => true, 'multiple' => false
-            ))
-            ->add('cassationComission', CommissionType::class, array(
+                ], 'required' => true, 'expanded' => true, 'multiple' => false
+            ])
+            ->add('cassationComission', CommissionType::class, [
                 'label' => 'label.cassationComission', 'required' => false
-            ))
-            ->add('nameNewCassation', TextType::class, array('label' => 'label.nameNewCassation', 'required' => false))
+            ])
+            ->add('nameNewCassation', TextType::class, ['label' => 'label.nameNewCassation', 'required' => false])
             /** Europe */
-            ->add('dateReferralEurope', DateType::class, array(
-                'label' => 'label.dateReferralEurope', 'attr' => array('class' => 'date-picker'),
+            ->add('dateReferralEurope', DateType::class, [
+                'label' => 'label.dateReferralEurope', 'attr' => ['class' => 'date-picker'],
                 'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
-            ))
-            ->add('answerEurope', DateType::class, array(
-                'label' => 'label.answerEurope', 'attr' => array('class' => 'date-picker'),
+            ])
+            ->add('answerEurope', DateType::class, [
+                'label' => 'label.answerEurope', 'attr' => ['class' => 'date-picker'],
                 'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
-            ))
-            ->add('dataEurope', TextareaType::class, array('label' => 'label.dataEurope', 'required' => false,
-                'attr' => array('class' => 'summernote')))
+            ])
+            ->add('dataEurope', TextareaType::class, ['label' => 'label.dataEurope', 'required' => false,
+                'attr' => ['class' => 'summernote']])
             /** Penalty */
-            ->add('amountPenaltyDaily', MoneyType::class, array('label' => 'label.amountPenaltyDaily', 'required' => false))
-            ->add('dateStartRecovery', DateType::class, array(
-                'label' => 'label.dateStartRecovery', 'attr' => array('class' => 'date-picker'),
+            ->add('amountPenaltyDaily', MoneyType::class, ['label' => 'label.amountPenaltyDaily', 'required' => false])
+            ->add('dateStartRecovery', DateType::class, [
+                'label' => 'label.dateStartRecovery', 'attr' => ['class' => 'date-picker'],
                 'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
-            ))
-            ->add('dateNoticeDdtm', DateType::class, array(
-                'label' => 'label.dateNoticeDdtm', 'attr' => array('class' => 'date-picker'),
+            ])
+            ->add('dateNoticeDdtm', DateType::class, [
+                'label' => 'label.dateNoticeDdtm', 'attr' => ['class' => 'date-picker'],
                 'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
-            ))
-            ->add('penalties', CollectionType::class, array(
+            ])
+            ->add('penalties', CollectionType::class, [
                 'label' => false, 'entry_type' => PenaltyType::class, 'prototype' => true,
                 'allow_add' => true, 'allow_delete' => true, 'delete_empty' => true, 'required' => false,
-                'by_reference' => true, 'entry_options' => array('attr' => array('class' => 'penalty')),
-                'attr' => array('class' => 'table penalty-collection')
-            ))
-            ->add('totalPenaltyRecovery', MoneyType::class, array('label' => 'label.totalPenaltyRecovery', 'required' => false,))
-            ->add('liquidations', CollectionType::class, array(
+                'by_reference' => true, 'entry_options' => ['attr' => ['class' => 'penalty']],
+                'attr' => ['class' => 'table penalty-collection']
+            ])
+            ->add('totalPenaltyRecovery', MoneyType::class, ['label' => 'label.totalPenaltyRecovery', 'required' => false,])
+            ->add('liquidations', CollectionType::class, [
                 'label' => false, 'entry_type' => LiquidationType::class, 'prototype' => true,
                 'allow_add' => true, 'allow_delete' => true, 'delete_empty' => true, 'required' => false,
-                'by_reference' => true, 'entry_options' => array('attr' => array('class' => 'liquidation')),
-                'attr' => array('class' => 'table liquidation-collection')
-            ))
+                'by_reference' => true, 'entry_options' => ['attr' => ['class' => 'liquidation']],
+                'attr' => ['class' => 'table liquidation-collection']
+            ])
             /** Appeal Penalty */
-            ->add('appealPenalties', CollectionType::class, array(
+            ->add('appealPenalties', CollectionType::class, [
                 'label' => false, 'entry_type' => PenaltyAppealType::class, 'prototype' => true,
                 'allow_add' => true, 'allow_delete' => true, 'delete_empty' => true, 'required' => false,
-                'by_reference' => true, 'entry_options' => array('attr' => array('class' => 'appeal-penalty')),
-                'attr' => array('class' => 'table appeal-penalty-collection')
-            ))
+                'by_reference' => true, 'entry_options' => ['attr' => ['class' => 'appeal-penalty']],
+                'attr' => ['class' => 'table appeal-penalty-collection']
+            ])
             /** Others */
-            ->add('contradictories', CollectionType::class, array(
+            ->add('contradictories', CollectionType::class, [
                 'label' => false, 'entry_type' => ContradictoryType::class, 'prototype' => true,
                 'allow_add' => true, 'allow_delete' => true, 'delete_empty' => true, 'required' => false,
-                'by_reference' => true, 'entry_options' => array('attr' => array('class' => 'contradictory')),
-                'attr' => array('class' => 'table contradictory-collection')
-            ))
-            ->add('expulsion', ExpulsionType::class, array(
+                'by_reference' => true, 'entry_options' => ['attr' => ['class' => 'contradictory']],
+                'attr' => ['class' => 'table contradictory-collection']
+            ])
+            ->add('expulsion', ExpulsionType::class, [
                 'label' => 'label.expulsion', 'required' => false,
-            ))
-            ->add('demolition', DemolitionType::class, array(
+            ])
+            ->add('demolition', DemolitionType::class, [
                 'label' => 'label.demolition', 'required' => false,
-            ));
+            ]);
 
         /** Data Transformer */
         $builder->get('amountPenaltyDaily')->addModelTransformer(new NumberToIntTransformer());
@@ -139,15 +133,15 @@ class DecisionType extends AbstractType
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Decision::class,
             'translation_domain' => 'LuccaDecisionBundle',
             'required' => true
-        ));
+        ]);
     }
 
     /**

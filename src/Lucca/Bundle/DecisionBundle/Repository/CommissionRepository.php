@@ -12,12 +12,6 @@ namespace Lucca\Bundle\DecisionBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-/**
- * Class CommissionRepository
- *
- * @package Lucca\Bundle\DecisionBundle\Repository
- * @author Terence <terence@numeric-wave.tech>
- */
 class CommissionRepository extends EntityRepository
 {
 

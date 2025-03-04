@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -14,38 +15,41 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\DecisionBundle\Repository\ProfessionRepository;
-use Lucca\Bundle\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 
 #[ORM\Entity(repositoryClass: ProfessionRepository::class)]
 #[ORM\Table(name: "lucca_minute_profession")]
-class Profession implements LogInterface
+class Profession implements LoggableInterface
 {
     /** Traits */
     use TimestampableTrait;
 
     #[ORM\Id]
-    #[ORM\Column(type: "integer")]
-    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column]
+    #[ORM\GeneratedValue]
     private ?int $id = null;
 
-    #[ORM\Column(type: "string", length: 50)]
+    #[ORM\Column(length: 50)]
     #[Assert\NotNull(message: "constraint.not_null")]
     #[Assert\Type(type: "string", message: "constraint.type")]
     #[Assert\Length(min: 2, max: 50, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
     private string $name;
 
-    #[ORM\Column(type: "string", length: 50)]
+    #[ORM\Column(length: 50)]
     #[Assert\NotNull(message: "constraint.not_null")]
     #[Assert\Type(type: "string", message: "constraint.type")]
     #[Assert\Length(min: 2, max: 50, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
     private string $company;
 
-    #[ORM\Column(type: "integer", nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\Type(type: "int", message: "constraint.type")]
     private ?int $amountActivity = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
+    /**
+     * @ihneritdoc
+     */
     public function getLogName(): string
     {
         return 'Profession';
@@ -58,20 +62,15 @@ class Profession implements LogInterface
         return $this->id;
     }
 
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-        return $this;
-    }
-
     public function getName(): string
     {
         return $this->name;
     }
 
-    public function setCompany(string $company): static
+    public function setName(string $name): self
     {
-        $this->company = $company;
+        $this->name = $name;
+
         return $this;
     }
 
@@ -80,13 +79,22 @@ class Profession implements LogInterface
         return $this->company;
     }
 
-    public function setAmountActivity(?int $amountActivity): static
+    public function setCompany(string $company): self
     {
-        $this->amountActivity = $amountActivity;
+        $this->company = $company;
+
         return $this;
-        }
-        public function getAmountActivity(): ?int
+    }
+
+    public function getAmountActivity(): ?int
     {
         return $this->amountActivity;
+    }
+
+    public function setAmountActivity(?int $amountActivity): self
+    {
+        $this->amountActivity = $amountActivity;
+
+        return $this;
     }
 }

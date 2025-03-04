@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,42 +10,46 @@
 
 namespace Lucca\Bundle\DecisionBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\DecisionBundle\Repository\PenaltyAppealRepository;
-use Lucca\Bundle\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 
 #[ORM\Entity(repositoryClass: PenaltyAppealRepository::class)]
 #[ORM\Table(name: "lucca_minute_penalty_appeal")]
-class PenaltyAppeal implements LogInterface
+class PenaltyAppeal implements LoggableInterface
 {
     /** Traits */
     use TimestampableTrait;
 
     #[ORM\Id]
-    #[ORM\Column(type: "integer")]
-    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column]
+    #[ORM\GeneratedValue]
     private ?int $id = null;
 
-    #[ORM\Column(type: "string", length: 50)]
+    #[ORM\Column(length: 50)]
     #[Assert\NotNull(message: "constraint.not_null")]
     #[Assert\Type(type: "string", message: "constraint.type")]
     #[Assert\Length(min: 2, max: 50, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
     private string $juridiction;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
-    private ?\DateTime $dateDecision = null;
+    private ?DateTime $dateDecision = null;
 
-    #[ORM\Column(type: "string", length: 50, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Type(type: "string", message: "constraint.type")]
     #[Assert\Length(min: 2, max: 50, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
     private ?string $kindDecision = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
+    /**
+     * @inheritdoc
+     */
     public function getLogName(): string
     {
         return 'Appel des pénalités';
@@ -57,36 +62,39 @@ class PenaltyAppeal implements LogInterface
         return $this->id;
     }
 
-    public function setJuridiction(string $juridiction): static
-    {
-        $this->juridiction = $juridiction;
-        return $this;
-    }
-
     public function getJuridiction(): string
     {
         return $this->juridiction;
     }
 
-    public function setDateDecision(?\DateTime $dateDecision): static
+    public function setJuridiction(string $juridiction): self
     {
-        $this->dateDecision = $dateDecision;
+        $this->juridiction = $juridiction;
+
         return $this;
     }
 
-    public function getDateDecision(): ?\DateTime
+    public function getDateDecision(): ?DateTime
     {
         return $this->dateDecision;
     }
 
-    public function setKindDecision(?string $kindDecision): static
+    public function setDateDecision(?DateTime $dateDecision): self
     {
-        $this->kindDecision = $kindDecision;
+        $this->dateDecision = $dateDecision;
+
         return $this;
     }
 
     public function getKindDecision(): ?string
     {
         return $this->kindDecision;
+    }
+
+    public function setKindDecision(?string $kindDecision): self
+    {
+        $this->kindDecision = $kindDecision;
+
+        return $this;
     }
 }

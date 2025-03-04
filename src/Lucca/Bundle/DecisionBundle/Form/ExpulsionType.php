@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -19,58 +20,51 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class ExpulsionType
- *
- * @package Lucca\Bundle\DecisionBundle\Form
- * @author Terence <terence@numeric-wave.tech>
- */
 class ExpulsionType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('lawFirm', TextType::class, array('label' => 'label.lawFirm'))
-            ->add('amountDelivrery', MoneyType::class, array('label' => 'label.amountDelivrery'))
-            ->add('dateHearing', DateType::class, array(
-                'label' => 'label.dateHearing', 'attr' => array('class' => 'date-picker'),
+            ->add('lawFirm', TextType::class, ['label' => 'label.lawFirm'])
+            ->add('amountDelivrery', MoneyType::class, ['label' => 'label.amountDelivrery'])
+            ->add('dateHearing', DateType::class, [
+                'label' => 'label.dateHearing', 'attr' => ['class' => 'date-picker'],
                 'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
-            ))
-            ->add('dateAdjournment', DateType::class, array(
-                'label' => 'label.dateAdjournment', 'attr' => array('class' => 'date-picker'),
+            ])
+            ->add('dateAdjournment', DateType::class, [
+                'label' => 'label.dateAdjournment', 'attr' => ['class' => 'date-picker'],
                 'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
-            ))
-            ->add('dateDeliberation', DateType::class, array(
-                'label' => 'label.dateDeliberation', 'attr' => array('class' => 'date-picker'),
+            ])
+            ->add('dateDeliberation', DateType::class, [
+                'label' => 'label.dateDeliberation', 'attr' => ['class' => 'date-picker'],
                 'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
-            ))
-            ->add('dateJudicialDesision', DateType::class, array(
-                'label' => 'label.dateJudicialDesision', 'attr' => array('class' => 'date-picker'),
+            ])
+            ->add('dateJudicialDesision', DateType::class, [
+                'label' => 'label.dateJudicialDesision', 'attr' => ['class' => 'date-picker'],
                 'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
-            ))
-            ->add('statusDecision', TextType::class, array('label' => 'label.statusDecision'))
-            ->add('comment', TextareaType::class, array('label' => 'label.comment',
-                'attr' => array('class' => 'summernote'), 'required' => false
-            ));
+            ])
+            ->add('statusDecision', TextType::class, ['label' => 'label.statusDecision'])
+            ->add('comment', TextareaType::class, ['label' => 'label.comment',
+                'attr' => ['class' => 'summernote'], 'required' => false
+            ]);
 
         /** Data Transformer */
         $builder->get('amountDelivrery')->addModelTransformer(new NumberToIntTransformer());
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Expulsion::class,
             'translation_domain' => 'LuccaDecisionBundle',
             'required' => true
-        ));
+        ]);
     }
 
     /**

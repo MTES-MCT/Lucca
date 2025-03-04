@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,42 +10,42 @@
 
 namespace Lucca\Bundle\DecisionBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\DecisionBundle\Repository\LiquidationRepository;
-use Lucca\Bundle\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 
 #[ORM\Entity(repositoryClass: LiquidationRepository::class)]
 #[ORM\Table(name: "lucca_minute_liquidation")]
-class Liquidation implements LogInterface
+class Liquidation implements LoggableInterface
 {
     /** Traits */
     use TimestampableTrait;
 
     #[ORM\Id]
-    #[ORM\Column(type: "integer")]
-    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column]
+    #[ORM\GeneratedValue]
     private ?int $id = null;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
-    private ?\DateTime $dateStart = null;
+    private ?DateTime $dateStart = null;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
-    private ?\DateTime $dateEnd = null;
+    private ?DateTime $dateEnd = null;
 
-    #[ORM\Column(type: "integer", nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\Type(type: "int", message: "constraint.type")]
     private ?int $amountPenalty = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
     /**
-     * Log name of this Class
-     * @return string
+     * @inheritdoc
      */
     public function getLogName(): string
     {
@@ -53,85 +54,44 @@ class Liquidation implements LogInterface
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set dateStart
-     *
-     * @param \DateTime $dateStart
-     *
-     * @return Liquidation
-     */
-    public function setDateStart(\DateTime $dateStart): static
+    public function getDateStart(): ?DateTime
+    {
+        return $this->dateStart;
+    }
+
+    public function setDateStart(?DateTime $dateStart): self
     {
         $this->dateStart = $dateStart;
 
         return $this;
     }
 
-    /**
-     * Get dateStart
-     *
-     * @return \DateTime
-     */
-    public function getDateStart(): ?\DateTime
+    public function getDateEnd(): ?DateTime
     {
-        return $this->dateStart;
+        return $this->dateEnd;
     }
 
-    /**
-     * Set dateEnd
-     *
-     * @param \DateTime $dateEnd
-     *
-     * @return Liquidation
-     */
-    public function setDateEnd(\DateTime $dateEnd): static
+    public function setDateEnd(?DateTime $dateEnd): self
     {
         $this->dateEnd = $dateEnd;
 
         return $this;
     }
 
-    /**
-     * Get dateEnd
-     *
-     * @return \DateTime
-     */
-    public function getDateEnd(): ?\DateTime
+    public function getAmountPenalty(): ?int
     {
-        return $this->dateEnd;
+        return $this->amountPenalty;
     }
 
-    /**
-     * Set amountPenalty
-     *
-     * @param int $amountPenalty
-     *
-     * @return Liquidation
-     */
-    public function setAmountPenalty(int $amountPenalty): static
+    public function setAmountPenalty(?int $amountPenalty): self
     {
         $this->amountPenalty = $amountPenalty;
 
         return $this;
-    }
-
-    /**
-     * Get amountPenalty
-     *
-     * @return int
-     */
-    public function getAmountPenalty(): ?int
-    {
-        return $this->amountPenalty;
     }
 }

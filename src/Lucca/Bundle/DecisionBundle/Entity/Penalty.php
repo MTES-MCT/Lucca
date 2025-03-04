@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,15 +10,17 @@
 
 namespace Lucca\Bundle\DecisionBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\DecisionBundle\Repository\PenaltyRepository;
-use Lucca\Bundle\LogBundle\Entity\LogInterface;
-use Symfony\Component\Validator\Constraints as Assert;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 
 #[ORM\Entity(repositoryClass: PenaltyRepository::class)]
 #[ORM\Table(name: "lucca_minute_penalty")]
-class Penalty implements LogInterface
+class Penalty implements LoggableInterface
 {
     /** Traits */
     use TimestampableTrait;
@@ -28,38 +31,41 @@ class Penalty implements LogInterface
     public const NATURE_REGULARIZED = 'choice.nature.regularized';
 
     #[ORM\Id]
-    #[ORM\Column(type: "integer")]
-    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column]
+    #[ORM\GeneratedValue]
     private ?int $id = null;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
-    private ?\DateTime $dateFolder = null;
+    private ?DateTime $dateFolder = null;
 
-    #[ORM\Column(type: "string", length: 50)]
+    #[ORM\Column(length: 50)]
     #[Assert\NotNull(message: "constraint.not_null")]
     #[Assert\Type(type: "string", message: "constraint.type")]
     #[Assert\Length(min: 2, max: 50, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
     private string $preparedBy;
 
-    #[ORM\Column(type: "string", length: 30, nullable: true)]
+    #[ORM\Column(length: 30, nullable: true)]
     #[Assert\Type(type: "string", message: "constraint.type")]
     private ?string $nature = null;
 
-    #[ORM\Column(type: "integer", nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\Type(type: "int", message: "constraint.type")]
     private ?int $amountPenalty = null;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
-    private ?\DateTime $dateStart = null;
+    private ?DateTime $dateStart = null;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
-    private ?\DateTime $dateEnd = null;
+    private ?DateTime $dateEnd = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
+    /**
+     * @inheritdoc
+     */
     public function getLogName(): string
     {
         return 'Pénalité';
@@ -72,20 +78,15 @@ class Penalty implements LogInterface
         return $this->id;
     }
 
-    public function setDateFolder(?\DateTime $dateFolder): static
-    {
-        $this->dateFolder = $dateFolder;
-        return $this;
-    }
-
-    public function getDateFolder(): ?\DateTime
+    public function getDateFolder(): ?DateTime
     {
         return $this->dateFolder;
     }
 
-    public function setPreparedBy(string $preparedBy): static
+    public function setDateFolder(?DateTime $dateFolder): self
     {
-        $this->preparedBy = $preparedBy;
+        $this->dateFolder = $dateFolder;
+
         return $this;
     }
 
@@ -94,9 +95,10 @@ class Penalty implements LogInterface
         return $this->preparedBy;
     }
 
-    public function setNature(?string $nature): static
+    public function setPreparedBy(string $preparedBy): self
     {
-        $this->nature = $nature;
+        $this->preparedBy = $preparedBy;
+
         return $this;
     }
 
@@ -105,9 +107,10 @@ class Penalty implements LogInterface
         return $this->nature;
     }
 
-    public function setAmountPenalty(?int $amountPenalty): static
+    public function setNature(?string $nature): self
     {
-        $this->amountPenalty = $amountPenalty;
+        $this->nature = $nature;
+
         return $this;
     }
 
@@ -116,25 +119,34 @@ class Penalty implements LogInterface
         return $this->amountPenalty;
     }
 
-    public function setDateStart(?\DateTime $dateStart): static
+    public function setAmountPenalty(?int $amountPenalty): self
     {
-        $this->dateStart = $dateStart;
+        $this->amountPenalty = $amountPenalty;
+
         return $this;
     }
 
-    public function getDateStart(): ?\DateTime
+    public function getDateStart(): ?DateTime
     {
         return $this->dateStart;
     }
 
-    public function setDateEnd(?\DateTime $dateEnd): static
+    public function setDateStart(?DateTime $dateStart): self
     {
-        $this->dateEnd = $dateEnd;
+        $this->dateStart = $dateStart;
+
         return $this;
     }
 
-    public function getDateEnd(): ?\DateTime
+    public function getDateEnd(): ?DateTime
     {
         return $this->dateEnd;
+    }
+
+    public function setDateEnd(?DateTime $dateEnd): self
+    {
+        $this->dateEnd = $dateEnd;
+
+        return $this;
     }
 }

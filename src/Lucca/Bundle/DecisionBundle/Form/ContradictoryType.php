@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -16,48 +17,41 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class ContradictoryType
- *
- * @package Lucca\Bundle\DecisionBundle\Form
- * @author Terence <terence@numeric-wave.tech>
- */
 class ContradictoryType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('dateNoticeDdtm', DateType::class, array(
-                'label' => 'label.dateNoticeDdtm', 'attr' => array('class' => 'date-picker'),
+            ->add('dateNoticeDdtm', DateType::class, [
+                'label' => 'label.dateNoticeDdtm', 'attr' => ['class' => 'date-picker'],
                 'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
-            ))
-            ->add('dateExecution', DateType::class, array(
-                'label' => 'label.dateExecution', 'attr' => array('class' => 'date-picker'),
+            ])
+            ->add('dateExecution', DateType::class, [
+                'label' => 'label.dateExecution', 'attr' => ['class' => 'date-picker'],
                 'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
-            ))
-            ->add('dateAnswer', DateType::class, array(
-                'label' => 'label.dateAnswer', 'attr' => array('class' => 'date-picker'),
+            ])
+            ->add('dateAnswer', DateType::class, [
+                'label' => 'label.dateAnswer', 'attr' => ['class' => 'date-picker'],
                 'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
-            ))
-            ->add('answer', TextareaType::class, array('label' => 'label.answer',
-                'attr' => array('class' => 'summernote'), 'required' => false
-            ));
+            ])
+            ->add('answer', TextareaType::class, ['label' => 'label.answer',
+                'attr' => ['class' => 'summernote'], 'required' => false
+            ]);
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Contradictory::class,
             'translation_domain' => 'LuccaDecisionBundle',
             'required' => false
-        ));
+        ]);
     }
 
     /**
