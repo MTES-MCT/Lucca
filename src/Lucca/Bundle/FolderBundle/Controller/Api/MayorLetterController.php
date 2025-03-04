@@ -9,52 +9,51 @@
 
 namespace Lucca\Bundle\FolderBundle\Controller\Api;
 
+use Exception;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
+use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
 use Lucca\Bundle\DecisionBundle\Entity\Decision;
-use Lucca\Bundle\FolderBundle\Entity\Folder;
-use Lucca\Bundle\FolderBundle\Entity\Tag;
+use Lucca\Bundle\FolderBundle\Entity\{Folder, Tag};
 use Lucca\Bundle\MinuteBundle\Entity\Human;
+use Lucca\Bundle\MinuteBundle\Manager\MayorLetterManager;
 use Lucca\Bundle\ParameterBundle\Entity\Town;
 
-/**
- * Class MayorLetterController
- *
- * @package Lucca\Bundle\FolderBundle\Controller\Api
- * @author lisa <lisa.alvarez@numeric-wave.eu>
- */
 #[IsGranted('ROLE_USER')]
-#[Route('/')]
+#[Route(path: '/')]
 class MayorLetterController extends AbstractController
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly AdherentFinder $adherentFinder,
+        private readonly TranslatorInterface $translator,
+        private readonly MayorLetterManager $mayorLetterManager,
+    )
+    {
+    }
+
     /**
      * Search geocode corresponding to address
-     *
-     * @param Request $p_request
-     * @return Response
      */
-    #[Route('/getFolderList', name: 'lucca_mayor_letter_get_folders_api', methods: ['GET', 'POST'])]
+    #[Route(path: '/getFolderList', name: 'lucca_mayor_letter_get_folders_api', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
-    public function getFolderListAction(Request $p_request): Response
+    public function getFolderListAction(Request $request): Response
     {
-        $em = $this->getDoctrine()->getManager();
+        /** Who is connected */
+        $adherent = $this->adherentFinder->whoAmI();
 
-        /** Who is connected ;) */
-        $adherent = $this->get('lucca.finder.adherent')->whoAmI();
+        $townId = intval($request->get('terms'));
 
-        $townId = intval($p_request->get('terms'));
-
-        /** @var Town $tax */
-        $town = $em->getRepository(Town::class)->find($townId);
+        $town = $this->em->getRepository(Town::class)->find($townId);
 
         try {
-            $folders = $em->getRepository(Folder::class)->findByTown($town, $adherent);
-        }catch (\Exception $e) {
+            $folders = $this->em->getRepository(Folder::class)->findByTown($town, $adherent);
+        } catch (Exception) {
             return new Response("<tr><td colspan='14' class='text-center'>Aucun résultat</td></tr>");
         }
 
@@ -69,16 +68,17 @@ class MayorLetterController extends AbstractController
          * This block construct and add a row to the list for each folder found
          */
         /** @var Folder $folder */
-        foreach ($folders as $folder){
+        foreach ($folders as $folder) {
             // Init minute value
             $minute = $folder->getMinute();
 
             // Init <tr> with id and color if minute is closed
             $row = "<tr id='" . $folder->getId() . "' ";
-            if($minute->getClosure())
+            if($minute->getClosure()) {
                 $row .= "class='table-info'";
-            elseif ($folder->getDateClosure() !== null)
+            } elseif ($folder->getDateClosure() !== null) {
                 $row .= "class='table-primary'";
+            }
             $row .= ">";
 
             // for checklist
@@ -103,7 +103,7 @@ class MayorLetterController extends AbstractController
             // Set Tags
             $row .= "<td>";
             /** @var Tag $tag */
-            foreach ($folder->getTagsNature() as $tag){
+            foreach ($folder->getTagsNature() as $tag) {
                 $row .= "<a class='btn btn-xs btn-secondary'>";
                 $row .= $tag->getName();
                 $row .= "</a> ";
@@ -113,7 +113,7 @@ class MayorLetterController extends AbstractController
             // Set Human
             $row .= "<td>";
             /** @var Human $human */
-            foreach ($minute->getHumans() as $human){
+            foreach ($minute->getHumans() as $human) {
                 $row .= $human->getName();
                 $row .= "  ";
             }
@@ -122,8 +122,8 @@ class MayorLetterController extends AbstractController
             // Set Decision TGI
             $row .= "<td>";
             /** @var Decision $decision */
-            foreach ($minute->getDecisions() as $decision){
-                if($decision->getTribunalCommission() && $decision->getTribunalCommission()->getDateJudicialDesision()) {
+            foreach ($minute->getDecisions() as $decision) {
+                if ($decision->getTribunalCommission() && $decision->getTribunalCommission()->getDateJudicialDesision()) {
                     $row .= $decision->getTribunalCommission()->getDateJudicialDesision()->format('d/m/Y');
                     $row .= "<br><span class='badge badge-info'>";
                     $row .= $decision->getTribunalCommission()->getStatusDecision();
@@ -135,8 +135,8 @@ class MayorLetterController extends AbstractController
             // Set Decision Appeal Commision
             $row .= "<td>";
             /** @var Decision $decision */
-            foreach ($minute->getDecisions() as $decision){
-                if($decision->getAppealCommission() && $decision->getAppealCommission()->getDateJudicialDesision()) {
+            foreach ($minute->getDecisions() as $decision) {
+                if ($decision->getAppealCommission() && $decision->getAppealCommission()->getDateJudicialDesision()) {
                     $row .= $decision->getAppealCommission()->getDateJudicialDesision()->format('d/m/Y');
                     $row .= "<br><span class='badge badge-info'>";
                     $row .= $decision->getAppealCommission()->getStatusDecision();
@@ -149,15 +149,15 @@ class MayorLetterController extends AbstractController
             $row .= "<td>";
             /** @var Decision $decision */
             foreach ($minute->getDecisions() as $decision){
-                if($decision->getDateStartRecovery()) {
+                if ($decision->getDateStartRecovery()) {
                     $row .= $decision->getDateStartRecovery()->format('d/m/Y');
                     $row .= "<br><span class='badge badge-info'>"
-                        . $this->get('translator')->trans("text.decision.yes", array(), 'LuccaFolderBundle')
+                        . $this->translator->trans("text.decision.yes", [], 'LuccaFolderBundle')
                         ."</span><br>";
                 }
                 else
                     $row .= "<span class='badge badge-warning'>"
-                        . $this->get('translator')->trans("text.decision.no", array(), 'LuccaFolderBundle')
+                        . $this->translator->trans("text.decision.no", [], 'LuccaFolderBundle')
                         ."</span>";
             }
             $row .= "</td>";
@@ -169,12 +169,12 @@ class MayorLetterController extends AbstractController
                 if($decision->getExpulsion() && $decision->getExpulsion()->getDateJudicialDesision()) {
                     $row .= $decision->getExpulsion()->getDateJudicialDesision()->format('d/m/Y');
                     $row .= "<br><span class='badge badge-info'>"
-                        . $this->get('translator')->trans("text.decision.yes", array(), 'LuccaFolderBundle')
+                        . $this->translator->trans("text.decision.yes", [], 'LuccaFolderBundle')
                         ."</span><br>";
                 }
                 else
                     $row .= "<span class='badge badge-warning'>"
-                        . $this->get('translator')->trans("text.decision.no", array(), 'LuccaFolderBundle')
+                        . $this->translator->trans("text.decision.no", [], 'LuccaFolderBundle')
                         ."</span>";
             }
             $row .= "</td>";
@@ -182,32 +182,32 @@ class MayorLetterController extends AbstractController
             // Set Demolition
             $row .= "<td>";
             /** @var Decision $decision */
-            foreach ($minute->getDecisions() as $decision){
-                if($decision->getDemolition() && $decision->getDemolition()->getDateDemolition()) {
+            foreach ($minute->getDecisions() as $decision) {
+                if ($decision->getDemolition() && $decision->getDemolition()->getDateDemolition()) {
                     $row .= $decision->getDemolition()->getDateDemolition()->format('d/m/Y');
                     $row .= "<br><span class='badge badge-info'>"
-                        . $this->get('translator')->trans("text.decision.yes", array(), 'LuccaFolderBundle')
+                        . $this->translator->trans("text.decision.yes", [], 'LuccaFolderBundle')
                         ."</span><br>";
                 }
                 else
                     $row .= "<span class='badge badge-warning'>"
-                        . $this->get('translator')->trans("text.decision.no", array(), 'LuccaFolderBundle')
+                        . $this->translator->trans("text.decision.no", [], 'LuccaFolderBundle')
                         ."</span>";
             }
             $row .= "</td>";
 
             // Set Closure
             $row .= "<td>";
-            if($minute->getClosure())
+            if ($minute->getClosure()) {
                 $row .= $minute->getClosure()->getDateClosing()->format('d/m/Y');
+            }
             $row .= "</td>";
-
 
             // Action
             $row .= "<td>";
             $row .= "<a href='". $this->generateUrl('lucca_minute_show', array('id' => $minute->getId())) ."'";
             $row .= "class='btn btn-sm btn-primary'";
-            $row .= "title='" . $this->get('translator')->trans("link.minute.show", array(), 'LuccaFolderBundle') . "'>";
+            $row .= "title='" . $this->translator->trans("link.minute.show", [], 'LuccaFolderBundle') . "'>";
             $row .= "<i class='fa fa-eye'></i></a>";
             $row .= "</td>";
 
@@ -218,38 +218,35 @@ class MayorLetterController extends AbstractController
 
         $data = [];
         $data['rows'] = $list;
+
         return new Response(json_encode($data), 200);
     }
-
 
     /**
      * Api Action
      * Post check value for new MayorLetter
      *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     * @throws \Exception
+     * @throws Exception
      */
-    #[Route('/postCheckMayorLetter', name: 'lucca_mayor_letter_check_post', options: ['expose' => true], methods: ['POST'])]
+    #[Route(path: '/postCheckMayorLetter', name: 'lucca_mayor_letter_check_post', options: ['expose' => true], methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function apiCheckPostMayorLetter(Request $request): JsonResponse
+    public function apiCheckPostMayorLetter(Request $request): Response
     {
-
         /* get Body Request */
         $json = $request->getContent();
         $data = json_decode($json);
 
         /* check if all field of form is fill */
-        $message = $this->get("lucca.manager.mayor.letter")->checkMayorLetterField($data);
+        $message = $this->mayorLetterManager->checkMayorLetterField($data);
 
         /* if there is at least 1 message, return an error with this message */
-        if ($message !== "")
+        if ($message !== "") {
             return new JsonResponse([
                 'success' => false,
                 'code' => Response::HTTP_BAD_REQUEST,
                 'message' => $message
             ], Response::HTTP_BAD_REQUEST);
+        }
 
         /* return ok with id of dunning created */
         return new JsonResponse([

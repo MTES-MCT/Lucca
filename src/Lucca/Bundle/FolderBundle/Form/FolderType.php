@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,41 +10,25 @@
 
 namespace Lucca\Bundle\FolderBundle\Form;
 
-use Lucca\Bundle\FolderBundle\Entity\Folder;
-use Lucca\Bundle\FolderBundle\Entity\Control;
-use Lucca\Bundle\MinuteBundle\Entity\Human;
-use Lucca\Bundle\FolderBundle\Form\Human\HumanFolderType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, CollectionType};
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class FolderType
- *
- * @package Lucca\Bundle\FolderBundle\Form
- * @author Terence <terence@numeric-wave.tech>
- */
+use Lucca\Bundle\FolderBundle\Entity\{Folder, Control};
+use Lucca\Bundle\FolderBundle\Form\Human\HumanFolderType;
+use Lucca\Bundle\MinuteBundle\Entity\Human;
+
 class FolderType extends AbstractType
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+    )
     {
-        $this->translator = $translator;
     }
 
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('nature', ChoiceType::class, array(
@@ -115,10 +100,7 @@ class FolderType extends AbstractType
             ));
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('minute');
         $resolver->setDefaults(array(
@@ -130,7 +112,7 @@ class FolderType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'lucca_folderBundle_folder';
     }

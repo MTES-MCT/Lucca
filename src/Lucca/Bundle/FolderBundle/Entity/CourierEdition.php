@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -10,25 +11,21 @@
 namespace Lucca\Bundle\FolderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
-use Lucca\Bundle\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * CourierEdition
- *
- * @package Lucca\Bundle\FolderBundle\Entity
- */
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+
 #[ORM\Table(name: 'lucca_minute_courier_edition')]
 #[ORM\Entity(repositoryClass: 'Lucca\Bundle\FolderBundle\Repository\CourierEditionRepository')]
-class CourierEdition implements LogInterface
+class CourierEdition implements LoggableInterface
 {
     /** Traits */
     use TimestampableTrait;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
-    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id;
 
     #[ORM\Column(name: 'judicialEdited', type: 'boolean')]

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -10,23 +11,16 @@
 namespace Lucca\Bundle\FolderBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
-use Lucca\Bundle\CoreBundle\Entity\ToggleableTrait;
-use Lucca\Bundle\FolderBundle\Repository\NatinfRepository;
-use Lucca\Bundle\LogBundle\Entity\LogInterface;
 
-/**
- * Natinf
- *
- * @package Lucca\Bundle\FolderBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
- */
+use Lucca\Bundle\CoreBundle\Entity\{TimestampableTrait, ToggleableTrait};
+use Lucca\Bundle\FolderBundle\Repository\NatinfRepository;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+
 #[ORM\Table(name: "lucca_natinf")]
 #[ORM\Entity(repositoryClass: NatinfRepository::class)]
-class Natinf implements LogInterface
+class Natinf implements LoggableInterface
 {
     use ToggleableTrait, TimestampableTrait;
 

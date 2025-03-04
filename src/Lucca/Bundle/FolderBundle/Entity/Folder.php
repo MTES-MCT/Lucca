@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,30 +10,18 @@
 
 namespace Lucca\Bundle\FolderBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
-use Lucca\Bundle\LogBundle\Entity\LogInterface;
-use Lucca\Bundle\MediaBundle\Entity\Media;
-use Lucca\Bundle\MediaBundle\Entity\MediaAsyncInterface;
-use Lucca\Bundle\MediaBundle\Entity\MediaListAsyncInterface;
-use Lucca\Bundle\MinuteBundle\Entity\Control;
-use Lucca\Bundle\MinuteBundle\Entity\Human;
-use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+use Lucca\Bundle\MediaBundle\Entity\{Media, MediaAsyncInterface, MediaListAsyncInterface};
+use Lucca\Bundle\MinuteBundle\Entity\{Control, Human, Minute};
 
-/**
- * Folder
- *
- * @package Lucca\Bundle\FolderBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
- * @author Alizee Meyer <alizee.m@numeric-wave.eu>
- */
 #[ORM\Table(name: "lucca_minute_folder")]
 #[ORM\Entity(repositoryClass: "Lucca\Bundle\FolderBundle\Repository\FolderRepository")]
-class Folder implements LogInterface, MediaAsyncInterface, MediaListAsyncInterface
+class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncInterface
 {
     use TimestampableTrait;
 

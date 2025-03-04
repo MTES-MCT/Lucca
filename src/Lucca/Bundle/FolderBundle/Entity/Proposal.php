@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -10,21 +11,15 @@
 namespace Lucca\Bundle\FolderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
-use Lucca\Bundle\CoreBundle\Entity\ToggleableTrait;
-use Lucca\Bundle\FolderBundle\Repository\ProposalRepository;
-use Lucca\Bundle\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Proposal
- *
- * @package Lucca\Bundle\FolderBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
- */
+use Lucca\Bundle\CoreBundle\Entity\{TimestampableTrait, ToggleableTrait};
+use Lucca\Bundle\FolderBundle\Repository\ProposalRepository;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+
 #[ORM\Table(name: "lucca_proposal")]
 #[ORM\Entity(repositoryClass: ProposalRepository::class)]
-class Proposal implements LogInterface
+class Proposal implements LoggableInterface
 {
     use ToggleableTrait, TimestampableTrait;
 

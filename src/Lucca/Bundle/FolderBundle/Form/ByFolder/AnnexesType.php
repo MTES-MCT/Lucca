@@ -16,18 +16,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class AnnexesType
- *
- * @package Lucca\Bundle\FolderBundle\Form\ByFolder
- * @author Alizee Meyer <alizee.m@numeric-wave.eu>
- */
 class AnnexesType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('annexes', DropzoneType::class, array(
@@ -38,7 +32,7 @@ class AnnexesType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => Folder::class,
@@ -50,7 +44,7 @@ class AnnexesType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'lucca_folderBundle_annexes';
     }

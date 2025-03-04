@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -10,23 +11,17 @@
 namespace Lucca\Bundle\FolderBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\ORM\Mapping as ORM;
+
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\CoreBundle\Entity\ToggleableTrait;
 use Lucca\Bundle\FolderBundle\Repository\TagRepository;
-use Lucca\Bundle\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 
-/**
- * Tag
- *
- * @package Lucca\Bundle\FolderBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
- */
 #[ORM\Table(name: "lucca_tag")]
 #[ORM\Entity(repositoryClass: TagRepository::class)]
-class Tag implements LogInterface
+class Tag implements LoggableInterface
 {
     use ToggleableTrait, TimestampableTrait;
 

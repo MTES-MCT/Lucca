@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -14,20 +15,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\FolderBundle\Repository\ElementCheckedRepository;
-use Lucca\Bundle\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\MediaBundle\Entity\Media;
 use Lucca\Bundle\MediaBundle\Entity\MediaAsyncInterface;
 
-/**
- * ElementChecked
- *
- * @package Lucca\Bundle\FolderBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
- * @author Alizee Meyer <alizee.m@numeric-wave.eu>
- */
 #[ORM\Table(name: "lucca_minute_folder_element")]
 #[ORM\Entity(repositoryClass: ElementCheckedRepository::class)]
-class ElementChecked implements LogInterface, MediaAsyncInterface
+class ElementChecked implements LoggableInterface, MediaAsyncInterface
 {
     use TimestampableTrait;
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -11,17 +12,15 @@ namespace Lucca\Bundle\FolderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\FolderBundle\Repository\CourierHumanEditionRepository;
-use Lucca\Bundle\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\MinuteBundle\Entity\Human;
 
-/**
- * CourierHumanEdition
- */
 #[ORM\Table(name: "lucca_minute_courier_human_edition")]
 #[ORM\Entity(repositoryClass: CourierHumanEditionRepository::class)]
-class CourierHumanEdition implements LogInterface
+class CourierHumanEdition implements LoggableInterface
 {
     use TimestampableTrait;
 

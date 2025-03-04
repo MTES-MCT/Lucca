@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -15,19 +16,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class FolderStep3Type
- *
- * @package Lucca\Bundle\FolderBundle\Form
- * @author Terence <terence@numeric-wave.tech>
- */
 class FolderStep3Type extends AbstractType
 {
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $natinfsFiltered = $options['natinfsFiltered'];
 
@@ -39,10 +30,7 @@ class FolderStep3Type extends AbstractType
             ));
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('natinfsFiltered');
         $resolver->setDefaults(array(
@@ -54,7 +42,7 @@ class FolderStep3Type extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'lucca_folderBundle_folder_step3';
     }

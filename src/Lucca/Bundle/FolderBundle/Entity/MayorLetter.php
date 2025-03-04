@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,23 +10,17 @@
 
 namespace Lucca\Bundle\FolderBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\Bundle\FolderBundle\Repository\MayorLetterRepository;
 use Symfony\Component\Validator\Constraints as Assert;
-use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
-use Lucca\Bundle\LogBundle\Entity\LogInterface;
 
-/**
- * Plot
- *
- * @package Lucca\Bundle\FolderBundle\Entity
- * @author Lisa <lisa.alvarez@numeric-wave.eu>
- */
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\FolderBundle\Repository\MayorLetterRepository;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+
 #[ORM\Table(name: "lucca_minute_mayor_letter")]
 #[ORM\Entity(repositoryClass: MayorLetterRepository::class)]
-class MayorLetter implements LogInterface
+class MayorLetter implements LoggableInterface
 {
     use TimestampableTrait;
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,27 +10,17 @@
 
 namespace Lucca\Bundle\FolderBundle\Repository;
 
-use Lucca\Bundle\FolderBundle\Entity\Folder;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
-use Lucca\Bundle\CoreBundle\Repository\ToggleableRepository;
+use Doctrine\ORM\{QueryBuilder, EntityRepository, NonUniqueResultException};
 
-/**
- * Class NatinfRepository
- *
- * @package Lucca\Bundle\FolderBundle\Repository
- * @author Terence <terence@numeric-wave.tech>
- */
+use Lucca\Bundle\CoreBundle\Repository\ToggleableRepository;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+
 class NatinfRepository extends EntityRepository
 {
     /** Traits */
     use  ToggleableRepository;
 
-    /**
-     * @param Folder $folder
-     * @return array
-     */
-    public function findNatinfsByFolder(Folder $folder)
+    public function findNatinfsByFolder(Folder $folder): array
     {
         $qb = $this->queryNatinf();
 
@@ -48,17 +39,15 @@ class NatinfRepository extends EntityRepository
     /**
      * Override findAll
      * Add select of tags
-     *
-     * @param null $status
-     * @return array
      */
-    public function findAllByStatus($status = null)
+    public function findAllByStatus($status = null): array
     {
         $qb = $this->queryNatinf();
 
-        if ($status)
+        if ($status) {
             $qb->where($qb->expr()->eq('natinf.enabled', ':q_enabled'))
                 ->setParameter(':q_enabled', $status);
+        }
 
         return $qb->getQuery()->getResult();
     }
@@ -70,10 +59,8 @@ class NatinfRepository extends EntityRepository
     /**
      * Override findAll method
      * with Natinf dependencies
-     *
-     * @return array
      */
-    public function findAll()
+    public function findAll(): array
     {
         $qb = $this->queryNatinf();
 
@@ -83,13 +70,8 @@ class NatinfRepository extends EntityRepository
     /**
      * Override find method
      * with Natinf dependencies
-     *
-     * @param mixed $id
-     * @param null $lockMode
-     * @param null $lockVersion
-     * @return bool|mixed|object|null
      */
-    public function find($id, $lockMode = null, $lockVersion = null)
+    public function find(mixed $id, $lockMode = null, $lockVersion = null): ?object
     {
         $qb = $this->queryNatinf();
 
@@ -100,7 +82,8 @@ class NatinfRepository extends EntityRepository
             return $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             echo 'NonUniqueResultException has been thrown - Natinf Repository - ' . $e->getMessage();
-            return false;
+
+            return null;
         }
     }
 
@@ -110,15 +93,11 @@ class NatinfRepository extends EntityRepository
 
     /**
      * Classic dependencies
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    private function queryNatinf()
+    private function queryNatinf(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('natinf')
+        return $this->createQueryBuilder('natinf')
             ->leftJoin('natinf.parent', 'parent')->addSelect('parent')
             ->leftJoin('natinf.tags', 'tags')->addSelect('tags');
-
-        return $qb;
     }
 }

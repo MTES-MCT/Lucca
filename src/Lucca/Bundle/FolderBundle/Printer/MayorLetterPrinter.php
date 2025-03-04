@@ -11,31 +11,16 @@
 namespace Lucca\Bundle\FolderBundle\Printer;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
+use Twig\Environment;
 use Twig\Error\Error;
 
-use Lucca\Bundle\SettingBundle\Utils\SettingManager;
+use Lucca\Bundle\SettingBundle\Manager\SettingManager;
 use Lucca\Bundle\AdherentBundle\Finder\LogoFinder;
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\MediaBundle\Entity\Media;
 
-/**
- * Class MayorLetterPrinter
- *
- * @package Lucca\Bundle\FolderBundle\Printer
- * @author Lisa <lisa.alvarez@numeric-wave.eu>
- */
 class MayorLetterPrinter
 {
-    /**
-     * @var TwigEngine
-     */
-    private TwigEngine $templating;
-
-    /**
-     * @var LogoFinder
-     */
-    private LogoFinder $logoFinder;
-
     /**
      * List of options => WkhtmlToPdf
      */
@@ -46,16 +31,11 @@ class MayorLetterPrinter
      */
     private $logoInHeader;
 
-    /**
-     * FolderPrinter constructor
-     *
-     * @param TwigEngine $templating
-     * @param LogoFinder $logoFinder
-     */
-    public function __construct(TwigEngine $templating, LogoFinder $logoFinder)
+    public function __construct(
+        private readonly Environment $twig,
+        private readonly LogoFinder $logoFinder,
+    )
     {
-        $this->templating = $templating;
-        $this->logoFinder = $logoFinder;
         $this->logoInHeader = SettingManager::get('setting.pdf.logoInHeader.name');
 
         /** Define basic options of this document */
@@ -68,11 +48,8 @@ class MayorLetterPrinter
 
     /**
      * Create a basic model Access Letter with Knp options
-     *
-     * @param Adherent $adherent
-     * @return array
      */
-    public function createMayorLetterOptions(Adherent $adherent)
+    public function createMayorLetterOptions(Adherent $adherent): array
     {
         $header = null;
         $footer = null;
@@ -80,7 +57,7 @@ class MayorLetterPrinter
             /** Define Logo and set margin */
             $logo = $this->defineLogo($adherent);
             try {
-                $header = $this->templating->render('LuccaAdherentBundle/Adherent/Printing/header-pdf.html.twig', array(
+                $header = $this->twig->render('@LuccaAdherentBundle/Adherent/Printing/header-pdf.html.twig', array(
                     'adherent' => $adherent, 'officialLogo' => $logo
                 ));
             } catch (Error $twig_Error) {
@@ -91,38 +68,32 @@ class MayorLetterPrinter
         }
 
         try {
-            $footer = $this->templating->render('LuccaThemeAngleBundle:Print:footer.html.twig');
+            $footer = $this->twig->render('@LuccaThemeAngleBundle:Print:footer.html.twig');
         } catch (Error $twig_Error) {
             echo 'Twig_Error has been thrown - Footer Folder ' . $twig_Error->getMessage();
         }
         $this->options['footer-html'] = $footer;
 
         return $this->options;
-
     }
 
     /**
      * Define specific logo who was used
      * Increase Margin top if a logo is used
-     *
-     * @param Adherent $p_adherent
-     * @return Media|null
      */
-    private function defineLogo(Adherent $p_adherent)
+    private function defineLogo(Adherent $p_adherent): ?Media
     {
         $logo = $this->logoFinder->findLogo($p_adherent);
 
         /** Increase margin-top */
-        if ($logo)
+        if ($logo) {
             $this->options['margin-top'] = 35;
+        }
 
         return $logo;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'lucca.utils.printer.mayor.letter';
     }

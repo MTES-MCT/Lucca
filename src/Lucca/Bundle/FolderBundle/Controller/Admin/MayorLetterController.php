@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -16,17 +17,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-/**
- * Class MayorLetterController
- *
- * @package Lucca\Bundle\FolderBundle\Controller\Admin
- * @author Lisa <lisa.alvarez@numeric-wave.eu>
- */
 #[IsGranted('ROLE_LUCCA')]
-#[Route('/mayor-letter')]
+#[Route(path: '/mayor-letter')]
 class MayorLetterController extends AbstractController
 {
     /**
@@ -35,7 +30,7 @@ class MayorLetterController extends AbstractController
      * @param Request $request
      * @return RedirectResponse|Response
      */
-    #[Route('/step-1', name: 'lucca_mayor_letter_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/step-1', name: 'lucca_mayor_letter_edit', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_LUCCA')]
     public function editAction(Request $request): RedirectResponse|Response
     {

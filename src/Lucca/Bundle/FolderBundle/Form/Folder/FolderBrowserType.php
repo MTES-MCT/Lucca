@@ -36,26 +36,13 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
  */
 class FolderBrowserType extends AbstractType
 {
-    /**
-     * @var AuthorizationChecker
-     */
-    private $authorizationChecker;
-
-    /**
-     * FolderBrowserType constructor.
-     *
-     * @param AuthorizationChecker $authorizationChecker
-     */
-    public function __construct(AuthorizationChecker $authorizationChecker)
+    public function __construct(
+        private readonly AuthorizationChecker $authorizationChecker,
+    )
     {
-        $this->authorizationChecker = $authorizationChecker;
     }
 
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('dateStart', DateTimeType::class, array(
@@ -137,10 +124,7 @@ class FolderBrowserType extends AbstractType
         }
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => null,
@@ -151,7 +135,7 @@ class FolderBrowserType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'lucca_folderBundle_folder';
     }

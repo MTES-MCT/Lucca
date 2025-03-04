@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -11,21 +12,13 @@ namespace Lucca\Bundle\FolderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
-use Lucca\Bundle\LogBundle\Entity\LogInterface;
 
-/**
- * FolderEdition
- *
- * @ORM\Table(name="lucca_minute_folder_edition")
- * @ORM\Entity()
- *
- * @package Lucca\Bundle\FolderBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
- */
+use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+
 #[ORM\Table(name: "lucca_minute_folder_edition")]
 #[ORM\Entity]
-class FolderEdition implements LogInterface
+class FolderEdition implements LoggableInterface
 {
     /** Traits */
     use TimestampableTrait;

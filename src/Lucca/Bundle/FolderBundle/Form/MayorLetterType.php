@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -26,11 +27,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MayorLetterType extends AbstractType
 {
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /** Take options Adherent entity to filter Agent */
         $adherent = $options['adherent'];
@@ -78,10 +75,7 @@ class MayorLetterType extends AbstractType
             ));
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('adherent');
         $resolver->setDefaults(array(
@@ -94,7 +88,7 @@ class MayorLetterType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'lucca_folderBundle_mayorletter';
     }

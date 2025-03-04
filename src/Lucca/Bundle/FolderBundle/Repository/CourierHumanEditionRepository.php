@@ -13,20 +13,12 @@ namespace Lucca\Bundle\FolderBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 
-/**
- * Class CourierHumanEditionRepository
- *
- * @package Lucca\Bundle\FolderBundle\Repository
- * @author Terence <terence@numeric-wave.tech>
- */
 class CourierHumanEditionRepository extends EntityRepository
 {
     /**
      * Find one courierHumanEdition for unit test
-     *
-     * @return false|int|mixed|string|null
      */
-    public function findOneEditionForTest()
+    public function findOneEditionForTest(): mixed
     {
         $qb = $this->createQueryBuilder('courierHumanEdition')
             ->leftJoin('courierHumanEdition.courier', 'courier')->addSelect('courier');
@@ -38,6 +30,7 @@ class CourierHumanEditionRepository extends EntityRepository
             return $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             echo 'NonUniqueResultException has been thrown - CourierHumanEditionRepository Repository - ' . $e->getMessage();
+
             return false;
         }
     }
