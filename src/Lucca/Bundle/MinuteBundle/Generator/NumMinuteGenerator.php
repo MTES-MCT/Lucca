@@ -18,21 +18,12 @@ use Doctrine\ORM\EntityManager;
  * @package Lucca\Bundle\MinuteBundle\Generator
  * @author Terence <terence@numeric-wave.tech>
  */
-class NumMinuteGenerator
+readonly class NumMinuteGenerator
 {
-    /**
-     * @var EntityManager
-     */
-    private $em;
-
-    /**
-     * NumMinuteGenerator constructor.
-     *
-     * @param EntityManager $entityManager
-     */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(
+        private EntityManager $em
+    )
     {
-        $this->em = $entityManager;
     }
 
     /**
@@ -45,7 +36,7 @@ class NumMinuteGenerator
      * @param Minute $minute
      * @return string
      */
-    public function generate(Minute $minute)
+    public function generate(Minute $minute): string
     {
         /** If a date Complaint has been defined - take this year and use it to generate the minute num */
         if (!$minute->getDateComplaint()) {
@@ -66,7 +57,7 @@ class NumMinuteGenerator
 
         $prefix = $year . '-' . $authority . '-';
 
-        $maxCode = $this->em->getRepository(Minute')->findMaxNumForYear($prefix);
+        $maxCode = $this->em->getRepository(Minute::class)->findMaxNumForYear($prefix);
 
         if ($maxCode) {
             $increment = substr($maxCode[1], -3);
@@ -75,15 +66,13 @@ class NumMinuteGenerator
         } else
             $increment = 0;
 
-        $code = $prefix . sprintf('%03d', $increment);
-
-        return $code;
+        return $prefix . sprintf('%03d', $increment);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'lucca.generator.minute_num';
     }

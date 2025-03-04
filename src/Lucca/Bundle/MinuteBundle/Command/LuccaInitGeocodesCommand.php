@@ -7,36 +7,35 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\MinuteBundle\Command;
 
-namespace Lucca\MinuteBundle\Command;
-
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Plot;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
+use Lucca\Bundle\CoreBundle\Service\GeoLocator;
+use Lucca\Bundle\MinuteBundle\Entity\Plot;
+use Symfony\Component\HttpKernel\KernelInterface;
+
 /**
  * Class LuccaInitGeocodesCommand
  *
- * @package Lucca\MinuteBundle\Command
+ * @package Lucca\Bundle\MinuteBundle\Command
  * @author Terence <terence@numeric-wave.tech>
  */
-class LuccaInitGeocodesCommand extends ContainerAwareCommand
+class LuccaInitGeocodesCommand extends Command
 {
-    /**
-     * @var ObjectManager
-     */
-    private $em;
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly GeoLocator $geoLocator,
+        private readonly KernelInterface $kernel
+    )
+    {
+        parent::__construct();
+    }
 
     /**
      * @var Filesystem
@@ -47,7 +46,7 @@ class LuccaInitGeocodesCommand extends ContainerAwareCommand
      * Configure command parameters
      * Option : path of csv file
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('lucca:init:geocode')
@@ -62,9 +61,8 @@ class LuccaInitGeocodesCommand extends ContainerAwareCommand
      * @param OutputInterface $output
      * @throws \Exception
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
-        $this->em = $this->getContainer()->get('doctrine')->getManager();
         $fs = new Filesystem();
     }
 
@@ -74,10 +72,9 @@ class LuccaInitGeocodesCommand extends ContainerAwareCommand
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return bool|int|null
-     * @throws \Exception
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $startTime = microtime(true);
 
@@ -85,7 +82,7 @@ class LuccaInitGeocodesCommand extends ContainerAwareCommand
         $now = new \DateTime();
         $output->writeln([
             '',
-            'Init geo codes for Lucca\'s file',
+            'Init geo codes for Lucca\Bundle\'s file',
             'Start: ' . $now->format('d-m-Y H:i:s') . '',
             '-----------------------------------------------',
         ]);
@@ -118,14 +115,14 @@ class LuccaInitGeocodesCommand extends ContainerAwareCommand
      * @param InputInterface $input
      * @param OutputInterface $output
      */
-    protected function initGeocodes(InputInterface $input, OutputInterface $output)
+    protected function initGeocodes(InputInterface $input, OutputInterface $output): void
     {
         $em = $this->em;
 
-        $data = $this->em->getRepository('LuccaMinuteBundle:Plot')->findAllWithoutGeocode();
+        $data = $this->em->getRepository(Plot::class)->findAllWithoutGeocode();
 
         // Turning off doctrine default logs queries for saving memory
-        $em->getConnection()->getConfiguration()->setSQLLogger(null);
+        $em->getConnection()->getConfiguration()->setMiddlewares([]);
 
         /**
          * Step 1 : init var and progress
@@ -143,7 +140,7 @@ class LuccaInitGeocodesCommand extends ContainerAwareCommand
          * to store errors returned
          * from google Api
          */
-        $path = $this->getContainer()->get('kernel')->getRootDir() . '/../web/assets/log/';
+        $path = $this->kernel->getProjectDir() . '/../web/assets/log/';
         $file = $path . 'initGeocodes.txt';
 
         $filesystem = new Filesystem();
@@ -166,7 +163,7 @@ class LuccaInitGeocodesCommand extends ContainerAwareCommand
         foreach ($data as $plot) {
 
             /** Call geo locator service to set latitude and longitude of plot */
-            $this->getContainer()->get('lucca.utils.geo_locator')->addGeocodeFromAddress($plot);
+            $this->geoLocator->addGeocodeFromAddress($plot);
 
             if ($plot->getLatitude() === NULL || $plot->getLongitude() === NULL ) {
                 $filesystem->appendToFile($file, 'ID : ' . $plot->getId() . ', Address : ' . $plot->getAddress() . "\r\n");

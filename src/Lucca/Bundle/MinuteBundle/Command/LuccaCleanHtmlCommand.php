@@ -8,50 +8,44 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Command;
+namespace Lucca\Bundle\MinuteBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Doctrine\ORM\EntityManagerInterface;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Utils\HtmlCleaner;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
 
-use Doctrine\Common\Persistence\ObjectManager;
-
 /**
  * Class LuccaCleanHtmlCommand
  *
- * @package Lucca\MinuteBundle\Command
+ * @package Lucca\Bundle\MinuteBundle\Command
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
-class LuccaCleanHtmlCommand extends ContainerAwareCommand
+class LuccaCleanHtmlCommand extends Command
 {
-    /**
-     * @var ObjectManager
-     */
-    private $em;
+
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly HtmlCleaner $htmlCleaner
+
+    )
+    {
+        parent::__construct();
+    }
 
     /**
      * Configure command parameters
      * Option : path of csv file
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('lucca:clean:html')
             ->setDescription('Clean all html of printed documents.')
             ->setHelp('Clean all html stored in database for printed documents from useless fonts.');
-    }
-
-    /**
-     * Initialize var for process
-     *
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @throws \Exception
-     */
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        $this->em = $this->getContainer()->get('doctrine')->getManager();
     }
 
     /**
@@ -62,7 +56,7 @@ class LuccaCleanHtmlCommand extends ContainerAwareCommand
      * @param OutputInterface $output
      * @return bool
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $startTime = microtime(true);
 
@@ -105,7 +99,7 @@ class LuccaCleanHtmlCommand extends ContainerAwareCommand
      * @param InputInterface $input
      * @param OutputInterface $output
      */
-    protected function cleanAllHtml(InputInterface $input, OutputInterface $output)
+    protected function cleanAllHtml(InputInterface $input, OutputInterface $output): void
     {
         $em = $this->em;
 
@@ -116,10 +110,10 @@ class LuccaCleanHtmlCommand extends ContainerAwareCommand
         $nbFoldersCleaned = 0;
 
         /** Get folders in the range of ids */
-        $folders = $em->getRepository('LuccaMinuteBundle:Folder')->findAllBetweenId($startId, $endId);
+        $folders = $em->getRepository(Folder::class)->findAllBetweenId($startId, $endId);
 
         // Turning off doctrine default logs queries for saving memory
-        $em->getConnection()->getConfiguration()->setSQLLogger(null);
+        $em->getConnection()->getConfiguration()->setMiddlewares([]);
 
         /**
          * Step 1 : init var and progress
@@ -145,14 +139,14 @@ class LuccaCleanHtmlCommand extends ContainerAwareCommand
                 /** Folder -> ascertainment + details + violation
                  * Edition -> FolderVersion
                  */
-                $this->getContainer()->get('lucca.utils.html_cleaner')->cleanHtmlFolder($folder);
+                $this->htmlCleaner->cleanHtmlFolder($folder);
                 $em->persist($folder);
 
                 /** Control :
                  *  Edition -> letterConvocation + letterAccess
                  */
                 $control = $folder->getControl();
-                $this->getContainer()->get('lucca.utils.html_cleaner')->cleanHtmlControl($control);
+                $this->htmlCleaner->cleanHtmlControl($control);
                 $em->persist($control);
 
                 /** Courier :
@@ -161,7 +155,7 @@ class LuccaCleanHtmlCommand extends ContainerAwareCommand
                  */
                 $courier = $folder->getCourier();
                 if ($courier) {
-                    $this->getContainer()->get('lucca.utils.html_cleaner')->cleanHtmlCourier($courier);
+                    $this->htmlCleaner->cleanHtmlCourier($courier);
                     $em->persist($courier);
                 }
 
@@ -169,7 +163,7 @@ class LuccaCleanHtmlCommand extends ContainerAwareCommand
                 $updatings = $minute->getUpdatings();
                 if (count($updatings) > 0) {
                     foreach ($updatings as $updating) {
-                        $updating->setDescription($this->getContainer()->get('lucca.utils.html_cleaner')->removeAllFonts($updating->getDescription()));
+                        $updating->setDescription($this->htmlCleaner->removeAllFonts($updating->getDescription()));
                         $em->persist($updating);
                     }
                 }
@@ -177,7 +171,7 @@ class LuccaCleanHtmlCommand extends ContainerAwareCommand
                 /** Closure -> observation */
                 $closure = $minute->getClosure();
                 if ($closure) {
-                    $closure->setObservation($this->getContainer()->get('lucca.utils.html_cleaner')->removeAllFonts($closure->getObservation()));
+                    $closure->setObservation($this->htmlCleaner->removeAllFonts($closure->getObservation()));
                     $em->persist($closure);
                 }
 
@@ -191,7 +185,7 @@ class LuccaCleanHtmlCommand extends ContainerAwareCommand
                 $decisions = $minute->getDecisions();
                 if (count($decisions) > 0) {
                     foreach ($decisions as $decision) {
-                        $this->getContainer()->get('lucca.utils.html_cleaner')->cleanHtmlDecision($decision);
+                        $this->htmlCleaner->cleanHtmlDecision($decision);
                         $em->persist($decision);
                     }
                 }
@@ -220,7 +214,7 @@ class LuccaCleanHtmlCommand extends ContainerAwareCommand
             ]);
 
             /** Get next folders */
-            $folders = $em->getRepository('LuccaMinuteBundle:Folder')->findAllBetweenId($startId, $endId);
+            $folders = $em->getRepository(Folder::class)->findAllBetweenId($startId, $endId);
 
         }
 

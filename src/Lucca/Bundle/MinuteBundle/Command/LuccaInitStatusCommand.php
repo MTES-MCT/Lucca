@@ -7,36 +7,36 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\MinuteBundle\Command;
 
-namespace Lucca\MinuteBundle\Command;
+use Doctrine\ORM\EntityManagerInterface;
 
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\KernelInterface;
+
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\MinuteBundle\Utils\MinuteManager;
 
 /**
  * Class LuccaInitStatusCommand
  *
- * @package Lucca\MinuteBundle\Command
+ * @package Lucca\Bundle\MinuteBundle\Command
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
-class LuccaInitStatusCommand extends ContainerAwareCommand
+class LuccaInitStatusCommand extends Command
 {
-    /**
-     * @var ObjectManager
-     */
-    private $em;
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly MinuteManager $minuteManager,
+        private readonly KernelInterface $kernel
+    )
+    {
+        parent::__construct();
+    }
 
     /**
      * @var Filesystem
@@ -62,9 +62,8 @@ class LuccaInitStatusCommand extends ContainerAwareCommand
      * @param OutputInterface $output
      * @throws \Exception
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
-        $this->em = $this->getContainer()->get('doctrine')->getManager();
         $fs = new Filesystem();
     }
 
@@ -74,10 +73,9 @@ class LuccaInitStatusCommand extends ContainerAwareCommand
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return bool|int|null
-     * @throws \Exception
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $startTime = microtime(true);
 
@@ -128,10 +126,10 @@ class LuccaInitStatusCommand extends ContainerAwareCommand
         $endId = $startId + $rangeIds;
         $nbMinutesUpdated = 0;
 
-        $data = $this->em->getRepository('LuccaMinuteBundle:Minute')->findAllBetweenId($startId, $endId);
+        $data = $this->em->getRepository(Minute::class)->findAllBetweenId($startId, $endId);
 
         // Turning off doctrine default logs queries for saving memory
-        $em->getConnection()->getConfiguration()->setSQLLogger(null);
+        $em->getConnection()->getConfiguration()->setMiddlewares([]);
         $progress = new ProgressBar($output, 0);
 
         while (count($data) > 0) {
@@ -153,7 +151,7 @@ class LuccaInitStatusCommand extends ContainerAwareCommand
              * to store errors returned
              * from google Api
              */
-            $path = $this->getContainer()->get('kernel')->getRootDir() . '/../web/assets/log/';
+            $path = $this->kernel->getProjectDir() . '/../web/assets/log/';
             $file = $path . 'initStatus.txt';
 
             $filesystem = new Filesystem();
@@ -175,7 +173,7 @@ class LuccaInitStatusCommand extends ContainerAwareCommand
             foreach ($data as $minute) {
 
                 /** update and refresh status */
-                $this->getContainer()->get('lucca.manager.minute')->updateStatusAction($minute, true);
+                $this->minuteManager->updateStatusAction($minute, true);
                 $em->persist($minute);
 
                 if (($i % $batchSize) === 0) {
@@ -202,7 +200,7 @@ class LuccaInitStatusCommand extends ContainerAwareCommand
             ]);
 
             /** Get next folders */
-            $data = $this->em->getRepository('LuccaMinuteBundle:Minute')->findAllBetweenId($startId, $endId);
+            $data = $this->em->getRepository(Minute::class)->findAllBetweenId($startId, $endId);
         }
 
         /**

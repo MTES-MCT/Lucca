@@ -9,8 +9,10 @@
 
 namespace Lucca\Bundle\MinuteBundle\Generator;
 
-use Lucca\Bundle\MinuteBundle\Entity\Updating;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\EntityManager;
+
+use Lucca\Bundle\MinuteBundle\Entity\Updating;
 
 /**
  * Class NumUpdatingGenerator
@@ -18,21 +20,12 @@ use Doctrine\ORM\EntityManager;
  * @package Lucca\Bundle\MinuteBundle\Generator
  * @author Terence <terence@numeric-wave.tech>
  */
-class NumUpdatingGenerator
+readonly class NumUpdatingGenerator
 {
-    /**
-     * @var EntityManager
-     */
-    private $em;
-
-    /**
-     * NumFolderGenerator constructor.
-     *
-     * @param EntityManager $entityManager
-     */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(
+        private EntityManager $em
+    )
     {
-        $this->em = $entityManager;
     }
 
     /**
@@ -44,13 +37,13 @@ class NumUpdatingGenerator
      *
      * @param Updating $updating
      * @return string
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
-    public function generate(Updating $updating)
+    public function generate(Updating $updating): string
     {
         $prefix = $updating->getMinute()->getNum() . '-RC-';
 
-        $maxCode = $this->em->getRepository(Updating')
+        $maxCode = $this->em->getRepository(Updating::class)
             ->findMaxNumForMinute($prefix);
 
         if ($maxCode) {
@@ -60,14 +53,13 @@ class NumUpdatingGenerator
         } else
             $increment = 0;
 
-        $code = $prefix . sprintf('%02d', $increment);
-        return $code;
+        return $prefix . sprintf('%02d', $increment);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'lucca.generator.updating_num';
     }

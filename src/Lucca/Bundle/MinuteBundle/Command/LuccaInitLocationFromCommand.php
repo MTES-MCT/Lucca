@@ -7,35 +7,31 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\MinuteBundle\Command;
 
-namespace Lucca\MinuteBundle\Command;
+use Doctrine\ORM\EntityManagerInterface;
 
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Plot;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Lucca\Bundle\MinuteBundle\Entity\Plot;
+
 /**
  * Class LuccaInitLocationFromCommand
  *
- * @package Lucca\MinuteBundle\Command
+ * @package Lucca\Bundle\MinuteBundle\Command
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
-class LuccaInitLocationFromCommand extends ContainerAwareCommand
+class LuccaInitLocationFromCommand extends Command
 {
-    /**
-     * @var ObjectManager
-     */
-    private $em;
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+    )
+    {
+        parent::__construct();
+    }
 
     /**
      * Configure command parameters
@@ -49,27 +45,14 @@ class LuccaInitLocationFromCommand extends ContainerAwareCommand
     }
 
     /**
-     * Initialize var for process
-     *
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @throws \Exception
-     */
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        $this->em = $this->getContainer()->get('doctrine')->getManager();
-    }
-
-    /**
      * Execute command
      * Write log and start the import
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return bool|int|null
-     * @throws \Exception
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $startTime = microtime(true);
 
@@ -77,7 +60,7 @@ class LuccaInitLocationFromCommand extends ContainerAwareCommand
         $now = new \DateTime();
         $output->writeln([
             '',
-            'Init locationFrom for Lucca\'s file',
+            'Init locationFrom for Lucca\Bundle\'s file',
             'Start: ' . $now->format('d-m-Y H:i:s') . '',
             '-----------------------------------------------',
         ]);
@@ -110,14 +93,14 @@ class LuccaInitLocationFromCommand extends ContainerAwareCommand
      * @param InputInterface $input
      * @param OutputInterface $output
      */
-    protected function InitLocationFrom(InputInterface $input, OutputInterface $output)
+    protected function InitLocationFrom(InputInterface $input, OutputInterface $output): void
     {
         $em = $this->em;
 
-        $data = $em->getRepository('LuccaMinuteBundle:Plot')->findAllWithoutLocationFrom();
+        $data = $em->getRepository(Plot::class)->findAllWithoutLocationFrom();
 
         // Turning off doctrine default logs queries for saving memory
-        $em->getConnection()->getConfiguration()->setSQLLogger(null);
+        $em->getConnection()->getConfiguration()->setMiddlewares([]);
 
         /**
          * Step 1 : init var and progress
@@ -136,7 +119,7 @@ class LuccaInitLocationFromCommand extends ContainerAwareCommand
         /** @var Plot $plot */
         foreach ($data as $plot) {
 
-            /** Set location from from with address */
+            /** Set location from with address */
             $plot->setLocationFrom(PLOT::LOCATION_FROM_ADDRESS);
 
             $em->persist($plot);
