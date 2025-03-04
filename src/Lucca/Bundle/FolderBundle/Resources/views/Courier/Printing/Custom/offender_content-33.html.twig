@@ -1,4 +1,4 @@
-{% trans_default_domain 'LuccaMinuteBundle' %}
+{% trans_default_domain 'LuccaFolderBundle' %}
 
 {% set plot = minute.plot %}
 {% set folder = courier.folder %}
@@ -123,7 +123,7 @@
                     {% if human.person is constant('PERSON_CORPORATION', human) %}
                         Société {{ human.company }},<br>
                     {% endif %}
-                    {{ human.gender|trans({}, 'LuccaMinuteBundle') }} {{ human.officialName }},<br>
+                    {{ human.gender|trans({}, 'LuccaFolderBundle') }} {{ human.officialName }},<br>
                     {{ human.address|nl2br }}<br>
                 </p>
             </div>

@@ -1,8 +1,8 @@
 {#- - Extends view - -#}
-{% extends "LuccaThemeAngleBundle:SubLayout:edit.html.twig" %}
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig" %}
 
 {#- - Translation domain - -#}
-{% trans_default_domain 'LuccaMinuteBundle' %}
+{% trans_default_domain 'LuccaFolderBundle' %}
 
 {#- - Parameters - -#}
 {% set param_entity='entity.folder'|transchoice(1) %}
@@ -17,7 +17,7 @@
         {% embed "@LuccaMinute/Annexes/Embed/_form-annexes.html.twig" with {
             'form': edit_form
         } %}
-            {% trans_default_domain 'LuccaMinuteBundle' %}
+            {% trans_default_domain 'LuccaFolderBundle' %}
             {% block lucca_embed_buttons_annexes %}
                 <div class="pt-3">
                     <a class="btn btn-secondary btn-lg"

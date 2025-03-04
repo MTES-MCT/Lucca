@@ -1,5 +1,5 @@
-{% extends "LuccaThemeAngleBundle:SubLayout:new.html.twig" %}
-{% trans_default_domain 'LuccaMinuteBundle' %}
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
+{% trans_default_domain 'LuccaFolderBundle' %}
 
 {% set param_entity='entity.folder'|transchoice(1) %}
 {% set param_entities='entity.folder'|transchoice(2) %}
@@ -14,9 +14,9 @@
     {{ form_errors(form) }}
 
     {#Form theme apply for child only#}
-    {% form_theme form  'LuccaThemeAngleBundle:Form:jquery.collection.html.twig' %}
-    {% form_theme form.humansByFolder 'LuccaMinuteBundle:Human:human-theme.html.twig' %}
-    {% form_theme form.elements 'LuccaMinuteBundle:Element:element-theme.html.twig' %}
+    {% form_theme form  '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig' %}
+    {% form_theme form.humansByFolder 'LuccaFolderBundle:Human:human-theme.html.twig' %}
+    {% form_theme form.elements 'LuccaFolderBundle:Element:element-theme.html.twig' %}
 
     <div class="row">
 
@@ -119,7 +119,7 @@
         {% if updating is defined %}
             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                 {{ render(controller(
-                    'LuccaMinuteBundle:RenderApi\\UpdatingWidget:displayControlsAndFolders',
+                    'LuccaFolderBundle:RenderApi\\UpdatingWidget:displayControlsAndFolders',
                     { 'updating_id': updating.id }
                 )) }}
             </div>

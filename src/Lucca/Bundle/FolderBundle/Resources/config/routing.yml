@@ -1,35 +1,35 @@
-# LuccaMinuteBundle Routing
+# LuccaFolderBundle Routing
 lucca_minute_bundle_admin:
-    resource: "@LuccaMinuteBundle/Controller/Admin"
-    type:     annotation
+    resource: "@LuccaFolderBundle/Controller/Admin"
+    type:     attribute
     prefix:   /back-office
 
-# LuccaMinuteBundle Routing - Manual Editing
+# LuccaFolderBundle Routing - Manual Editing
 lucca_minute_bundle_manual_edit:
-    resource: "@LuccaMinuteBundle/Controller/ManualEdit"
-    type:     annotation
+    resource: "@LuccaFolderBundle/Controller/ManualEdit"
+    type:     attribute
     prefix:   /back-office
 
-# LuccaMinuteBundle Routing - Printing
+# LuccaFolderBundle Routing - Printing
 lucca_minute_bundle_printing:
-    resource: "@LuccaMinuteBundle/Controller/Printing"
-    type:     annotation
+    resource: "@LuccaFolderBundle/Controller/Printing"
+    type:     attribute
     prefix:   /back-office
 
-# LuccaMinuteBundle Routing - Dashboard
+# LuccaFolderBundle Routing - Dashboard
 lucca_minute_bundle_dashboard:
-    resource: "@LuccaMinuteBundle/Controller/Dashboard"
-    type:     annotation
+    resource: "@LuccaFolderBundle/Controller/Dashboard"
+    type:     attribute
     prefix:   /back-office
 
-# LuccaMinuteBundle Routing - API
+# LuccaFolderBundle Routing - API
 lucca_minute_bundle_api:
-    resource: "@LuccaMinuteBundle/Controller/Api"
-    type:     annotation
+    resource: "@LuccaFolderBundle/Controller/Api"
+    type:     attribute
     prefix:   /back-office
 
-# LuccaMinuteBundle Routing - By Folder
+# LuccaFolderBundle Routing - By Folder
 lucca_minute_bundle_by_folder:
-    resource: "@LuccaMinuteBundle/Controller/ByFolder"
-    type:     annotation
+    resource: "@LuccaFolderBundle/Controller/ByFolder"
+    type:     attribute
     prefix:   /back-office

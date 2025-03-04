@@ -7,24 +7,16 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\FolderBundle\Generator;
 
-namespace Lucca\MinuteBundle\Generator;
-
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class NumFolderGenerator
  *
- * @package Lucca\MinuteBundle\Generator
+ * @package Lucca\Bundle\FolderBundle\Generator
  * @author Terence <terence@numeric-wave.tech>
  */
 class NumFolderGenerator
@@ -67,7 +59,7 @@ class NumFolderGenerator
         } else
             throw new NotFoundHttpException('Bad Folder type specify');
 
-        $maxCode = $this->em->getRepository('LuccaMinuteBundle:Folder')->findMaxNumForMinute($prefix);
+        $maxCode = $this->em->getRepository('LuccaFolderBundle:Folder')->findMaxNumForMinute($prefix);
 
         if ($maxCode) {
             $increment = substr($maxCode[1], -2);

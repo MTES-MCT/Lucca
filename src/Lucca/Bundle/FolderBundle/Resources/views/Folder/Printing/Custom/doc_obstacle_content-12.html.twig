@@ -1,8 +1,8 @@
 {% extends '@LuccaMinute/Folder/Printing/Basic/doc_obstacle_content.html.twig' %}
 {% trans_default_domain 'LuccaFolderBundle' %}
 
-{% import "LuccaMinuteBundle:Human:human-macro.html.twig" as humanMacro %}
-{% import "LuccaMinuteBundle:Agent:agent-attendant-macro.html.twig" as agentAttendantMacro %}
+{% import "@LuccaMinute/Human/human-macro.html.twig" as humanMacro %}
+{% import "@LuccaMinute/Agent/agent-attendant-macro.html.twig" as agentAttendantMacro %}
 
 
 {#-- Agent function article --#}
@@ -111,7 +111,7 @@
             ] %}
                 Le {% if control.dateReturned %}{{ control.dateReturned|date('d/m/Y') }}{% endif %} le courrier adressé à
                 {{ humanMacro.humansByFolderViewTextNamed(folder.humansByMinute|merge(folder.humansByFolder)) }}
-                a été retourné avec la mention "{{ control.reason|trans({}, 'LuccaMinuteBundle') }}".
+                a été retourné avec la mention "{{ control.reason|trans({}, 'LuccaFolderBundle') }}".
 
             {% else %}
                 Suite à ce courrier, le contrôle a été refusé par :

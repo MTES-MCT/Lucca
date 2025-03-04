@@ -8,14 +8,14 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Repository;
+namespace Lucca\Bundle\FolderBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
 /**
  * Class CourierEditionRepository
  *
- * @package Lucca\MinuteBundle\Repository
+ * @package Lucca\Bundle\FolderBundle\Repository
  * @author Terence <terence@numeric-wave.tech>
  */
 class CourierEditionRepository extends EntityRepository

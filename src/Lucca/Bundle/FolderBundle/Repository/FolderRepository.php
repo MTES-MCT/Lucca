@@ -7,28 +7,20 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\FolderBundle\Repository;
 
-namespace Lucca\MinuteBundle\Repository;
-
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\FolderBundle\Entity\Control;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
-use Lucca\AdherentBundle\Entity\Adherent;
-use Lucca\CoreBundle\Repository\AdherentRepository;
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\CoreBundle\Repository\AdherentRepository;
 
 /**
  * Class FolderRepository
  *
- * @package Lucca\MinuteBundle\Repository
+ * @package Lucca\Bundle\FolderBundle\Repository
  * @author Terence <terence@numeric-wave.tech>
  */
 class FolderRepository extends EntityRepository

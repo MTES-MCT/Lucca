@@ -8,20 +8,20 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Printer;
+namespace Lucca\Bundle\FolderBundle\Printer;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Twig\Error\Error;
 
-use Lucca\SettingBundle\Utils\SettingManager;
-use Lucca\AdherentBundle\Finder\LogoFinder;
-use Lucca\AdherentBundle\Entity\Adherent;
-use Lucca\MediaBundle\Entity\Media;
+use Lucca\Bundle\SettingBundle\Utils\SettingManager;
+use Lucca\Bundle\AdherentBundle\Finder\LogoFinder;
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\MediaBundle\Entity\Media;
 
 /**
  * Class MayorLetterPrinter
  *
- * @package Lucca\MinuteBundle\Printer
+ * @package Lucca\Bundle\FolderBundle\Printer
  * @author Lisa <lisa.alvarez@numeric-wave.eu>
  */
 class MayorLetterPrinter
@@ -80,7 +80,7 @@ class MayorLetterPrinter
             /** Define Logo and set margin */
             $logo = $this->defineLogo($adherent);
             try {
-                $header = $this->templating->render('LuccaAdherentBundle:Adherent/Printing:header-pdf.html.twig', array(
+                $header = $this->templating->render('LuccaAdherentBundle/Adherent/Printing/header-pdf.html.twig', array(
                     'adherent' => $adherent, 'officialLogo' => $logo
                 ));
             } catch (Error $twig_Error) {

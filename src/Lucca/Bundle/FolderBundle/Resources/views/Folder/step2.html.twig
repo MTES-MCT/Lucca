@@ -1,5 +1,5 @@
-{% extends 'LuccaThemeAngleBundle:SubLayout:edit.html.twig' %}
-{% trans_default_domain 'LuccaMinuteBundle' %}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig' %}
+{% trans_default_domain 'LuccaFolderBundle' %}
 
 {% set param_entity='entity.folder'|transchoice(1) %}
 {% set param_entities='entity.folder'|transchoice(2) %}
@@ -194,7 +194,7 @@
         {#-- End --#}
 
         {#-- Display/Hide proposals when checkbox is clicked --#}
-        $('input[name="lucca_minutebundle_folder_step2[tagsTown][]"]').click(function () {
+        $('input[name="lucca_folderBundle_folder_step2[tagsTown][]"]').click(function () {
             var classname = ".tag-" + $(this).val();
             $(classname).toggle('slow');
         });
@@ -206,10 +206,10 @@
             var text = '<br>' + $(idSentence).text() + '<br>';
 
             {#-- Copy Html text at cursor position --#}
-            $('#lucca_minutebundle_folder_step2_violation').summernote('editor.saveRange');
-            $('#lucca_minutebundle_folder_step2_violation').summernote('editor.restoreRange');
-            $('#lucca_minutebundle_folder_step2_violation').summernote('editor.focus');
-            $('#lucca_minutebundle_folder_step2_violation').summernote('editor.pasteHTML', text);
+            $('#lucca_folderBundle_folder_step2_violation').summernote('editor.saveRange');
+            $('#lucca_folderBundle_folder_step2_violation').summernote('editor.restoreRange');
+            $('#lucca_folderBundle_folder_step2_violation').summernote('editor.focus');
+            $('#lucca_folderBundle_folder_step2_violation').summernote('editor.pasteHTML', text);
         });
         {#-- End --#}
     </script>

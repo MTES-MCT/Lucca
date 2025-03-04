@@ -18,10 +18,10 @@
     {% endif %}
 
     {% if 'setting.courier.offenderContent.name'|setting == true %}
-        {% set filename = 'LuccaMinuteBundle:Courier/Printing/Custom:offender_content-' ~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+        {% set filename = '@LuccaFolder/Courier/Printing/Custom/offender_content-' ~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
         {% include filename with {'minute': minute, 'courier': courier, 'human': human} %}
     {% else %}
-        {% include 'LuccaMinuteBundle:Courier/Printing/Basic:offender_content.html.twig' with {'minute': minute, 'courier': courier, 'human': human} %}
+        {% include '@LuccaFolder/Courier/Printing/Basic/offender_content.html.twig' with {'minute': minute, 'courier': courier, 'human': human} %}
     {% endif %}
 
 {% endblock lucca_model_content %}

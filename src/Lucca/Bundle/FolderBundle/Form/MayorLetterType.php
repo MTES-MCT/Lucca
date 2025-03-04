@@ -7,21 +7,13 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\FolderBundle\Form;
 
-namespace Lucca\MinuteBundle\Form;
-
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\MayorLetter;
-use Lucca\AdherentBundle\Entity\Agent;
-use Lucca\AdherentBundle\Repository\AgentRepository;
-use Lucca\ParameterBundle\Entity\Town;
-use Lucca\ParameterBundle\Repository\TownRepository;
+use Lucca\Bundle\FolderBundle\Entity\MayorLetter;
+use Lucca\Bundle\AdherentBundle\Entity\Agent;
+use Lucca\Bundle\AdherentBundle\Repository\AgentRepository;
+use Lucca\Bundle\ParameterBundle\Entity\Town;
+use Lucca\Bundle\ParameterBundle\Repository\TownRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -94,7 +86,7 @@ class MayorLetterType extends AbstractType
         $resolver->setRequired('adherent');
         $resolver->setDefaults(array(
             'data_class' => MayorLetter::class,
-            'translation_domain' => 'LuccaMinuteBundle',
+            'translation_domain' => 'LuccaFolderBundle',
             'required' => true
         ));
     }
@@ -104,6 +96,6 @@ class MayorLetterType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'lucca_minutebundle_mayorletter';
+        return 'lucca_folderBundle_mayorletter';
     }
 }

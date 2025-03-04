@@ -21,11 +21,11 @@
         {{ courier.edition.letterJudicial | localPath | raw }}
     {% else %}
         {% if 'setting.courier.judicialContent.name'|setting == true %}
-            {% set filename = 'LuccaMinuteBundle:Courier/Printing/Custom:judicial_content-' ~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+            {% set filename = '@LuccaFolder/Courier/Printing/Custom/judicial_content-' ~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
             {#Logo in header#}
             {% include filename %}
         {% else %}
-            {% include 'LuccaMinuteBundle:Courier/Printing/Basic:judicial_content.html.twig' %}
+            {% include '@LuccaFolder/Courier/Printing/Basic/judicial_content.html.twig' %}
         {% endif %}
     {% endif %}
 

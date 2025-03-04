@@ -7,17 +7,9 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\FolderBundle\Form;
 
-namespace Lucca\MinuteBundle\Form;
-
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class FolderStep3Type
  *
- * @package Lucca\MinuteBundle\Form
+ * @package Lucca\Bundle\FolderBundle\Form
  * @author Terence <terence@numeric-wave.tech>
  */
 class FolderStep3Type extends AbstractType
@@ -41,7 +33,7 @@ class FolderStep3Type extends AbstractType
 
         $builder
             ->add('natinfs', EntityType::class, array(
-                'class' => 'LuccaMinuteBundle:Natinf', 'choice_label' => 'num', 'choices' => $natinfsFiltered,
+                'class' => 'LuccaFolderBundle:Natinf', 'choice_label' => 'num', 'choices' => $natinfsFiltered,
                 'multiple' => true, 'expanded' => true, 'label' => 'label.natinfs', 'required' => false,
                 'attr' => array('class' => 'chosen-select',)
             ));
@@ -55,7 +47,7 @@ class FolderStep3Type extends AbstractType
         $resolver->setRequired('natinfsFiltered');
         $resolver->setDefaults(array(
             'data_class' => Folder::class,
-            'translation_domain' => 'LuccaMinuteBundle',
+            'translation_domain' => 'LuccaFolderBundle',
         ));
     }
 
@@ -64,6 +56,6 @@ class FolderStep3Type extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'lucca_minutebundle_folder_step3';
+        return 'lucca_folderBundle_folder_step3';
     }
 }

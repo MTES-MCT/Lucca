@@ -1,5 +1,5 @@
-{% extends 'LuccaThemeAngleBundle:SubLayout:edit.html.twig' %}
-{% trans_default_domain 'LuccaMinuteBundle' %}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig' %}
+{% trans_default_domain 'LuccaFolderBundle' %}
 
 {#--  Import specific macro  --#}
 {% import "@LuccaThemeAngle/Macro/buttonHelp.html.twig" as macroButtonHelp %}
@@ -167,7 +167,7 @@
         {#-- End --#}
 
         {#-- Display/Hide proposals when checkbox is clicked --#}
-        $('input[name="lucca_minutebundle_folder_step1[tagsNature][]"]').click(function () {
+        $('input[name="lucca_folderBundle_folder_step1[tagsNature][]"]').click(function () {
             var classname = ".tag-" + $(this).val();
             $(classname).toggle('slow');
         });

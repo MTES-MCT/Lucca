@@ -1,5 +1,5 @@
-{% extends 'LuccaThemeAngleBundle:SubLayout:edit.html.twig' %}
-{% trans_default_domain 'LuccaMinuteBundle' %}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig' %}
+{% trans_default_domain 'LuccaFolderBundle' %}
 
 {% set param_entity='entity.courier'|transchoice(1) %}
 {% set param_entities='entity.courier'|transchoice(2) %}
@@ -104,7 +104,7 @@
 
         {#-- Custom JS --#}
         {#-- Display/Hide proposals when checkbox is clicked --#}
-        $('input[name="lucca_minutebundle_courier[civilParty]"]').click(function () {
+        $('input[name="lucca_folderBundle_courier[civilParty]"]').click(function () {
             if ($(this).val() == 1)
                 $('.civilParty').show('slow');
             else

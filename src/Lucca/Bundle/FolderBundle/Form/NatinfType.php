@@ -8,7 +8,7 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Form;
+namespace Lucca\Bundle\FolderBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,7 +22,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 /**
  * Class NatinfType
  *
- * @package Lucca\MinuteBundle\Form
+ * @package Lucca\Bundle\FolderBundle\Form
  * @author Terence <terence@numeric-wave.tech>
  */
 class NatinfType extends AbstractType
@@ -40,11 +40,11 @@ class NatinfType extends AbstractType
             ->add('definedBy', TextType::class, array('label' => 'label.definedBy', 'required' => true))
             ->add('repressedBy', TextType::class, array('label' => 'label.repressedBy', 'required' => true))
             ->add('tags', EntityType::class, array(
-                'class' => 'LuccaMinuteBundle:Tag', 'label' => 'label.tag', 'choice_label' => 'name',
+                'class' => 'LuccaFolderBundle:Tag', 'label' => 'label.tag', 'choice_label' => 'name',
                 'multiple' => true, 'expanded' => false, 'required' => true, 'attr' => array('class' => 'select2')
             ))
             ->add('parent', EntityType::class, array(
-                'class' => 'LuccaMinuteBundle:Natinf', 'label' => 'label.parent', 'choice_label' => 'num',
+                'class' => 'LuccaFolderBundle:Natinf', 'label' => 'label.parent', 'choice_label' => 'num',
                 'multiple' => false, 'expanded' => false, 'required' => false, 'attr' => array('class' => 'chosen-select')
             ));
     }
@@ -55,8 +55,8 @@ class NatinfType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Lucca\MinuteBundle\Entity\Natinf',
-            'translation_domain' => 'LuccaMinuteBundle',
+            'data_class' => 'Lucca\FolderBundle\Entity\Natinf',
+            'translation_domain' => 'LuccaFolderBundle',
             'required' => false
         ));
     }

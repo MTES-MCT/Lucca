@@ -1,4 +1,4 @@
-{% extends 'LuccaThemeAngleBundle:SubLayout:edit.html.twig' %}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig' %}
 {% trans_default_domain 'LuccaMinuteBundle' %}
 
 {% set param_entity='entity.courier'|transchoice(1) %}
@@ -13,8 +13,8 @@
     {{ form_errors(form) }}
 
     {# Form theme apply for child only #}
-    {% form_theme form 'LuccaThemeAngleBundle:Form:jquery.collection.html.twig' %}
-    {% form_theme form.humansEditions 'LuccaMinuteBundle:CourierEdition:editionOffender-theme.html.twig' %}
+    {% form_theme form '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig' %}
+    {% form_theme form.humansEditions '@LuccaFolder/CourierEdition/editionOffender-theme.html.twig' %}
 
     <div class="row">
 

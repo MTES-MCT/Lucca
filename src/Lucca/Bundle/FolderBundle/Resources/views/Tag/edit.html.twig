@@ -1,8 +1,8 @@
 {#-- Extends view --#}
-{% extends 'LuccaThemeAngleBundle:SubLayout:edit.html.twig' %}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig' %}
 
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaMinuteBundle' %}
+{% trans_default_domain 'LuccaFolderBundle' %}
 
 {#-- Parameters --#}
 {% set param_entity='entity.tag'|transchoice(1) %}
@@ -15,8 +15,8 @@
     {{ form_start(edit_form) }}
 
     {% form_theme edit_form
-        'LuccaThemeAngleBundle:Form:jquery.collection.html.twig'
-        'LuccaMinuteBundle:Proposal:proposalTheme.html.twig' %}
+        '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig'
+        '@LuccaFolder/Proposal:proposalTheme.html.twig' %}
 
     {{ form_errors(edit_form) }}
 

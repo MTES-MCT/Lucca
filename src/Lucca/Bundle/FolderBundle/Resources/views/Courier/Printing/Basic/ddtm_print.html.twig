@@ -22,11 +22,11 @@
         {{ courier.edition.letterDdtm|localPath|raw }}
     {% else %}
         {% if 'setting.courier.ddtmContent.name'|setting == true %}
-            {% set filename = 'LuccaMinuteBundle:Courier/Printing/Custom:ddtm_content-' ~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+            {% set filename = '@LuccaFolder/Courier/Printing/Custom/ddtm_content-' ~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
             {#Logo in header#}
             {% include filename %}
         {% else %}
-            {% include 'LuccaMinuteBundle:Courier/Printing/Basic:ddtm_content.html.twig' %}
+            {% include '@LuccaFolder/Courier/Printing/Basic/ddtm_content.html.twig' %}
         {% endif %}
     {% endif %}
 

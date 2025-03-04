@@ -8,9 +8,9 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Form\Courier;
+namespace Lucca\Bundle\FolderBundle\Form\Courier;
 
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\CourierHumanEdition;
+use Lucca\Bundle\FolderBundle\Entity\CourierHumanEdition;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class CourierOffenderEditionType
  *
- * @package Lucca\MinuteBundle\Form\Courier
+ * @package Lucca\Bundle\FolderBundle\Form\Courier
  * @author Terence <terence@numeric-wave.tech>
  */
 class CourierOffenderEditionType extends AbstractType
@@ -45,7 +45,7 @@ class CourierOffenderEditionType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => CourierHumanEdition::class,
-            'translation_domain' => 'LuccaMinuteBundle',
+            'translation_domain' => 'LuccaFolderBundle',
         ));
     }
 
@@ -54,6 +54,6 @@ class CourierOffenderEditionType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'lucca_minutebundle_courierEdition_offender';
+        return 'lucca_folderBundle_courierEdition_offender';
     }
 }

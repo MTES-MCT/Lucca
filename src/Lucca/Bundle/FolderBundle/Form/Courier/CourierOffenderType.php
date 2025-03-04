@@ -8,9 +8,9 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Form\Courier;
+namespace Lucca\Bundle\FolderBundle\Form\Courier;
 
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Courier;
+use Lucca\Bundle\FolderBundle\Entity\Courier;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class CourierOffenderType
  *
- * @package Lucca\MinuteBundle\Form\Courier
+ * @package Lucca\Bundle\FolderBundle\Form\Courier
  * @author Terence <terence@numeric-wave.tech>
  */
 class CourierOffenderType extends AbstractType
@@ -47,7 +47,7 @@ class CourierOffenderType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Courier::class,
-            'translation_domain' => 'LuccaMinuteBundle',
+            'translation_domain' => 'LuccaFolderBundle',
         ));
     }
 
@@ -56,6 +56,6 @@ class CourierOffenderType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'lucca_minutebundle_courier_offender';
+        return 'lucca_folderBundle_courier_offender';
     }
 }

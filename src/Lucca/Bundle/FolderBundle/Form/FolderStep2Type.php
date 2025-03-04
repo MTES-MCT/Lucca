@@ -7,19 +7,11 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\FolderBundle\Form;
 
-namespace Lucca\MinuteBundle\Form;
-
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Tag;
-use Lucca\MinuteBundle\Repository\TagRepository;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\FolderBundle\Entity\Tag;
+use Lucca\Bundle\FolderBundle\Repository\TagRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -29,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class FolderStep2Type
  *
- * @package Lucca\MinuteBundle\Form
+ * @package Lucca\Bundle\FolderBundle\Form
  * @author Terence <terence@numeric-wave.tech>
  */
 class FolderStep2Type extends AbstractType
@@ -45,7 +37,7 @@ class FolderStep2Type extends AbstractType
                 'attr' => array('class' => 'summernote-violation', 'id' => 'summernote-violation'),
             ))
             ->add('tagsTown', EntityType::class, array(
-                'class' => 'LuccaMinuteBundle:Tag', 'choice_label' => 'name',
+                'class' => 'LuccaFolderBundle:Tag', 'choice_label' => 'name',
                 'multiple' => true, 'expanded' => true, 'label' => 'help.folder.step2', 'required' => true,
                 'attr' => array('data-placeholder' => 'Choisissez un tag'),
                 'query_builder' => function (TagRepository $er) {
@@ -64,7 +56,7 @@ class FolderStep2Type extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Folder::class,
-            'translation_domain' => 'LuccaMinuteBundle',
+            'translation_domain' => 'LuccaFolderBundle',
         ));
     }
 
@@ -73,6 +65,6 @@ class FolderStep2Type extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'lucca_minutebundle_folder_step2';
+        return 'lucca_folderBundle_folder_step2';
     }
 }

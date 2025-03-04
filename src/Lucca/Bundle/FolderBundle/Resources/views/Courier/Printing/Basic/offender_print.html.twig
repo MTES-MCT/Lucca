@@ -30,10 +30,10 @@
 
             {% else %}
                 {% if 'setting.courier.offenderContent.name'|setting == true %}
-                    {% set filename = 'LuccaMinuteBundle:Courier/Printing/Custom:offender_content-' ~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+                    {% set filename = '@LuccaFolder/Courier/Printing/Custom/offender_content-' ~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
                     {% include filename with {'minute': minute, 'courier': courier, 'human': edition.human} %}
                 {% else %}
-                    {% include 'LuccaMinuteBundle:Courier/Printing/Basic:offender_content.html.twig' with {'minute': minute, 'courier': courier, 'human': edition.human} %}
+                    {% include '@LuccaFolder/Courier/Printing/Basic/offender_content.html.twig' with {'minute': minute, 'courier': courier, 'human': edition.human} %}
                 {% endif %}
             {% endif %}
 
@@ -52,10 +52,10 @@
             {% endif %}
 
             {% if 'setting.courier.offenderContent.name'|setting == true %}
-                {% set filename = 'LuccaMinuteBundle:Courier/Printing/Custom:offender_content-' ~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+                {% set filename = '@LuccaFolder/Courier/Printing/Custom/offender_content-' ~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
                 {% include filename with {'minute': minute, 'courier': courier, 'human': edition} %}
             {% else %}
-                {% include 'LuccaMinuteBundle:Courier/Printing/Basic:offender_content.html.twig' with {'minute': minute, 'courier': courier, 'human': edition} %}
+                {% include '@LuccaFolder/Courier/Printing/Basic/offender_content.html.twig' with {'minute': minute, 'courier': courier, 'human': edition} %}
             {% endif %}
 
             {% if not loop.last %}

@@ -7,17 +7,9 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\FolderBundle\Repository;
 
-namespace Lucca\MinuteBundle\Repository;
-
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
@@ -25,7 +17,7 @@ use Doctrine\ORM\QueryBuilder;
 /**
  * Class CourierRepository
  *
- * @package Lucca\MinuteBundle\Repository
+ * @package Lucca\Bundle\FolderBundle\Repository
  * @author Terence <terence@numeric-wave.tech>
  */
 class CourierRepository extends EntityRepository

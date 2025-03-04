@@ -7,18 +7,10 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\FolderBundle\Form;
 
-namespace Lucca\MinuteBundle\Form;
-
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\Human;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -30,7 +22,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 /**
  * Class UpdatingFolderType
  *
- * @package Lucca\MinuteBundle\Form
+ * @package Lucca\Bundle\FolderBundle\Form
  * @author Terence <terence@numeric-wave.tech>
  */
 class UpdatingFolderType extends AbstractType
@@ -86,14 +78,14 @@ class UpdatingFolderType extends AbstractType
         $choicesHuman = $options['minute']->getHumans();
         $builder
             ->add('humansByMinute', EntityType::class, array(
-                'class' => 'LuccaMinuteBundle:Human', 'label' => false, 'required' => false,
+                'class' => 'LuccaFolderBundle:Human', 'label' => false, 'required' => false,
                 'multiple' => true, 'expanded' => false, 'choices' => $choicesHuman,
                 'attr' => array(
                     'class' => 'chosen-select',
-                    'data-placeholder' => $this->translator->trans('help.data.select', array(), 'LuccaMinuteBundle')
+                    'data-placeholder' => $this->translator->trans('help.data.select', array(), 'LuccaFolderBundle')
                 ),
                 'choice_label' => function (Human $human) {
-                    return '(' . $this->translator->trans($human->getStatus(), array(), 'LuccaMinuteBundle') . ') ' . $human->getOfficialName();
+                    return '(' . $this->translator->trans($human->getStatus(), array(), 'LuccaFolderBundle') . ') ' . $human->getOfficialName();
                 },
             ));
 
@@ -110,11 +102,11 @@ class UpdatingFolderType extends AbstractType
 
         $builder
             ->add('control', EntityType::class, array(
-                'class' => 'LuccaMinuteBundle:Control', 'label' => 'label.control', 'required' => true,
+                'class' => 'LuccaFolderBundle:Control', 'label' => 'label.control', 'required' => true,
                 'multiple' => false, 'expanded' => false, 'choices' => $choicesControl,
                 'attr' => array(
                     'class' => 'chosen-select',
-                    'data-placeholder' => $this->translator->trans('help.data.select', array(), 'LuccaMinuteBundle')
+                    'data-placeholder' => $this->translator->trans('help.data.select', array(), 'LuccaFolderBundle')
                 ),
                 'choice_label' => 'formLabel'
             ));
@@ -129,7 +121,7 @@ class UpdatingFolderType extends AbstractType
         $resolver->setRequired('updating');
         $resolver->setDefaults(array(
             'data_class' => Folder::class,
-            'translation_domain' => 'LuccaMinuteBundle',
+            'translation_domain' => 'LuccaFolderBundle',
         ));
     }
 
@@ -138,6 +130,6 @@ class UpdatingFolderType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'lucca_minutebundle_folder';
+        return 'lucca_folderBundle_folder';
     }
 }

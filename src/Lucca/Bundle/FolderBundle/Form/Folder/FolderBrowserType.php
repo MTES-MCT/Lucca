@@ -8,7 +8,7 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Form\Folder;
+namespace Lucca\Bundle\FolderBundle\Form\Folder;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -17,21 +17,21 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-use Lucca\AdherentBundle\Entity\Adherent;
-use Lucca\AdherentBundle\Repository\AdherentRepository;
-use Lucca\ParameterBundle\Entity\Town;
-use Lucca\ParameterBundle\Repository\TownRepository;
-use Lucca\ParameterBundle\Entity\Intercommunal;
-use Lucca\ParameterBundle\Repository\IntercommunalRepository;
-use Lucca\ParameterBundle\Entity\Service;
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\AdherentBundle\Repository\AdherentRepository;
+use Lucca\Bundle\ParameterBundle\Entity\Town;
+use Lucca\Bundle\ParameterBundle\Repository\TownRepository;
+use Lucca\Bundle\ParameterBundle\Entity\Intercommunal;
+use Lucca\Bundle\ParameterBundle\Repository\IntercommunalRepository;
+use Lucca\Bundle\ParameterBundle\Entity\Service;
 
-use Lucca\ParameterBundle\Repository\ServiceRepository;
+use Lucca\Bundle\ParameterBundle\Repository\ServiceRepository;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 /**
  * Class FolderBrowserType
  *
- * @package Lucca\MinuteBundle\Form\Folder
+ * @package Lucca\Bundle\FolderBundle\Form\Folder
  * @author Lisa <lisa.alvarez@numeric-wave.eu>
  */
 class FolderBrowserType extends AbstractType
@@ -144,7 +144,7 @@ class FolderBrowserType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => null,
-            'translation_domain' => 'LuccaMinuteBundle',
+            'translation_domain' => 'LuccaFolderBundle',
         ));
     }
 
@@ -153,6 +153,6 @@ class FolderBrowserType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'lucca_minutebundle_folder';
+        return 'lucca_folderBundle_folder';
     }
 }

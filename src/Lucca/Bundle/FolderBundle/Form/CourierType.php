@@ -7,18 +7,10 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\FolderBundle\Form;
 
-namespace Lucca\MinuteBundle\Form;
-
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Courier;
-use Lucca\CoreBundle\Form\DataTransformer\NumberToIntTransformer;
+use Lucca\Bundle\FolderBundle\Entity\Courier;
+use Lucca\Bundle\CoreBundle\Form\DataTransformer\NumberToIntTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -29,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class CourierType
  *
- * @package Lucca\MinuteBundle\Form
+ * @package Lucca\Bundle\FolderBundle\Form
  * @author Terence <terence@numeric-wave.tech>
  */
 class CourierType extends AbstractType
@@ -61,7 +53,7 @@ class CourierType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Courier::class,
-            'translation_domain' => 'LuccaMinuteBundle',
+            'translation_domain' => 'LuccaFolderBundle',
             'required' => false
         ));
     }
@@ -71,6 +63,6 @@ class CourierType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'lucca_minutebundle_courier';
+        return 'lucca_folderBundle_courier';
     }
 }

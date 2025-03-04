@@ -1,5 +1,5 @@
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaMinuteBundle' %}
+{% trans_default_domain 'LuccaFolderBundle' %}
 
 {% block collection_widget %}
     {% spaceless %}
@@ -32,7 +32,7 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block lucca_minutebundle_proposal_widget %}
+{% block lucca_folderBundle_proposal_widget %}
 
     <tr {{ block('widget_attributes') }}>
         <td>{{ form_widget(form.sentence) }}</td>
@@ -49,4 +49,4 @@
 
 {% endblock %}
 
-{% block lucca_minutebundle_proposal_label %}{% endblock %}
+{% block lucca_folderBundle_proposal_label %}{% endblock %}

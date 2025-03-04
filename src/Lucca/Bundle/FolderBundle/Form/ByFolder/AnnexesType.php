@@ -8,10 +8,10 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Form\ByFolder;
+namespace Lucca\Bundle\FolderBundle\Form\ByFolder;
 
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
-use Lucca\MediaBundle\Form\Dropzone\DropzoneType;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MediaBundle\Form\Dropzone\DropzoneType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class AnnexesType
  *
- * @package Lucca\MinuteBundle\Form\ByFolder
+ * @package Lucca\Bundle\FolderBundle\Form\ByFolder
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
 class AnnexesType extends AbstractType
@@ -42,7 +42,7 @@ class AnnexesType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Folder::class,
-            'translation_domain' => 'LuccaMinuteBundle',
+            'translation_domain' => 'LuccaFolderBundle',
             'required' => true,
         ));
     }
@@ -52,6 +52,6 @@ class AnnexesType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'lucca_minuteBundle_annexes';
+        return 'lucca_folderBundle_annexes';
     }
 }

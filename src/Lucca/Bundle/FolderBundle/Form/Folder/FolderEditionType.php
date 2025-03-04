@@ -8,9 +8,9 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Form\Folder;
+namespace Lucca\Bundle\FolderBundle\Form\Folder;
 
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\FolderEdition;
+use Lucca\Bundle\FolderBundle\Entity\FolderEdition;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class FolderEditionType
  *
- * @package Lucca\MinuteBundle\Form\Folder
+ * @package Lucca\Bundle\FolderBundle\Form\Folder
  * @author Terence <terence@numeric-wave.tech>
  */
 class FolderEditionType extends AbstractType
@@ -45,7 +45,7 @@ class FolderEditionType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => FolderEdition::class,
-            'translation_domain' => 'LuccaMinuteBundle',
+            'translation_domain' => 'LuccaFolderBundle',
         ));
     }
 
@@ -54,6 +54,6 @@ class FolderEditionType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'lucca_minutebundle_folderEdition';
+        return 'lucca_folderBundle_folderEdition';
     }
 }
