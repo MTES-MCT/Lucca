@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,20 +10,14 @@
 
 namespace Lucca\Bundle\FolderBundle\Repository;
 
-use Lucca\Bundle\FolderBundle\Entity\Folder;
-use Lucca\Bundle\FolderBundle\Entity\Control;
-use Lucca\Bundle\MinuteBundle\Entity\Minute;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\{EntityRepository, NonUniqueResultException, QueryBuilder};
+
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\CoreBundle\Repository\AdherentRepository;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\Control;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
 
-/**
- * Class FolderRepository
- *
- * @package Lucca\Bundle\FolderBundle\Repository
- * @author Terence <terence@numeric-wave.tech>
- */
 class FolderRepository extends EntityRepository
 {
     /** Traits */
@@ -31,20 +26,18 @@ class FolderRepository extends EntityRepository
     /*******************************************************************************************/
     /********************* Stats methods *****/
     /*******************************************************************************************/
+
     /**
      * Count type of decision between date of minute opening
-     *
-     * @param null $p_minutes
-     * @return int|mixed|string
      */
-    public function findBetweenDates($p_minutes = null)
+    public function findBetweenDates($minutes = null): mixed
     {
         $qb = $this->queryFolderSimple();
 
         /************** Filters on minute to get ******************/
-        if ($p_minutes && count($p_minutes) > 0) {
+        if ($minutes && count($minutes) > 0) {
             $qb->andWhere($qb->expr()->in('minute', ':q_minutes'))
-                ->setParameter(':q_minutes', $p_minutes);
+                ->setParameter(':q_minutes', $minutes);
         }
 
         $qb->andWhere($qb->expr()->isNotNull('folder.courier'));
@@ -60,33 +53,30 @@ class FolderRepository extends EntityRepository
 
     /**
      * Stat for overall minutes reports
-     *
-     * @param null $p_natinf
-     * @return int|mixed|string
      */
-    public function statFolders($p_natinf = null, $p_nature = null, $p_dateStartClosure = null, $p_dateEndClosure = null, $p_controls = null)
+    public function statFolders($natinf = null, $nature = null, $dateStartClosure = null, $dateEndClosure = null, $controls = null): mixed
     {
         $qb = $this->queryFolder();
 
-        if ($p_natinf !== null && count($p_natinf) > 0) {
+        if ($natinf !== null && count($natinf) > 0) {
             $qb->andWhere($qb->expr()->in('natinfs', ':q_natinf'))
-                ->setParameter(':q_natinf', $p_natinf);
+                ->setParameter(':q_natinf', $natinf);
         }
 
-        if ($p_nature !== null && count($p_nature) > 0) {
+        if ($nature !== null && count($nature) > 0) {
             $qb->andWhere($qb->expr()->in('folder.nature', ':q_nature'))
-                ->setParameter(':q_nature', $p_nature);
+                ->setParameter(':q_nature', $nature);
         }
 
-        if ($p_dateStartClosure !== null && $p_dateEndClosure !== null) {
+        if ($dateStartClosure !== null && $dateEndClosure !== null) {
             $qb->andWhere($qb->expr()->between('folder.dateClosure', ':q_startClosure', ':q_endClosure'))
-                ->setParameter(':q_startClosure', $p_dateStartClosure)
-                ->setParameter(':q_endClosure', $p_dateEndClosure);
+                ->setParameter(':q_startClosure', $dateStartClosure)
+                ->setParameter(':q_endClosure', $dateEndClosure);
         }
 
-        if ($p_controls != null && count($p_controls) > 0) {
+        if ($controls != null && count($controls) > 0) {
             $qb->andWhere($qb->expr()->in('folder.control', ':q_control'))
-                ->setParameter(':q_control', $p_controls);
+                ->setParameter(':q_control', $controls);
         }
 
         $qb->select(array(
@@ -99,13 +89,11 @@ class FolderRepository extends EntityRepository
     /*******************************************************************************************/
     /********************* Custom find methods *****/
     /*******************************************************************************************/
+
     /**
      * Method used to find all open folders with geo code
-     *
-     * @param Adherent|null $p_adherent
-     * @return array
      */
-    public function findAllWithGeocodeDashboard(Adherent $p_adherent = null)
+    public function findAllWithGeocodeDashboard(?Adherent $p_adherent = null): array
     {
         $qb = $this->filterByAdherentAndStateLocalized($p_adherent);
 
@@ -125,12 +113,8 @@ class FolderRepository extends EntityRepository
 
     /**
      * Find Folder by Town
-     *
-     * @param $p_town
-     * @param Adherent|null $p_adherent
-     * @return mixed
      */
-    public function findByTown($p_town, Adherent $p_adherent = null)
+    public function findByTown($town, ?Adherent $adherent = null): mixed
     {
 //        $qb = $this->filterByAdherentAndStateLocalized($p_adherent);
         $qb = $this->queryFolder();
@@ -140,7 +124,7 @@ class FolderRepository extends EntityRepository
                 $qb->expr()->in('town', ':q_town'),
                 $qb->expr()->in('plot_town', ':q_town')
             ))
-            ->setParameter(':q_town', $p_town);
+            ->setParameter(':q_town', $town);
 
         $qb->andWhere($qb->expr()->isNotNull('folder.dateClosure'));
 
@@ -161,40 +145,33 @@ class FolderRepository extends EntityRepository
     /**
      * Override find method
      * with Invoice dependencies
-     *
-     * @param array $ids
-     * @param string|null $orderBy
-     * @param int|null $limit
-     * @param int|null $offset
-     *
-     * @return bool|mixed|object|null
      */
-    public function findByIds(array $ids, string $orderBy = null, int $limit = null, int $offset = null)
+    public function findByIds(array $ids, string $orderBy = null, ?int $limit = null, ?int $offset = null): mixed
     {
         $qb = $this->queryFolder();
 
         $qb->where($qb->expr()->in('folder.id', ':q_folder'))
             ->setParameter(':q_folder', $ids);
 
-        if ($orderBy)
+        if ($orderBy) {
             $qb->orderBy($orderBy);
+        }
 
-        if ($limit)
+        if ($limit) {
             $qb->setMaxResults($limit);
+        }
 
-        if ($offset)
+        if ($offset) {
             $qb->setFirstResult($offset);
+        }
 
         return $qb->getQuery()->getResult();
     }
 
     /**
      * Method used to find all open folders with geo code
-     *
-     * @param Adherent|null $p_adherent
-     * @return array
      */
-    public function findAllWithGeocode(Adherent $p_adherent = null)
+    public function findAllWithGeocode(?Adherent $p_adherent = null): array
     {
         $qb = $this->filterByAdherentAndStateLocalized($p_adherent);
 
@@ -203,35 +180,26 @@ class FolderRepository extends EntityRepository
 
     /**
      * Method used to find all open folders with geo code in a specific area
-     *
-     * @param $p_minLat
-     * @param $p_maxLat
-     * @param $p_minLon
-     * @param $p_maxLon
-     * @param Adherent|null $p_adherent
-     * @param null $p_maxResults
-     * @param null $p_minutes
-     * @return int|mixed|string
      */
-    public function findAllInArea($p_minLat, $p_maxLat, $p_minLon, $p_maxLon, Adherent $p_adherent = null, $p_maxResults = null, $p_minutes = null)
+    public function findAllInArea($minLat, $maxLat, $nLon, $maxLon, Adherent $adherent = null, $maxResults = null, $minutes = null): mixed
     {
-        $qb = $this->filterByAdherentAndStateLocalized($p_adherent);
+        $qb = $this->filterByAdherentAndStateLocalized($adherent);
 
         $qb->andWhere($qb->expr()->between('plot.latitude', ':q_minLat', ':q_maxLat'))
             ->andWhere($qb->expr()->between('plot.longitude', ':q_minLon', ':q_maxLon'))
-            ->setParameter('q_minLat', $p_minLat)
-            ->setParameter('q_maxLat', $p_maxLat)
-            ->setParameter('q_minLon', $p_minLon)
-            ->setParameter('q_maxLon', $p_maxLon);
+            ->setParameter('q_minLat', $minLat)
+            ->setParameter('q_maxLat', $maxLat)
+            ->setParameter('q_minLon', $nLon)
+            ->setParameter('q_maxLon', $maxLon);
 
-        if ($p_minutes && count($p_minutes) > 0) {
+        if ($minutes && count($minutes) > 0) {
             $qb->andwhere($qb->expr()->in('folder.minute', ':q_minutes'))
-                ->setParameter(':q_minutes', $p_minutes);
+                ->setParameter(':q_minutes', $minutes);
         }
 
-        if ($p_maxResults) {
+        if ($maxResults) {
             $qb->groupBy('folder');
-            $qb->setMaxResults($p_maxResults);
+            $qb->setMaxResults($maxResults);
         }
 
         return $qb->getQuery()->getResult();
@@ -240,69 +208,58 @@ class FolderRepository extends EntityRepository
     /**
      * Find Minutes with browser's filters.
      * Used on Minute browser view
-     *
-     * @param Adherent|null $adherent
-     * @param null $p_fdateStart
-     * @param null $p_fdateEnd
-     * @param null $p_fnum
-     * @param null $p_fnumFolder
-     * @param null $p_fadherent
-     * @param null $p_ftown
-     * @param null $p_finterco
-     * @param null $p_fservice
-     * @return mixed
      */
-    public function findFolderBrowser(Adherent $adherent = null,
-                                               $p_fdateStart = null, $p_fdateEnd = null, $p_fnum = null, $p_fnumFolder = null, $p_fadherent = null, $p_ftown = null, $p_finterco = null, $p_fservice = null)
+    public function findFolderBrowser(?Adherent $adherent = null, $fdateStart = null, $fdateEnd = null, $fnum = null,
+                        $fnumFolder = null, $fadherent = null, $ftown = null, $finterco = null, $fservice = null): mixed
     {
         $qb = $this->queryFolderBrowser();
 
         $qb->andWhere($qb->expr()->between('minute.dateOpening', ':q_start', ':q_end'))
-            ->setParameter(':q_start', $p_fdateStart)
-            ->setParameter(':q_end', $p_fdateEnd);
+            ->setParameter(':q_start', $fdateStart)
+            ->setParameter(':q_end', $fdateEnd);
 
         $qb->orderBy('minute.dateOpening', 'ASC')
             ->addGroupBy('folder');
 
-        if ($p_fnum) {
+        if ($fnum) {
             $qb->andWhere($qb->expr()->like('minute.num', ':q_num'))
-                ->setParameter(':q_num', '%' . $p_fnum . '%');
+                ->setParameter(':q_num', '%' . $fnum . '%');
         }
 
-        if ($p_fnumFolder) {
+        if ($fnumFolder) {
             $qb->andWhere($qb->expr()->like('folder.num', ':q_num'))
-                ->setParameter(':q_num', '%' . $p_fnumFolder . '%');
+                ->setParameter(':q_num', '%' . $fnumFolder . '%');
         }
 
         if ($adherent) {
             // Call Trait
             $qb = $this->getValuesAdherent($adherent, $qb);
         } else {
-            if ($p_fadherent && count($p_fadherent) > 0) {
+            if ($fadherent && count($fadherent) > 0) {
                 $qb->andWhere($qb->expr()->in('adherent', ':q_adherent'))
-                    ->setParameter(':q_adherent', $p_fadherent)
+                    ->setParameter(':q_adherent', $fadherent)
                     ->addGroupBy('adherent');
             }
 
-            if ($p_ftown && count($p_ftown) > 0) {
+            if ($ftown && count($ftown) > 0) {
                 $qb->andWhere(
                     $qb->expr()->orX(
                         $qb->expr()->in('town', ':q_town'),
                         $qb->expr()->in('plot_town', ':q_town')
                     ))
-                    ->setParameter(':q_town', $p_ftown)
+                    ->setParameter(':q_town', $ftown)
                     ->addGroupBy('town.name, plot_town.name');
             }
 
-            if ($p_finterco && count($p_finterco) > 0) {
+            if ($finterco && count($finterco) > 0) {
                 $qb->andWhere($qb->expr()->in('intercommunal', ':q_intercommunal'))
-                    ->setParameter(':q_intercommunal', $p_finterco)
+                    ->setParameter(':q_intercommunal', $finterco)
                     ->addGroupBy('intercommunal');
             }
 
-            if ($p_fservice && count($p_fservice) > 0) {
+            if ($fservice && count($fservice) > 0) {
                 $qb->andWhere($qb->expr()->in('service', ':q_service'))
-                    ->setParameter(':q_service', $p_fservice)
+                    ->setParameter(':q_service', $fservice)
                     ->addGroupBy('service');
             }
         }
@@ -310,16 +267,12 @@ class FolderRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    /**
-     * @param Control $control
-     * @return array
-     */
-    public function findFolderByControl(Control $control)
+    public function findFolderByControl(Control $control): array
     {
         $qb = $this->queryFolder();
 
-        $qb->where($qb->expr()->eq('folder.control', ':control'))
-            ->setParameter(':control', $control);
+        $qb->where($qb->expr()->eq('folder.control', ':q_control'))
+            ->setParameter(':q_control', $control);
 
         $qb->orderBy('folder.num', 'ASC');
 
@@ -329,16 +282,13 @@ class FolderRepository extends EntityRepository
     /**
      * Find complete Folders associated to Minute
      * use on Minute show
-     *
-     * @param Minute $minute
-     * @return array
      */
-    public function findByMinute(Minute $minute)
+    public function findByMinute(Minute $minute): array
     {
         $qb = $this->queryFolder();
 
-        $qb->where($qb->expr()->eq('folder.minute', ':minute'))
-            ->setParameter(':minute', $minute);
+        $qb->where($qb->expr()->eq('folder.minute', ':q_minute'))
+            ->setParameter(':q_minute', $minute);
 
         $qb->orderBy('folder.num', 'ASC');
 
@@ -348,17 +298,14 @@ class FolderRepository extends EntityRepository
     /**
      * Find small Folders associated to Minute
      * use on Minute show
-     *
-     * @param Minute $minute
-     * @return array
      */
-    public function findSmallFolderByMinute(Minute $minute)
+    public function findSmallFolderByMinute(Minute $minute): array
     {
         $qb = $this->createQueryBuilder('folder')
             ->leftJoin('folder.minute', 'minute')->addSelect('minute');
 
-        $qb->where($qb->expr()->eq('folder.minute', ':minute'))
-            ->setParameter(':minute', $minute);
+        $qb->where($qb->expr()->eq('folder.minute', ':q_minute'))
+            ->setParameter(':q_minute', $minute);
 
         $qb->orderBy('folder.num', 'ASC');
 
@@ -368,22 +315,18 @@ class FolderRepository extends EntityRepository
     /**
      * Find last folder by minute
      * use on Minute show
-     *
-     * @param Minute $p_minute
-     * @param false $p_isCommand
-     * @return int|mixed|string
      */
-    public function findLastByMinute(Minute $p_minute, bool $p_isCommand = false)
+    public function findLastByMinute(Minute $minute, bool $isCommand = false): mixed
     {
         $qb = $this->queryFolder();
 
         $qb->where($qb->expr()->eq('folder.minute', ':minute'))
-            ->setParameter(':minute', $p_minute);
+            ->setParameter(':minute', $minute);
 
         $qb->orderBy('folder.updatedAt', 'ASC');
         $qb->setMaxResults(1);
 
-        if ($p_isCommand == true) {
+        if ($isCommand) {
             $qb->select([
                 'partial folder.{id}',
             ]);
@@ -395,16 +338,13 @@ class FolderRepository extends EntityRepository
     /**
      * Find max num used for 1 minute
      * Use on Code generator
-     *
-     * @param $prefix
-     * @return mixed
      */
-    public function findMaxNumForMinute($prefix)
+    public function findMaxNumForMinute($prefix): mixed
     {
         $qb = $this->createQueryBuilder('folder');
 
-        $qb->where($qb->expr()->like('folder.num', ':num'))
-            ->setParameter('num', '%' . $prefix . '%');
+        $qb->where($qb->expr()->like('folder.num', ':q_num'))
+            ->setParameter('q_num', '%' . $prefix . '%');
 
         $qb->select($qb->expr()->max('folder.num'));
 
@@ -412,38 +352,33 @@ class FolderRepository extends EntityRepository
             return $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             echo 'NonUniqueResultException has been thrown - Folder Repository - ' . $e->getMessage();
+
             return false;
         }
     }
 
     /**
      * Find all folders between 2 ids to avoid issues when work on huge database
-     *
-     * @param $p_startId
-     * @param $p_endId
-     * @return int|mixed|string
      */
-    public function findAllBetweenId($p_startId, $p_endId)
+    public function findAllBetweenId($startId, $endId): mixed
     {
         $qb = $this->queryFolderCommand();
 
         $qb->andWhere($qb->expr()->between('folder.id', ':q_startId', ':q_endId'))
-            ->setParameter('q_startId', $p_startId)
-            ->setParameter('q_endId', $p_endId);
+            ->setParameter('q_startId', $startId)
+            ->setParameter('q_endId', $endId);
 
         return $qb->getQuery()->getResult();
     }
+
     /*******************************************************************************************/
     /********************* Custom find for test methods *****/
     /*******************************************************************************************/
 
-
     /**
      * Find one Folder for unit test with no dateClosure
-     *
-     * @return false|int|mixed|string|null
      */
-    public function findOneForTest()
+    public function findOneForTest(): mixed
     {
         $qb = $this->queryFolder();
 
@@ -459,20 +394,19 @@ class FolderRepository extends EntityRepository
             return $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             echo 'NonUniqueResultException has been thrown - Folder Repository - ' . $e->getMessage();
+
             return false;
         }
     }
+
     /*******************************************************************************************/
     /***************************************** Filters  ***************************************/
     /*******************************************************************************************/
 
     /**
      * Get folder by adherent, state and localized
-     *
-     * @param Adherent|null $adherent
-     * @return mixed
      */
-    public function filterByAdherentAndStateLocalized(Adherent $adherent = null)
+    public function filterByAdherentAndStateLocalized(?Adherent $adherent = null): QueryBuilder
     {
         $qb = $this->queryFolder();
 
@@ -497,10 +431,8 @@ class FolderRepository extends EntityRepository
     /**
      * Override findAll method
      * with Folder dependencies
-     *
-     * @return array
      */
-    public function findAll()
+    public function findAll(): array
     {
         $qb = $this->queryFolder();
 
@@ -510,13 +442,8 @@ class FolderRepository extends EntityRepository
     /**
      * Override find method
      * with Folder dependencies
-     *
-     * @param mixed $id
-     * @param null $lockMode
-     * @param null $lockVersion
-     * @return bool|mixed|object|null
      */
-    public function find($id, $lockMode = null, $lockVersion = null)
+    public function find(mixed $id, $lockMode = null, $lockVersion = null): ?object
     {
         $qb = $this->queryFolderSimple();
 
@@ -547,9 +474,11 @@ class FolderRepository extends EntityRepository
             return $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             echo 'NonUniqueResultException has been thrown - Folder Repository - ' . $e->getMessage();
-            return false;
+
+            return null;
         }
     }
+
     /*******************************************************************************************/
     /********************* Query - Dependencies of Folder Entity *****/
     /*******************************************************************************************/
@@ -557,27 +486,21 @@ class FolderRepository extends EntityRepository
     /**
      * Classic dependencies
      * Used for command to clean html
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    private function queryFolderSimple()
+    private function queryFolderSimple(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('folder')
+        return $this->createQueryBuilder('folder')
             ->leftJoin('folder.minute', 'minute')->addSelect('minute')
             ->leftJoin('folder.natinfs', 'natinfs')->addSelect('natinfs');
-
-        return $qb;
     }
 
     /**
      * Classic dependencies
      * Used for command to clean html
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    private function queryFolderCommand()
+    private function queryFolderCommand(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('folder')
+        return $this->createQueryBuilder('folder')
             ->leftJoin('folder.edition', 'edition')->addSelect('edition')
             ->leftJoin('folder.control', 'control')->addSelect('control')
             ->leftJoin('control.editions', 'controlEditions')->addSelect('controlEditions')
@@ -588,18 +511,14 @@ class FolderRepository extends EntityRepository
             ->leftJoin('minute.updatings', 'updatings')->addSelect('updatings')
             ->leftJoin('minute.closure', 'closure')->addSelect('closure')
             ->leftJoin('minute.decisions', 'decisions')->addSelect('decisions');
-
-        return $qb;
     }
 
     /**
      * Classic dependencies
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    private function queryFolder()
+    private function queryFolder(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('folder')
+        return $this->createQueryBuilder('folder')
             ->leftJoin('folder.minute', 'minute')->addSelect('minute')
             ->leftJoin('minute.plot', 'plot')->addSelect('plot')
             ->leftJoin('plot.town', 'plot_town')->addSelect('plot_town')
@@ -617,16 +536,12 @@ class FolderRepository extends EntityRepository
             ->leftJoin('folder.humansByMinute', 'humansByMinute')->addSelect('humansByMinute')
             ->leftJoin('folder.elements', 'elements')->addSelect('elements')
             ->leftJoin('folder.edition', 'edition')->addSelect('edition');
-
-        return $qb;
     }
 
     /**
      * Classic dependencies
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    private function queryFolderBrowser()
+    private function queryFolderBrowser(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('folder')
             ->leftJoin('folder.tagsNature', 'tagsNature')->addSelect('tagsNature')
@@ -648,5 +563,4 @@ class FolderRepository extends EntityRepository
 
         return $qb;
     }
-
 }

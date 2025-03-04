@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -16,39 +17,32 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class PenaltyAppealType
- *
- * @package Lucca\Bundle\DecisionBundle\Form
- * @author Terence <terence@numeric-wave.tech>
- */
 class PenaltyAppealType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('juridiction', TextType::class, array('label' => 'label.juridiction'))
-            ->add('dateDecision', DateType::class, array(
-                'label' => 'label.dateDecision', 'attr' => array('class' => 'date-picker'),
+            ->add('juridiction', TextType::class, ['label' => 'label.juridiction'])
+            ->add('dateDecision', DateType::class, [
+                'label' => 'label.dateDecision', 'attr' => ['class' => 'date-picker'],
                 'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
-            ))
-            ->add('kindDecision', TextType::class, array('label' => 'label.kindDecision'));
+            ])
+            ->add('kindDecision', TextType::class, ['label' => 'label.kindDecision']);
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => PenaltyAppeal::class,
             'translation_domain' => 'LuccaDecisionBundle',
             'required' => true
-        ));
+        ]);
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -18,19 +19,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class FolderStep2Type
- *
- * @package Lucca\Bundle\FolderBundle\Form
- * @author Terence <terence@numeric-wave.tech>
- */
 class FolderStep2Type extends AbstractType
 {
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('violation', TextareaType::class, array('label' => 'label.violation', 'required' => false,
@@ -49,10 +40,7 @@ class FolderStep2Type extends AbstractType
             ));
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => Folder::class,
@@ -63,7 +51,7 @@ class FolderStep2Type extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'lucca_folderBundle_folder_step2';
     }

@@ -10,80 +10,81 @@
 
 namespace Lucca\Bundle\FolderBundle\Controller\Printing;
 
-use Lucca\Bundle\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Lucca\Bundle\ModelBundle\Entity\Model;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Knp\Snappy\Pdf;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Twig\Error\Error;
 
-/**
- * Class FolderController
- *
- * @package Lucca\Bundle\FolderBundle\Folderler\Printing
- * @author Terence <terence@numeric-wave.tech>
- */
-#[Route('/minute-{minute_id}/folder-')]
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\{Minute, Updating};
+use Lucca\Bundle\ModelBundle\Entity\Model;
+use Lucca\Bundle\ModelBundle\Printer\PagePrinter;
+use Lucca\Bundle\ModelBundle\Service\ModelFinder;
+
+#[Route(path: '/minute-{minute_id}/folder-')]
 #[IsGranted('ROLE_LUCCA')]
 class FolderController extends AbstractController
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly ModelFinder           $modelFinder,
+        private readonly PagePrinter           $pagePrinter,
+        private readonly Pdf                   $pdf,
+    )
+    {
+    }
+
     /**
      * Print a Folder
-     *
-     * @param Minute $minute
-     * @param Folder $folder
-     * @param Request $p_request
-     * @return Response
      */
-    #[Route('{id}/document/print', name: 'lucca_folder_doc_print', methods: ['GET'])]
-    #[Route('{id}/document/preprint', name: 'lucca_folder_doc_preprint', methods: ['GET', 'POST'])]
+    #[Route(path: '{id}/document/print', name: 'lucca_folder_doc_print', methods: ['GET'])]
+    #[Route(path: '{id}/document/preprint', name: 'lucca_folder_doc_preprint', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_LUCCA')]
     public function folderDocPrintAction(
         #[MapEntity(id: 'minute_id')] Minute $minute,
-        #[MapEntity(id: 'id')] Folder $folder,
-        Request $p_request
+        Folder                               $folder,
+        Request                              $request
     ): Response {
         /** Check in route if it's preprint route that is called */
-        $isPrePrint = str_contains($p_request->attributes->get('_route'), "preprint");
+        $isPrePrint = str_contains($request->attributes->get('_route'), "preprint");
 
-        /** Step 1 : init snappy */
-        $snappy = $this->get('knp_snappy.pdf');
-        $em = $this->getDoctrine()->getManager();
-
+        /** Step 1 */
         $filename = sprintf('Folder %s', $folder->getNum());
 
-        $update = $em->getRepository('LuccaFolderBundle:Updating')->findUpdatingByControl($folder->getControl());
+        $update = $this->em->getRepository(Updating::class)->findUpdatingByControl($folder->getControl());
 
         /** Step 2 : Get adherent and model corresponding*/
         $adherent = $minute->getAdherent();
 
         /** Try to find the model corresponding to the document */
-        $model = $this->get('lucca.finder.model')->findModel(Model::DOCUMENTS_FOLDER, $adherent);
+        $model = $this->modelFinder->findModel(Model::DOCUMENTS_FOLDER, $adherent);
 
         /** If model is null it's mean there is no model created, so we can't generate the PDF */
         if ($model === null) {
             $this->addFlash('danger', 'flash.model.notFound');
-            return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId()));
-        }
 
+            return $this->redirectToRoute('lucca_minute_show', ['id' => $minute->getId()]);
+        }
 
         /** Step 3 : Create html */
         try {
             $html = $this->renderView('@LuccaMinute/Folder/Printing/Basic/doc_print.html.twig', [
                 'model' => $model, 'minute' => $minute, 'adherent' => $minute->getAdherent(), 'folder' => $folder, 'update' => $update, 'isPreprint' => $isPrePrint
             ]);
-        } catch (\Twig\Error\Error $twig_Error) {
+        } catch (Error $twig_Error) {
             $html = null;
             echo 'Twig_Error has been thrown - Body ' . $twig_Error->getMessage();
         }
 
         $var = [
-            "date" => (new \DateTime("now"))->format("d/m/Y"),
+            "date" => (new DateTime("now"))->format("d/m/Y"),
             "structureOffice" => $adherent->getStructureOffice(),
             "adherentName" => $adherent->getOfficialName(),
             "adherentMail" => $adherent->getEmailPublic(),
@@ -91,18 +92,19 @@ class FolderController extends AbstractController
             "agentName" => $folder->getMinute()->getAgent()->getOfficialName()
         ];
 
-        $options = $this->get('lucca.utils.printer.model.page')->createModelOption($model, $var, $adherent);
+        $options = $this->pagePrinter->createModelOption($model, $var, $adherent);
 
         try {
-            $generatedPdf = $snappy->getOutputFromHtml($html, $options);
-        } catch (Exception $e) {
+            $generatedPdf = $this->pdf->getOutputFromHtml($html, $options);
+        } catch (Exception) {
             $this->addFlash('danger', 'flash.folder.cannotPrint');
-            return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId()));
+
+            return $this->redirectToRoute('lucca_minute_show', ['id' => $minute->getId()]);
         }
 
         return new Response(
             $generatedPdf, 200,
-            array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"')
+            ['Content-Type' => 'application/pdf', 'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"']
         );
     }
 }

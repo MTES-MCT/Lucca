@@ -12,12 +12,6 @@ namespace Lucca\Bundle\DecisionBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-/**
- * Class ContradictoryRepository
- *
- * @package Lucca\Bundle\DecisionBundle\Repository
- * @author Terence <terence@numeric-wave.tech>
- */
 class ContradictoryRepository extends EntityRepository
 {
 

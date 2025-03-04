@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -11,24 +12,22 @@ namespace Lucca\Bundle\FolderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\FolderBundle\Repository\CourierHumanEditionRepository;
-use Lucca\Bundle\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\MinuteBundle\Entity\Human;
 
-/**
- * CourierHumanEdition
- */
 #[ORM\Table(name: "lucca_minute_courier_human_edition")]
 #[ORM\Entity(repositoryClass: CourierHumanEditionRepository::class)]
-class CourierHumanEdition implements LogInterface
+class CourierHumanEdition implements LoggableInterface
 {
     use TimestampableTrait;
 
-    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Column]
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "AUTO")]
-    private ?int $id;
+    #[ORM\GeneratedValue]
+    private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Courier::class, inversedBy: "humansEditions")]
     #[ORM\JoinColumn(nullable: false)]
@@ -47,12 +46,16 @@ class CourierHumanEdition implements LogInterface
 
     /************************************************************************ Custom functions ************************************************************************/
 
+    /**
+     * @inheritDoc
+     */
     public function getLogName(): string
     {
         return 'Courrier édition par humain';
     }
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
+
     public function getId(): int
     {
         return $this->id;
@@ -61,6 +64,7 @@ class CourierHumanEdition implements LogInterface
     public function setLetterOffenderEdited(bool $letterOffenderEdited): self
     {
         $this->letterOffenderEdited = $letterOffenderEdited;
+
         return $this;
     }
 
@@ -72,6 +76,7 @@ class CourierHumanEdition implements LogInterface
     public function setLetterOffender(?string $letterOffender): self
     {
         $this->letterOffender = $letterOffender;
+
         return $this;
     }
 
@@ -83,6 +88,7 @@ class CourierHumanEdition implements LogInterface
     public function setCourier(Courier $courier): self
     {
         $this->courier = $courier;
+
         return $this;
     }
 
@@ -94,6 +100,7 @@ class CourierHumanEdition implements LogInterface
     public function setHuman(Human $human): self
     {
         $this->human = $human;
+
         return $this;
     }
 

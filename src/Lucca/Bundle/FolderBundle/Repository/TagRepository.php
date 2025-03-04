@@ -10,24 +10,14 @@
 
 namespace Lucca\Bundle\FolderBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\{EntityRepository, NonUniqueResultException, QueryBuilder};
 
-/**
- * Class TagRepository
- *
- * @package Lucca\Bundle\FolderBundle\Repository
- * @author Terence <terence@numeric-wave.tech>
- */
 class TagRepository extends EntityRepository
 {
     /**
      * Find values by category / All if no category given
-     *
-     * @param null $category
-     * @return array
      */
-    public function findValuesByCategory($category = null)
+    public function findValuesByCategory($category = null): array
     {
         $qb = $this->queryTag();
 
@@ -43,11 +33,8 @@ class TagRepository extends EntityRepository
 
     /**
      * Get values by category / All if no category given
-     *
-     * @param null $category
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getValuesByCategory($category = null)
+    public function getValuesByCategory($category = null): QueryBuilder
     {
         $qb = $this->queryTag();
 
@@ -68,10 +55,8 @@ class TagRepository extends EntityRepository
     /**
      * Override findAll method
      * with Tag dependencies
-     *
-     * @return array
      */
-    public function findAll()
+    public function findAll(): array
     {
         $qb = $this->queryTag();
 
@@ -81,13 +66,8 @@ class TagRepository extends EntityRepository
     /**
      * Override find method
      * with Tag dependencies
-     *
-     * @param mixed $id
-     * @param null $lockMode
-     * @param null $lockVersion
-     * @return bool|mixed|object|null
      */
-    public function find($id, $lockMode = null, $lockVersion = null)
+    public function find(mixed $id, $lockMode = null, $lockVersion = null): ?object
     {
         $qb = $this->queryTag();
 
@@ -98,7 +78,8 @@ class TagRepository extends EntityRepository
             return $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             echo 'NonUniqueResultException has been thrown - Tag Repository - ' . $e->getMessage();
-            return false;
+
+            return null;
         }
     }
 
@@ -108,14 +89,10 @@ class TagRepository extends EntityRepository
 
     /**
      * Classic dependencies
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    private function queryTag()
+    private function queryTag(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('tag')
+        return $this->createQueryBuilder('tag')
             ->leftJoin('tag.proposals', 'proposals')->addSelect('proposals');
-
-        return $qb;
     }
 }

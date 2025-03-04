@@ -17,19 +17,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class CourierOffenderEditionType
- *
- * @package Lucca\Bundle\FolderBundle\Form\Courier
- * @author Terence <terence@numeric-wave.tech>
- */
 class CourierOffenderEditionType extends AbstractType
 {
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('letterOffenderEdited', CheckboxType::class, array('label' => 'label.letterOffenderEdited', 'required' => false))
@@ -38,10 +28,7 @@ class CourierOffenderEditionType extends AbstractType
             ));
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => CourierHumanEdition::class,
@@ -52,7 +39,7 @@ class CourierOffenderEditionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'lucca_folderBundle_courierEdition_offender';
     }

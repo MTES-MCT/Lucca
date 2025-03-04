@@ -25,10 +25,9 @@ class LuccaMinuteExtension extends Extension implements PrependExtensionInterfac
     /**
      * Load configuration of this Bundle
      *
-     *
      * @throws Exception
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);
@@ -40,9 +39,8 @@ class LuccaMinuteExtension extends Extension implements PrependExtensionInterfac
     /**
      * Load Role Hierarchy in security applications
      */
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         $container->prependExtensionConfig('security', array());
     }
 }
-

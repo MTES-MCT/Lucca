@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,31 +10,17 @@
 
 namespace Lucca\Bundle\FolderBundle\Generator;
 
-use Lucca\Bundle\FolderBundle\Entity\Folder;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-/**
- * Class NumFolderGenerator
- *
- * @package Lucca\Bundle\FolderBundle\Generator
- * @author Terence <terence@numeric-wave.tech>
- */
-class NumFolderGenerator
-{
-    /**
-     * @var EntityManager
-     */
-    private $em;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
 
-    /**
-     * NumFolderGenerator constructor.
-     *
-     * @param EntityManager $entityManager
-     */
-    public function __construct(EntityManager $entityManager)
+readonly class NumFolderGenerator
+{
+    public function __construct(
+        private EntityManagerInterface $em,
+    )
     {
-        $this->em = $entityManager;
     }
 
     /**
@@ -42,40 +29,32 @@ class NumFolderGenerator
      * $minute->getNum() - take num Minute
      * $suffix - take 'RC'
      * $increment - Take the last code + 1
-     *
-     * @param Folder $folder
-     * @return string
      */
-    public function generate(Folder $folder)
+    public function generate(Folder $folder): string
     {
         if ($folder->getType() === Folder::TYPE_FOLDER) {
             /** Classic Folder */
             $prefix = $folder->getMinute()->getNum() . '-PV-';
-
         } elseif ($folder->getType() === Folder::TYPE_REFRESH) {
             /** Refresh Folder */
             $prefix = $folder->getMinute()->getNum() . '-PVR-';
-
-        } else
+        } else {
             throw new NotFoundHttpException('Bad Folder type specify');
+        }
 
-        $maxCode = $this->em->getRepository('LuccaFolderBundle:Folder')->findMaxNumForMinute($prefix);
+        $maxCode = $this->em->getRepository(Folder::class)->findMaxNumForMinute($prefix);
 
         if ($maxCode) {
             $increment = substr($maxCode[1], -2);
             $increment = (int)$increment + 1;
-
-        } else
+        } else {
             $increment = 0;
+        }
 
-        $code = $prefix . sprintf('%02d', $increment);
-        return $code;
+        return $prefix . sprintf('%02d', $increment);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'lucca.generator.updating_folder_num';
     }

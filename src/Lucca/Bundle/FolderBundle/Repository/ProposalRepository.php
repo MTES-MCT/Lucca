@@ -14,14 +14,8 @@ use Doctrine\ORM\EntityRepository;
 
 use Lucca\Bundle\CoreBundle\Repository\ToggleableRepository;
 
-/**
- * Class ProposalRepository
- *
- * @package Lucca\Bundle\FolderBundle\Repository
- * @author Terence <terence@numeric-wave.tech>
- */
 class ProposalRepository extends EntityRepository
 {
     /** Traits */
-    use  ToggleableRepository;
+    use ToggleableRepository;
 }

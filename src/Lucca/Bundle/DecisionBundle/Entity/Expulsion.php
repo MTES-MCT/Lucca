@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,66 +10,68 @@
 
 namespace Lucca\Bundle\DecisionBundle\Entity;
 
+USE DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\DecisionBundle\Repository\ExpulsionRepository;
-use Lucca\Bundle\LogBundle\Entity\LogInterface;
-use Symfony\Component\Validator\Constraints as Assert;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 
 #[ORM\Entity(repositoryClass: ExpulsionRepository::class)]
 #[ORM\Table(name: "lucca_minute_expulsion")]
-class Expulsion implements LogInterface
+class Expulsion implements LoggableInterface
 {
     /** Traits */
     use TimestampableTrait;
 
     #[ORM\Id]
-    #[ORM\Column(type: "integer")]
-    #[ORM\GeneratedValue(strategy: "AUTO")]
-    private ?int $id;
+    #[ORM\Column]
+    #[ORM\GeneratedValue]
+    private ?int $id = null;
 
-    #[ORM\OneToOne(targetEntity: "Lucca\DecisionBundle\Entity\Decision", inversedBy: "expulsion")]
+    #[ORM\OneToOne(targetEntity: Decision::class, inversedBy: "expulsion")]
     #[ORM\JoinColumn(nullable: false)]
-    private $decision;
+    private Decision $decision;
 
-    #[ORM\Column(type: "string", length: 50, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Type(type: "string", message: "constraint.type")]
     #[Assert\Length(min: 2, max: 50, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
-    private ?string $lawFirm;
+    private ?string $lawFirm = null;
 
-    #[ORM\Column(type: "integer", nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\Type(type: "int", message: "constraint.type")]
-    private ?int $amountDelivrery;
+    private ?int $amountDelivrery = null;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
-    private ?\DateTime $dateHearing;
+    private ?DateTime $dateHearing = null;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
-    private ?\DateTime $dateAdjournment;
+    private ?DateTime $dateAdjournment = null;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
-    private ?\DateTime $dateDeliberation;
+    private ?DateTime $dateDeliberation = null;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
-    private ?\DateTime $dateJudicialDesision;
+    private ?DateTime $dateJudicialDesision = null;
 
-    #[ORM\Column(type: "string", length: 50, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Type(type: "string", message: "constraint.type")]
     #[Assert\Length(min: 2, max: 50, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
-    private ?string $statusDecision;
+    private ?string $statusDecision = null;
 
-    #[ORM\Column(type: "text", nullable: true)]
-    private ?string $comment;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $comment = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
     /**
-     * Log name of this Class
-     * @return string
+     * @inheritdoc
      */
     public function getLogName(): string
     {
@@ -77,229 +80,116 @@ class Expulsion implements LogInterface
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set lawFirm
-     *
-     * @param string $lawFirm
-     *
-     * @return Expulsion
-     */
-    public function setLawFirm(string $lawFirm): static
+    public function getDecision(): Decision
     {
-        $this->lawFirm = $lawFirm;
-
-        return $this;
+        return $this->decision;
     }
 
-    /**
-     * Get lawFirm
-     *
-     * @return string
-     */
-    public function getLawFirm(): ?string
-    {
-        return $this->lawFirm;
-    }
-
-    /**
-     * Set amountDelivrery
-     *
-     * @param integer $amountDelivrery
-     *
-     * @return Expulsion
-     */
-    public function setAmountDelivrery(int $amountDelivrery): static
-    {
-        $this->amountDelivrery = $amountDelivrery;
-
-        return $this;
-    }
-
-    /**
-     * Get amountDelivrery
-     *
-     * @return integer
-     */
-    public function getAmountDelivrery(): ?int
-    {
-        return $this->amountDelivrery;
-    }
-
-    /**
-     * Set dateHearing
-     *
-     * @param \DateTime $dateHearing
-     *
-     * @return Expulsion
-     */
-    public function setDateHearing(\DateTime $dateHearing): static
-    {
-        $this->dateHearing = $dateHearing;
-
-        return $this;
-    }
-
-    /**
-     * Get dateHearing
-     *
-     * @return \DateTime
-     */
-    public function getDateHearing(): ?\DateTime
-    {
-        return $this->dateHearing;
-    }
-
-    /**
-     * Set dateAdjournment
-     *
-     * @param \DateTime $dateAdjournment
-     *
-     * @return Expulsion
-     */
-    public function setDateAdjournment(\DateTime $dateAdjournment): static
-    {
-        $this->dateAdjournment = $dateAdjournment;
-
-        return $this;
-    }
-
-    /**
-     * Get dateAdjournment
-     *
-     * @return \DateTime
-     */
-    public function getDateAdjournment(): ?\DateTime
-    {
-        return $this->dateAdjournment;
-    }
-
-    /**
-     * Set dateDeliberation
-     *
-     * @param \DateTime $dateDeliberation
-     *
-     * @return Expulsion
-     */
-    public function setDateDeliberation(\DateTime $dateDeliberation): static
-    {
-        $this->dateDeliberation = $dateDeliberation;
-
-        return $this;
-    }
-
-    /**
-     * Get dateDeliberation
-     *
-     * @return \DateTime
-     */
-    public function getDateDeliberation(): ?\DateTime
-    {
-        return $this->dateDeliberation;
-    }
-
-    /**
-     * Set dateJudicialDesision
-     *
-     * @param \DateTime $dateJudicialDesision
-     *
-     * @return Expulsion
-     */
-    public function setDateJudicialDesision(\DateTime $dateJudicialDesision): static
-    {
-        $this->dateJudicialDesision = $dateJudicialDesision;
-
-        return $this;
-    }
-
-    /**
-     * Get dateJudicialDesision
-     *
-     * @return \DateTime
-     */
-    public function getDateJudicialDesision(): ?\DateTime
-    {
-        return $this->dateJudicialDesision;
-    }
-
-    /**
-     * Set statusDecision
-     *
-     * @param string $statusDecision
-     *
-     * @return Expulsion
-     */
-    public function setStatusDecision(string $statusDecision): static
-    {
-        $this->statusDecision = $statusDecision;
-
-        return $this;
-    }
-
-    /**
-     * Get statusDecision
-     *
-     * @return string
-     */
-    public function getStatusDecision(): ?string
-    {
-        return $this->statusDecision;
-    }
-
-    /**
-     * Set comment
-     *
-     * @param string $comment
-     *
-     * @return Expulsion
-     */
-    public function setComment(string $comment): static
-    {
-        $this->comment = $comment;
-
-        return $this;
-    }
-
-    /**
-     * Get comment
-     *
-     * @return string
-     */
-    public function getComment(): ?string
-    {
-        return $this->comment;
-    }
-
-    /**
-     * Set decision
-     *
-     * @param Decision $decision
-     *
-     * @return Expulsion
-     */
-    public function setDecision(Decision $decision): static
+    public function setDecision(Decision $decision): self
     {
         $this->decision = $decision;
 
         return $this;
     }
 
-    /**
-     * Get decision
-     *
-     * @return Decision
-     */
-    public function getDecision(): Decision
+    public function getLawFirm(): ?string
     {
-        return $this->decision;
+        return $this->lawFirm;
+    }
+
+    public function setLawFirm(?string $lawFirm): self
+    {
+        $this->lawFirm = $lawFirm;
+
+        return $this;
+    }
+
+    public function getAmountDelivrery(): ?int
+    {
+        return $this->amountDelivrery;
+    }
+
+    public function setAmountDelivrery(?int $amountDelivrery): self
+    {
+        $this->amountDelivrery = $amountDelivrery;
+
+        return $this;
+    }
+
+    public function getDateHearing(): ?DateTime
+    {
+        return $this->dateHearing;
+    }
+
+    public function setDateHearing(?DateTime $dateHearing): self
+    {
+        $this->dateHearing = $dateHearing;
+
+        return $this;
+    }
+
+    public function getDateAdjournment(): ?DateTime
+    {
+        return $this->dateAdjournment;
+    }
+
+    public function setDateAdjournment(?DateTime $dateAdjournment): self
+    {
+        $this->dateAdjournment = $dateAdjournment;
+
+        return $this;
+    }
+
+    public function getDateDeliberation(): ?DateTime
+    {
+        return $this->dateDeliberation;
+    }
+
+    public function setDateDeliberation(?DateTime $dateDeliberation): self
+    {
+        $this->dateDeliberation = $dateDeliberation;
+
+        return $this;
+    }
+
+    public function getDateJudicialDesision(): ?DateTime
+    {
+        return $this->dateJudicialDesision;
+    }
+
+    public function setDateJudicialDesision(?DateTime $dateJudicialDesision): self
+    {
+        $this->dateJudicialDesision = $dateJudicialDesision;
+
+        return $this;
+    }
+
+    public function getStatusDecision(): ?string
+    {
+        return $this->statusDecision;
+    }
+
+    public function setStatusDecision(?string $statusDecision): self
+    {
+        $this->statusDecision = $statusDecision;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
+
+        return $this;
     }
 }

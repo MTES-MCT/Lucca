@@ -12,12 +12,6 @@ namespace Lucca\Bundle\FolderBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-/**
- * Class ElementCheckedRepository
- *
- * @package Lucca\Bundle\FolderBundle\Repository
- * @author Terence <terence@numeric-wave.tech>
- */
 class ElementCheckedRepository extends EntityRepository
 {
 

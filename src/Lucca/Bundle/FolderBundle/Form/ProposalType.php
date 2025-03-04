@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -10,25 +11,13 @@
 namespace Lucca\Bundle\FolderBundle\Form;
 
 use Lucca\Bundle\FolderBundle\Entity\Proposal;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
+use Symfony\Component\Form\Extension\Core\Type\{CheckboxType, TextareaType};
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class ProposalType
- *
- * @package Lucca\Bundle\FolderBundle\Form
- * @author Terence <terence@numeric-wave.tech>
- */
 class ProposalType extends AbstractType
 {
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('sentence', TextareaType::class, array('label' => 'label.sentence', 'required' => true,
@@ -37,10 +26,7 @@ class ProposalType extends AbstractType
             ->add('enabled', CheckboxType::class, array('label' => false));
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => Proposal::class,
@@ -51,7 +37,7 @@ class ProposalType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'lucca_folderBundle_proposal';
     }

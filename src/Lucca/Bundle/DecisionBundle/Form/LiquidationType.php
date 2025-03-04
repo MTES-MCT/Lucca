@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -17,46 +18,39 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class LiquidationType
- *
- * @package Lucca\Bundle\DecisionBundle\Form
- * @author Terence <terence@numeric-wave.tech>
- */
 class LiquidationType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
 
-            ->add('amountPenalty', MoneyType::class, array('label' => 'label.amountPenalty'))
-            ->add('dateStart', DateType::class, array(
-                'label' => 'label.dateStart', 'attr' => array('class' => 'date-picker'),
+            ->add('amountPenalty', MoneyType::class, ['label' => 'label.amountPenalty'])
+            ->add('dateStart', DateType::class, [
+                'label' => 'label.dateStart', 'attr' => ['class' => 'date-picker'],
                 'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
-            ))
-            ->add('dateEnd', DateType::class, array(
-                'label' => 'label.dateEnd', 'attr' => array('class' => 'date-picker'),
+            ])
+            ->add('dateEnd', DateType::class, [
+                'label' => 'label.dateEnd', 'attr' => ['class' => 'date-picker'],
                 'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
-            ));
+            ]);
 
         /** Data Transformer */
         $builder->get('amountPenalty')->addModelTransformer(new NumberToIntTransformer());
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Liquidation::class,
             'translation_domain' => 'LuccaDecisionBundle',
             'required' => true
-        ));
+        ]);
     }
 
     /**

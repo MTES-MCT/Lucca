@@ -43,7 +43,7 @@
                             {% else %}
                                 {#SETTING#}
                                 {% if 'setting.folder.docContent.name'|setting == true %}
-                                    {% set filename = 'LuccaDecisionBundle:Folder/Printing/Custom:doc_content-'~ 'setting.general.departement.name'|setting ~'.html.twig' %}
+                                    {% set filename = '@LuccaDecision/Folder/Printing/Custom/doc_content-'~ 'setting.general.departement.name'|setting ~'.html.twig' %}
                                     {% include filename with {'agent' : agent} %}
                                 {% else %}
                                     {% include '@LuccaDecision/Printing/Basic/doc_content.html.twig'  with {'agent' : agent} %}

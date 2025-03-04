@@ -10,81 +10,89 @@
 
 namespace Lucca\Bundle\FolderBundle\Controller\Printing;
 
-use Lucca\Bundle\FolderBundle\Entity\MayorLetter;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use Lucca\Bundle\AdherentBundle\Entity\Adherent;
-use Lucca\Bundle\ModelBundle\Entity\Model;
-use Lucca\Bundle\SettingBundle\Utils\SettingManager;
+use Doctrine\ORM\Exception\ORMException;
+use Knp\Snappy\Pdf;
+use Lucca\Bundle\FolderBundle\Printer\MayorLetterPrinter;
+use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Updating;
+use Lucca\Bundle\MinuteBundle\Utils\MayorLetterManager;
+use Lucca\Bundle\ModelBundle\Printer\PagePrinter;
+use Lucca\Bundle\ModelBundle\Service\ModelFinder;
+use Lucca\MinuteBundle\Printer\ControlPrinter;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfReader\PdfReaderException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\{RedirectResponse, Request, Response};
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Tomsgu\PdfMerger\Exception\FileNotFoundException;
-use Tomsgu\PdfMerger\Exception\InvalidArgumentException;
-use Tomsgu\PdfMerger\PdfCollection;
-use Tomsgu\PdfMerger\PdfFile;
-use Tomsgu\PdfMerger\PdfMerger;
+use Tomsgu\PdfMerger\Exception\{FileNotFoundException, InvalidArgumentException};
+use Tomsgu\PdfMerger\{PdfCollection, PdfFile, PdfMerger};
 
-/**
- * Class MayorLetterController
- *
- * @package Lucca\Bundle\FolderBundle\Controller\Printing
- * @author Lisa <lisa.alvarez@numeric-wave.eu>
- */
-#[Route('/mayor-letter')]
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\FolderBundle\Entity\MayorLetter;
+use Lucca\Bundle\ModelBundle\Entity\Model;
+use Lucca\Bundle\SettingBundle\Manager\SettingManager;
+
+#[Route(path: '/mayor-letter')]
 #[IsGranted('ROLE_LUCCA')]
 class MayorLetterController extends AbstractController
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly ControlPrinter         $controlPrinter,
+        private readonly MayorLetterManager     $mayorLetterManager,
+        private readonly MayorLetterPrinter     $mayorLetterPrinter,
+        private readonly ModelFinder            $modelFinder,
+        private readonly PagePrinter            $pagePrinter,
+        private readonly Pdf                    $pdf,
+    )
+    {
+    }
+
     /**
      * Judicial Print letter
      *
-     *
-     * @param MayorLetter $p_mayorLetter
-     * @param Request $p_request
-     * @return Response
-     * @throws ORMException
      * @throws OptimisticLockException
+     * @throws ORMException
+     * @throws FileNotFoundException
+     * @throws InvalidArgumentException
+     * @throws PdfReaderException
      */
-    #[Route('-{id}/print', name: 'lucca_mayor_letter_print', methods: ['GET', 'POST'])]
+    #[Route(path: '-{id}/print', name: 'lucca_mayor_letter_print', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_LUCCA')]
-    public function mayorLetterPrintAction(MayorLetter $p_mayorLetter, Request $p_request): Response
+    public function mayorLetterPrintAction(MayorLetter $mayorLetter): Response
     {
-        /** Step 1 : init snappy */
-        $snappy = $this->get('knp_snappy.pdf');
-        $filename = 'Courrier de rattachement - ' . $p_mayorLetter->getTown()->getName() . ' ' . $p_mayorLetter->getTown()->getCode();
+        /** Step 1 : init */
+        $filename = 'Courrier de rattachement - ' . $mayorLetter->getTown()->getName() . ' ' . $mayorLetter->getTown()->getCode();
 
-        if ($p_mayorLetter->getDateSended())
-            $filename = $filename . ' - ' . $p_mayorLetter->getDateSended()->format('Y-m-d');
+        if ($mayorLetter->getDateSended()) {
+            $filename = $filename . ' - ' . $mayorLetter->getDateSended()->format('Y-m-d');
+        }
 
         /** Step 2 : Search logo of the adherent */
-        /** @var Adherent $adherent */
-        $adherent = $p_mayorLetter->getAdherent();
+        $adherent = $mayorLetter->getAdherent();
 
         $logo = null;
         /** Define Logo and set margin */
         if (!SettingManager::get('setting.pdf.logoInHeader.name')) {
-            $logo = $this->get('lucca.utils.printer.control')->defineLogo($adherent);
+            $logo = $this->controlPrinter->defineLogo($adherent);
         }
 
         /** Step 3 : Create html */
         $html = $this->renderView('@LuccaFolder/MayorLetter/Printing/Basic/mayorLetter_print.html.twig', array(
-            'mayorLetter' => $p_mayorLetter, 'adherent' => $adherent, 'officialLogo' => $logo
+            'mayorLetter' => $mayorLetter, 'adherent' => $adherent, 'officialLogo' => $logo
         ));
 
-        $options = $this->get('lucca.utils.printer.mayor.letter')->createMayorLetterOptions($adherent);
+        $options = $this->mayorLetterPrinter->createMayorLetterOptions($adherent);
 
-        $generatedPdf = $snappy->getOutputFromHtml($html, $options);
+        $generatedPdf = $this->pdf->getOutputFromHtml($html, $options);
 
-        $this->get('lucca.manager.mayor.letter')->deleteMayorLetter($p_mayorLetter);
+        $this->mayorLetterManager->deleteMayorLetter($mayorLetter);
 
         return new Response(
-            $this->generatePDFFolders($p_mayorLetter, $generatedPdf), 200,
+            $this->generatePDFFolders($mayorLetter, $generatedPdf), 200,
             array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"')
         );
     }
@@ -92,34 +100,31 @@ class MayorLetterController extends AbstractController
     /**
      * Function used to generate PV in mayor letter
      *
-     * @param MayorLetter $p_mayorLetter
-     * @param $p_generatedPDFLetter
-     * @return string|RedirectResponse
      * @throws FileNotFoundException
      * @throws InvalidArgumentException
      * @throws PdfReaderException
      */
-    private function generatePDFFolders(MayorLetter $p_mayorLetter, $p_generatedPDFLetter): RedirectResponse|string
+    private function generatePDFFolders(MayorLetter $mayorLetter, $generatedPDFLetter): RedirectResponse|string
     {
         /** Init var with tools need to merge pdf */
         $pdf = new PdfCollection();
         $filesystem = new Filesystem();
         $fpdi = new Fpdi();
         $merger = new PdfMerger($fpdi);
-        $snappy = $this->get('knp_snappy.pdf');
 
         /** Init empty array in order to delete temp files when finish */
-        $filesNames = array();
+        $filesNames = [];
 
         /** Store filename that will be used for the final pdf */
-        $filename = sprintf('Lettre au maire - %s', $p_mayorLetter->getId());
+        $filename = sprintf('Lettre au maire - %s', $mayorLetter->getId());
 
         /** Path where the temp pdf are stored */
         $path = $this->getParameter('env(LUCCA_UPLOAD_TEMP_DIR)') . 'pdfToPrint/';
 
         /** If the temp directory doesn't exist create it */
-        if (!$filesystem->exists($path))
+        if (!$filesystem->exists($path)) {
             $filesystem->mkdir($path);
+        }
 
         /************* Add Mayor letter the final var *****************/
         /** Store file path to create temp file and be able to delete it later */
@@ -127,26 +132,25 @@ class MayorLetterController extends AbstractController
         $filesNames[] = $filePath;
 
         /** Store file in temp folder */
-        $filesystem->appendToFile($filePath, $p_generatedPDFLetter);
+        $filesystem->appendToFile($filePath, $generatedPDFLetter);
         $pdf->addPDF($filePath, PdfFile::ALL_PAGES, PdfFile::ORIENTATION_PORTRAIT);
 
-        foreach ($p_mayorLetter->getFolders() as $folder) {
-            $em = $this->getDoctrine()->getManager();
-
+        foreach ($mayorLetter->getFolders() as $folder) {
             /** Step 1 : Find updating */
-            $update = $em->getRepository('LuccaFolderBundle:Updating')->findUpdatingByControl($folder->getControl());
+            $update = $this->em->getRepository(Updating::class)->findUpdatingByControl($folder->getControl());
 
             /** Step 2 : Get adherent and model corresponding*/
             $minute = $folder->getMinute();
             $adherent = $minute->getAdherent();
 
             /** Try to find the model corresponding to the document */
-            $model = $this->get('lucca.finder.model')->findModel(Model::DOCUMENTS_FOLDER, $adherent);
+            $model = $this->modelFinder->findModel(Model::DOCUMENTS_FOLDER, $adherent);
 
             /** If model is null it's mean there is no model created, so we can't generate the PDF */
             if ($model === null) {
                 $this->addFlash('danger', 'flash.model.notFound');
-                return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId()));
+
+                return $this->redirectToRoute('lucca_minute_show', ['id' => $minute->getId()]);
             }
 
             /** Step 3 : Create html */
@@ -154,9 +158,9 @@ class MayorLetterController extends AbstractController
                 'model' => $model, 'minute' => $minute, 'adherent' => $minute->getAdherent(), 'folder' => $folder, 'update' => $update
             ]);
 
-            $options = $this->get('lucca.utils.printer.model.page')->createModelOption($model, array(), $adherent);
+            $options = $this->pagePrinter->createModelOption($model, [], $adherent);
 
-            $generatedPdf = $snappy->getOutputFromHtml($html, $options);
+            $generatedPdf = $this->pdf->getOutputFromHtml($html, $options);
 
             /** Store file path to create temp file and be able to delete it later */
             $filePath = $path . 'pv-' . $folder->getId() . '.pdf';
@@ -167,7 +171,6 @@ class MayorLetterController extends AbstractController
 
             /** Add pdf to the final var */
             $pdf->addPDF($filePath, PdfFile::ALL_PAGES, PdfFile::ORIENTATION_PORTRAIT);
-
         }
 
         /** Merge all the pdf into a final one, get a string in order to be able to return it to the main function */
@@ -179,6 +182,5 @@ class MayorLetterController extends AbstractController
         }
 
         return $merged;
-
     }
 }

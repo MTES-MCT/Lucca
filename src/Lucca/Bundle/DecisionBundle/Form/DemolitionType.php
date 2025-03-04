@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -21,47 +22,40 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class DemolitionType
- *
- * @package Lucca\Bundle\DecisionBundle\Form
- * @author Terence <terence@numeric-wave.tech>
- */
 class DemolitionType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('company', TextType::class, array('label' => 'label.company_intervening'))
-            ->add('amountCompany', MoneyType::class, array('label' => 'label.amountCompany'))
-            ->add('dateDemolition', DateType::class, array(
-                'label' => 'label.dateDemolition', 'attr' => array('class' => 'date-picker'),
+            ->add('company', TextType::class, ['label' => 'label.company_intervening'])
+            ->add('amountCompany', MoneyType::class, ['label' => 'label.amountCompany'])
+            ->add('dateDemolition', DateType::class, [
+                'label' => 'label.dateDemolition', 'attr' => ['class' => 'date-picker'],
                 'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
-            ))
-            ->add('bailif', TextType::class, array('label' => 'label.bailif'))
-            ->add('amountBailif', MoneyType::class, array('label' => 'label.amountBailif'))
+            ])
+            ->add('bailif', TextType::class, ['label' => 'label.bailif'])
+            ->add('amountBailif', MoneyType::class, ['label' => 'label.amountBailif'])
             ->add('professions', CollectionType::class, [
                 'label' => false, 'entry_type' => ProfessionType::class, 'prototype' => true,
                 'allow_add' => true, 'allow_delete' => true, 'delete_empty' => true, 'required' => false,
-                'by_reference' => true, 'entry_options' => array('attr' => array('class' => 'profession')),
-                'attr' => array('class' => 'table profession-collection'),
+                'by_reference' => true, 'entry_options' => ['attr' => ['class' => 'profession']],
+                'attr' => ['class' => 'table profession-collection'],
             ])
-            ->add('comment', TextareaType::class, array('label' => 'label.comment',
-                'attr' => array('class' => 'summernote'), 'required' => false
-            ))
-            ->add('result', ChoiceType::class, array(
-                'choices' => array(
+            ->add('comment', TextareaType::class, ['label' => 'label.comment',
+                'attr' => ['class' => 'summernote'], 'required' => false
+            ])
+            ->add('result', ChoiceType::class, [
+                'choices' => [
                     Demolition::RESULT_WAITING => Demolition::RESULT_WAITING,
                     Demolition::RESULT_REALIZED => Demolition::RESULT_REALIZED,
                     Demolition::RESULT_REPORTED => Demolition::RESULT_REPORTED,
                     Demolition::RESULT_CANCELLED => Demolition::RESULT_CANCELLED,
-                ),
+                ],
                 'label' => 'label.result', 'expanded' => false, 'required' => false
-            ));
+            ]);
 
         /** Data Transformer */
         $builder->get('amountCompany')->addModelTransformer(new NumberToIntTransformer());
@@ -69,15 +63,15 @@ class DemolitionType extends AbstractType
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Demolition::class,
             'translation_domain' => 'LuccaDecisionBundle',
             'required' => true
-        ));
+        ]);
     }
 
     /**

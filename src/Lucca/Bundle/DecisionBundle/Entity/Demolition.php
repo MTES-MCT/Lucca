@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,18 +10,19 @@
 
 namespace Lucca\Bundle\DecisionBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use DateTime;
+use Doctrine\Common\Collections\{ArrayCollection, Collection};
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\DecisionBundle\Repository\DemolitionRepository;
-use Lucca\Bundle\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 
 #[ORM\Entity(repositoryClass: DemolitionRepository::class)]
 #[ORM\Table(name: "lucca_minute_demolition")]
-class Demolition implements LogInterface
+class Demolition implements LoggableInterface
 {
     use TimestampableTrait;
 
@@ -31,63 +33,59 @@ class Demolition implements LogInterface
     const RESULT_WAITING = 'choice.result.waiting';
 
     #[ORM\Id]
-    #[ORM\Column(type: "integer")]
-    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column]
+    #[ORM\GeneratedValue]
     private ?int $id;
 
-    #[ORM\OneToOne(targetEntity: "Lucca\DecisionBundle\Entity\Decision", inversedBy: "demolition")]
+    #[ORM\OneToOne(targetEntity: Decision::class, inversedBy: "demolition")]
     #[ORM\JoinColumn(nullable: false)]
     private Decision $decision;
 
-    #[ORM\Column(type: "string", length: 50, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Type(type: "string", message: "constraint.type")]
     #[Assert\Length(min: 2, max: 50, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
-    private ?string $company;
+    private ?string $company = null;
 
-    #[ORM\Column(type: "integer", nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\Type(type: "int", message: "constraint.type")]
-    private ?int $amountCompany;
+    private ?int $amountCompany = null;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
-    private ?\DateTime $dateDemolition;
+    private ?DateTime $dateDemolition = null;
 
-    #[ORM\Column(type: "string", length: 50, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Type(type: "string", message: "constraint.type")]
     #[Assert\Length(min: 2, max: 50, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
-    private ?string $bailif;
+    private ?string $bailif = null;
 
-    #[ORM\Column(type: "integer", nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\Type(type: "int", message: "constraint.type")]
-    private ?int $amountBailif;
+    private ?int $amountBailif = null;
 
     #[ORM\ManyToMany(targetEntity: "Lucca\DecisionBundle\Entity\Profession", cascade: ["persist", "remove"])]
     #[ORM\JoinTable(name: "lucca_minute_demolition_linked_profession")]
     #[ORM\JoinColumn(name: "demolition_id", referencedColumnName: "id")]
     #[ORM\InverseJoinColumn(name: "profession_id", referencedColumnName: "id")]
-    private ArrayCollection $professions;
+    private Collection $professions;
 
-    #[ORM\Column(type: "text", nullable: true)]
-    private ?string $comment;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $comment = null;
 
-    #[ORM\Column(type: "string", length: 30, nullable: true)]
+    #[ORM\Column(length: 30, nullable: true)]
     #[Assert\Type(type: "string", message: "constraint.type")]
     #[Assert\Length(min: 2, max: 30, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
-    private ?string $result;
+    private ?string $result = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
-    /**
-     * Demolition constructor
-     */
     public function __construct()
     {
         $this->professions = new ArrayCollection();
     }
 
     /**
-     * Log name of this Class
-     * @return string
+     * @inheritdoc
      */
     public function getLogName(): string
     {
@@ -96,239 +94,125 @@ class Demolition implements LogInterface
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set company
-     *
-     * @param string $company
-     *
-     * @return Demolition
-     */
-    public function setCompany(string $company): static
+    public function getDecision(): Decision
     {
-        $this->company = $company;
-
-        return $this;
+        return $this->decision;
     }
 
-    /**
-     * Get company
-     *
-     * @return string
-     */
-    public function getCompany(): ?string
-    {
-        return $this->company;
-    }
-
-    /**
-     * Set amountCompany
-     *
-     * @param integer $amountCompany
-     *
-     * @return Demolition
-     */
-    public function setAmountCompany(int $amountCompany): static
-    {
-        $this->amountCompany = $amountCompany;
-
-        return $this;
-    }
-
-    /**
-     * Get amountCompany
-     *
-     * @return integer
-     */
-    public function getAmountCompany(): ?int
-    {
-        return $this->amountCompany;
-    }
-
-    /**
-     * Set dateDemolition
-     *
-     * @param \DateTime $dateDemolition
-     *
-     * @return Demolition
-     */
-    public function setDateDemolition(\DateTime $dateDemolition): static
-    {
-        $this->dateDemolition = $dateDemolition;
-
-        return $this;
-    }
-
-    /**
-     * Get dateDemolition
-     *
-     * @return \DateTime
-     */
-    public function getDateDemolition(): ?\DateTime
-    {
-        return $this->dateDemolition;
-    }
-
-    /**
-     * Set bailif
-     *
-     * @param string $bailif
-     *
-     * @return Demolition
-     */
-    public function setBailif(string $bailif): static
-    {
-        $this->bailif = $bailif;
-
-        return $this;
-    }
-
-    /**
-     * Get bailif
-     *
-     * @return string
-     */
-    public function getBailif(): ?string
-    {
-        return $this->bailif;
-    }
-
-    /**
-     * Set amountBailif
-     *
-     * @param integer $amountBailif
-     *
-     * @return Demolition
-     */
-    public function setAmountBailif(int $amountBailif): static
-    {
-        $this->amountBailif = $amountBailif;
-
-        return $this;
-    }
-
-    /**
-     * Get amountBailif
-     *
-     * @return integer
-     */
-    public function getAmountBailif(): ?int
-    {
-        return $this->amountBailif;
-    }
-
-    /**
-     * Set comment
-     *
-     * @param string $comment
-     *
-     * @return Demolition
-     */
-    public function setComment(string $comment): static
-    {
-        $this->comment = $comment;
-
-        return $this;
-    }
-
-    /**
-     * Get comment
-     *
-     * @return string
-     */
-    public function getComment(): ?string
-    {
-        return $this->comment;
-    }
-
-    /**
-     * Set result
-     *
-     * @param string $result
-     *
-     * @return Demolition
-     */
-    public function setResult(string $result): static
-    {
-        $this->result = $result;
-
-        return $this;
-    }
-
-    /**
-     * Get result
-     *
-     * @return string
-     */
-    public function getResult(): ?string
-    {
-        return $this->result;
-    }
-
-    /**
-     * Set decision
-     *
-     * @param Decision $decision
-     *
-     * @return Demolition
-     */
-    public function setDecision(Decision $decision): static
+    public function setDecision(Decision $decision): self
     {
         $this->decision = $decision;
 
         return $this;
     }
 
-    /**
-     * Get decision
-     *
-     * @return Decision
-     */
-    public function getDecision(): Decision
+    public function getCompany(): ?string
     {
-        return $this->decision;
+        return $this->company;
     }
 
-    /**
-     * Add profession
-     *
-     * @param Profession $profession
-     *
-     * @return Demolition
-     */
-    public function addProfession(Profession $profession): static
+    public function setCompany(?string $company): self
     {
-        $this->professions[] = $profession;
+        $this->company = $company;
 
         return $this;
     }
 
-    /**
-     * Remove profession
-     *
-     * @param Profession $profession
-     */
-    public function removeProfession(Profession $profession): void
+    public function getAmountCompany(): ?int
     {
-        $this->professions->removeElement($profession);
+        return $this->amountCompany;
     }
 
-    /**
-     * Get professions
-     *
-     * @return ArrayCollection|Collection
-     */
-    public function getProfessions(): ArrayCollection|Collection
+    public function setAmountCompany(?int $amountCompany): self
+    {
+        $this->amountCompany = $amountCompany;
+
+        return $this;
+    }
+
+    public function getDateDemolition(): ?DateTime
+    {
+        return $this->dateDemolition;
+    }
+
+    public function setDateDemolition(?DateTime $dateDemolition): self
+    {
+        $this->dateDemolition = $dateDemolition;
+
+        return $this;
+    }
+
+    public function getBailif(): ?string
+    {
+        return $this->bailif;
+    }
+
+    public function setBailif(?string $bailif): self
+    {
+        $this->bailif = $bailif;
+
+        return $this;
+    }
+
+    public function getAmountBailif(): ?int
+    {
+        return $this->amountBailif;
+    }
+
+    public function setAmountBailif(?int $amountBailif): self
+    {
+        $this->amountBailif = $amountBailif;
+
+        return $this;
+    }
+
+    public function getProfessions(): Collection
     {
         return $this->professions;
+    }
+
+    public function addProfession(Profession $profession): self
+    {
+        if (!$this->professions->contains($profession)) {
+            $this->professions->add($profession);
+        }
+
+        return $this;
+    }
+
+    public function removeProfession(Profession $profession): self
+    {
+        $this->professions->removeElement($profession);
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getResult(): ?string
+    {
+        return $this->result;
+    }
+
+    public function setResult(?string $result): self
+    {
+        $this->result = $result;
+
+        return $this;
     }
 }

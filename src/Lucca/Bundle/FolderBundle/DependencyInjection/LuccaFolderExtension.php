@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\FolderBundle\DependencyInjection;
 
+use Exception;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -22,7 +23,6 @@ class LuccaFolderExtension extends Extension implements PrependExtensionInterfac
 {
     /**
      * Load configuration of this Bundle
-     *
      *
      * @throws Exception
      */

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -17,39 +18,32 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class ProfessionType
- *
- * @package Lucca\Bundle\DecisionBundle\Form
- * @author Terence <terence@numeric-wave.tech>
- */
 class ProfessionType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class, array('label' => 'label.name'))
-            ->add('company', TextType::class, array('label' => 'label.company'))
-            ->add('amountActivity', MoneyType::class, array('label' => 'label.amountActivity'));
+            ->add('name', TextType::class, ['label' => 'label.name'])
+            ->add('company', TextType::class, ['label' => 'label.company'])
+            ->add('amountActivity', MoneyType::class, ['label' => 'label.amountActivity']);
 
         /** Data Transformer */
         $builder->get('amountActivity')->addModelTransformer(new NumberToIntTransformer());
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Profession::class,
             'translation_domain' => 'LuccaDecisionBundle',
             'required' => true
-        ));
+        ]);
     }
 
     /**

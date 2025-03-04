@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -14,19 +15,9 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 
-/**
- * Class CourierRepository
- *
- * @package Lucca\Bundle\FolderBundle\Repository
- * @author Terence <terence@numeric-wave.tech>
- */
 class CourierRepository extends EntityRepository
 {
-    /**
-     * @param Folder $folder
-     * @return array
-     */
-    public function findCouriersByFolder(Folder $folder)
+    public function findCouriersByFolder(Folder $folder): array
     {
         $qb = $this->queryCourier();
 
@@ -40,10 +31,8 @@ class CourierRepository extends EntityRepository
 
     /**
      * Find one Courier for unit test with no dateJudicial
-     *
-     * @return false|int|mixed|string|null
      */
-    public function findOneForJudicialTest()
+    public function findOneForJudicialTest(): mixed
     {
         $qb = $this->createQueryBuilder('courier')
             ->leftJoin('courier.edition', 'edition')->addSelect('edition');
@@ -55,16 +44,15 @@ class CourierRepository extends EntityRepository
             return $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             echo 'NonUniqueResultException has been thrown - Courier Repository - ' . $e->getMessage();
+
             return false;
         }
     }
 
     /**
      * Find one Courier for unit test with no dateDdtm
-     *
-     * @return false|int|mixed|string|null
      */
-    public function findOneForDdtmTest()
+    public function findOneForDdtmTest(): mixed
     {
         $qb = $this->createQueryBuilder('courier')
             ->leftJoin('courier.edition', 'edition')->addSelect('edition');
@@ -76,6 +64,7 @@ class CourierRepository extends EntityRepository
             return $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             echo 'NonUniqueResultException has been thrown - Courier Repository - ' . $e->getMessage();
+
             return false;
         }
     }
@@ -83,13 +72,12 @@ class CourierRepository extends EntityRepository
     /*******************************************************************************************/
     /********************* Custom find for test methods *****/
     /*******************************************************************************************/
+
     /**
      * Override findAll method
      * with Courier dependencies
-     *
-     * @return false|int|mixed|string|null
      */
-    public function findOneForTest()
+    public function findOneForTest(): mixed
     {
         $qb = $this->queryCourierComplete();
 
@@ -103,6 +91,7 @@ class CourierRepository extends EntityRepository
             return $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             echo 'NonUniqueResultException has been thrown - Folder Repository - ' . $e->getMessage();
+
             return false;
         }
     }
@@ -114,10 +103,8 @@ class CourierRepository extends EntityRepository
     /**
      * Override findAll method
      * with Courier dependencies
-     *
-     * @return array
      */
-    public function findAll()
+    public function findAll(): array
     {
         $qb = $this->queryCourier();
 
@@ -127,13 +114,8 @@ class CourierRepository extends EntityRepository
     /**
      * Override find method
      * with Courier dependencies
-     *
-     * @param mixed $id
-     * @param null $lockMode
-     * @param null $lockVersion
-     * @return bool|mixed|object|null
      */
-    public function find($id, $lockMode = null, $lockVersion = null)
+    public function find(mixed $id, $lockMode = null, $lockVersion = null): ?object
     {
         $qb = $this->queryCourier();
 
@@ -144,7 +126,8 @@ class CourierRepository extends EntityRepository
             return $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             echo 'NonUniqueResultException has been thrown - Courier Repository - ' . $e->getMessage();
-            return false;
+
+            return null;
         }
     }
 
@@ -154,35 +137,28 @@ class CourierRepository extends EntityRepository
 
     /**
      * Classic dependencies
-     *
-     * @return QueryBuilder
      */
-    private function queryCourier()
+    private function queryCourier(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('courier')
+        return $this->createQueryBuilder('courier')
             ->leftJoin('courier.folder', 'folder')->addSelect('folder')
             ->leftJoin('folder.minute', 'minute')->addSelect('minute')
             ->leftJoin('courier.edition', 'edition')->addSelect('edition')
             ->leftJoin('courier.humansEditions', 'humansEditions')->addSelect('humansEditions')
             ->leftJoin('humansEditions.human', 'human')->addSelect('human');
-
-        return $qb;
     }
+
     /**
      * Classic dependencies
-     *
-     * @return QueryBuilder
      */
-    private function queryCourierComplete()
+    private function queryCourierComplete(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('courier')
+        return $this->createQueryBuilder('courier')
             ->leftJoin('courier.folder', 'folder')->addSelect('folder')
             ->leftJoin('folder.minute', 'minute')->addSelect('minute')
             ->leftJoin('minute.adherent', 'adherent')->addSelect('adherent')
             ->leftJoin('courier.edition', 'edition')->addSelect('edition')
             ->leftJoin('courier.humansEditions', 'humansEditions')->addSelect('humansEditions')
             ->leftJoin('humansEditions.human', 'human')->addSelect('human');
-
-        return $qb;
     }
 }

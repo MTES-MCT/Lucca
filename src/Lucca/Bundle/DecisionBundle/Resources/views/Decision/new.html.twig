@@ -14,11 +14,11 @@
     {% form_theme form  '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig' %}
 
     {# Form theme apply for child only #}
-    {% form_theme form.liquidations 'LuccaDecisionBundle:Liquidation:liquidation-theme.html.twig' %}
-    {% form_theme form.penalties 'LuccaDecisionBundle:Penalty:penalty-theme.html.twig' %}
-    {% form_theme form.appealPenalties 'LuccaDecisionBundle:AppealPenalty:appeal-penalty-theme.html.twig' %}
-    {% form_theme form.contradictories 'LuccaDecisionBundle:Contradictory:contradictory-theme.html.twig' %}
-    {% form_theme form.demolition.professions 'LuccaDecisionBundle:Profession:profession-theme.html.twig' %}
+    {% form_theme form.liquidations '@LuccaDecision/Liquidation/liquidation-theme.html.twig' %}
+    {% form_theme form.penalties '@LuccaDecision/Penalty/penalty-theme.html.twig' %}
+    {% form_theme form.appealPenalties '@LuccaDecision/AppealPenalty/appeal-penalty-theme.html.twig' %}
+    {% form_theme form.contradictories '@LuccaDecision/Contradictory/contradictory-theme.html.twig' %}
+    {% form_theme form.demolition.professions '@LuccaDecision/Profession/profession-theme.html.twig' %}
 
     {{ form_errors(form) }}
 

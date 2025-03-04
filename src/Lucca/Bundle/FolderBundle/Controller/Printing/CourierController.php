@@ -10,120 +10,117 @@
 
 namespace Lucca\Bundle\FolderBundle\Controller\Printing;
 
-use Lucca\Bundle\FolderBundle\Entity\Courier;
-use Lucca\Bundle\MinuteBundle\Entity\Human;
-use Lucca\Bundle\MinuteBundle\Entity\Minute;
-use Lucca\Bundle\AdherentBundle\Entity\Adherent;
-use Lucca\Bundle\ModelBundle\Entity\Model;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use DateTime;
+use Exception;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Snappy\Pdf;
 use setasign\Fpdi\Fpdi;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\{Request, Response};
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Tomsgu\PdfMerger\PdfCollection;
-use Tomsgu\PdfMerger\PdfFile;
-use Tomsgu\PdfMerger\PdfMerger;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Tomsgu\PdfMerger\{PdfCollection, PdfFile, PdfMerger};
 
-/**
- * Class CourierController
- *
- * @package Lucca\Bundle\FolderBundle\Controller\Printing
- * @author Terence <terence@numeric-wave.tech>
- * @author Alizee Meyer <alizee.m@numeric-wave.eu>
- */
-#[Route('/minute-{minute_id}/courier')]
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\FolderBundle\Entity\Courier;
+use Lucca\Bundle\MinuteBundle\Entity\{Human, Minute};
+use Lucca\Bundle\ModelBundle\Entity\Model;
+use Lucca\Bundle\ModelBundle\Printer\PagePrinter;
+use Lucca\Bundle\ModelBundle\Service\ModelFinder;
+
+#[Route(path: '/minute-{minute_id}/courier')]
 #[IsGranted('ROLE_LUCCA')]
 class CourierController extends AbstractController
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly ModelFinder            $modelFinder,
+        private readonly PagePrinter            $pagePrinter,
+        private readonly Pdf                    $pdf,
+        private readonly TranslatorInterface    $translator,
+    )
+    {
+    }
+
     /**
      * Offender Letter print
      *
-     * @param Minute $p_minute
-     * @param Courier $p_courier
-     * @param Request $p_request
-     * @return RedirectResponse|Response
-     * @throws \Exception
+     * @throws Exception
      */
-    #[Route('-{id}/offender-preprint', name: 'lucca_courier_offender_preprint', methods: ['GET', 'POST'])]
+    #[Route(path: '-{id}/offender-preprint', name: 'lucca_courier_offender_preprint', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_LUCCA')]
     public function offenderPrintAction(
-        #[MapEntity(id: 'minute_id')] Minute $p_minute,
-        #[MapEntity(id: 'id')] Courier $p_courier,
-        Request $p_request
-    ): RedirectResponse|Response {
+        #[MapEntity(id: 'minute_id')] Minute    $minute,
+        Courier                                 $courier,
+        Request                                 $request
+    ): Response {
         /** Check in route if it's preprint route that is called */
-        $isPrePrint = str_contains($p_request->attributes->get('_route'), "preprint");
+        $isPrePrint = str_contains($request->attributes->get('_route'), "preprint");
 
         /** If Courier is not dated - return on Minute */
-        if (!$p_courier->getDateOffender() && !$isPrePrint) {
-            $em = $this->getDoctrine()->getManager();
+        if (!$courier->getDateOffender() && !$isPrePrint) {
+            $courier->setDateOffender(new DateTime('now'));
 
-            $p_courier->setDateOffender(new \DateTime('now'));
-
-            $em->persist($p_courier);
-            $em->flush();
+            $this->em->persist($courier);
+            $this->em->flush();
 
             $this->addFlash('success', 'flash.courier.offenderDate');
-            return $this->redirectToRoute('lucca_minute_show', array('id' => $p_minute->getId(), '_fragment' => 'courier-' . $p_courier->getId()));
+
+            return $this->redirectToRoute('lucca_minute_show', [
+                'id' => $minute->getId(),
+                '_fragment' => 'courier-' . $courier->getId(),
+            ]);
         }
 
-        $filename = sprintf('Lettres aux contrevant du PV - %s', $p_courier->getFolder()->getNum());
+        $filename = sprintf('Lettres aux contrevant du PV - %s', $courier->getFolder()->getNum());
 
         /** Get adherent and model corresponding*/
-        $adherent = $p_minute->getAdherent();
+        $adherent = $minute->getAdherent();
 
         /** Try to find the model corresponding to the document */
-        $model = $this->get('lucca.finder.model')->findModel(Model::DOCUMENTS_OFFENDER_LETTER, $adherent);
+        $model = $this->modelFinder->findModel(Model::DOCUMENTS_OFFENDER_LETTER, $adherent);
 
         /** If model is null it's mean there is no model created, so we can't generate the PDF */
         if ($model === null) {
             $this->addFlash('danger', 'flash.model.notFound');
-            return $this->redirectToRoute('lucca_minute_show', array('id' => $p_minute->getId()));
+
+            return $this->redirectToRoute('lucca_minute_show', ['id' => $minute->getId()]);
         }
 
         return new Response(
-            $this->generatePdfoffender($model, $p_minute, $p_courier, $isPrePrint), 200,
-            array(
+            $this->generatePdfoffender($model, $minute, $courier, $isPrePrint), 200,
+            [
                 'Content-Type' => 'application/pdf',
-                array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"')
-            )
+                ['Content-Type' => 'application/pdf', 'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"']
+            ]
         );
     }
 
     /**
      * Function use to generate pdf for Offender
      *
-     * @param Model $p_model
-     * @param Minute $p_minute
-     * @param Courier $p_courier
-     * @param bool $isPrePrint
-     * @return string
-     * @throws \Exception
+     * @throws Exception
      */
-    private function generatePdfOffender(Model $p_model, Minute $p_minute, Courier $p_courier, bool $isPrePrint)
+    private function generatePdfOffender(Model $model, Minute $minute, Courier $courier, bool $isPrePrint): string
     {
-
         /** Init var with tools need to merge pdf */
         $pdf = new PdfCollection();
         $filesystem = new Filesystem();
         $fpdi = new Fpdi();
         $merger = new PdfMerger($fpdi);
-        $snappy = $this->get('knp_snappy.pdf');
 
         /** Init var with data useful in loop */
-        $adherent = $p_minute->getAdherent();
-        $date = $p_courier->getDateOffender() ?? new \DateTime();
+        $adherent = $minute->getAdherent();
+        $date = $courier->getDateOffender() ?? new DateTime();
 
         /** Init empty array in order to delete temp files when finish */
         $filesNames = array();
 
         /** Store filename that will be used for the final pdf */
-        $filename = sprintf('Lettre de Convocation - %s', $p_minute->getNum());
+        $filename = sprintf('Lettre de Convocation - %s', $minute->getNum());
 
         /** Path where the temp pdf are stored */
         $path = $this->getParameter('env(LUCCA_UPLOAD_TEMP_DIR)') . 'pdfToPrint/';
@@ -142,20 +139,20 @@ class CourierController extends AbstractController
             "adherentPhone" => $adherent->getOfficialPhone(),
             "structureName" => $adherent->getStructureName(),
             "structureOffice" => $adherent->getStructureOffice(),
-            "agentName" => $p_minute->getAgent()->getOfficialName()
+            "agentName" => $minute->getAgent()->getOfficialName()
         ];
 
         /** If there is edition with edition template */
-        if (count($p_courier->getHumansEditions()) > 0) {
+        if (count($courier->getHumansEditions()) > 0) {
 
             /** Create html for current edition */
 
             /** For each edition generate a specific pdf */
-            foreach ($p_courier->getHumansEditions() as $edition) {
+            foreach ($courier->getHumansEditions() as $edition) {
 
                 $human = $edition->getHuman();
 
-                $var['humanGender'] = $this->get("translator")->trans($human->getGender(), [], 'LuccaFolderBundle');
+                $var['humanGender'] = $this->translator->trans($human->getGender(), [], 'LuccaFolderBundle');
                 $var['humanName'] = $human->getOfficialName();
                 $var['humanAddress'] = $human->getAddress();
                 $var['humanCompany'] = "";
@@ -164,16 +161,16 @@ class CourierController extends AbstractController
                 }
 
                 /** Create the model option in loop in order to be able to interact with header */
-                $options = $this->get('lucca.utils.printer.model.page')->createModelOption($p_model, $var, $adherent);
+                $options = $this->pagePrinter->createModelOption($model, $var, $adherent);
 
                 $html = $this->renderView('@LuccaMinute/Courier/Printing/Basic/offender_edition_print.html.twig', [
-                    'model' => $p_model, 'minute' => $p_minute, 'adherent' => $p_minute->getAdherent(),
-                    'courier' => $p_courier, 'edition' => $edition, 'isPreprint' => $isPrePrint,
+                    'model' => $model, 'minute' => $minute, 'adherent' => $minute->getAdherent(),
+                    'courier' => $courier, 'edition' => $edition, 'isPreprint' => $isPrePrint,
                 ]);
 
 
                 /** Generate pdf from html */
-                $generatedPdf = $snappy->getOutputFromHtml($html, $options);
+                $generatedPdf = $this->pdf->getOutputFromHtml($html, $options);
 
                 /** Store file path to create temp file and be able to delete it later */
                 $filePath = $path . 'convocation-' . $edition->getId() . '.pdf';
@@ -188,11 +185,11 @@ class CourierController extends AbstractController
 
         } else {
             /** Create an array containing for which we need to create a convocation letter */
-            $humans = array_unique(array_merge($p_courier->getFolder()->getHumansByMinute()->toArray(), $p_courier->getFolder()->getHumansByMinute()->toArray()), SORT_REGULAR);
+            $humans = array_unique(array_merge($courier->getFolder()->getHumansByMinute()->toArray(), $courier->getFolder()->getHumansByMinute()->toArray()), SORT_REGULAR);
             /** Create a temp pdf for each human */
             foreach ($humans as $human) {
 
-                $var['humanGender'] = $this->get("translator")->trans($human->getGender(), [], 'LuccaFolderBundle');
+                $var['humanGender'] = $this->translator->trans($human->getGender(), [], 'LuccaFolderBundle');
                 $var['humanName'] = $human->getOfficialName();
                 $var['humanAddress'] = $human->getAddress();
                 $var['humanCompany'] = "";
@@ -201,16 +198,16 @@ class CourierController extends AbstractController
                 }
 
                 /** Create the model option in loop in order to be able to interact with header */
-                $options = $this->get('lucca.utils.printer.model.page')->createModelOption($p_model, $var, $adherent);
+                $options = $this->pagePrinter->createModelOption($model, $var, $adherent);
 
                 /** Create html for current human */
                 $html = $this->renderView('@LuccaMinute/Courier/Printing/Basic/offender_basic_print.html.twig', [
-                    'model' => $p_model, 'minute' => $p_minute, 'adherent' => $p_minute->getAdherent(),
-                    'courier' => $p_courier, 'human' => $human, 'isPreprint' => $isPrePrint,
+                    'model' => $model, 'minute' => $minute, 'adherent' => $minute->getAdherent(),
+                    'courier' => $courier, 'human' => $human, 'isPreprint' => $isPrePrint,
                 ]);
 
                 /** Generate pdf from html */
-                $generatedPdf = $snappy->getOutputFromHtml($html, $options);
+                $generatedPdf = $this->pdf->getOutputFromHtml($html, $options);
 
                 /** Store file path to create temp file and be able to delete it later */
                 $filePath = $path . 'convocation-' . $human->getId() . '.pdf';
@@ -221,7 +218,6 @@ class CourierController extends AbstractController
 
                 /** Add pdf to the final var */
                 $pdf->addPDF($filePath, PdfFile::ALL_PAGES, PdfFile::ORIENTATION_PORTRAIT);
-
             }
         }
 
@@ -240,72 +236,70 @@ class CourierController extends AbstractController
     /**
      * Judicial Print letter
      *
-     * @param Minute $p_minute
-     * @param Courier $p_courier
-     * @param Request $p_request
-     * @return RedirectResponse|Response
-     * @throws \Exception
+     * @throws Exception
      */
-    #[Route('-{id}/judicial-print', name: 'lucca_courier_judicial_print', methods: ['GET', 'POST'])]
-    #[Route('-{id}/judicial-preprint', name: 'lucca_courier_judicial_preprint', methods: ['GET', 'POST'])]
+    #[Route(path: '-{id}/judicial-print', name: 'lucca_courier_judicial_print', methods: ['GET', 'POST'])]
+    #[Route(path: '-{id}/judicial-preprint', name: 'lucca_courier_judicial_preprint', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_LUCCA')]
     public function judicialPrintAction(
-        #[MapEntity(id: 'minute_id')] Minute $p_minute,
-        #[MapEntity(id: 'id')] Courier $p_courier,
-        Request $p_request
-    ): RedirectResponse|Response {
-        $em = $this->getDoctrine()->getManager();
-
+        #[MapEntity(id: 'minute_id')] Minute $minute,
+        Courier                              $courier,
+        Request                              $request
+    ): Response {
         /** Check in route if it's preprint route that is called */
-        $isPrePrint = str_contains($p_request->attributes->get('_route'), "preprint");
+        $isPrePrint = str_contains($request->attributes->get('_route'), "preprint");
 
         /** If Courier is not dated - return on Minute */
-        if (!$p_courier->getDateJudicial() && !$isPrePrint) {
+        if (!$courier->getDateJudicial() && !$isPrePrint) {
 
-            $p_courier->setDateJudicial(new \DateTime('now'));
+            $courier->setDateJudicial(new \DateTime('now'));
 
-            $em->persist($p_courier);
-            $em->flush();
+            $this->em->persist($courier);
+            $this->em->flush();
 
             $this->addFlash('success', 'flash.courier.judicialDate');
-            return $this->redirectToRoute('lucca_minute_show', array('id' => $p_minute->getId(), '_fragment' => 'courier-' . $p_courier->getId()));
+
+            return $this->redirectToRoute('lucca_minute_show', [
+                'id' => $minute->getId(),
+                '_fragment' => 'courier-' . $courier->getId(),
+            ]);
         }
 
         /** Step 1 : init snappy */
-        $snappy = $this->get('knp_snappy.pdf');
-        $filename = sprintf('Lettres au parquet du PV - %s', $p_courier->getFolder()->getNum());
+        $filename = sprintf('Lettres au parquet du PV - %s', $courier->getFolder()->getNum());
 
         /** Step 2 : Get adherent and model corresponding*/
-        $adherent = $p_minute->getAdherent();
+        $adherent = $minute->getAdherent();
 
         /** Try to find the model corresponding to the document */
-        $model = $this->get('lucca.finder.model')->findModel(Model::DOCUMENTS_JUDICIAL_LETTER, $adherent);
+        $model = $this->modelFinder->findModel(Model::DOCUMENTS_JUDICIAL_LETTER, $adherent);
 
         /** If model is null it's mean there is no model created, so we can't generate the PDF */
         if ($model === null) {
             $this->addFlash('danger', 'flash.model.notFound');
-            return $this->redirectToRoute('lucca_minute_show', array('id' => $p_minute->getId()));
+
+            return $this->redirectToRoute('lucca_minute_show', ['id' => $minute->getId()]);
         }
 
         /** Step 3 : Create html */
         $html = $this->renderView('@LuccaMinute/Courier/Printing/Basic/judicial_print.html.twig', [
-            'model' => $model, 'minute' => $p_minute, 'adherent' => $p_minute->getAdherent(), 'courier' => $p_courier, 'isPreprint' => $isPrePrint
+            'model' => $model, 'minute' => $minute, 'adherent' => $minute->getAdherent(), 'courier' => $courier, 'isPreprint' => $isPrePrint
         ]);
 
         $var = [
-            "date" => (new \DateTime("now"))->format("d/m/Y"),
-            "dateJudicial" => $p_courier->getDateJudicial(),
+            "date" => (new DateTime("now"))->format("d/m/Y"),
+            "dateJudicial" => $courier->getDateJudicial(),
             "structureOffice" => $adherent->getStructureOffice(),
-            "tribunalAddress" => $p_minute->getTribunal()->getFullAddress(),
-            "numFolder" => $p_courier->getFolder()->getNum(),
+            "tribunalAddress" => $minute->getTribunal()->getFullAddress(),
+            "numFolder" => $courier->getFolder()->getNum(),
             "adherentName" => $adherent->getOfficialName(),
             "adherentMail" => $adherent->getEmailPublic(),
             "adherentPhone" => $adherent->getOfficialPhone(),
-            "agentName" => $p_minute->getAgent()->getOfficialName()
+            "agentName" => $minute->getAgent()->getOfficialName()
         ];
 
-        if ($p_minute->getTribunal()->getInterlocutor() != null) {
-            $var["tribunalInterlocutor"] = $p_minute->getTribunal()->getInterlocutor();
+        if ($minute->getTribunal()->getInterlocutor() != null) {
+            $var["tribunalInterlocutor"] = $minute->getTribunal()->getInterlocutor();
         } else {
             $var["tribunalInterlocutor"] = '';
         }
@@ -326,95 +320,92 @@ class CourierController extends AbstractController
             $var['service'] = '';
         }
 
-        $options = $this->get('lucca.utils.printer.model.page')->createModelOption($model, $var, $adherent);
+        $options = $this->pagePrinter->createModelOption($model, $var, $adherent);
 
-        $generatedPdf = $snappy->getOutputFromHtml($html, $options);
+        $generatedPdf = $this->pdf->getOutputFromHtml($html, $options);
 
         return new Response(
             $generatedPdf, 200,
-            array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"')
+            ['Content-Type' => 'application/pdf', 'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"']
         );
     }
 
     /**
      * Ddtm Print letter
      *
-     * @param Minute $p_minute
-     * @param Courier $p_courier
-     * @param Request $p_request
-     * @return RedirectResponse|Response
-     * @throws \Exception
+     * @throws Exception
      */
-    #[Route('-{id}/ddtm-print', name: 'lucca_courier_ddtm_print', methods: ['GET', 'POST'])]
-    #[Route('-{id}/ddtm-preprint', name: 'lucca_courier_ddtm_preprint', methods: ['GET', 'POST'])]
+    #[Route(path: '-{id}/ddtm-print', name: 'lucca_courier_ddtm_print', methods: ['GET', 'POST'])]
+    #[Route(path: '-{id}/ddtm-preprint', name: 'lucca_courier_ddtm_preprint', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_LUCCA')]
     public function ddtmPrintAction(
-        #[MapEntity(id: 'minute_id')] Minute $p_minute,
-        #[MapEntity(id: 'id')] Courier $p_courier,
-        Request $p_request
-    ): RedirectResponse|Response {
-        $em = $this->getDoctrine()->getManager();
+        #[MapEntity(id: 'minute_id')] Minute    $minute,
+        Courier                                 $courier,
+        Request                                 $request
+    ): Response {
         /** Check in route if it's preprint route that is called */
-        $isPrePrint = str_contains($p_request->attributes->get('_route'), "preprint");
+        $isPrePrint = str_contains($request->attributes->get('_route'), "preprint");
 
         /** If Courier is not dated - return on Minute */
-        if (!$p_courier->getDateDdtm() && !$isPrePrint) {
-            $em = $this->getDoctrine()->getManager();
+        if (!$courier->getDateDdtm() && !$isPrePrint) {
+            $courier->setDateDdtm(new DateTime('now'));
 
-            $p_courier->setDateDdtm(new \DateTime('now'));
-
-            $em->persist($p_courier);
-            $em->flush();
+            $this->em->persist($courier);
+            $this->em->flush();
 
             $this->addFlash('success', 'flash.courier.ddtmDate');
-            return $this->redirectToRoute('lucca_minute_show', array('id' => $p_minute->getId(), '_fragment' => 'courier-' . $p_courier->getId()));
+
+            return $this->redirectToRoute('lucca_minute_show', [
+                'id' => $minute->getId(),
+                '_fragment' => 'courier-' . $courier->getId(),
+            ]);
         }
 
         /** Step 1 : init snappy */
-        $snappy = $this->get('knp_snappy.pdf');
-        $filename = sprintf('Lettres à la DDT du PV - %s', $p_courier->getFolder()->getNum());
+        $filename = sprintf('Lettres à la DDT du PV - %s', $courier->getFolder()->getNum());
 
         /** Step 2 : Get adherent and model corresponding*/
-        $adherent = $p_minute->getAdherent();
+        $adherent = $minute->getAdherent();
 
         /** Try to find the model corresponding to the document */
-        $model = $this->get('lucca.finder.model')->findModel(Model::DOCUMENTS_DDTM_LETTER, $adherent);
+        $model = $this->modelFinder->findModel(Model::DOCUMENTS_DDTM_LETTER, $adherent);
 
         /** If model is null it's mean there is no model created, so we can't generate the PDF */
         if ($model === null) {
             $this->addFlash('danger', 'flash.model.notFound');
-            return $this->redirectToRoute('lucca_minute_show', array('id' => $p_minute->getId()));
+
+            return $this->redirectToRoute('lucca_minute_show', ['id' => $minute->getId()]);
         }
 
         $html = $this->renderView('@LuccaMinute/Courier/Printing/Basic/ddtm_print.html.twig', [
-            'model' => $model, 'minute' => $p_minute, 'adherent' => $p_minute->getAdherent(), 'courier' => $p_courier, 'isPreprint' => $isPrePrint
+            'model' => $model, 'minute' => $minute, 'adherent' => $minute->getAdherent(), 'courier' => $courier, 'isPreprint' => $isPrePrint
         ]);
 
-        if ($p_courier->getFolder()->getDateClosure()) {
-            $date = $p_courier->getFolder()->getDateClosure()->format("d/m/Y");
+        if ($courier->getFolder()->getDateClosure()) {
+            $date = $courier->getFolder()->getDateClosure()->format("d/m/Y");
         } else {
             $date = "";
         }
 
         $var = [
             "date" => $date,
-            "dateDDTM" => $p_courier->getDateDdtm(),
+            "dateDDTM" => $courier->getDateDdtm(),
             "structureOffice" => $adherent->getStructureOffice(),
-            "tribunalAddress" => $p_minute->getTribunal()->getFullAddress(),
-            "numFolder" => $p_courier->getFolder()->getNum(),
+            "tribunalAddress" => $minute->getTribunal()->getFullAddress(),
+            "numFolder" => $courier->getFolder()->getNum(),
             "adherentName" => $adherent->getOfficialName(),
             "adherentMail" => $adherent->getEmailPublic(),
             "adherentPhone" => $adherent->getOfficialPhone(),
-            "agentName" => $p_minute->getAgent()->getOfficialName()
+            "agentName" => $minute->getAgent()->getOfficialName()
         ];
 
-        $options = $this->get('lucca.utils.printer.model.page')->createModelOption($model, $var, $adherent);
+        $options = $this->pagePrinter->createModelOption($model, $var, $adherent);
 
-        $generatedPdf = $snappy->getOutputFromHtml($html, $options);
+        $generatedPdf = $this->pdf->getOutputFromHtml($html, $options);
 
         return new Response(
             $generatedPdf, 200,
-            array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"')
+            ['Content-Type' => 'application/pdf', 'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"']
         );
     }
 }

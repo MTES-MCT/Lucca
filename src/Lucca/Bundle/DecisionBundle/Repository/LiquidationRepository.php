@@ -12,12 +12,6 @@ namespace Lucca\Bundle\DecisionBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-/**
- * Class LiquidationRepository
- *
- * @package Lucca\Bundle\DecisionBundle\Repository
- * @author Terence <terence@numeric-wave.tech>
- */
 class LiquidationRepository extends EntityRepository
 {
 

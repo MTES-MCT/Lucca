@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,43 +10,37 @@
 
 namespace Lucca\Bundle\FolderBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
-use Lucca\Bundle\CoreBundle\Entity\ToggleableTrait;
-use Lucca\Bundle\FolderBundle\Repository\ProposalRepository;
-use Lucca\Bundle\LogBundle\Entity\LogInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Proposal
- *
- * @package Lucca\Bundle\FolderBundle\Entity
- * @author Terence <terence@numeric-wave.tech>
- */
+use Lucca\Bundle\CoreBundle\Entity\{TimestampableTrait, ToggleableTrait};
+use Lucca\Bundle\FolderBundle\Repository\ProposalRepository;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+
 #[ORM\Table(name: "lucca_proposal")]
 #[ORM\Entity(repositoryClass: ProposalRepository::class)]
-class Proposal implements LogInterface
+class Proposal implements LoggableInterface
 {
     use ToggleableTrait, TimestampableTrait;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "AUTO")]
-    #[ORM\Column(name: "id", type: "integer")]
-    private ?int $id;
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Tag::class, inversedBy: "proposals")]
     #[ORM\JoinColumn(nullable: false)]
     private Tag $tag;
 
-    #[ORM\Column(name: "sentence", type: "text")]
+    #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotNull(message: "constraint.not_null")]
     private string $sentence;
 
     /************************************************************************ Custom functions ************************************************************************/
 
     /**
-     * Log name of this Class
-     * @return string
+     * @inheritdoc
      */
     public function getLogName(): string
     {
@@ -54,71 +49,32 @@ class Proposal implements LogInterface
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
-    /**
-     * Get id
-     *
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set sentence
-     *
-     * @param string $sentence
-     *
-     * @return Proposal
-     */
-    public function setSentence(string $sentence): static
+    public function getTag(): Tag
     {
-        $this->sentence = $sentence;
-
-        return $this;
+        return $this->tag;
     }
 
-    /**
-     * Get sentence
-     *
-     * @return string
-     */
-    public function getSentence(): string
-    {
-        return $this->sentence;
-    }
-
-    /**
-     * Get enabled
-     *
-     * @return boolean
-     */
-    public function getEnabled(): bool
-    {
-        return $this->enabled;
-    }
-
-    /**
-     * Set tag
-     *
-     * @param Tag $tag
-     *
-     * @return Proposal
-     */
-    public function setTag(Tag $tag): static
+    public function setTag(Tag $tag): self
     {
         $this->tag = $tag;
 
         return $this;
     }
 
-    /**
-     * Get tag
-     *
-     * @return Tag
-     */
-    public function getTag(): Tag
+    public function getSentence(): string
     {
-        return $this->tag;
+        return $this->sentence;
+    }
+
+    public function setSentence(string $sentence): self
+    {
+        $this->sentence = $sentence;
+
+        return $this;
     }
 }
