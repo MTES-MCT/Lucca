@@ -1,0 +1,56 @@
+{#-- Extends view --#}
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaParameterBundle' %}
+
+{#-- Parameters --#}
+{% set param_entity='entity.tribunal'|transchoice(1) %}
+{% set param_entities='entity.tribunal'|transchoice(2) %}
+{% block menuActive_parameter %}class="active"{% endblock %}
+
+
+{% block lucca_panels %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {#-- Panel - main --#}
+    <div class="col-6">
+        <div class="card card-default">
+            <div class="card-header">
+                {{ 'title.new'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ param_entity }}</b>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+                    <div class="col-12">
+                        {{ form_row(form.code) }}
+                        {{ form_row(form.name) }}
+                        {{ form_row(form.enabled) }}
+
+                        {{ form_row(form.interlocutor) }}
+                        {{ form_row(form.address) }}
+                        {{ form_row(form.addressCpl) }}
+                        {{ form_row(form.zipCode) }}
+                        {{ form_row(form.city) }}
+                        {{ form_row(form.region) }}
+                        {{ form_row(form.country) }}
+
+                        {{ form_row(form.office) }}
+
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_tribunal_index') }}"
+                           title="{{ 'link.tribunal.backList'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <button type="submit" class="btn btn-success btn-lg"
+                                title="{{ 'link.tribunal.new'|trans }}"><i class="fa fa-check"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#-- End Panel - main --#}
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock lucca_panels %}

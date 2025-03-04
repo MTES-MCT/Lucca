@@ -1,0 +1,115 @@
+{#-- Extends view --#}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaContentBundle' %}
+
+{#-- Parameters --#}
+{% set param_entity='entity.page'|transchoice(1) %}
+{% set param_entities='entity.page'|transchoice(2) %}
+{% block menuActive_page %}class="active"{% endblock %}
+
+{# Media - Set isPublic to true in order to make the media public and uploaded #}
+{% set isPublic = true %}
+
+{% block lucca_panels %}
+
+    {#Form theming - apply to this form#}
+    {% form_theme edit_form '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig' %}
+    {% form_theme edit_form.mediasLinked '@LuccaMedia/Media/Theme/theme-dropzone.html.twig' %}
+
+    {{ form_start(edit_form) }}
+    {{ form_errors(edit_form) }}
+
+    <div class="row">
+        {#-- Panel - main --#}
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+
+            <div class="card card-default">
+                <div class="card-header"></div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        {{ form_row(edit_form.name) }}
+                        {{ form_row(edit_form.enabled) }}
+
+                        <div class="text-right">
+                            <small>{{ 'help.icon'|trans }} <a href="http://fontawesome.io/icons/">http://fontawesome.io/icons/</a>
+                            </small>
+                        </div>
+                        {{ form_row(edit_form.icon) }}
+
+                        {{ form_row(edit_form.link) }}
+                        {{ form_row(edit_form.position) }}
+                        {{ form_row(edit_form.author) }}
+                        {{ form_row(edit_form.subarea) }}
+
+                        <hr class="hr-big">
+                        {{ form_row(edit_form.mediasLinked) }}
+
+                        <a href="{{ path('lucca_page_show', { 'id': page.id }) }}"
+                           class="btn btn-secondary btn-lg" title="{{ 'link.show'|trans }}">
+                            <i class="fa fa-eye"></i></a>
+
+                        <button type="submit" class="btn btn-warning btn-lg" title="{{ 'link.edit'|trans }}">
+                            <i class="fa fa-check"></i></button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {#-- End Panel - main --#}
+
+        {#-- Panel - Content --#}
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+
+            <div class="card card-default">
+                <div class="card-header"><b>{{ 'label.content'|trans }}</b></div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        {{ form_widget(edit_form.content) }}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {#-- End Panel - Content --#}
+    </div>
+
+    {{ form_rest(edit_form) }}
+    {{ form_end(edit_form) }}
+
+{% endblock lucca_panels %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
+
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    {#-- Form Collection --#}
+    <script src="{{ asset('plugins/symfony-collection/jquery.collection.js') }}"></script>
+
+    <script>
+
+        {#Collection form - media#}
+        $('.media-collection').collection({
+            allow_duplicate: false, allow_up: true, allow_down: true, allow_remove: false, add_at_the_end: true,
+            add: '<a href="#" class="btn btn-primary" title="{{ 'link.media.new'|trans({}, 'LuccaMediaBundle') }}"><span class="fas fa-plus"></span></a>',
+
+            {#Table display#}
+            elements_selector: 'tr.media',
+            elements_parent_selector: '%id% tbody',
+            init_with_n_elements: 1,
+        });
+        {#End - Collection form - media#}
+    </script>
+
+{% endblock lucca_js %}

@@ -1,0 +1,64 @@
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/index.html.twig' %}
+{% trans_default_domain 'LuccaChecklistBundle' %}
+
+{% set param_entity='entity.checklist'|transchoice(1) %}
+{% set param_entities='entity.checklist'|transchoice(2) %}
+
+{% block menuActive_parameter %}class="active"{% endblock menuActive_parameter %}
+
+
+{% block lucca_list %}
+
+    <table class="table table-striped table-hover dataTables responsive">
+        <thead>
+        <tr>
+            <th><i class="fa fa-cube"></i> {{ 'label.name'|trans }}</th>
+            <th>{{ 'label.enabled'|trans }}</th>
+            <th>{{ 'label.status'|trans }}</th>
+            <th>{{ 'label.elements'|trans }}</th>
+            <th>{{ 'label.description'|trans }}</th>
+            <th><i class="fa fa-cogs"></i> {{ 'label.actions'|trans }}</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for checklist in checklists %}
+            <tr>
+                <td>{{ checklist.name }}</td>
+                <td>{% if checklist.enabled %} <i class="fa fa-check"></i>
+                    {% else %} <i class="fas fa-times"></i> {% endif %}</td>
+                <td>
+                    <button class="btn btn-secondary">{{ checklist.status|trans }}</button>
+                </td>
+                <td><span class="badge badge-success"> {{ checklist.elements|length }}</span></td>
+                <td>{{ checklist.description|slice(0,70)|raw }}</td>
+                <td>
+                    {% if checklist.enabled %}
+                        <a href="{{ path('lucca_checklist_enable', { 'id': checklist.id }) }}"
+                           class="btn btn-info btn-sm" title="{{ 'link.enable'|trans }}">
+                            <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('lucca_checklist_enable', { 'id': checklist.id }) }}"
+                           class="btn btn-info btn-sm" title="{{ 'link.disable'|trans }}">
+                            <i class="fa fa-toggle-off" aria-hidden="true"></i>
+                        </a>
+                    {% endif %}
+
+                    <a href="{{ path('lucca_checklist_show', { 'id': checklist.id }) }}" class="btn btn-primary btn-sm"
+                       title="{{ 'link.show'|trans }}"> <i class="fa fa-eye"></i> </a>
+                    <a href="{{ path('lucca_checklist_edit', { 'id': checklist.id }) }}" class="btn btn-warning btn-sm"
+                       title="{{ 'link.edit'|trans }}"> <i class="fas fa-pencil-alt"></i> </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-secondary btn-lg" href="{{ path('lucca_core_parameter') }}"
+       title="{{ 'link.parameter'|trans }}"><i class="fa fa-reply"></i></a>
+
+    <a class="btn btn-primary btn-lg" href="{{ path('lucca_checklist_new') }}"
+       title="{{ 'link.new'|trans }}"><i class="fa fa-plus"></i></a>
+{% endblock lucca_list %}
+

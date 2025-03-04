@@ -1,0 +1,20 @@
+{% if 'setting.pdf.logoInHeader.name' | setting == false %}
+    {% if officialLogo is defined %}
+        {#Check if we are in edit view or print#}
+        {% if 'print' not in app.request.pathinfo %}
+            {% if officialLogo.id is defined %}
+                {{ officialLogo|mediaPdf(100, "img-header mr-3 media-object") }}
+            {% elseif officialLogo %}
+                <img src="{{ asset(officialLogo) }}" alt="Logo Officiel"
+                     class="img-header mr-3 media-object">
+            {% endif %}
+        {% else %}
+            {% if officialLogo.id is defined %}
+                {{ officialLogo|mediaPdf(100, "img-header mr-3 media-object") }}
+            {% elseif officialLogo %}
+                <img src="{{ pdf_asset }}{{ asset(officialLogo) }}" alt="Logo Officiel"
+                     class="img-header mr-3 media-object">
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endif %}

@@ -1,0 +1,68 @@
+{#-- Extends view --#}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaParameterBundle' %}
+
+{#-- Parameters --#}
+{% set param_entity='entity.intercommunal'|transchoice(1) %}
+{% set param_entities='entity.intercommunal'|transchoice(2) %}
+{% block menuActive_parameter %}class="active"{% endblock menuActive_parameter %}
+
+
+{% block lucca_panels %}
+
+    {{ form_start(edit_form) }}
+    {{ form_errors(edit_form) }}
+
+    {#-- Panel - main --#}
+    <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+
+        <div class="card card-default">
+            <div class="card-header">
+                {{ 'title.edit'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ intercommunal.name }}</b>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+                    <div class="col-12">
+                        {{ form_row(edit_form.code) }}
+                        {{ form_row(edit_form.name) }}
+                        {{ form_row(edit_form.enabled) }}
+                        {{ form_row(edit_form.office) }}
+
+                        <a href="{{ path('lucca_intercommunal_show', { 'id': intercommunal.id }) }}"
+                           class="btn btn-secondary btn-lg" title="{{ 'link.intercommunal.show'|trans }}">
+                            <i class="fa fa-eye"></i></a>
+
+                        <button type="submit" class="btn btn-warning btn-lg" title="{{ 'link.intercommunal.edit'|trans }}">
+                            <i class="fa fa-check"></i></button>
+
+                        <a class="btn btn-danger btn-lg pull-right"
+                           data-toggle="modal" data-target=".delWin" title="{{ 'link.intercommunal.delete'|trans }}">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {#-- End Panel - main --#}
+
+    {{ form_rest(edit_form) }}
+    {{ form_end(edit_form) }}
+
+{% endblock lucca_panels %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': intercommunal.name, 'name': intercommunal.name, 'delForm': delete_form} %}
+
+    {{ parent() }}
+{% endblock lucca_js %}

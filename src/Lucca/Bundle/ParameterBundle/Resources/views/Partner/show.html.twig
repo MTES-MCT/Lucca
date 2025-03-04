@@ -1,0 +1,72 @@
+{#-- Extends view --#}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaParameterBundle' %}
+
+{#-- Parameters --#}
+{% set param_entity='entity.partner'|transchoice(1) %}
+{% set param_entities='entity.partner'|transchoice(2) %}
+{% block menuActive_parameter %} class="active"{% endblock %}
+
+
+{% block lucca_panels %}
+
+    {#-- Panel - main --#}
+    <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+
+        <div class="card card-default">
+            <div class="card-header">
+                {{ 'title.show'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ partner.name }}</b>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+
+                    <div class="col-12">
+                        <table class="table table-striped table-hover">
+                            <tbody>
+                            <tr>
+                                <th><i class="fa fa-map"></i> {{ 'label.code'|trans }}</th>
+                                <td>{{ partner.code }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.name'|trans }}</th>
+                                <td>{{ partner.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.enabled'|trans }}</th>
+                                <td>{{ partner.enabled|boolean }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_partner_index') }}"
+                           title="{{ 'link.partner.backList'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <a class="btn btn-warning btn-lg"
+                           href="{{ path('lucca_partner_edit', { 'id': partner.id }) }}"
+                           title="{{ 'link.partner.edit'|trans }}"><i class="fas fa-pencil-alt"></i></a>
+
+                        <a class="btn btn-danger btn-lg pull-right" data-toggle="modal"
+                           data-target=".delWin" title="{{ 'link.partner.delete'|trans }}">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {#-- End Panel - main --#}
+
+{% endblock lucca_panels %}
+
+
+{% block lucca_js %}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': partner.name, 'name': partner.name, 'delForm': delete_form} %}
+
+    {{ parent() }}
+{% endblock lucca_js %}

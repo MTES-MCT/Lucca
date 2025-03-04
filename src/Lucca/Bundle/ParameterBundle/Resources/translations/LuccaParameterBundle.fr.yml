@@ -1,0 +1,90 @@
+#####################################################
+## Domain : SecurityBundle
+## Locale : fr
+#####################################################
+
+
+########################
+# Entity
+########################
+entity:
+    town: "Commune"
+    intercommunal: "Intercommunalité"
+    partner: "Partenaire"
+    service: "Service de l'état"
+    tribunal: "Tribunal"
+
+########################
+# label
+########################
+label:
+    name: "Nom"
+    code: "Code INSEE"
+    office: "Siège"
+    intercommunal: "Intercommunalité"
+    actions: "Actions"
+    enabled: "Est actif ?"
+    interlocutor: "Interlocuteur"
+    address: "Adresse"
+    addressCpl: "Complèment"
+    zipcode: "Code postal"
+    city: "Ville"
+    region: "Région"
+    country: "Pays"
+
+########################
+# Link
+########################
+link:
+    new: "Nouveau"
+    back: "Retour"
+    show: "Visualiser"
+    edit: "Modifier"
+    delete: "Supprimer"
+    print: "Imprimer"
+    parameter: "Retour à la liste des paramètres"
+
+    town:
+        new: "Créer une ville"
+        show: "Visualiser la ville"
+        edit: "Modifier la ville"
+        delete: "Supprimer la ville"
+        backList: "Retour à la liste des villes"
+        enable: "Activer la ville"
+        disable: "Désactiver la ville"
+
+    intercommunal:
+        new: "Créer une intercommunalité"
+        show: "Visualiser l'intercommunalité"
+        edit: "Modifier l'intercommunalité"
+        delete: "Supprimer l'intercommunalité"
+        backList: "Retour à la liste des intercommunalités"
+        enable: "Activer l'intercommunalité"
+        disable: "Désactiver l'intercommunalité"
+
+    service:
+        new: "Créer un service"
+        show: "Visualiser le service"
+        edit: "Modifier le service"
+        delete: "Supprimer le service"
+        backList: "Retour à la liste des services"
+        enable: "Activer le service"
+        disable: "Désactiver le service"
+
+    partner:
+        new: "Créer un partenaire"
+        show: "Visualiser le partenaire"
+        edit: "Modifier le partenaire"
+        delete: "Supprimer le partenaire"
+        backList: "Retour à la liste des partenaires"
+        enable: "Activer le partenaire"
+        disable: "Désactiver le partenaire"
+
+    tribunal:
+        new: "Créer un tribunal"
+        show: "Visualiser le tribunal"
+        edit: "Modifier le tribunal"
+        delete: "Supprimer le tribunal"
+        backList: "Retour à la liste des tribunals"
+        enable: "Activer le tribunal"
+        disable: "Désactiver le tribunal"

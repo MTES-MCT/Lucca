@@ -1,0 +1,12 @@
+{% extends "@LuccaThemeStreamDashboardUiKit/Layout/printLayout.html.twig" %}
+{% trans_default_domain 'LuccaMinuteBundle' %}
+
+{% block lucca_title %}
+    {{ 'title.page_tools'|trans }}
+{% endblock lucca_title %}
+
+{% block lucca_print %}
+
+    {{ page.content | localPath | raw }}
+
+{% endblock lucca_print %}

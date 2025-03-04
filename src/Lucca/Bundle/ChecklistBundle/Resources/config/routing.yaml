@@ -1,0 +1,5 @@
+# LuccaChecklistBundle Routing
+lucca_checklist_bundle_admin:
+    resource: "@LuccaChecklistBundle/Controller/Admin"
+    type:     attribute
+    prefix:   /back-office

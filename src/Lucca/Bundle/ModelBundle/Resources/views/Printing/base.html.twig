@@ -1,0 +1,118 @@
+{#-- Extends view --#}
+{% extends "@LuccaThemeStreamDashboardUiKit/Layout/printLayout.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaModelBundle' %}
+
+{% block lucca_title %}
+    {{ 'title.print'|trans }}
+{% endblock lucca_title %}
+
+{% if adherent is not defined %}
+    {% set adherent = null %}
+{% endif %}
+
+{% block lucca_print %}
+
+    {% if model.layout is constant('LAYOUT_COVER', model) %}
+        <table style="position: absolute; top: 0; z-index: 3">
+            <tbody>
+            <tr></tr>
+            <tr>
+                <td>
+                    {% if model.verso.marginLeft is defined and model.verso.marginLeft %}
+                        {% include '@LuccaModel/Margin/Embed/_pdf-margin.html.twig' with { 'page': model.verso, 'margin': model.verso.marginLeft, 'adherent': adherent } %}
+                    {% endif %}
+                </td>
+                {% set arraySize = {'A4' : 21, 'A3' : 29.7, 'A5' : 14.8} %}
+                {% set width = arraySize[model.size | trans] * 45 %}
+                {#                TODO These data move in model for a first version of the module #}
+                {#                <td style="min-width: {{ width }}px; background-color: {{ model.verso.background }}; color: {{ model.verso.color }}">#}
+                <td style="min-width: {{ width }}px;">
+                </td>
+                <td>
+                    {% if model.verso.marginRight is defined and model.verso.marginRight %}
+                        {% include '@LuccaModel/Margin/Embed/_pdf-margin.html.twig' with { 'page': model.verso, 'margin': model.verso.marginRight, 'adherent': adherent } %}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr></tr>
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% set marginMinus = 0 %}
+    {% if model.recto.marginLeft %}
+        {% set marginMinus = model.recto.marginLeft.height %}
+    {% endif %}
+    {% if model.recto.marginRight %}
+        {% set marginMinus = model.recto.marginRight.height %}
+    {% endif %}
+    {% set marginMinus = marginMinus * -1 %}
+    {% set unit = model.recto.marginUnit | trans %}
+    <table style="position: absolute; top: 0; z-index: 2; margin-top: {{ marginMinus }}{{ unit }};">
+        <thead>
+        <tr>
+            <th>
+                {% if model.recto.marginLeft %}
+                    {% include '@LuccaModel/Margin/Embed/_pdf-margin.html.twig' with { 'page': model.recto, 'margin': model.recto.marginLeft, 'adherent': adherent } %}
+                {% endif %}
+            </th>
+            {#                TODO These data move in model for a first version of the module #}
+            {#            <th style="background-color: {{ model.recto.background }}; color: {{ model.recto.color }}"></th>#}
+            <th></th>
+            <th>
+                {% if model.recto.marginRight %}
+                    {% include '@LuccaModel/Margin/Embed/_pdf-margin.html.twig' with { 'page': model.recto, 'margin': model.recto.marginRight, 'adherent': adherent} %}
+                {% endif %}
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td></td>
+            <td>
+                <div class="document">
+                    {% block lucca_model_content %}
+                    {% endblock lucca_model_content %}
+                </div>
+            </td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+
+{% endblock lucca_print %}
+
+{% block lucca_css %}
+    {{ parent() }}
+    {% set unit = model.recto.marginUnit | trans %}
+    <style>
+        {# TODO move it in css file #}
+        .document {
+            padding-left: 30px;
+            padding-right: 20px;
+            background-color: {{ model.background }};
+            color: {{ model.color }};
+            font-family: '{{ model.font | trans }}', sans-serif;
+        }
+
+        body {
+            margin: 0 !important;
+            text-align: justify;
+        }
+
+        table td, table td * {
+            vertical-align: top;
+        }
+
+        thead {
+            display: table-header-group;
+        }
+
+        tr {
+            page-break-inside: avoid;
+        }
+
+    </style>
+{% endblock %}

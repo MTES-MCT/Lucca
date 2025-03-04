@@ -1,0 +1,60 @@
+{#-- Extends view --#}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/index.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaParameterBundle' %}
+
+{#-- Parameters --#}
+{% set param_entity='entity.service'|transchoice(1) %}
+{% set param_entities='entity.service'|transchoice(2) %}
+{% block menuActive_parameter %}class="active"{% endblock menuActive_parameter %}
+
+
+{% block lucca_list %}
+
+    <table class="table table-striped table-hover dataTables responsive">
+        <thead>
+        <tr>
+            <th><i class="fa fa-map"></i> {{ 'label.name'|trans }}</th>
+            <th>{{ 'label.code'|trans }}</th>
+            <th>{{ 'label.office'|trans }}</th>
+            <th><i class="fa fa-cogs"></i> {{ 'label.actions'|trans }}</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for service in services %}
+            <tr>
+                <td>{{ service.name }}</td>
+                <td>{{ service.code }}</td>
+                <td>{% if service.office %}{{ service.office.name }}{% endif %}</td>
+                <td>
+                    {% if service.enabled %}
+                        <a href="{{ path('lucca_service_enable', { 'id': service.id }) }}" class="btn btn-info btn-sm"
+                           title="{{ 'link.service.disable'|trans }}">
+                            <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('lucca_service_enable', { 'id': service.id }) }}"
+                           class="btn btn-danger btn-sm" title="{{ 'link.service.enable'|trans }}">
+                            <i class="fa fa-toggle-off" aria-hidden="true"></i>
+                        </a>
+                    {% endif %}
+
+                    <a href="{{ path('lucca_service_show', { 'id': service.id }) }}" class="btn btn-primary btn-sm"
+                       title="{{ 'link.service.show'|trans }}"> <i class="fa fa-eye"></i> </a>
+                    <a href="{{ path('lucca_service_edit', { 'id': service.id }) }}" class="btn btn-warning btn-sm"
+                       title="{{ 'link.service.edit'|trans }}"> <i class="fas fa-pencil-alt"></i> </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-secondary btn-lg" href="{{ path('lucca_core_parameter') }}"
+       title="{{ 'link.parameter'|trans }}"><i class="fa fa-reply"></i></a>
+
+    <a class="btn btn-primary btn-lg" href="{{ path('lucca_service_new') }}"
+       title="{{ 'link.service.new'|trans }}"><i class="fa fa-plus"></i></a>
+{% endblock lucca_list %}
+

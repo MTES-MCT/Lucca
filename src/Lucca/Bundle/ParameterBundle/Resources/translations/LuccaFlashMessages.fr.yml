@@ -1,0 +1,40 @@
+####################################
+## Flash Domain
+## locale: fr
+####################################
+
+flash:
+    town:
+        createdSuccessfully: "La ville a bien été créée."
+        updatedSuccessfully: "La ville a bien été modifiée."
+        deletedSuccessfully: "La ville a bien été supprimée."
+        disabledSuccessfully: "La ville a bien été désactivée."
+        enabledSuccessfully: "La ville a bien été activée."
+
+    intercommunal:
+        createdSuccessfully: "L'intercommunalité a bien été créée."
+        updatedSuccessfully: "L'intercommunalité a bien été modifiée."
+        deletedSuccessfully: "L'intercommunalité a bien été supprimée."
+        disabledSuccessfully: "L'intercommunalité a bien été désactivée."
+        enabledSuccessfully: "L'intercommunalité a bien été activée."
+
+    partner:
+        createdSuccessfully: "Le partenaire a bien été créé."
+        updatedSuccessfully: "Le partenaire a bien été modifié."
+        deletedSuccessfully: "Le partenaire a bien été supprimé."
+        disabledSuccessfully: "Le partenaire a bien été désactivé."
+        enabledSuccessfully: "Le partenaire a bien été activé."
+
+    service:
+        createdSuccessfully: "Le service a bien été créé."
+        updatedSuccessfully: "Le service a bien été modifié."
+        deletedSuccessfully: "Le service a bien été supprimé."
+        disabledSuccessfully: "Le service a bien été désactivé."
+        enabledSuccessfully: "Le service a bien été activé."
+
+    tribunal:
+        createdSuccessfully: "Le tribunal a bien été créé."
+        updatedSuccessfully: "Le tribunal a bien été modifié."
+        deletedSuccessfully: "Le tribunal a bien été supprimé."
+        disabledSuccessfully: "Le tribunal a bien été désactivé."
+        enabledSuccessfully: "Le tribunal a bien été activé."

@@ -1,0 +1,42 @@
+{% extends "@LuccaThemeDocsUiKit/Layout/layout.html.twig" %}
+{% trans_default_domain 'LuccaContentBundle' %}
+
+{% block menuActive_dashboard %} class="active" {% endblock %}
+
+{% block lucca_title %}
+    <title>{{ 'setting.general.app.name'| setting }} | {{ 'title.dashboard'|trans }}</title>
+{% endblock lucca_title %}
+
+{% block lucca_header %}
+    {{ 'title.dashboard'|trans }}
+{% endblock lucca_header %}
+
+
+{% block lucca_page %}
+    {#-- Main Area --#}
+    <div class="row  margin-bottom-30">
+        {% if area is defined and area %}
+            {% for subarea in area.subareas %}
+                <div class="{{ subarea.width }}">
+                    <div class="column-title">
+                        <h2>{{ subarea.title }}</h2>
+                    </div>
+
+                    <div class="column">
+                        <ul class="list-unstyled page-list">
+                            {% for page in subarea.pages %}
+                                <li>
+                                    <a href="{{ path('lucca_content_page', { 'slug': page.slug}) }}">
+                                        <i class="{{ page.icon }}"></i> {{ page.link }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    {#-- End - Main Area --#}
+
+{% endblock lucca_page %}
+

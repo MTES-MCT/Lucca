@@ -1,0 +1,106 @@
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
+{% trans_default_domain 'LuccaChecklistBundle' %}
+
+{% set param_entity='entity.checklist'|transchoice(1) %}
+{% set param_entities='entity.checklist'|transchoice(2) %}
+
+
+{% block menuActive_parameter %}class="active"{% endblock menuActive_parameter %}
+
+
+{% block lucca_panels %}
+
+    {{ form_start(form) }}
+
+    {% form_theme form
+        '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig'
+        '@LuccaChecklist/Element/elementTheme.html.twig' %}
+
+    {{ form_errors(form) }}
+
+    <div class="row">
+
+        {#-- Panel - main --#}
+        <div class="col-5">
+            <div class="card card-default">
+                <div class="card-header">
+                    {{ 'title.new'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ param_entity }}</b>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <div class="col-12">
+                            {{ form_row(form.name) }}
+                            {{ form_row(form.enabled) }}
+                            {{ form_row(form.status) }}
+                            {{ form_row(form.description) }}
+
+                            <a class="btn btn-secondary btn-lg" href="{{ path('lucca_checklist_index') }}"
+                               title="{{ 'link.back'|trans }}"><i class="fa fa-reply"></i></a>
+
+                            <button type="submit" class="btn btn-success btn-lg"
+                                    title="{{ 'link.new'|trans }}"><i class="fa fa-check"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Panel - main --#}
+
+        {#-- Panel - Element --#}
+        <div class="col-7">
+            <div class="card card-default">
+                <div class="card-header">
+                    {{ 'title.manage'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ 'label.elements'|trans }}</b>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <div class="col-12">
+                            {{ form_widget(form.elements) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Panel - Element --#}
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock lucca_panels %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    <link href="{{ asset('plugins/summernote/summernote-bs4.css') }}" rel="stylesheet">
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script src="{{ asset('plugins/summernote/summernote-bs4.js') }}"></script>
+    <script src="{{ asset('plugins/summernote/lang/summernote-fr-FR.min.js') }}"></script>
+    <script src="{{ asset('plugins/symfony-collection/jquery.collection.js') }}"></script>
+
+    <script>
+        $('.summernote').summernote({
+            height: 250,
+            lang: 'fr-FR',
+            tabsize: 2
+        });
+
+        {# Collection form #}
+        $('.element-collection').collection({
+            allow_duplicate: true, allow_up: false, allow_down: false,
+            add_at_the_end: true,
+            add: '<a href="#" class="btn btn-primary" title="Add element"><span class="fa fa-plus"></span></a>',
+
+            // here is the magic!
+            elements_selector: 'tr.element',
+            elements_parent_selector: '%id% tbody'
+        });
+    </script>
+{% endblock lucca_js %}

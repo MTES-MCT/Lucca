@@ -1,0 +1,123 @@
+{#-- Extends view --#}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/index.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'LuccaModelBundle' %}
+
+{#-- Parameters --#}
+{% set param_entity='entity.model'|transchoice(1) %}
+{% set param_entities='entity.model'|transchoice(2) %}
+{% block menuActive_model %}class="active"{% endblock %}
+
+
+{% block lucca_list %}
+
+    <table class="table table-striped table-hover dataTables responsive">
+        <thead>
+        <tr>
+            <th><i class="fa fa-file-invoice"></i> {{ 'label.name'|trans }}</th>
+            <th>{{ 'label.size'|trans }}</th>
+            <th>{{ 'label.orientation'|trans }}</th>
+            <th>{{ 'label.type'|trans }}</th>
+            <th>{{ 'label.documents'|trans }}</th>
+            <th>{{ 'label.layout'|trans }}</th>
+            {% if app.user and is_granted("ROLE_ADMIN") %}
+                <th><i class="fa fa-cogs"></i> {{ 'label.actions'|trans }}</th>
+            {% endif %}
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for model in models %}
+            <tr>
+                <td>{{ model.name }}</td>
+                <td>
+                    <span class="badge badge-light">{{ model.size|trans }}</span>
+                </td>
+                <td>
+                    <span class="badge badge-light">{{ model.orientation|trans }}</span>
+                </td>
+                <td>
+                    <span class="badge badge-light">{{ model.type|trans }}</span><br>
+                    {% if model.owner %}
+                        <span class="badge badge-light">
+                            {{ 'label.owner'|trans }}  :
+                            {{ model.owner.officialName }}
+                        </span>
+                    {% endif %}
+                    {% if model.sharedService %}
+                        <span class="badge badge-light">
+                            {{ model.sharedService.name }}
+                        </span>
+                    {% endif %}
+                    {% if model.sharedIntercommunal %}
+                        <span class="badge badge-light">
+                            {{ model.sharedIntercommunal.name }}
+                        </span>
+                    {% endif %}
+                    {% if model.sharedTown %}
+                        <span class="badge badge-light">
+                            {{ model.sharedTown.name }}
+                        </span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% for doc in model.documents %}
+                        <span class="badge badge-light">{{ doc|trans }}</span>
+                    {% endfor %}
+                </td>
+                <td>
+                    <span class="badge badge-light">{{ model.layout|trans }}</span>
+                </td>
+                {% if app.user and is_granted("ROLE_ADMIN") %}
+                    <td>
+                        <a href="{{ path('lucca_model_show', { 'id': model.id }) }}"
+                           class="btn btn-primary btn-sm"
+                           title="{{ 'link.model.show'|trans }}"> <i class="fa fa-eye"></i> </a>
+
+                        {% if model.enabled %}
+                            <a class="btn btn-info btn-sm js-toggle-model-button" data-id="{{ model.id }}"
+                               title="{{ 'link.model.disable'|trans }}">
+                                <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                            </a>
+                        {% else %}
+                            <a class="btn btn-danger btn-sm js-toggle-model-button" data-id="{{ model.id }}"
+                               title="{{ 'link.model.enable'|trans }}">
+                                <i class="fa fa-toggle-off" aria-hidden="true"></i>
+                            </a>
+                        {% endif %}
+
+                        <a href="{{ path('lucca_model_edit', { 'id': model.id }) }}" class="btn btn-warning btn-sm"
+                           title="{{ 'link.model.edit'|trans }}"> <i class="fas fa-pencil-alt"></i> </a>
+
+                        <a href="{{ path('lucca_model_duplicate', { 'id': model.id }) }}" class="btn btn-info btn-sm"
+                           title="{{ 'link.model.duplicate'|trans }}"> <i class="fas fa-copy"></i> </a>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if app.user and is_granted("ROLE_ADMIN") %}
+        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_core_dashboard') }}"
+           title="{{ 'link.dashboard'|trans }}"><i class="fa fa-reply"></i></a>
+
+        <a class="btn btn-primary btn-lg" href="{{ path('lucca_model_new') }}"
+           title="{{ 'link.model.new'|trans }}"><i class="fa fa-plus"></i></a>
+    {% endif %}
+
+{% endblock lucca_list %}
+
+{% block lucca_js %}
+    {{ parent() }}
+    <script>
+        $('.js-toggle-model-button').click(function () {
+            $.ajax({
+                url: Routing.generate('lucca_model_enable', {'id': $(this).data("id")}),
+                success: () => location.reload(),
+            })
+        });
+    </script>
+
+{% endblock lucca_js %}

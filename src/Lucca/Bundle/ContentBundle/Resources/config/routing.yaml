@@ -1,0 +1,11 @@
+# LuccaContentBundle Routing
+lucca_content_bundle:
+    resource: "@LuccaContentBundle/Controller"
+    type:     attribute
+    prefix:   /
+
+# LuccaContentBundle Routing
+lucca_content_bundle_admin:
+    resource: "@LuccaContentBundle/Controller/Admin"
+    type:     attribute
+    prefix:   /back-office
