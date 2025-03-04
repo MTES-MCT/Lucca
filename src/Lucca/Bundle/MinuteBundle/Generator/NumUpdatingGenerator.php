@@ -7,23 +7,15 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\MinuteBundle\Generator;
 
-namespace Lucca\MinuteBundle\Generator;
-
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Updating;
+use Lucca\Bundle\MinuteBundle\Entity\Updating;
 use Doctrine\ORM\EntityManager;
 
 /**
  * Class NumUpdatingGenerator
  *
- * @package Lucca\MinuteBundle\Generator
+ * @package Lucca\Bundle\MinuteBundle\Generator
  * @author Terence <terence@numeric-wave.tech>
  */
 class NumUpdatingGenerator
@@ -58,7 +50,7 @@ class NumUpdatingGenerator
     {
         $prefix = $updating->getMinute()->getNum() . '-RC-';
 
-        $maxCode = $this->em->getRepository('LuccaMinuteBundle:Updating')
+        $maxCode = $this->em->getRepository(Updating')
             ->findMaxNumForMinute($prefix);
 
         if ($maxCode) {

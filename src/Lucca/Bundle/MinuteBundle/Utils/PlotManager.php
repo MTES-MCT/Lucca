@@ -7,17 +7,17 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Utils;
+namespace Lucca\Bundle\MinuteBundle\Utils;
 
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Plot;
+use Lucca\Bundle\MinuteBundle\Entity\Plot;
 use Doctrine\ORM\EntityManager;
-use Lucca\CoreBundle\Utils\GeoLocator;
+use Lucca\Bundle\CoreBundle\Utils\GeoLocator;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 
 /**
  * Class PlotManager
  *
- * @package Lucca\MinuteBundle\Utils
+ * @package Lucca\Bundle\MinuteBundle\Utils
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
 class PlotManager
@@ -81,7 +81,7 @@ class PlotManager
                 $p_plot->setAddress($addrRoute);
             }
 
-            $town = $this->em->getRepository('LuccaParameterBundle:Town')->findOneBy(array(
+            $town = $this->em->getRepository(Town')->findOneBy(array(
                 'zipcode' => $address['addrCode'],
                 'name' => $address['addrCity']
             ));
@@ -96,12 +96,12 @@ class PlotManager
             /** Use geolocator service to find city */
             $address = $this->geoLocator->getAddressFromGeocode($p_plot->getLatitude(), $p_plot->getLongitude());
             if ($address['addrCode'])
-                $town = $this->em->getRepository('LuccaParameterBundle:Town')->findOneBy(array(
+                $town = $this->em->getRepository(Town')->findOneBy(array(
                     'zipcode' => $address['addrCode'],
                     'name' => $address['addrCity']
                 ));
             else
-                $town = $this->em->getRepository('LuccaParameterBundle:Town')->findOneBy(array(
+                $town = $this->em->getRepository(Town')->findOneBy(array(
                     'name' => $address['addrCity']
                 ));
 

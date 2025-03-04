@@ -7,18 +7,18 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Utils;
+namespace Lucca\Bundle\MinuteBundle\Utils;
 
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\ControlEdition;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human;
+use Lucca\Bundle\MinuteBundle\Entity\Control;
+use Lucca\Bundle\MinuteBundle\Entity\ControlEdition;
+use Lucca\Bundle\MinuteBundle\Entity\Human;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 
 /**
  * Class ControlEditionManager
  *
- * @package Lucca\MinuteBundle\Utils
+ * @package Lucca\Bundle\MinuteBundle\Utils
  * @author Térence <terence@numeric-wave.tech>
  */
 class ControlEditionManager

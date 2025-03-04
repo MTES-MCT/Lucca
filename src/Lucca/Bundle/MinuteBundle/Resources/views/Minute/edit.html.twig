@@ -19,7 +19,7 @@
 
     {{ form_start(edit_form) }}
 
-    {% form_theme edit_form 'LuccaThemeAngleBundle:Form:jquery.collection.html.twig' %}
+    {% form_theme edit_form '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig' %}
 
     {#Form theme apply for child only#}
     {% form_theme edit_form.humans 'LuccaMinuteBundle:Human:human-theme.html.twig' %}

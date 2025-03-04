@@ -7,20 +7,12 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\MinuteBundle\Form;
 
-namespace Lucca\MinuteBundle\Form;
-
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human;
-use Lucca\AdherentBundle\Entity\Agent;
-use Lucca\AdherentBundle\Repository\AgentRepository;
+use Lucca\Bundle\MinuteBundle\Entity\Control;
+use Lucca\Bundle\MinuteBundle\Entity\Human;
+use Lucca\Bundle\AdherentBundle\Entity\Agent;
+use Lucca\Bundle\AdherentBundle\Repository\AgentRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -35,7 +27,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 /**
  * Class UpdatingControlType
  *
- * @package Lucca\MinuteBundle\Form
+ * @package Lucca\Bundle\MinuteBundle\Form
  * @author Terence <terence@numeric-wave.tech>
  */
 class UpdatingControlType extends AbstractType
@@ -192,6 +184,6 @@ class UpdatingControlType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'lucca_minutebundle_minute_control';
+        return 'lucca_minuteBundle_minute_control';
     }
 }

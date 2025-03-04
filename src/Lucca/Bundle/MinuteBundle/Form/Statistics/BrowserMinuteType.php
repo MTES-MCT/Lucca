@@ -8,22 +8,22 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Form\Statistics;
+namespace Lucca\Bundle\MinuteBundle\Form\Statistics;
 
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Natinf;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Plot;
-use Lucca\AdherentBundle\Entity\Adherent;
-use Lucca\AdherentBundle\Repository\AdherentRepository;
-use Lucca\MinuteBundle\Repository\NatinfRepository;
-use Lucca\ParameterBundle\Entity\Intercommunal;
-use Lucca\ParameterBundle\Entity\Service;
-use Lucca\ParameterBundle\Entity\Town;
-use Lucca\ParameterBundle\Repository\IntercommunalRepository;
-use Lucca\ParameterBundle\Repository\ServiceRepository;
-use Lucca\ParameterBundle\Repository\TownRepository;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\Natinf;
+use Lucca\Bundle\MinuteBundle\Entity\Control;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\MinuteBundle\Entity\Plot;
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\AdherentBundle\Repository\AdherentRepository;
+use Lucca\Bundle\MinuteBundle\Repository\NatinfRepository;
+use Lucca\Bundle\ParameterBundle\Entity\Intercommunal;
+use Lucca\Bundle\ParameterBundle\Entity\Service;
+use Lucca\Bundle\ParameterBundle\Entity\Town;
+use Lucca\Bundle\ParameterBundle\Repository\IntercommunalRepository;
+use Lucca\Bundle\ParameterBundle\Repository\ServiceRepository;
+use Lucca\Bundle\ParameterBundle\Repository\TownRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -34,7 +34,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class BrowserMinuteType
  *
- * @package Lucca\MinuteBundle\Form\Statistics
+ * @package Lucca\Bundle\MinuteBundle\Form\Statistics
  * @author Terence <terence@numeric-wave.tech>
  */
 class BrowserMinuteType extends AbstractType
@@ -172,6 +172,6 @@ class BrowserMinuteType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'lucca_minutebundle_browser_minute';
+        return 'lucca_minuteBundle_browser_minute';
     }
 }

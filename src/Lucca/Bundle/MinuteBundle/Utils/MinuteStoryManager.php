@@ -7,19 +7,19 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Utils;
+namespace Lucca\Bundle\MinuteBundle\Utils;
 
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\MinuteStory;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\MinuteBundle\Entity\MinuteStory;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Exception;
-use Lucca\AdherentBundle\Finder\AdherentFinder;
+use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
 
 /**
  * Class MinuteManager
  *
- * @package Lucca\MinuteBundle\Utils
+ * @package Lucca\Bundle\MinuteBundle\Utils
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
 class MinuteStoryManager
@@ -56,12 +56,12 @@ class MinuteStoryManager
     public function manage(Minute $p_minute)
     {
         /** init steps */
-        $controls = $this->em->getRepository('LuccaMinuteBundle:Control')->findByMinute($p_minute);
-        $folders = $this->em->getRepository('LuccaMinuteBundle:Folder')->findSmallFolderByMinute($p_minute);
+        $controls = $this->em->getRepository(Control::class)->findByMinute($p_minute);
+        $folders = $this->em->getRepository(Folder::class)->findSmallFolderByMinute($p_minute);
         $couriers = array();
-        $updates = $this->em->getRepository('LuccaMinuteBundle:Updating')->findByMinute($p_minute);
-        $decisions = $this->em->getRepository('LuccaMinuteBundle:Decision')->findByMinute($p_minute);
-        $closure = $this->em->getRepository('LuccaMinuteBundle:Closure')->findByMinute($p_minute);
+        $updates = $this->em->getRepository(Updating::class)->findByMinute($p_minute);
+        $decisions = $this->em->getRepository(Decision::class)->findByMinute($p_minute);
+        $closure = $this->em->getRepository(Closure::class)->findByMinute($p_minute);
 
         $status = 1;
 
@@ -73,13 +73,13 @@ class MinuteStoryManager
         /** Check if folder exist for this minute */
         if ($folders != null && count($folders) > 0) {
             foreach ($folders as $folder) {
-                $couriers = $this->em->getRepository('LuccaMinuteBundle:Courier')->findCouriersByFolder($folder);
+                $couriers = $this->em->getRepository(Courier::class)->findCouriersByFolder($folder);
             }
             $status = 3;
         }
 
         /** Get the last correct minute in order to be able to save or not a new minuteStory */
-        $lastMinuteStory = $this->em->getRepository('LuccaMinuteBundle:MinuteStory')->findLastByMinute($p_minute);
+        $lastMinuteStory = $this->em->getRepository(MinuteStory::class)->findLastByMinute($p_minute);
 
         /** Depend on the objects linked to the minute set the status */
         /** The status will always be the most close to the closure */
@@ -285,7 +285,7 @@ class MinuteStoryManager
     public function manageClosureData($p_dateStart, $p_dateEnd, $p_minutes = null)
     {
         /** Get all the stories that are in the range of date and with the status close */
-        $minutesStoriesClosure = $this->em->getRepository('LuccaMinuteBundle:MinuteStory')->findClosureBetween($p_dateStart, $p_dateEnd, $p_minutes);
+        $minutesStoriesClosure = $this->em->getRepository(MinuteStory::class)->findClosureBetween($p_dateStart, $p_dateEnd, $p_minutes);
 
         $result = array();
         /** Construct an array with key (from closure entity) :

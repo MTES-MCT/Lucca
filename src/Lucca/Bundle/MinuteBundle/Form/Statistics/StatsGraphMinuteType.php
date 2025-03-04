@@ -8,7 +8,7 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Form\Statistics;
+namespace Lucca\Bundle\MinuteBundle\Form\Statistics;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,19 +17,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-use Lucca\ParameterBundle\Entity\Town;
-use Lucca\ParameterBundle\Entity\Intercommunal;
-use Lucca\ParameterBundle\Entity\Service;
-use Lucca\ParameterBundle\Repository\IntercommunalRepository;
-use Lucca\ParameterBundle\Repository\ServiceRepository;
-use Lucca\ParameterBundle\Repository\TownRepository;
-use Lucca\AdherentBundle\Entity\Adherent;
-use Lucca\AdherentBundle\Repository\AdherentRepository;
+use Lucca\Bundle\ParameterBundle\Entity\Town;
+use Lucca\Bundle\ParameterBundle\Entity\Intercommunal;
+use Lucca\Bundle\ParameterBundle\Entity\Service;
+use Lucca\Bundle\ParameterBundle\Repository\IntercommunalRepository;
+use Lucca\Bundle\ParameterBundle\Repository\ServiceRepository;
+use Lucca\Bundle\ParameterBundle\Repository\TownRepository;
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\AdherentBundle\Repository\AdherentRepository;
 
 /**
  * Class BrowserMinuteType
  *
- * @package Lucca\MinuteBundle\Form\Statistics
+ * @package Lucca\Bundle\MinuteBundle\Form\Statistics
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
 class StatsGraphMinuteType extends AbstractType
@@ -107,6 +107,6 @@ class StatsGraphMinuteType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'lucca_minutebundle_browser_minute';
+        return 'lucca_minuteBundle_browser_minute';
     }
 }

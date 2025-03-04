@@ -7,21 +7,13 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\MinuteBundle\Form;
 
-namespace Lucca\MinuteBundle\Form;
-
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
-use Lucca\AdherentBundle\Entity\Agent;
-use Lucca\AdherentBundle\Repository\AgentRepository;
-use Lucca\ParameterBundle\Entity\Tribunal;
-use Lucca\ParameterBundle\Repository\TribunalRepository;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\AdherentBundle\Entity\Agent;
+use Lucca\Bundle\AdherentBundle\Repository\AgentRepository;
+use Lucca\Bundle\ParameterBundle\Entity\Tribunal;
+use Lucca\Bundle\ParameterBundle\Repository\TribunalRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -35,7 +27,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class MinuteNewType
  *
- * @package Lucca\MinuteBundle\Form
+ * @package Lucca\Bundle\MinuteBundle\Form
  * @author Terence <terence@numeric-wave.tech>
  */
 class MinuteType extends AbstractType
@@ -116,6 +108,6 @@ class MinuteType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'lucca_minutebundle_minute';
+        return 'lucca_minuteBundle_minute';
     }
 }

@@ -7,20 +7,19 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Tests\Controller\Admin;
+namespace Lucca\Bundle\MinuteBundle\Tests\Controller\Admin;
 
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control;
 use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
- * Class UpdatingControlControllerTest
- * Test Lucca\MinuteBundle\Controller\Admin\MinuteController
+ * Class UpdatingControllerTest
+ * Test Lucca\Bundle\MinuteBundle\Controller\Admin\MinuteController
  *
- * @package Lucca\MinuteBundle\Tests\Controller\Admin
- * @author Terence <terence@numeric-wave.tech>
+ * @package Lucca\Bundle\MinuteBundle\Tests\Controller\Admin
+ * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
-class UpdatingControlControllerTest extends WebTestCase
+class UpdatingControllerTest extends WebTestCase
 {
     /**
      * @var $urls
@@ -64,26 +63,21 @@ class UpdatingControlControllerTest extends WebTestCase
         /**
          * Entity who was analysed
          */
-        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Control')->findOneBy(array(
-            'type' => Control::TYPE_REFRESH
-        ));
-
-        $updating = $this->em->getRepository('LuccaMinuteBundle:Updating')->findUpdatingByControl($this->entity);
+        $this->entity = $this->em->getRepository(Updating')->findOneBy(array());
 
         /**
          * Urls who was analyzed
          */
-        $basicUrl = 'lucca_updating_control_';
+        $basicUrl = 'lucca_updating_';
         $this->urls = array(
-            $this->getUrl($basicUrl . 'new', array('updating_id' => $updating->getId() )),
-            $this->getUrl($basicUrl . 'edit', array('updating_id' => $updating->getId() , 'id' => $this->entity->getId())),
+            array('expectedCode' => 302, 'route' => $this->getUrl($basicUrl . 'new', array('minute_id' => $this->entity->getMinute()->getId()))),
+            array('expectedCode' => 200, 'route' => $this->getUrl($basicUrl . 'step1', array('id' => $this->entity->getId() , 'minute_id' => $this->entity->getMinute()->getId()))),
         );
     }
 
     /************************************ Test - routes reachable ************************************/
-
     /**
-     * Test n°1 - No user authenticated
+     * Test n°1 - No User authenticated
      * If basic urls are blocked
      */
     public function testBasicUrlsAnonymous()
@@ -91,13 +85,12 @@ class UpdatingControlControllerTest extends WebTestCase
         $this->defineBasicParams();
 
         /** Create client which test this action */
-        $client = $this->createClient();
+        $client = self::createClient();
 
         foreach ($this->urls as $url) {
-            $client->request('GET', $url);
-
+            $client->request('GET', $url['route']);
             /** HTTP code attempted */
-            $this->assertStatusCode(302, $client);
+            self::assertStatusCode(302, $client);
         }
 
         /** Close database connection */
@@ -112,15 +105,14 @@ class UpdatingControlControllerTest extends WebTestCase
     {
         $this->defineBasicParams();
 
-        /** Log User object + Create client which test this action */
+        /** Log Log object + Create client which test this action */
         $this->loginAs($this->clientAuthenticated, 'main');
         $client = $this->makeClient();
 
         foreach ($this->urls as $url) {
-            $client->request('GET', $url);
-
+            $client->request('GET', $url['route']);
             /** HTTP code attempted */
-            $this->assertStatusCode(200, $client);
+            self::assertStatusCode($url['expectedCode'], $client);
         }
 
         /** Close database connection */

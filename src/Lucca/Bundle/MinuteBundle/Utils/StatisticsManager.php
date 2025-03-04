@@ -7,12 +7,12 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Utils;
+namespace Lucca\Bundle\MinuteBundle\Utils;
 
 /**
  * Class MinuteManager
  *
- * @package Lucca\MinuteBundle\Utils
+ * @package Lucca\Bundle\MinuteBundle\Utils
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
 class StatisticsManager

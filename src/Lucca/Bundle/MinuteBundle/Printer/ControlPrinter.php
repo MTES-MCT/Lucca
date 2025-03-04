@@ -7,27 +7,19 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\MinuteBundle\Printer;
 
-namespace Lucca\MinuteBundle\Printer;
-
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control;
-use Lucca\AdherentBundle\Entity\Adherent;
-use Lucca\AdherentBundle\Finder\LogoFinder;
-use Lucca\SettingBundle\Utils\SettingManager;
+use Lucca\Bundle\MinuteBundle\Entity\Control;
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\AdherentBundle\Finder\LogoFinder;
+use Lucca\Bundle\SettingBundle\Utils\SettingManager;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Twig\Error\Error;
 
 /**
  * Class ControlPrinter
  *
- * @package Lucca\MinuteBundle\Printer
+ * @package Lucca\Bundle\MinuteBundle\Printer
  * @author Terence <terence@numeric-wave.tech>
  */
 class ControlPrinter

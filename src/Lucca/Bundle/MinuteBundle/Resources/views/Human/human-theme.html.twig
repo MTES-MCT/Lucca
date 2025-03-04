@@ -1,21 +1,21 @@
 {% trans_default_domain 'LuccaMinuteBundle' %}
 
 
-{% block lucca_minutebundle_human_row %}
+{% block lucca_minuteBundle_human_row %}
     <div class="col-12">
         {{ form_errors(form) }}
         {{ form_widget(form) }}
     </div>
 {% endblock %}
 
-{% block lucca_minutebundle_human_widget %}
+{% block lucca_minuteBundle_human_widget %}
 
     {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
-    {# Split attributes - result like array(0 => "id="lucca_minutebundle_minute_humans_0") #}
+    {# Split attributes - result like array(0 => "id="lucca_minuteBundle_minute_humans_0") #}
     {% set widget_attributes = block('widget_attributes')|split('" ') %}
 
-    {# Split value - result like "lucca_minutebundle_minute_humans_0" #}
+    {# Split value - result like "lucca_minuteBundle_minute_humans_0" #}
     {% set idWidget = widget_attributes[0]|split('"')[1] %}
     {% set nameWidget = widget_attributes[1]|split('"')[1] %}
 
@@ -198,7 +198,7 @@
 
 {% endblock %}
 
-{% block lucca_minutebundle_minute_humans_widget %}
+{% block lucca_minuteBundle_minute_humans_widget %}
     {{ form_widget(form.humans) }}
 {% endblock %}
 

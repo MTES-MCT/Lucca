@@ -8,16 +8,16 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Repository;
+namespace Lucca\Bundle\MinuteBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-use Lucca\CoreBundle\Repository\ToggleableRepository;
+use Lucca\Bundle\CoreBundle\Repository\ToggleableRepository;
 
 /**
  * Class ClosureRepository
  *
- * @package Lucca\MinuteBundle\Repository
+ * @package Lucca\Bundle\MinuteBundle\Repository
  * @author Terence <terence@numeric-wave.tech>
  */
 class ClosureRepository extends EntityRepository

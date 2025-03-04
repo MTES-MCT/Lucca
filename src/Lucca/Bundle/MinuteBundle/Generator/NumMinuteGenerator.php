@@ -7,23 +7,15 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\MinuteBundle\Generator;
 
-namespace Lucca\MinuteBundle\Generator;
-
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Doctrine\ORM\EntityManager;
 
 /**
  * Class NumMinuteGenerator
  *
- * @package Lucca\MinuteBundle\Generator
+ * @package Lucca\Bundle\MinuteBundle\Generator
  * @author Terence <terence@numeric-wave.tech>
  */
 class NumMinuteGenerator
@@ -74,7 +66,7 @@ class NumMinuteGenerator
 
         $prefix = $year . '-' . $authority . '-';
 
-        $maxCode = $this->em->getRepository('LuccaMinuteBundle:Minute')->findMaxNumForYear($prefix);
+        $maxCode = $this->em->getRepository(Minute')->findMaxNumForYear($prefix);
 
         if ($maxCode) {
             $increment = substr($maxCode[1], -3);

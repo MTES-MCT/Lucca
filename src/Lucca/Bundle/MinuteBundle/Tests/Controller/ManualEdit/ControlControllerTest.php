@@ -7,17 +7,17 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Tests\Controller\ManualEdit;
+namespace Lucca\Bundle\MinuteBundle\Tests\Controller\ManualEdit;
 
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control;
+use Lucca\Bundle\MinuteBundle\Entity\Control;
 use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * Class ControlControllerTest
- * Test Lucca\MinuteBundle\Controller\ManualEdit\ControlController
+ * Test Lucca\Bundle\MinuteBundle\Controller\ManualEdit\ControlController
  *
- * @package Lucca\MinuteBundle\Tests\Controller\ManualEdit
+ * @package Lucca\Bundle\MinuteBundle\Tests\Controller\ManualEdit
  * @author Terence <terence@numeric-wave.tech>
  */
 class ControlControllerTest extends WebTestCase
@@ -64,11 +64,11 @@ class ControlControllerTest extends WebTestCase
         /**
          * Entity who was analysed
          */
-        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Control')->findOneBy(array(
+        $this->entity = $this->em->getRepository(Control')->findOneBy(array(
             'type' => Control::TYPE_FOLDER
         ));
 
-        $minute = $this->em->getRepository('LuccaMinuteBundle:Minute')->findMinuteByControl($this->entity);
+        $minute = $this->em->getRepository(Minute')->findMinuteByControl($this->entity);
 
         /**
          * Urls who was analyzed

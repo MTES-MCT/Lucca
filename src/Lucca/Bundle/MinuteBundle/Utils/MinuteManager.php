@@ -7,19 +7,19 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Utils;
+namespace Lucca\Bundle\MinuteBundle\Utils;
 
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\MinuteBundle\Entity\Human;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Doctrine\ORM\EntityManager;
-use Lucca\AdherentBundle\Entity\Adherent;
-use Lucca\AdherentBundle\Finder\AdherentFinder;
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Class MinuteManager
  *
- * @package Lucca\MinuteBundle\Utils
+ * @package Lucca\Bundle\MinuteBundle\Utils
  * @author Térence <terence@numeric-wave.tech>
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
@@ -142,7 +142,7 @@ class MinuteManager
         /** init steps */
         $controls = $p_minute->getControls();
 
-        $folder = $this->em->getRepository('LuccaMinuteBundle:Folder')->findLastByMinute($p_minute, $p_isCommand);
+        $folder = $this->em->getRepository(Folder')->findLastByMinute($p_minute, $p_isCommand);
 
         $couriers = array();
         $updates = $p_minute->getUpdatings();
@@ -159,7 +159,7 @@ class MinuteManager
 
         /** Check if folder exist for this minute */
         if ($folder != null) {
-            $couriers = $this->em->getRepository('LuccaMinuteBundle:Courier')->findCouriersByFolder($folder[0]);
+            $couriers = $this->em->getRepository(Courier')->findCouriersByFolder($folder[0]);
             $status = 3;
         }
 

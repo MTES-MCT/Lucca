@@ -8,7 +8,7 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Form;
+namespace Lucca\Bundle\MinuteBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,7 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 /**
  * Class AgentAttendantType
  *
- * @package Lucca\MinuteBundle\Form
+ * @package Lucca\Bundle\MinuteBundle\Form
  * @author Terence <terence@numeric-wave.tech>
  */
 class AgentAttendantType extends AbstractType
@@ -53,6 +53,6 @@ class AgentAttendantType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'lucca_minutebundle_agent_attendant';
+        return 'lucca_minuteBundle_agent_attendant';
     }
 }

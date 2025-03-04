@@ -7,17 +7,9 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\MinuteBundle\Form;
 
-namespace Lucca\MinuteBundle\Form;
-
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human;
+use Lucca\Bundle\MinuteBundle\Entity\Human;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -28,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class MinuteHumanType
  *
- * @package Lucca\MinuteBundle\Form
+ * @package Lucca\Bundle\MinuteBundle\Form
  * @author Terence <terence@numeric-wave.tech>
  */
 class MinuteHumanType extends AbstractType
@@ -107,6 +99,6 @@ class MinuteHumanType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'lucca_minutebundle_human';
+        return 'lucca_minuteBundle_human';
     }
 }

@@ -7,15 +7,15 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Twig;
+namespace Lucca\Bundle\MinuteBundle\Twig;
 
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human;
+use Lucca\Bundle\MinuteBundle\Entity\Human;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class EntityHumanExtension
  *
- * @package Lucca\MinuteBundle\Twig
+ * @package Lucca\Bundle\MinuteBundle\Twig
  * @author Térence <terence@numeric-wave.eu>
  */
 class EntityHumanExtension extends \Twig_Extension

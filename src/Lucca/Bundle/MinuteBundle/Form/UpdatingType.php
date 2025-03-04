@@ -7,17 +7,9 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-/*
- * copyright (c) 2025. numeric wave
- *
- * afero general public license (agpl) v3
- *
- * for more information, please refer to the license file at the root of the project.
- */
+namespace Lucca\Bundle\MinuteBundle\Form;
 
-namespace Lucca\MinuteBundle\Form;
-
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Updating;
+use Lucca\Bundle\MinuteBundle\Entity\Updating;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -27,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class UpdatingType
  *
- * @package Lucca\MinuteBundle\Form
+ * @package Lucca\Bundle\MinuteBundle\Form
  * @author Terence <terence@numeric-wave.tech>
  */
 class UpdatingType extends AbstractType
@@ -69,6 +61,6 @@ class UpdatingType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'lucca_minutebundle_updating';
+        return 'lucca_minuteBundle_updating';
     }
 }

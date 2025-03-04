@@ -1,14 +1,14 @@
 {% trans_default_domain 'LuccaMinuteBundle' %}
 
 
-{% block lucca_minutebundle_agent_attendant_row %}
+{% block lucca_minuteBundle_agent_attendant_row %}
     <div class="col-12">
         {{ form_errors(form) }}
         {{ form_widget(form) }}
     </div>
 {% endblock %}
 
-{% block lucca_minutebundle_agent_attendant_widget %}
+{% block lucca_minuteBundle_agent_attendant_widget %}
 
     {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
@@ -44,7 +44,7 @@
 
 {% endblock %}
 
-{% block lucca_minutebundle_agents_attendant_widget %}
+{% block lucca_minuteBundle_agents_attendant_widget %}
     {{ form_widget(form.humans) }}
 {% endblock %}
 

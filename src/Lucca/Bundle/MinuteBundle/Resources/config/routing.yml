@@ -1,29 +1,29 @@
 # LuccaMinuteBundle Routing
 lucca_minute_bundle_admin:
     resource: "@LuccaMinuteBundle/Controller/Admin"
-    type:     annotation
+    type:     attribute
     prefix:   /back-office
 
 # LuccaMinuteBundle Routing - Documents
 lucca_minute_bundle_document:
     resource: "@LuccaMinuteBundle/Controller/Document"
-    type:     annotation
+    type:     attribute
     prefix:   /back-office
 
 # LuccaMinuteBundle Routing - Manual Editing
 lucca_minute_bundle_manual_edit:
     resource: "@LuccaMinuteBundle/Controller/ManualEdit"
-    type:     annotation
+    type:     attribute
     prefix:   /back-office
 
 # LuccaMinuteBundle Routing - Printing
 lucca_minute_bundle_printing:
     resource: "@LuccaMinuteBundle/Controller/Printing"
-    type:     annotation
+    type:     attribute
     prefix:   /back-office
 
 # LuccaMinuteBundle Routing - API
 lucca_minute_bundle_api:
     resource: "@LuccaMinuteBundle/Controller/Api"
-    type:     annotation
+    type:     attribute
     prefix:   /back-office

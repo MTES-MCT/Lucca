@@ -7,16 +7,16 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Tests\Controller\Admin;
+namespace Lucca\Bundle\MinuteBundle\Tests\Controller\Admin;
 
 use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * Class ClosureControllerTest
- * Test Lucca\MinuteBundle\Controller\Admin\MinuteController
+ * Test Lucca\Bundle\MinuteBundle\Controller\Admin\MinuteController
  *
- * @package Lucca\MinuteBundle\Tests\Controller\Admin
+ * @package Lucca\Bundle\MinuteBundle\Tests\Controller\Admin
  * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
 class ClosureControllerTest extends WebTestCase
@@ -63,7 +63,7 @@ class ClosureControllerTest extends WebTestCase
         /**
          * Entity who was analysed
          */
-        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Closure')->findOneBy(array());
+        $this->entity = $this->em->getRepository(Closure')->findOneBy(array());
 
         /**
          * Urls who was analyzed

@@ -7,20 +7,19 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Tests\Controller\Admin;
+namespace Lucca\Bundle\MinuteBundle\Tests\Controller\Admin;
 
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control;
 use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
- * Class MinuteControlControllerTest
- * Test Lucca\MinuteBundle\Controller\Admin\MinuteController
+ * Class StatisticsControllerTest
+ * Test Lucca\Bundle\MinuteBundle\Controller\Admin\StatisticsController
  *
- * @package Lucca\MinuteBundle\Tests\Controller\Admin
- * @author Terence <terence@numeric-wave.tech>
+ * @package Lucca\Bundle\MinuteBundle\Tests\Controller\Admin
+ * @author Alizee Meyer <alizee.m@numeric-wave.eu>
  */
-class MinuteControlControllerTest extends WebTestCase
+class StatisticsControllerTest extends WebTestCase
 {
     /**
      * @var $urls
@@ -33,12 +32,6 @@ class MinuteControlControllerTest extends WebTestCase
      * Client which can authenticated
      */
     private $clientAuthenticated;
-
-    /**
-     * @var $entity
-     * Entity to test
-     */
-    private $entity;
 
     /**
      * @var EntityManager
@@ -62,21 +55,12 @@ class MinuteControlControllerTest extends WebTestCase
         ));
 
         /**
-         * Entity who was analysed
-         */
-        $this->entity = $this->em->getRepository('LuccaMinuteBundle:Control')->findOneBy(array(
-            'type' => Control::TYPE_FOLDER
-        ));
-
-        $minute = $this->em->getRepository('LuccaMinuteBundle:Minute')->findMinuteByControl($this->entity);
-
-        /**
          * Urls who was analyzed
          */
-        $basicUrl = 'lucca_minute_control_';
+        $basicUrl = 'lucca_statistics_minutes_';
         $this->urls = array(
-            $this->getUrl($basicUrl . 'new', array('minute_id' => $minute->getId() )),
-            $this->getUrl($basicUrl . 'edit', array('minute_id' => $minute->getId() , 'id' => $this->entity->getId())),
+            $this->getUrl($basicUrl . 'overall', array()),
+            $this->getUrl($basicUrl . 'table', array()),
         );
     }
 

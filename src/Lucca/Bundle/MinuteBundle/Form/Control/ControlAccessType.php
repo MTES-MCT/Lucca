@@ -8,9 +8,9 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-namespace Lucca\MinuteBundle\Form\Control;
+namespace Lucca\Bundle\MinuteBundle\Form\Control;
 
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control;
+use Lucca\Bundle\MinuteBundle\Entity\Control;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class ControlAccessType
  *
- * @package Lucca\MinuteBundle\Form\Control
+ * @package Lucca\Bundle\MinuteBundle\Form\Control
  * @author Terence <terence@numeric-wave.tech>
  */
 class ControlAccessType extends AbstractType
@@ -56,6 +56,6 @@ class ControlAccessType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'lucca_minutebundle_control_access';
+        return 'lucca_minuteBundle_control_access';
     }
 }
