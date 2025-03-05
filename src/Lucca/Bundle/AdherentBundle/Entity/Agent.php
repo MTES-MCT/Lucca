@@ -14,10 +14,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
-use Lucca\Bundle\CoreBundle\Entity\ToggleableTrait;
+use Lucca\Bundle\CoreBundle\Entity\{TimestampableTrait, ToggleableTrait};
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\ParameterBundle\Entity\Tribunal;
+use Lucca\Bundle\AdherentBundle\Repository\AgentRepository;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 #[ORM\Entity(repositoryClass: AgentRepository::class)]
 #[ORM\Table(name: 'lucca_adherent_agent')]
@@ -60,6 +61,10 @@ class Agent implements LoggableInterface
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private string $function;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\ManyToOne(targetEntity: Tribunal::class, cascade: ['persist'])]
     private ?Tribunal $tribunal = null;
@@ -159,6 +164,18 @@ class Agent implements LoggableInterface
     public function setFunction(string $function): self
     {
         $this->function = $function;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }

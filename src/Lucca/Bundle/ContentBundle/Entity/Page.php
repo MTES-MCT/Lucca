@@ -20,6 +20,7 @@ use Lucca\Bundle\CoreBundle\Entity\{TimestampableTrait, ToggleableTrait};
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\MediaBundle\Entity\{Media, MediaListAsyncInterface};
 use Lucca\Bundle\UserBundle\Entity\User;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 #[ORM\Entity(repositoryClass: PageRepository::class)]
 #[ORM\Table(name: 'lucca_content_page')]
@@ -65,6 +66,10 @@ class Page implements LoggableInterface, MediaListAsyncInterface
     #[ORM\Column(type: Types::SMALLINT)]
     #[Assert\Type(type: 'int', message: 'constraint.type')]
     private int $position;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     // 65535 is the maximum length of a TEXT field in MySQL
     #[ORM\Column(type: Types::TEXT, length: 65535, nullable: true)]
@@ -205,6 +210,18 @@ class Page implements LoggableInterface, MediaListAsyncInterface
     public function setContent(?string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }

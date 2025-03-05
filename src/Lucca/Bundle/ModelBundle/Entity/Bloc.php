@@ -18,6 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\MediaBundle\Entity\{Media, MediaListAsyncInterface};
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
+use Lucca\Bundle\ModelBundle\Repository\BlocRepository;
 
 #[ORM\Entity(repositoryClass: BlocRepository::class)]
 #[ORM\Table(name: 'lucca_model_bloc')]
@@ -57,6 +59,10 @@ class Bloc implements LoggableInterface, MediaListAsyncInterface
         Bloc::TYPE_CONTENT_ADHERENT_LOGO,
     ], message: 'constraint.typeContent.initiatingStructure')]
     private string $typeContent;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     #[Assert\Type(type: 'int', message: 'constraint.type')]
@@ -116,8 +122,8 @@ class Bloc implements LoggableInterface, MediaListAsyncInterface
     public function removeAsyncMedia(?Media $media, string $vars = null): bool
     {
         match ($vars) {
-            'backgroundImg' => $this->setBackgroundImg(),
-            'media' => $this->setMedia(),
+            'backgroundImg' => $this->setBackgroundImg(null),
+            'media' => $this->setMedia(null),
         };
 
         return true;
@@ -196,6 +202,19 @@ class Bloc implements LoggableInterface, MediaListAsyncInterface
     public function setWidth(int $width): self
     {
         $this->width = $width;
+
+        return $this;
+    }
+
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }

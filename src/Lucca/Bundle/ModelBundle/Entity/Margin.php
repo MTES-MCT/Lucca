@@ -18,6 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\MediaBundle\Entity\{Media, MediaAsyncInterface};
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
+use Lucca\Bundle\ModelBundle\Repository\MarginRepository;
 
 #[ORM\Entity(repositoryClass: MarginRepository::class)]
 #[ORM\Table(name: 'lucca_model_margin')]
@@ -47,6 +49,10 @@ class Margin implements LoggableInterface, MediaAsyncInterface
         Margin::POSITION_RIGHT,
     ], message: 'constraint.position.initiatingStructure')]
     private string $position;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     #[Assert\Type(type: 'int', message: 'constraint.type')]
@@ -144,6 +150,18 @@ class Margin implements LoggableInterface, MediaAsyncInterface
     public function setPosition(string $position): self
     {
         $this->position = $position;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }

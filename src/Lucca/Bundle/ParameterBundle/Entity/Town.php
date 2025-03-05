@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Lucca\Bundle\CoreBundle\Entity\{ToggleableTrait, TimestampableTrait};
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\ParameterBundle\Repository\TownRepository;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 #[ORM\Entity(repositoryClass: TownRepository::class)]
 #[ORM\Table(name: 'lucca_parameter_town')]
@@ -50,6 +51,10 @@ class Town implements LoggableInterface
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 1, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private string $zipcode;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\ManyToOne(targetEntity: Intercommunal::class)]
     #[ORM\JoinColumn(nullable: true)]
@@ -132,6 +137,18 @@ class Town implements LoggableInterface
     public function setZipcode(string $zipcode): self
     {
         $this->zipcode = $zipcode;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }

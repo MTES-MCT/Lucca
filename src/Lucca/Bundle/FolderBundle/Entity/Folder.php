@@ -20,6 +20,7 @@ use Lucca\Bundle\FolderBundle\Repository\FolderRepository;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\MediaBundle\Entity\{Media, MediaAsyncInterface, MediaListAsyncInterface};
 use Lucca\Bundle\MinuteBundle\Entity\{Control, Human, Minute};
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 #[ORM\Table(name: "lucca_minute_folder")]
 #[ORM\Entity(repositoryClass: FolderRepository::class)]
@@ -91,6 +92,10 @@ class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncIn
         inverseJoinColumns: [new ORM\JoinColumn(name: "human_id", referencedColumnName: "id")]
     )]
     private Collection $humansByFolder;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\OneToOne(targetEntity: Courier::class, inversedBy: "folder", orphanRemoval: true)]
     #[ORM\JoinColumn(nullable: true, onDelete: "CASCADE")]
@@ -363,6 +368,18 @@ class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncIn
     public function setHumansByFolder(Collection $humansByFolder): self
     {
         $this->humansByFolder = $humansByFolder;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }

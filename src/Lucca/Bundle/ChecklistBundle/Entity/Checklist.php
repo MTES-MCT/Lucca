@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Lucca\Bundle\ChecklistBundle\Repository\ChecklistRepository;
 use Lucca\Bundle\CoreBundle\Entity\{TimestampableTrait, ToggleableTrait};
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 #[ORM\Entity(repositoryClass: ChecklistRepository::class)]
 #[ORM\Table(name: 'lucca_checklist')]
@@ -42,6 +43,10 @@ class Checklist implements LoggableInterface
 
     #[ORM\OneToMany(targetEntity: Element::class, mappedBy: 'checklist', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $elements;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\Column(length: 30, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
@@ -103,6 +108,18 @@ class Checklist implements LoggableInterface
     public function removeElement(Element $element): void
     {
         $this->elements->removeElement($element);
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
+
+        return $this;
     }
 
     public function getStatus(): ?string

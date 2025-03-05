@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Lucca\Bundle\CoreBundle\Entity\{TimestampableTrait, ToggleableTrait};
 use Lucca\Bundle\FolderBundle\Repository\ProposalRepository;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 #[ORM\Table(name: "lucca_proposal")]
 #[ORM\Entity(repositoryClass: ProposalRepository::class)]
@@ -36,6 +37,10 @@ class Proposal implements LoggableInterface
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotNull(message: "constraint.not_null")]
     private string $sentence;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     /************************************************************************ Custom functions ************************************************************************/
 
@@ -74,6 +79,18 @@ class Proposal implements LoggableInterface
     public function setSentence(string $sentence): self
     {
         $this->sentence = $sentence;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }

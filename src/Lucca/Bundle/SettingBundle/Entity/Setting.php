@@ -14,9 +14,10 @@ use Exception;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 
 use Lucca\Bundle\SettingBundle\Repository\SettingRepository;
-use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 
 #[ORM\Entity(repositoryClass: SettingRepository::class)]
 #[ORM\Table(name: 'lucca_setting')]
@@ -77,6 +78,10 @@ class Setting implements LoggableInterface
     #[ORM\Column(type: Types::SMALLINT)]
     #[Assert\NotNull(message: 'constraint.not_null')]
     private int $position;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\Column(nullable: true)]
     private ?string $value = null;
@@ -217,6 +222,18 @@ class Setting implements LoggableInterface
     public function setAccessType(string $accessType): self
     {
         $this->accessType = $accessType;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }

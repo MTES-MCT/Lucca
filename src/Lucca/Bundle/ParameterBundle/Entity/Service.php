@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Lucca\Bundle\CoreBundle\Entity\{ToggleableTrait, TimestampableTrait};
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\ParameterBundle\Repository\ServiceRepository;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 #[ORM\Entity(repositoryClass: ServiceRepository::class)]
 #[ORM\Table(name: 'lucca_parameter_service')]
@@ -39,6 +40,10 @@ class Service implements LoggableInterface
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 100, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private string $name;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\ManyToOne(targetEntity: Town::class)]
     #[ORM\JoinColumn(nullable: true)]
@@ -89,6 +94,18 @@ class Service implements LoggableInterface
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }

@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Lucca\Bundle\ContentBundle\Repository\SubAreaRepository;
 use Lucca\Bundle\CoreBundle\Entity\{TimestampableTrait, ToggleableTrait};
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 #[ORM\Entity(repositoryClass: SubAreaRepository::class)]
 #[ORM\Table(name: 'lucca_content_subarea')]
@@ -43,6 +44,10 @@ class SubArea implements LoggableInterface
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private string $name;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\Column(length: 60, unique: true, nullable: true)]
     #[Assert\NotNull(message: 'constraint.not_null')]
@@ -142,6 +147,18 @@ class SubArea implements LoggableInterface
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }

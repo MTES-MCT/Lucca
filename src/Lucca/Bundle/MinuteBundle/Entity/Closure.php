@@ -11,8 +11,10 @@ namespace Lucca\Bundle\MinuteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\MinuteBundle\Repository\ClosureRepository;
+
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -60,6 +62,10 @@ class Closure implements LoggableInterface
     #[ORM\Column(name: 'dateClosing', type: 'datetime')]
     #[Assert\DateTime(message: 'constraint.datetime')]
     private \DateTime $dateClosing;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\Column(name: 'natureRegularized', type: 'string', length: 50, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
@@ -140,6 +146,18 @@ class Closure implements LoggableInterface
     public function getDateClosing(): \DateTime
     {
         return $this->dateClosing;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
     }
 
     public function setNatureRegularized(?string $natureRegularized): self

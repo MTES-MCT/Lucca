@@ -11,15 +11,16 @@ namespace Lucca\Bundle\MinuteBundle\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Lucca\Bundle\AdherentBundle\Entity\Adherent;
-use Lucca\Bundle\AdherentBundle\Entity\Agent;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
+use Lucca\Bundle\AdherentBundle\Entity\{Adherent, Agent};
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\DecisionBundle\Entity\Decision;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\MinuteBundle\Repository\MinuteRepository;
 use Lucca\Bundle\ParameterBundle\Entity\Tribunal;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Minute
@@ -80,6 +81,10 @@ class Minute implements LoggableInterface
     #[ORM\OneToOne(targetEntity: Plot::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private Plot $plot;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\ManyToOne(targetEntity: Tribunal::class)]
     #[ORM\JoinColumn(nullable: true)]
@@ -333,6 +338,18 @@ class Minute implements LoggableInterface
     public function getPlot(): Plot
     {
         return $this->plot;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
     }
 
     public function setTribunal(?Tribunal $tribunal): self

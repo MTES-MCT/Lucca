@@ -21,6 +21,7 @@ use Lucca\Bundle\DecisionBundle\Repository\DecisionRepository;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Lucca\Bundle\ParameterBundle\Entity\Tribunal;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 #[ORM\Entity(repositoryClass: DecisionRepository::class)]
 #[ORM\Table(name: "lucca_minute_decision")]
@@ -52,6 +53,10 @@ class Decision implements LoggableInterface
     #[ORM\Column]
     #[Assert\Type(type: "bool", message: "constraint.type")]
     private bool $appeal = false;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\ManyToOne(targetEntity: Commission::class, cascade: ["persist", "remove"])]
     private ?Commission $appealCommission = null;
@@ -210,6 +215,18 @@ class Decision implements LoggableInterface
     public function setAppealCommission(?Commission $appealCommission): self
     {
         $this->appealCommission = $appealCommission;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }

@@ -19,8 +19,10 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Lucca\Bundle\CoreBundle\Entity\{TimestampableTrait, ToggleableTrait};
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\MediaBundle\Entity\{MediaAsyncInterface, Media};
-use Lucca\Bundle\ParamaterBundle\Entity\{Town, Intercommunal, Service};
 use Lucca\Bundle\UserBundle\Entity\User;
+use Lucca\Bundle\AdherentBundle\Repository\AdherentRepository;
+use Lucca\Bundle\ParameterBundle\Entity\{Town, Intercommunal, Service};
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 #[ORM\Entity(repositoryClass: AdherentRepository::class)]
 #[ORM\Table(name: 'lucca_adherent')]
@@ -64,6 +66,10 @@ class Adherent implements LoggableInterface, MediaAsyncInterface
     #[ORM\Column(length: 50)]
     #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private string $function;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\Column(length: 60, nullable: true)]
     #[Assert\Length(min: 2, max: 60, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
@@ -312,6 +318,18 @@ class Adherent implements LoggableInterface, MediaAsyncInterface
     public function setFirstname(string $firstname): self
     {
         $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }

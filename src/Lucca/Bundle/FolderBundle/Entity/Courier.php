@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\FolderBundle\Repository\CourierRepository;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 #[ORM\Entity(repositoryClass: CourierRepository::class)]
 #[ORM\Table(name: 'lucca_minute_courier')]
@@ -35,6 +36,10 @@ class Courier implements LoggableInterface
     #[ORM\OneToOne(targetEntity: Folder::class, mappedBy: "courier", cascade: ["persist", "remove"])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private Folder $folder;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Assert\DateTime(message: 'constraint.datetime')]
@@ -95,6 +100,18 @@ class Courier implements LoggableInterface
     public function setFolder(Folder $folder): self
     {
         $this->folder = $folder;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }

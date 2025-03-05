@@ -19,6 +19,7 @@ use Lucca\Bundle\FolderBundle\Entity\Folder;
 use Lucca\Bundle\MinuteBundle\Repository\ControlRepository;
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 /**
  * Control
@@ -83,6 +84,10 @@ class Control implements LoggableInterface
         inverseJoinColumns: [new ORM\JoinColumn(name: 'agent_attendant_id', referencedColumnName: 'id')]
     )]
     private ArrayCollection $agentAttendants;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\Column(name: 'type', type: 'string', length: 25)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
@@ -512,6 +517,18 @@ class Control implements LoggableInterface
     public function getEditions(): ArrayCollection
     {
         return $this->editions;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
     }
 
     public function setFolder(?Folder $folder): self

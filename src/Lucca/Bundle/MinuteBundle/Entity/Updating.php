@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\MinuteBundle\Repository\UpdatingRepository;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 /**
  * Updating
@@ -52,7 +53,11 @@ class Updating implements LoggableInterface
         joinColumns: [new ORM\JoinColumn(name: 'updating_id', referencedColumnName: 'id')],
         inverseJoinColumns: [new ORM\JoinColumn(name: 'control_id', referencedColumnName: 'id')]
     )]
-    private $controls;
+    private ArrayCollection $controls;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\Column(name: 'nature', type: 'string', length: 30, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
@@ -112,6 +117,18 @@ class Updating implements LoggableInterface
     public function getNum(): string
     {
         return $this->num;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
     }
 
     public function setNature(?string $nature): self

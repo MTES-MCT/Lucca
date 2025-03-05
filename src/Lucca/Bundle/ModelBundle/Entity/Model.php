@@ -17,6 +17,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\CoreBundle\Entity\{TimestampableTrait, ToggleableTrait};
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
+use Lucca\Bundle\ModelBundle\Repository\ModelRepository;
+use Lucca\Bundle\ParameterBundle\Entity\Intercommunal;
+use Lucca\Bundle\ParameterBundle\Entity\Town;
 
 #[ORM\Entity(repositoryClass: ModelRepository::class)]
 #[ORM\Table(name: 'lucca_model')]
@@ -102,6 +106,10 @@ class Model implements LoggableInterface
 
     #[ORM\ManyToOne(targetEntity: Page::class, cascade: ['persist', 'remove'])]
     private Page $recto;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\ManyToOne(targetEntity: Page::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
@@ -328,6 +336,18 @@ class Model implements LoggableInterface
     public function setRecto(Page $recto): self
     {
         $this->recto = $recto;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }

@@ -11,10 +11,12 @@ namespace Lucca\Bundle\MinuteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\MinuteBundle\Repository\MinuteStoryRepository;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 /**
  * MinuteStory
@@ -67,6 +69,10 @@ class MinuteStory implements LoggableInterface
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     #[ORM\JoinColumn(nullable: false)]
     private Adherent $updatingBy;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     /************************************************************************ Custom functions ************************************************************************/
 
@@ -132,5 +138,17 @@ class MinuteStory implements LoggableInterface
     public function getUpdatingBy(): Adherent
     {
         return $this->updatingBy;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
     }
 }

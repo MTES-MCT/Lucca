@@ -11,9 +11,11 @@ namespace Lucca\Bundle\MinuteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\MinuteBundle\Repository\HumanRepository;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 /**
  * Human
@@ -76,6 +78,10 @@ class Human implements LoggableInterface
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 30, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private string $person;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\Column(name: 'address', type: 'text', nullable: true)]
     private ?string $address = null;
@@ -199,6 +205,18 @@ class Human implements LoggableInterface
     public function getCompany(): ?string
     {
         return $this->company;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
     }
 
     public function setAddressCompany(?string $addressCompany): self

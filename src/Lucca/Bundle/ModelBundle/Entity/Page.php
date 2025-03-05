@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
+use Lucca\Bundle\ModelBundle\Repository\PageRepository;
 
 #[ORM\Entity(repositoryClass: PageRepository::class)]
 #[ORM\Table(name: 'lucca_model_page')]
@@ -40,6 +42,10 @@ class Page implements LoggableInterface
     #[ORM\Column]
     #[ORM\GeneratedValue]
     private ?int $id = null;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
@@ -185,6 +191,18 @@ class Page implements LoggableInterface
     public function setId(?int $id): self
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }

@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Lucca\Bundle\ContentBundle\Repository\AreaRepository;
 use Lucca\Bundle\CoreBundle\Entity\{TimestampableTrait, ToggleableTrait};
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 #[ORM\Entity(repositoryClass: AreaRepository::class)]
 #[ORM\Table(name: 'lucca_content_area')]
@@ -46,6 +47,10 @@ class Area implements LoggableInterface
     #[ORM\Column(length: 30)]
     #[Assert\NotNull(message: 'constraint.not_null')]
     private string $position;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     /************************************************************************ Custom functions ************************************************************************/
 
@@ -111,6 +116,18 @@ class Area implements LoggableInterface
     public function setPosition(string $position): self
     {
         $this->position = $position;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }

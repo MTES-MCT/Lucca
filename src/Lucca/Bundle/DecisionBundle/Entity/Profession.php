@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\DecisionBundle\Repository\ProfessionRepository;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 #[ORM\Entity(repositoryClass: ProfessionRepository::class)]
 #[ORM\Table(name: "lucca_minute_profession")]
@@ -40,6 +41,10 @@ class Profession implements LoggableInterface
     #[Assert\Type(type: "string", message: "constraint.type")]
     #[Assert\Length(min: 2, max: 50, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
     private string $company;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\Column(nullable: true)]
     #[Assert\Type(type: "int", message: "constraint.type")]
@@ -82,6 +87,18 @@ class Profession implements LoggableInterface
     public function setCompany(string $company): self
     {
         $this->company = $company;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }

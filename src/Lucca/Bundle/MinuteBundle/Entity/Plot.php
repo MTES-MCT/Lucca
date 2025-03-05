@@ -17,6 +17,7 @@ use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\ParameterBundle\Entity\Town;
 use Lucca\Bundle\MinuteBundle\Repository\PlotRepository;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 /**
  * Plot
@@ -81,6 +82,10 @@ class Plot implements LoggableInterface
 
     #[ORM\Column(name: 'longitude', type: 'decimal', precision: 40, scale: 30, nullable: true)]
     private ?string $longitude = null;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\Column(name: 'locationFrom', type: 'string', length: 50, nullable: false)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
@@ -235,6 +240,18 @@ class Plot implements LoggableInterface
     public function getLocationFrom(): string
     {
         return $this->locationFrom;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
     }
 
     public function setTown(Town $town): self

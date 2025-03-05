@@ -21,6 +21,7 @@ use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\FolderBundle\Repository\MayorLetterRepository;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\ParameterBundle\Entity\Town;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 #[ORM\Table(name: "lucca_minute_mayor_letter")]
 #[ORM\Entity(repositoryClass: MayorLetterRepository::class)]
@@ -52,6 +53,10 @@ class MayorLetter implements LoggableInterface
     #[Assert\Type(type: "string", message: "constraint.type")]
     #[Assert\Length(min: 2, max: 255, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
     private string $address;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
@@ -126,6 +131,8 @@ class MayorLetter implements LoggableInterface
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getAddress(): string
@@ -136,6 +143,20 @@ class MayorLetter implements LoggableInterface
     public function setAddress(string $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
+
+        return $this;
     }
 
     public function getDateSended(): ?DateTime
@@ -146,6 +167,8 @@ class MayorLetter implements LoggableInterface
     public function setDateSended(?DateTime $dateSended): self
     {
         $this->dateSended = $dateSended;
+
+        return $this;
     }
 
     public function getTown(): Town
@@ -156,6 +179,8 @@ class MayorLetter implements LoggableInterface
     public function setTown(Town $town): self
     {
         $this->town = $town;
+
+        return $this;
     }
 
     public function getAdherent(): Adherent
@@ -166,6 +191,8 @@ class MayorLetter implements LoggableInterface
     public function setAdherent(Adherent $adherent): self
     {
         $this->adherent = $adherent;
+
+        return $this;
     }
 
     public function getAgent(): ?Agent
@@ -176,6 +203,8 @@ class MayorLetter implements LoggableInterface
     public function setAgent(?Agent $agent): self
     {
         $this->agent = $agent;
+
+        return $this;
     }
 
     public function getFolders(): Collection

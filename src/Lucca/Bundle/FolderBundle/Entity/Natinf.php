@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Lucca\Bundle\CoreBundle\Entity\{TimestampableTrait, ToggleableTrait};
 use Lucca\Bundle\FolderBundle\Repository\NatinfRepository;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 #[ORM\Table(name: "lucca_natinf")]
 #[ORM\Entity(repositoryClass: NatinfRepository::class)]
@@ -53,6 +54,10 @@ class Natinf implements LoggableInterface
         inverseJoinColumns: [new ORM\JoinColumn(name: "tag_id", referencedColumnName: "id")]
     )]
     private Collection $tags;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Department $department;
 
     #[ORM\ManyToOne(targetEntity: Natinf::class)]
     private ?Natinf $parent = null;
@@ -168,6 +173,18 @@ class Natinf implements LoggableInterface
     public function removeTag(Tag $tag): self
     {
         $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }
