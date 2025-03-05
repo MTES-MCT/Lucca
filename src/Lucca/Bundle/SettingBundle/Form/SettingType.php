@@ -22,7 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\{
 };
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Lucca\SettingBundle\Entity\Setting;
+use Lucca\Bundle\SettingBundle\Entity\Setting;
 
 class SettingType extends AbstractType
 {

@@ -1,17 +1,17 @@
 <?php
 
-namespace Lucca\MediaBundle\Command;
+namespace Lucca\Bundle\MediaBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand,
     Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Output\OutputInterface;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Lucca\MediaBundle\Entity\Category;
-use Lucca\MediaBundle\Entity\Extension;
-use Lucca\MediaBundle\Entity\Storager;
-use Lucca\MediaBundle\Namer\FolderNamerInterface;
-use Lucca\MediaBundle\Namer\MediaNamerInterface;
+use Lucca\Bundle\MediaBundle\Entity\Category;
+use Lucca\Bundle\MediaBundle\Entity\Extension;
+use Lucca\Bundle\MediaBundle\Entity\Storager;
+use Lucca\Bundle\MediaBundle\Namer\FolderNamerInterface;
+use Lucca\Bundle\MediaBundle\Namer\MediaNamerInterface;
 
 /**
  * Class InitializationCommand

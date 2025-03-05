@@ -198,9 +198,6 @@
             "config/routes/security.yaml"
         ]
     },
-    "symfony/swiftmailer-bundle": {
-        "version": "v2.3.8"
-    },
     "symfony/translation": {
         "version": "7.2",
         "recipe": {

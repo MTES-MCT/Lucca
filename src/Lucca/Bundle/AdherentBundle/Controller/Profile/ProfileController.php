@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\Routing\Annotation\Route;
 
-use Lucca\AdherentBundle\Form\ProfileType;
+use Lucca\Bundle\AdherentBundle\Form\ProfileType;
 
 /**
  * Class ProfileController

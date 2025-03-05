@@ -11,7 +11,7 @@
 namespace Lucca\Bundle\CoreBundle\Service;
 
 use Lucca\Bundle\CoreBundle\Utils\Canonalizer;
-use Lucca\SettingBundle\Manager\SettingManager;
+use Lucca\Bundle\SettingBundle\Manager\SettingManager;
 
 class GeoLocator
 {

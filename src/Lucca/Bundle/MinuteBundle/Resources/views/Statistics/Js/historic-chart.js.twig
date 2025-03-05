@@ -18,14 +18,14 @@ const historicChart = new Chart(historicCtx, {
             {#-Don't use a loop for in oreder to mange dataset case by case
             #-and in order to display data in specifc order wothout adding complexity in manager-#}
             {################################# STATUS_OPEN ##################################################}
-            {% if constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_OPEN') in stories['stories']|keys %}
+            {% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_OPEN') in stories['stories']|keys %}
             {
                 label: "{{ 'label.complaint' | trans }}",
                 backgroundColor:
                     "#f9902c"
                 ,
                 data: [
-                    {% for data in stories['stories'][constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_OPEN')] %}
+                    {% for data in stories['stories'][constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_OPEN')] %}
                     "{{ data }}"
                     {% if not loop.last %}
                     ,
@@ -35,14 +35,14 @@ const historicChart = new Chart(historicCtx, {
             },
             {% endif %}
             {################################# STATUS_CONTROL ##################################################}
-            {% if constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_CONTROL') in stories['stories']|keys %}
+            {% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_CONTROL') in stories['stories']|keys %}
             {
-                label: "{{ constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_CONTROL') | trans }}",
+                label: "{{ constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_CONTROL') | trans }}",
                 backgroundColor:
                     "#5b2500"
                 ,
                 data: [
-                    {% for data in stories['stories'][constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_CONTROL')] %}
+                    {% for data in stories['stories'][constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_CONTROL')] %}
                     "{{ data }}"
                     {% if not loop.last %}
                     ,
@@ -52,14 +52,14 @@ const historicChart = new Chart(historicCtx, {
             },
             {% endif %}
             {################################# STATUS_FOLDER ##################################################}
-            {% if constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_FOLDER') in stories['stories']|keys %}
+            {% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_FOLDER') in stories['stories']|keys %}
             {
-                label: "{{ constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_FOLDER') | trans }}",
+                label: "{{ constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_FOLDER') | trans }}",
                 backgroundColor:
                     "#e34c4a"
                 ,
                 data: [
-                    {% for data in stories['stories'][constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_FOLDER')] %}
+                    {% for data in stories['stories'][constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_FOLDER')] %}
                     "{{ data }}"
                     {% if not loop.last %}
                     ,
@@ -70,14 +70,14 @@ const historicChart = new Chart(historicCtx, {
             {% endif %}
             {################################# STATUS_COURIER ##################################################}
             {#Todo uncomment if needed#}
-            {#{% if constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_COURIER') in stories['stories']|keys %}#}
+            {#{% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_COURIER') in stories['stories']|keys %}#}
             {#{#}
-            {#label: "{{ constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_COURIER') | trans }}",#}
+            {#label: "{{ constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_COURIER') | trans }}",#}
             {#backgroundColor:#}
             {#"#afafaf"#}
             {#,#}
             {#data: [#}
-            {#{% for data in stories['stories'][constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_COURIER')] %}#}
+            {#{% for data in stories['stories'][constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_COURIER')] %}#}
             {#"{{ data }}"#}
             {#{% if not loop.last %}#}
             {#,#}
@@ -88,14 +88,14 @@ const historicChart = new Chart(historicCtx, {
             {#{% endif %}#}
             {################################# STATUS_AIT ##################################################}
             {#Todo uncomment if needed#}
-            {#{% if constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_AIT') in stories['stories']|keys %}#}
+            {#{% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_AIT') in stories['stories']|keys %}#}
             {#{#}
-            {#label: "{{ constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_AIT') | trans }}",#}
+            {#label: "{{ constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_AIT') | trans }}",#}
             {#backgroundColor:#}
             {#"#caf270"#}
             {#,#}
             {#data: [#}
-            {#{% for data in stories['stories'][constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_AIT')] %}#}
+            {#{% for data in stories['stories'][constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_AIT')] %}#}
             {#"{{ data }}"#}
             {#{% if not loop.last %}#}
             {#,#}
@@ -106,14 +106,14 @@ const historicChart = new Chart(historicCtx, {
             {#{% endif %}#}
             {################################# STATUS_UPDATING ##################################################}
             {#Todo uncomment if needed#}
-            {#{% if constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_UPDATING') in stories['stories']|keys %}#}
+            {#{% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_UPDATING') in stories['stories']|keys %}#}
             {#{#}
-            {#label: "{{ constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_UPDATING') | trans }}",#}
+            {#label: "{{ constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_UPDATING') | trans }}",#}
             {#backgroundColor:#}
             {#"#00a585"#}
             {#,#}
             {#data: [#}
-            {#{% for data in stories['stories'][constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_UPDATING')] %}#}
+            {#{% for data in stories['stories'][constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_UPDATING')] %}#}
             {#"{{ data }}"#}
             {#{% if not loop.last %}#}
             {#,#}
@@ -123,14 +123,14 @@ const historicChart = new Chart(historicCtx, {
             {#},#}
             {#{% endif %}#}
             {################################# STATUS_DECISION ##################################################}
-            {% if constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_DECISION') in stories['stories']|keys %}
+            {% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_DECISION') in stories['stories']|keys %}
             {
-                label: "{{ constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_DECISION') | trans }}",
+                label: "{{ constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_DECISION') | trans }}",
                 backgroundColor:
                     "#3a81a0"
                 ,
                 data: [
-                    {% for data in stories['stories'][constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_DECISION')] %}
+                    {% for data in stories['stories'][constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_DECISION')] %}
                     "{{ data }}"
                     {% if not loop.last %}
                     ,
@@ -141,14 +141,14 @@ const historicChart = new Chart(historicCtx, {
             {% endif %}
             {################################# STATUS_CLOSURE ##################################################}
             {#Todo uncomment if needed#}
-            {#{% if constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_CLOSURE') in stories['stories']|keys %}#}
+            {#{% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_CLOSURE') in stories['stories']|keys %}#}
             {#{#}
-            {#label: "{{ constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_CLOSURE') | trans }}",#}
+            {#label: "{{ constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_CLOSURE') | trans }}",#}
             {#backgroundColor:#}
             {#"#49c14a"#}
             {#,#}
             {#data: [#}
-            {#{% for data in stories['stories'][constant('Lucca\\MinuteBundle\\Entity\\MinuteStory::STATUS_CLOSURE')] %}#}
+            {#{% for data in stories['stories'][constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_CLOSURE')] %}#}
             {#"{{ data }}"#}
             {#{% if not loop.last %}#}
             {#,#}

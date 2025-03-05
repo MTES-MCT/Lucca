@@ -15,8 +15,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\Routing\Annotation\Route;
 
-use Lucca\AdherentBundle\Entity\Agent;
-use Lucca\AdherentBundle\Form\AgentType;
+use Lucca\Bundle\AdherentBundle\Entity\Agent;
+use Lucca\Bundle\AdherentBundle\Form\AgentType;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**

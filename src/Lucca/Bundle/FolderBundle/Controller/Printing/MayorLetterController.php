@@ -19,7 +19,7 @@ use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Updating;
 use Lucca\Bundle\MinuteBundle\Utils\MayorLetterManager;
 use Lucca\Bundle\ModelBundle\Printer\PagePrinter;
 use Lucca\Bundle\ModelBundle\Service\ModelFinder;
-use Lucca\MinuteBundle\Printer\ControlPrinter;
+use Lucca\Bundle\MinuteBundle\Printer\ControlPrinter;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfReader\PdfReaderException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

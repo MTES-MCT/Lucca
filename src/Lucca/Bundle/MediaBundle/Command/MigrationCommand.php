@@ -1,6 +1,6 @@
 <?php
 
-namespace Lucca\MediaBundle\Command;
+namespace Lucca\Bundle\MediaBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand,
     Symfony\Component\Console\Input\InputInterface,

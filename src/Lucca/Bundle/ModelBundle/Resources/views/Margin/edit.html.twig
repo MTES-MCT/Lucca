@@ -169,7 +169,7 @@
 
         function toggleDisplay(self) {
             let form = $(self).closest('.js-bloc');
-            if ($(self).val() === "{{ constant('Lucca\\ModelBundle\\Entity\\Bloc::TYPE_CONTENT_HTML') }}") {
+            if ($(self).val() === "{{ constant('Lucca\\Bundle\\ModelBundle\\Entity\\Bloc::TYPE_CONTENT_HTML') }}") {
                 $(form.find('.js-htmlContent')).show('slow');
                 $(form.find('.js-mediaContent')).hide('slow');
             } else {
