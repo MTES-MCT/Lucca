@@ -17,6 +17,7 @@ services:
         class: Lucca\Bundle\LogBundle\EventSubscriber\LogCreatorSubscriber
         arguments:
             - "@doctrine.orm.entity_manager"
+            - "@doctrine"
             - "@security.token_storage"
         tags:
             - { name: kernel.event_subscriber, connection: default }

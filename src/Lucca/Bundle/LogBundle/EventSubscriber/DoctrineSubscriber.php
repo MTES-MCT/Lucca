@@ -48,7 +48,7 @@ class DoctrineSubscriber
             return false;
         }
 
-        $em = $args->getEntityManager();
+        $em = $args->getObjectManager();
         $uow = $em->getUnitOfWork();
 
         $this->entities = [];
