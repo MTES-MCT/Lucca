@@ -12,6 +12,7 @@ namespace Lucca\Bundle\MinuteBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -125,7 +126,7 @@ class Control implements LoggableInterface
     #[Assert\DateTime(message: 'constraint.datetime')]
     private ?\DateTime $dateControl = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
     #[Assert\Time(message: 'constraint.time')]
     private ?\DateTime $hourControl = null;
 
@@ -151,6 +152,7 @@ class Control implements LoggableInterface
     private Collection $editions;
 
     #[ORM\OneToOne(targetEntity: Folder::class, inversedBy: 'control')]
+    #[ORM\JoinColumn]
     private ?Folder $folder = null;
 
     /************************************************************************ Custom functions ************************************************************************/

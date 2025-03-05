@@ -142,6 +142,7 @@ class Minute implements LoggableInterface
     private bool $isClosed = false;
 
     #[ORM\OneToOne(targetEntity: Closure::class, inversedBy: 'minute')]
+    #[ORM\JoinColumn]
     private ?Closure $closure = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

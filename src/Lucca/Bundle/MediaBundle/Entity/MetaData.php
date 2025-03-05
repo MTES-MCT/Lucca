@@ -45,8 +45,7 @@ class MetaData implements LoggableInterface
     private string $value;
 
     #[ORM\ManyToOne(targetEntity: Media::class, inversedBy: 'metas')]
-    #[ORM\JoinColumn(nullable: false)]
-    private Media $media;
+    private ?Media $media = null;
 
     /************************************************************************* Custom functions *****************************************************************************/
 
@@ -101,12 +100,12 @@ class MetaData implements LoggableInterface
         return $this;
     }
 
-    public function getMedia(): Media
+    public function getMedia(): ?Media
     {
         return $this->media;
     }
 
-    public function setMedia(Media $media): self
+    public function setMedia(?Media $media): self
     {
         $this->media = $media;
 

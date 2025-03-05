@@ -20,9 +20,9 @@ trait TimestampableTrait
     #[Assert\DateTime(message: 'constraint.datetime')]
     protected DateTime $createdAt;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: 'constraint.datetime')]
-    protected DateTime $updatedAt;
+    protected ?DateTime $updatedAt;
 
     /********************************************* Trait functions *********************************************/
 
@@ -36,14 +36,14 @@ trait TimestampableTrait
         return $this->updatedAt;
     }
 
-    public function setCreatedAt(DateTime $createdAt): self
+    public function setCreatedAt(?DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function setUpdatedAt(DateTime $updatedAt): self
+    public function setUpdatedAt(?DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 

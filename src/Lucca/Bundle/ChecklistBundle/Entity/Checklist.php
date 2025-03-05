@@ -53,7 +53,7 @@ class Checklist implements LoggableInterface
     private ?string $status = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $comment = null;
+    private ?string $description = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 

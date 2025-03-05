@@ -73,7 +73,7 @@ class Page implements LoggableInterface
     #[Assert\Length(min: 3, max: 20, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private ?string $background = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(name: 'css_inline', type: Types::TEXT, nullable: true)]
     private ?string $cssInline = null;
 
     /// ------------------------------------------------------------
@@ -84,19 +84,19 @@ class Page implements LoggableInterface
     /// $marginTop , $marginBottom , $marginLeft , $marginRight
     /// ------------------------------------------------------------
 
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    #[ORM\Column(name: 'header_size', type: Types::SMALLINT, nullable: true)]
     #[Assert\Type(type: 'int', message: 'constraint.type')]
     private ?int $headerSize = 0;
 
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    #[ORM\Column(name: 'footer_size', type: Types::SMALLINT, nullable: true)]
     #[Assert\Type(type: 'int', message: 'constraint.type')]
     private ?int $footerSize = 0;
 
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    #[ORM\Column(name: 'left_size', type: Types::SMALLINT, nullable: true)]
     #[Assert\Type(type: 'int', message: 'constraint.type')]
     private ?int $leftSize = 0;
 
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    #[ORM\Column(name: 'right_size', type: Types::SMALLINT, nullable: true)]
     #[Assert\Type(type: 'int', message: 'constraint.type')]
     private ?int $rightSize = 0;
 

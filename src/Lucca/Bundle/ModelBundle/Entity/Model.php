@@ -19,8 +19,7 @@ use Lucca\Bundle\CoreBundle\Entity\{TimestampableTrait, ToggleableTrait};
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Lucca\Bundle\ModelBundle\Repository\ModelRepository;
-use Lucca\Bundle\ParameterBundle\Entity\Intercommunal;
-use Lucca\Bundle\ParameterBundle\Entity\Town;
+use Lucca\Bundle\ParameterBundle\Entity\{Service, Intercommunal, Town};
 
 #[ORM\Entity(repositoryClass: ModelRepository::class)]
 #[ORM\Table(name: 'lucca_model')]
@@ -105,6 +104,7 @@ class Model implements LoggableInterface
     private string $layout;
 
     #[ORM\ManyToOne(targetEntity: Page::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
     private Page $recto;
 
     #[ORM\ManyToOne(targetEntity: Department::class)]
@@ -114,14 +114,14 @@ class Model implements LoggableInterface
     #[ORM\ManyToOne(targetEntity: Page::class, cascade: ['persist', 'remove'])]
     private ?Page $verso = null;
 
-    #[ORM\Column(type: Types::JSON)]
+    #[ORM\Column(name: 'privacy', type: Types::JSON)]
     private array $documents = [];
 
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private ?Adherent $owner = null;
 
-    #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    private ?Adherent $sharedService = null;
+    #[ORM\ManyToOne(targetEntity: Service::class)]
+    private ?Service $sharedService = null;
 
     #[ORM\ManyToOne(targetEntity: Intercommunal::class)]
     private ?Intercommunal $sharedIntercommunal = null;
@@ -383,12 +383,12 @@ class Model implements LoggableInterface
         return $this;
     }
 
-    public function getSharedService(): ?Adherent
+    public function getSharedService(): ?Service
     {
         return $this->sharedService;
     }
 
-    public function setSharedService(?Adherent $sharedService): self
+    public function setSharedService(?Service $sharedService): self
     {
         $this->sharedService = $sharedService;
 

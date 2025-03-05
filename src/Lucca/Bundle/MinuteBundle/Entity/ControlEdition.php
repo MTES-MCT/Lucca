@@ -17,6 +17,7 @@ use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 
 #[ORM\Table(name: 'lucca_minute_control_edition')]
+#[ORM\Entity]
 class ControlEdition implements LoggableInterface
 {
     /** Traits */

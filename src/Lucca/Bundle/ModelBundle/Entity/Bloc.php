@@ -64,19 +64,19 @@ class Bloc implements LoggableInterface, MediaListAsyncInterface
     #[ORM\JoinColumn(nullable: false)]
     private Department $department;
 
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    #[ORM\Column(name: 'header_size', type: Types::SMALLINT, nullable: true)]
     #[Assert\Type(type: 'int', message: 'constraint.type')]
     private ?int $headerSize = null;
 
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    #[ORM\Column(name: 'footer_size', type: Types::SMALLINT, nullable: true)]
     #[Assert\Type(type: 'int', message: 'constraint.type')]
     private ?int $footerSize = null;
 
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    #[ORM\Column(name: 'left_size', type: Types::SMALLINT, nullable: true)]
     #[Assert\Type(type: 'int', message: 'constraint.type')]
     private ?int $leftSize = null;
 
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    #[ORM\Column(name: 'right_size', type: Types::SMALLINT, nullable: true)]
     #[Assert\Type(type: 'int', message: 'constraint.type')]
     private ?int $rightSize = null;
 

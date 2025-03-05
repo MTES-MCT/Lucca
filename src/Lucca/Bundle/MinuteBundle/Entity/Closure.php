@@ -48,7 +48,6 @@ class Closure implements LoggableInterface
     private ?int $id = null;
 
     #[ORM\OneToOne(targetEntity: Minute::class, mappedBy: 'closure')]
-    #[ORM\JoinColumn(nullable: false)]
     private Minute $minute;
 
     #[ORM\Column(length: 35)]
@@ -87,7 +86,7 @@ class Closure implements LoggableInterface
     #[Assert\Length(min: 2, max: 255, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private ?string $reason = null;
 
-    #[ORM\Column(Types::TEXT, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $observation = null;
 
     /************************************************************************ Custom functions ************************************************************************/
