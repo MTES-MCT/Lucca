@@ -93,7 +93,8 @@ class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncIn
     private Collection $humansByFolder;
 
     #[ORM\ManyToOne(targetEntity: Department::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    /** TODO: set nullable for migration */
+    #[ORM\JoinColumn(nullable: true)]
     private Department $department;
 
     #[ORM\OneToOne(targetEntity: Courier::class, inversedBy: "folder", orphanRemoval: true)]

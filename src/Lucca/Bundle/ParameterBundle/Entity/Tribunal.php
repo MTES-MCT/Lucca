@@ -44,7 +44,8 @@ class Tribunal implements LoggableInterface
     private string $name;
 
     #[ORM\ManyToOne(targetEntity: Department::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    /** TODO: set nullable for migration */
+    #[ORM\JoinColumn(nullable: true)]
     private Department $department;
 
     #[ORM\ManyToOne(targetEntity: Town::class)]

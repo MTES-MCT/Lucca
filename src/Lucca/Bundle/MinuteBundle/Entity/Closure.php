@@ -60,7 +60,8 @@ class Closure implements LoggableInterface
     private \DateTime $dateClosing;
 
     #[ORM\ManyToOne(targetEntity: Department::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    /** TODO: set nullable for migration */
+    #[ORM\JoinColumn(nullable: true)]
     private Department $department;
 
     #[ORM\Column(length: 50, nullable: true)]
