@@ -119,7 +119,7 @@
         {% if updating is defined %}
             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                 {{ render(controller(
-                    'LuccaFolderBundle:RenderApi\\UpdatingWidget:displayControlsAndFolders',
+                    'Lucca\\Bundle\\MinuteBundle\\RenderApi\\UpdatingWidgetController::displayControlsAndFolders',
                     { 'updating_id': updating.id }
                 )) }}
             </div>

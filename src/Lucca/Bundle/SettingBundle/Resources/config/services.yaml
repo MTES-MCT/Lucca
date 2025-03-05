@@ -23,11 +23,12 @@ services:
         class: Lucca\Bundle\SettingBundle\Utils\ConverterCsvArray
 
     #################################################################
-    ## Twig
+    ## EventListener
     #################################################################
-    ## Twig extension to get a setting value from name
-    flit.twig.setting:
-        public:    false
-        class:     Lucca\Bundle\SettingBundle\Twig\SettingExtension
+
+    lucca.setting.listener:
+        class: Lucca\Bundle\SettingBundle\EventListener\SettingsListener
+        arguments:
+          - '@Lucca\Bundle\SettingBundle\Generator\SettingGenerator'
         tags:
-            - { name: twig.extension }
+            - { name: kernel.event_listener, event: kernel.request }

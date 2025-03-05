@@ -32,7 +32,7 @@ abstract class SettingManager
         return self::$settings[$name] ?? $default;
     }
 
-    public static function setAll(array $settings): array
+    public static function setAll(array $settings): void
     {
         self::$settings = $settings;
     }

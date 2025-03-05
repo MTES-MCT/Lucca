@@ -33,7 +33,9 @@ class UpdatingWidgetController extends AbstractController
 
     #[Route('display-controls-folders', name: 'lucca_updating_display_controls_folders', methods: ['GET'])]
     #[IsGranted('ROLE_LUCCA')]
-    public function displayControlsAndFoldersAction(#[MapEntity(id: 'updating_id')] Updating $updating): Response
+    public function displayControlsAndFoldersAction(
+        #[MapEntity(id: 'updating_id')] Updating $updating,
+    ): Response
     {
         $em = $this->entityManager;;
 
