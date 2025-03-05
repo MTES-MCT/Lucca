@@ -54,7 +54,8 @@ class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncIn
     #[ORM\JoinColumn(nullable: false)]
     private Minute $minute;
 
-    #[ORM\OneToOne(targetEntity: Control::class, mappedBy: "folder")]
+    #[ORM\OneToOne(targetEntity: Control::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private Control $control;
 
     #[ORM\ManyToMany(targetEntity: Natinf::class)]
@@ -97,7 +98,7 @@ class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncIn
     #[ORM\JoinColumn(nullable: true)]
     private Department $department;
 
-    #[ORM\OneToOne(targetEntity: Courier::class, inversedBy: "folder", orphanRemoval: true)]
+    #[ORM\OneToOne(targetEntity: Courier::class, orphanRemoval: true)]
     #[ORM\JoinColumn(onDelete: "CASCADE")]
     private ?Courier $courier = null;
 

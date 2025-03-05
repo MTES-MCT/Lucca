@@ -50,9 +50,9 @@ class Bloc implements LoggableInterface, MediaListAsyncInterface
     #[Assert\Type(type: 'int', message: 'constraint.type')]
     private int $width;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(name: 'type_content', length: 50)]
     #[Assert\NotNull(message: 'constraint.not_null')]
-    #[Assert\Type(type: 'string', message: 'constraint.type')]
+    #[Assert\Type( type: 'string', message: 'constraint.type')]
     #[Assert\Choice([
         Bloc::TYPE_CONTENT_HTML,
         Bloc::TYPE_CONTENT_MEDIA,
@@ -95,7 +95,7 @@ class Bloc implements LoggableInterface, MediaListAsyncInterface
     #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist', 'remove'])]
     private ?Media $backgroundImg = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(name: 'css_inline', type: Types::TEXT, nullable: true)]
     private ?string $cssInline = null;
 
     /************************************************************************ Custom functions ************************************************************************/

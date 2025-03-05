@@ -47,7 +47,8 @@ class Closure implements LoggableInterface
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\OneToOne(targetEntity: Minute::class, mappedBy: 'closure')]
+    #[ORM\OneToOne(targetEntity: Minute::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private Minute $minute;
 
     #[ORM\Column(length: 35)]
