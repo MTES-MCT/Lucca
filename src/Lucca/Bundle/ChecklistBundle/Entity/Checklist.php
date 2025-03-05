@@ -52,8 +52,7 @@ class Checklist implements LoggableInterface
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     private ?string $status = null;
 
-    // 65535 is the maximum length of a TEXT field in MySQL
-    #[ORM\Column(type: Types::TEXT, length: 65535, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment = null;
 
     /************************************************************************ Custom functions ************************************************************************/

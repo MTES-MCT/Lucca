@@ -48,7 +48,6 @@ class Tribunal implements LoggableInterface
     private Department $department;
 
     #[ORM\ManyToOne(targetEntity: Town::class)]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Town $office = null;
 
     #[ORM\Column(length: 80, nullable: true)]
@@ -59,7 +58,7 @@ class Tribunal implements LoggableInterface
     #[ORM\Column(length: 80, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 80, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
-    private ?string $address =null;
+    private ?string $address = null;
 
     #[ORM\Column(length: 80, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]

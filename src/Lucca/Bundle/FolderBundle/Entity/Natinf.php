@@ -31,7 +31,7 @@ class Natinf implements LoggableInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\Column]
     #[Assert\NotNull(message: "constraint.not_null")]
     #[Assert\Type(type: "int", message: "constraint.type")]
     private int $num;

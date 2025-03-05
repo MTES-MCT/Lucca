@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,6 +10,7 @@
 
 namespace Lucca\Bundle\MinuteBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
@@ -33,18 +35,18 @@ class ControlEdition implements LoggableInterface
     #[ORM\JoinColumn(nullable: false)]
     private Human $human;
 
-    #[ORM\Column(name: 'convocationEdited', type: 'boolean')]
+    #[ORM\Column]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
     private bool $convocationEdited = false;
 
-    #[ORM\Column(name: 'letterConvocation', type: 'text', nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $letterConvocation = null;
 
-    #[ORM\Column(name: 'accessEdited', type: 'boolean')]
+    #[ORM\Column]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
     private bool $accessEdited = false;
 
-    #[ORM\Column(name: 'letterAccess', type: 'text', nullable: true)]
+    #[ORM\Column(name: 'letterAccess', type: Types::TEXT, nullable: true)]
     private ?string $letterAccess = null;
 
     /************************************************************************ Custom functions ************************************************************************/

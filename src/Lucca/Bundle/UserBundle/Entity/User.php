@@ -63,7 +63,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(max: 180, maxMessage: 'constraint.length.max')]
     private string $emailCanonical;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
+    #[ORM\Column]
     #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
     private bool $enabled = true;
@@ -85,7 +85,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private ?string $plainPassword;
 
-    #[ORM\Column(name: 'last_login', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'last_login', nullable: true)]
     private ?DateTime $lastLogin = null;
 
     /**
@@ -94,11 +94,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(name: 'confirmation_token', length: 180, unique: true, nullable: true)]
     private ?string $confirmationToken = null;
 
-    #[ORM\Column(name: 'password_requested_at', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'password_requested_at', nullable: true)]
     private ?DateTime $passwordRequestedAt = null;
 
-    // 65535 is the maximum length of a TEXT field in MySQL
-    #[ORM\Column(type: Types::TEXT, length: 65535, options: ['comment' => '(DC2Type:array)'])]
+    #[ORM\Column(type: Types::TEXT, options: ['comment' => '(DC2Type:array)'])]
     private string $roles = '';
 
     /************************************************************************ Custom functions ************************************************************************/

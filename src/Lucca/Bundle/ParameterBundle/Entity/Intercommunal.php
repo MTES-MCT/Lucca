@@ -46,7 +46,6 @@ class Intercommunal implements LoggableInterface
     private Department $department;
 
     #[ORM\ManyToOne(targetEntity: Town::class)]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Town $office = null;
 
     /************************************************************************ Custom functions ************************************************************************/

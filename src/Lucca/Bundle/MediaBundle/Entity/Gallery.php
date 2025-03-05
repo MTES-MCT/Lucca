@@ -37,7 +37,7 @@ class Gallery implements LoggableInterface , MediaAsyncInterface, MediaListAsync
     private string $name;
 
     #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist', 'remove'])]
-    private Media $defaultMedia;
+    private ?Media $defaultMedia = null;
 
     #[ORM\JoinTable(name: 'lucca_media_gallery_linked_media')]
     #[ORM\JoinColumn(name: 'gallery_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -45,9 +45,8 @@ class Gallery implements LoggableInterface , MediaAsyncInterface, MediaListAsync
     #[ORM\ManyToMany(targetEntity: Media::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $medias;
 
-    // 65535 is the maximum length of a TEXT field in MySQL
-    #[ORM\Column(type: Types::TEXT, length: 65535, nullable: true)]
-    private ?string $description;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
 
     /************************************************************************* Custom functions *****************************************************************************/
 
@@ -125,12 +124,12 @@ class Gallery implements LoggableInterface , MediaAsyncInterface, MediaListAsync
         return $this;
     }
 
-    public function getDefaultMedia(): Media
+    public function getDefaultMedia(): ?Media
     {
         return $this->defaultMedia;
     }
 
-    public function setDefaultMedia(Media $defaultMedia): self
+    public function setDefaultMedia(?Media $defaultMedia): self
     {
         $this->defaultMedia = $defaultMedia;
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,7 +10,9 @@
 
 namespace Lucca\Bundle\MinuteBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -22,11 +25,6 @@ use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\MinuteBundle\Repository\MinuteRepository;
 use Lucca\Bundle\ParameterBundle\Entity\Tribunal;
 
-/**
- * Minute
- *
- * @package Lucca\Bundle\MinuteBundle\Entity
- */
 #[ORM\Table(name: 'lucca_minute')]
 #[ORM\Entity(repositoryClass: MinuteRepository::class)]
 class Minute implements LoggableInterface
@@ -52,15 +50,16 @@ class Minute implements LoggableInterface
     const STATUS_CLOSURE = 'choice.statusMinute.closure';
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'num', type: 'string', length: 20)]
+    #[ORM\Column(length: 20)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     private string $num;
 
-    #[ORM\Column(name: 'status', type: 'string', length: 50, nullable: true)]
+    /** This attr is on nullable=true because it is set automatically */
+    #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Choice(choices: [
         self::STATUS_OPEN,
@@ -87,16 +86,13 @@ class Minute implements LoggableInterface
     private Department $department;
 
     #[ORM\ManyToOne(targetEntity: Tribunal::class)]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Tribunal $tribunal;
+    private ?Tribunal $tribunal = null;
 
     #[ORM\ManyToOne(targetEntity: Tribunal::class)]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Tribunal $tribunalCompetent;
+    private ?Tribunal $tribunalCompetent = null;
 
     #[ORM\ManyToOne(targetEntity: Agent::class)]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Agent $agent;
+    private ?Agent $agent = null;
 
     #[ORM\ManyToMany(targetEntity: Human::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinTable(name: 'lucca_minute_linked_human',
@@ -114,16 +110,16 @@ class Minute implements LoggableInterface
     #[ORM\OneToMany(targetEntity: Decision::class, mappedBy: 'minute', orphanRemoval: true)]
     private Collection $decisions;
 
-    #[ORM\Column(name: 'dateOpening', type: 'datetime')]
+    #[ORM\Column]
     #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\DateTime(message: 'constraint.datetime')]
     private \DateTime $dateOpening;
 
-    #[ORM\Column(name: 'dateLastUpdate', type: 'datetime', nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: 'constraint.datetime')]
     private ?\DateTime $dateLastUpdate = null;
 
-    #[ORM\Column(name: 'dateComplaint', type: 'datetime', nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: 'constraint.datetime')]
     #[Assert\Range(
         minMessage: 'constraint.date.range.min', maxMessage: 'constraint.date.range.max',
@@ -132,7 +128,7 @@ class Minute implements LoggableInterface
     )]
     private ?\DateTime $dateComplaint = null;
 
-    #[ORM\Column(name: 'nameComplaint', type: 'string', length: 60, nullable: true)]
+    #[ORM\Column(length: 60, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(
         min: 2, max: 60,
@@ -141,15 +137,14 @@ class Minute implements LoggableInterface
     )]
     private ?string $nameComplaint = null;
 
-    #[ORM\Column(name: 'isClosed', type: 'boolean')]
+    #[ORM\Column]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
     private bool $isClosed = false;
 
     #[ORM\OneToOne(targetEntity: Closure::class, inversedBy: 'minute')]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Closure $closure = null;
 
-    #[ORM\Column(name: 'reporting', type: 'text', nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $reporting = null;
 
     #[ORM\Column(name: 'origin', type: 'string', length: 30, nullable: true)]
@@ -165,12 +160,14 @@ class Minute implements LoggableInterface
     private ?string $origin = null;
 
     #[ORM\OneToMany(targetEntity: MinuteStory::class, mappedBy: 'minute', orphanRemoval: true)]
-    private $historic;
+    private Collection $historic;
 
     /************************************************************************ Custom functions ************************************************************************/
 
     public function __construct()
     {
+        $this->historic = new ArrayCollection();
+
         $this->dateOpening = new \DateTime('now');
         $this->origin = self::ORIGIN_AGENT;
         $this->status = self::STATUS_OPEN;
@@ -208,6 +205,9 @@ class Minute implements LoggableInterface
                 ->addViolation();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getLogName(): string
     {
         return 'Dossier';
@@ -480,7 +480,7 @@ class Minute implements LoggableInterface
         return $this->historic->removeElement($historic);
     }
 
-    public function getHistoric()
+    public function getHistoric(): Collection
     {
         return $this->historic;
     }

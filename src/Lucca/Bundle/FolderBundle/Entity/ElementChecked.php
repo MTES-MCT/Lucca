@@ -40,7 +40,7 @@ class ElementChecked implements LoggableInterface, MediaAsyncInterface
     #[Assert\Length(min: 2, max: 255, minMessage: "constraint.length.min", maxMessage: "constraint.length.max")]
     private string $name;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
+    #[ORM\Column]
     #[Assert\NotNull(message: "constraint.not_null")]
     #[Assert\Type(type: "bool", message: "constraint.type")]
     private bool $state = false;
@@ -52,7 +52,7 @@ class ElementChecked implements LoggableInterface, MediaAsyncInterface
     #[ORM\ManyToOne(targetEntity: Media::class, cascade: ["persist"])]
     private ?Media $image = null;
 
-    #[ORM\Column( type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment = null;
 
     /************************************************************************ Custom functions ************************************************************************/

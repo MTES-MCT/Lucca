@@ -42,7 +42,7 @@ class Decision implements LoggableInterface
 
     #[ORM\ManyToOne(targetEntity: Minute::class, inversedBy: "decisions")]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Minute $minute = null;
+    private Minute $minute;
 
     #[ORM\ManyToOne(targetEntity: Tribunal::class)]
     private ?Tribunal $tribunal = null;
@@ -78,7 +78,6 @@ class Decision implements LoggableInterface
     private ?bool $statusCassation = null;
 
     #[ORM\ManyToOne(targetEntity: Commission::class, cascade: ["persist", "remove"])]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Commission $cassationComission = null;
 
     #[ORM\Column(length: 35, nullable: true)]
@@ -108,24 +107,32 @@ class Decision implements LoggableInterface
     #[Assert\DateTime(message: "constraint.datetime")]
     private ?DateTime $dateNoticeDdtm = null;
 
-    #[ORM\ManyToMany(targetEntity: Penalty::class, cascade: ["persist", "remove"])]
     #[ORM\JoinTable(name: "lucca_minute_decision_linked_penalty")]
+    #[ORM\JoinColumn(name: 'decision_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'penalty_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: Penalty::class, cascade: ["persist", "remove"])]
     private Collection $penalties;
 
-    #[ORM\ManyToMany(targetEntity: Liquidation::class, cascade: ["persist", "remove"])]
     #[ORM\JoinTable(name: "lucca_minute_decision_linked_liquidation")]
+    #[ORM\JoinColumn(name: 'decision_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'liquidation_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: Liquidation::class, cascade: ["persist", "remove"])]
     private Collection $liquidations;
 
     #[ORM\Column(nullable: true)]
     #[Assert\Type(type: "int", message: "constraint.type")]
     private ?int $totalPenaltyRecovery = null;
 
-    #[ORM\ManyToMany(targetEntity: PenaltyAppeal::class, cascade: ["persist", "remove"])]
     #[ORM\JoinTable(name: "lucca_minute_decision_linked_penalty_appeal")]
+    #[ORM\JoinColumn(name: 'decision_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'penalty_appeal_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: PenaltyAppeal::class, cascade: ["persist", "remove"])]
     private Collection $appealPenalties;
 
-    #[ORM\ManyToMany(targetEntity: Contradictory::class, cascade: ["persist", "remove"])]
     #[ORM\JoinTable(name: "lucca_minute_decision_linked_contradictory")]
+    #[ORM\JoinColumn(name: 'decision_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'contradictory_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: Contradictory::class, cascade: ["persist", "remove"])]
     private Collection $contradictories;
 
     #[ORM\OneToOne(targetEntity: Expulsion::class, mappedBy: "decision", cascade: ["persist", "remove"])]
@@ -159,12 +166,12 @@ class Decision implements LoggableInterface
         return $this->id;
     }
 
-    public function getMinute(): ?Minute
+    public function getMinute(): Minute
     {
         return $this->minute;
     }
 
-    public function setMinute(?Minute $minute): self
+    public function setMinute(Minute $minute): self
     {
         $this->minute = $minute;
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -18,11 +19,6 @@ use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\MinuteBundle\Repository\MinuteStoryRepository;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
-/**
- * MinuteStory
- *
- * @package Lucca\Bundle\MinuteBundle\Entity
- */
 #[ORM\Table(name: 'lucca_minute_minute_story')]
 #[ORM\Entity(repositoryClass: MinuteStoryRepository::class)]
 class MinuteStory implements LoggableInterface
@@ -40,19 +36,19 @@ class MinuteStory implements LoggableInterface
     const STATUS_CLOSURE    = 'choice.statusMinute.closure';
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Minute::class, inversedBy: 'historic')]
     #[ORM\JoinColumn(nullable: false)]
     private Minute $minute;
 
-    #[ORM\Column(name: 'dateUpdate', type: 'datetime', nullable: false)]
+    #[ORM\Column]
     #[Assert\DateTime(message: 'constraint.datetime')]
     private \DateTime $dateUpdate;
 
-    #[ORM\Column(name: 'status', type: 'string', length: 50, nullable: false)]
+    #[ORM\Column(length: 50)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Choice(choices: [
         Minute::STATUS_OPEN,
@@ -76,10 +72,9 @@ class MinuteStory implements LoggableInterface
 
     /************************************************************************ Custom functions ************************************************************************/
 
-    public function __construct()
-    {
-    }
-
+    /**
+     * @ihneritdoc
+     */
     public function getLogName(): string
     {
         return 'Historique du dossier';

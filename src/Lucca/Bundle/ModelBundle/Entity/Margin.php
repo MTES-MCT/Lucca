@@ -54,11 +54,11 @@ class Margin implements LoggableInterface, MediaAsyncInterface
     #[ORM\JoinColumn(nullable: false)]
     private Department $department;
 
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\Type(type: 'int', message: 'constraint.type')]
     private ?int $height = null;
 
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\Type(type: 'int', message: 'constraint.type')]
     private ?int $width = null;
 
@@ -71,7 +71,6 @@ class Margin implements LoggableInterface, MediaAsyncInterface
     private ?string $background = null;
 
     #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Media $backgroundImg = null;
 
     /************************************************************************ Custom functions ************************************************************************/

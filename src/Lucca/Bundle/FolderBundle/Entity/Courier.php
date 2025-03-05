@@ -41,26 +41,26 @@ class Courier implements LoggableInterface
     #[ORM\JoinColumn(nullable: false)]
     private Department $department;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: 'constraint.datetime')]
     private ?DateTime $dateOffender = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: 'constraint.datetime')]
     private ?DateTime $dateJudicial = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $context = null;
 
-    #[ORM\Column(type: Types::BOOLEAN, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
     private ?bool $civilParty = false;
 
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\Type(type: 'int', message: 'constraint.type')]
     private ?int $amount = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: 'constraint.datetime')]
     private ?DateTime $dateDdtm = null;
 

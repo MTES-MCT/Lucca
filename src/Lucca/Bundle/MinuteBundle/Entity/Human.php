@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,6 +10,7 @@
 
 namespace Lucca\Bundle\MinuteBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -17,11 +19,6 @@ use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\MinuteBundle\Repository\HumanRepository;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
-/**
- * Human
- *
- * @package Lucca\Bundle\MinuteBundle\Entity
- */
 #[ORM\Table(name: 'lucca_minute_human')]
 #[ORM\Entity(repositoryClass: HumanRepository::class)]
 class Human implements LoggableInterface
@@ -53,28 +50,28 @@ class Human implements LoggableInterface
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'name', type: 'string', length: 50)]
+    #[ORM\Column(length: 50)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private string $name;
 
-    #[ORM\Column(name: 'firstname', type: 'string', length: 50)]
+    #[ORM\Column(length: 50)]
     #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private string $firstname;
 
-    #[ORM\Column(name: 'status', type: 'string', length: 30)]
+    #[ORM\Column(length: 30)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 30, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private string $status;
 
-    #[ORM\Column(name: 'gender', type: 'string', length: 30)]
+    #[ORM\Column(length: 30)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 30, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private string $gender;
 
-    #[ORM\Column(name: 'person', type: 'string', length: 30)]
+    #[ORM\Column(length: 30)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 30, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private string $person;
@@ -83,18 +80,18 @@ class Human implements LoggableInterface
     #[ORM\JoinColumn(nullable: false)]
     private Department $department;
 
-    #[ORM\Column(name: 'address', type: 'text', nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $address = null;
 
-    #[ORM\Column(name: 'company', type: 'string', length: 50, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private ?string $company = null;
 
-    #[ORM\Column(name: 'addressCompany', type: 'text', nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $addressCompany = null;
 
-    #[ORM\Column(name: 'statusCompany', type: 'string', length: 30)]
+    #[ORM\Column(length: 30)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 30, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private string $statusCompany;
@@ -111,6 +108,9 @@ class Human implements LoggableInterface
         return '(' . $this->getId() . ') ' . $this->getOfficialName();
     }
 
+    /**
+     * @ihneritdoc
+     */
     public function getLogName(): string
     {
         return 'Humain';

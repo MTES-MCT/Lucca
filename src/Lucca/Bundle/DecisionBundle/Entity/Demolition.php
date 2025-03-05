@@ -63,10 +63,10 @@ class Demolition implements LoggableInterface
     #[Assert\Type(type: "int", message: "constraint.type")]
     private ?int $amountBailif = null;
 
-    #[ORM\ManyToMany(targetEntity: "Lucca\DecisionBundle\Entity\Profession", cascade: ["persist", "remove"])]
     #[ORM\JoinTable(name: "lucca_minute_demolition_linked_profession")]
     #[ORM\JoinColumn(name: "demolition_id", referencedColumnName: "id")]
     #[ORM\InverseJoinColumn(name: "profession_id", referencedColumnName: "id")]
+    #[ORM\ManyToMany(targetEntity: Profession::class, cascade: ["persist", "remove"])]
     private Collection $professions;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

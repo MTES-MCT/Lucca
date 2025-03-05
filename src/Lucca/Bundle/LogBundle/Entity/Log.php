@@ -51,9 +51,8 @@ class Log
     #[ORM\Column]
     private string $shortMessage;
 
-    // 65535 is the maximum length of a TEXT field in MySQL
-    #[ORM\Column(type: Types::TEXT, length: 65535, nullable: true)]
-    private ?string $message;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $message = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 

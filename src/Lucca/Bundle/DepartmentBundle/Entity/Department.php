@@ -8,16 +8,14 @@
  * for more information, please refer to the license file at the root of the project.
  */
 
-
 namespace Lucca\Bundle\DepartmentBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
-use Lucca\Bundle\CoreBundle\Entity\ToggleableTrait;
-use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
-
+use Lucca\Bundle\CoreBundle\Entity\{TimestampableTrait, ToggleableTrait};
 use Lucca\Bundle\DepartmentBundle\Repository\DepartmentRepository;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 
 #[ORM\Entity(repositoryClass: DepartmentRepository::class)]
 #[ORM\Table(name: 'lucca_department')]
@@ -32,14 +30,14 @@ class Department implements LoggableInterface
     #[ORM\Column(type: 'integer')]
     private ?int $id;
 
-    #[ORM\Column(type: 'string', unique: true)]
+    #[ORM\Column(unique: true)]
     private string $code;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column]
     private string $name;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $comment;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $comment = null;
 
 
     /************************************************************************** Custom function ************************************************************************/
@@ -54,6 +52,9 @@ class Department implements LoggableInterface
         return $this->name . ' (' . $this->code . ')';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getLogName(): string
     {
         return "Département";
@@ -65,16 +66,19 @@ class Department implements LoggableInterface
     {
         return $this->id;
     }
+
     public function getCode(): ?string
     {
         return $this->code;
     }
+
     public function setCode(string $code): self
     {
         $this->code = $code;
 
         return $this;
     }
+
     public function getName(): ?string
     {
         return $this->name;

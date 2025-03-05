@@ -43,8 +43,7 @@ class Extension implements LoggableInterface
     #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private string $value;
 
-    // 65535 is the maximum length of a TEXT field in MySQL
-    #[ORM\Column(type: Types::TEXT, length: 65535, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     /************************************************************************* Custom functions *****************************************************************************/

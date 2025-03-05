@@ -98,7 +98,7 @@ class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncIn
     private Department $department;
 
     #[ORM\OneToOne(targetEntity: Courier::class, inversedBy: "folder", orphanRemoval: true)]
-    #[ORM\JoinColumn(nullable: true, onDelete: "CASCADE")]
+    #[ORM\JoinColumn(onDelete: "CASCADE")]
     private ?Courier $courier = null;
 
     #[ORM\Column(length: 30, nullable: true)]
@@ -113,7 +113,7 @@ class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncIn
     #[Assert\Type(type: "string", message: "constraint.type")]
     private ?string $reasonObstacle = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
     private ?\DateTime $dateClosure = null;
 
@@ -133,12 +133,11 @@ class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncIn
     #[ORM\OrderBy(["position" => "ASC"])]
     private Collection $elements;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
+    #[ORM\Column]
     #[Assert\Type(type: "bool", message: "constraint.type")]
     private bool $isReReaded = false;
 
     #[ORM\ManyToOne(targetEntity: Media::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Media $folderSigned = null;
 
     #[ORM\ManyToMany(targetEntity: Media::class, cascade: ["persist", "remove"])]

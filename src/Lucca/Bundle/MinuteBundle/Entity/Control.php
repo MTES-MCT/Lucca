@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -10,6 +11,7 @@
 namespace Lucca\Bundle\MinuteBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -21,11 +23,6 @@ use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
-/**
- * Control
- *
- * @package Lucca\Bundle\MinuteBundle\Entity
- */
 #[ORM\Table(name: 'lucca_minute_control')]
 #[ORM\Entity(repositoryClass: ControlRepository::class)]
 class Control implements LoggableInterface
@@ -65,14 +62,14 @@ class Control implements LoggableInterface
         joinColumns: [new ORM\JoinColumn(name: 'control_id', referencedColumnName: 'id', onDelete: 'CASCADE')],
         inverseJoinColumns: [new ORM\JoinColumn(name: 'human_id', referencedColumnName: 'id')]
     )]
-    private ArrayCollection $humansByMinute;
+    private Collection $humansByMinute;
 
     #[ORM\ManyToMany(targetEntity: Human::class, cascade: ['persist'])]
     #[ORM\JoinTable(name: 'lucca_minute_control_linked_human_control',
         joinColumns: [new ORM\JoinColumn(name: 'control_id', referencedColumnName: 'id', onDelete: 'CASCADE')],
         inverseJoinColumns: [new ORM\JoinColumn(name: 'human_id', referencedColumnName: 'id')]
     )]
-    private ArrayCollection $humansByControl;
+    private Collection $humansByControl;
 
     #[ORM\ManyToOne(targetEntity: Agent::class)]
     #[ORM\JoinColumn(nullable: false)]
@@ -83,78 +80,77 @@ class Control implements LoggableInterface
         joinColumns: [new ORM\JoinColumn(name: 'control_id', referencedColumnName: 'id', onDelete: 'CASCADE')],
         inverseJoinColumns: [new ORM\JoinColumn(name: 'agent_attendant_id', referencedColumnName: 'id')]
     )]
-    private ArrayCollection $agentAttendants;
+    private Collection $agentAttendants;
 
     #[ORM\ManyToOne(targetEntity: Department::class)]
     #[ORM\JoinColumn(nullable: false)]
     private Department $department;
 
-    #[ORM\Column(name: 'type', type: 'string', length: 25)]
+    #[ORM\Column(length: 25)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 25, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private string $type;
 
-    #[ORM\Column(name: 'datePostal', type: 'datetime', nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: 'constraint.datetime')]
     private ?\DateTime $datePostal = null;
 
-    #[ORM\Column(name: 'dateSended', type: 'datetime', nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: 'constraint.datetime')]
     private ?\DateTime $dateSended = null;
 
-    #[ORM\Column(name: 'dateNotified', type: 'datetime', nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: 'constraint.datetime')]
     private ?\DateTime $dateNotified = null;
 
-    #[ORM\Column(name: 'dateReturned', type: 'datetime', nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: 'constraint.datetime')]
     private ?\DateTime $dateReturned = null;
 
-    #[ORM\Column(name: 'reason', type: 'string', length: 60, nullable: true)]
+    #[ORM\Column(length: 60, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 60, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private ?string $reason = null;
 
-    #[ORM\Column(name: 'dateContact', type: 'datetime', nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: 'constraint.datetime')]
     private ?\DateTime $dateContact = null;
 
-    #[ORM\Column(name: 'accepted', type: 'string', length: 40, nullable: true)]
+    #[ORM\Column(length: 40, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 40, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private ?string $accepted = null;
 
-    #[ORM\Column(name: 'dateControl', type: 'datetime', nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: 'constraint.datetime')]
     private ?\DateTime $dateControl = null;
 
-    #[ORM\Column(name: 'hourControl', type: 'time', nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\Time(message: 'constraint.time')]
     private ?\DateTime $hourControl = null;
 
-    #[ORM\Column(name: 'stateControl', type: 'string', length: 60)]
+    #[ORM\Column(length: 60)]
     #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     private string $stateControl;
 
-    #[ORM\Column(name: 'summoned', type: 'boolean', nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
     private ?bool $summoned = null;
 
-    #[ORM\Column(name: 'courierDelivery', type: 'string', length: 50, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private ?string $courierDelivery = null;
 
-    #[ORM\Column(name: 'isFenced', type: 'boolean')]
+    #[ORM\Column]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
     private bool $isFenced = false;
 
     #[ORM\OneToMany(targetEntity: ControlEdition::class, mappedBy: 'control', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private ArrayCollection $editions;
+    private Collection $editions;
 
     #[ORM\OneToOne(targetEntity: Folder::class, inversedBy: 'control')]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Folder $folder = null;
 
     /************************************************************************ Custom functions ************************************************************************/
@@ -165,6 +161,7 @@ class Control implements LoggableInterface
         $this->humansByControl = new ArrayCollection();
         $this->agentAttendants = new ArrayCollection();
         $this->editions = new ArrayCollection();
+
         $this->setType($type);
     }
 
@@ -172,9 +169,9 @@ class Control implements LoggableInterface
     {
         if ($this->getDateControl() && $this->getHourControl()) {
             return $this->getDateControl()->format('d/m/Y') . ' ' . $this->getHourControl()->format('H:i');
-        } else {
-            return 'Contrôle non défini';
         }
+
+        return 'Contrôle non défini';
     }
 
     public function addEdition(ControlEdition $edition): self

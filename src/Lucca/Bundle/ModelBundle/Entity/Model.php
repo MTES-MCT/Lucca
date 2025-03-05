@@ -112,26 +112,21 @@ class Model implements LoggableInterface
     private Department $department;
 
     #[ORM\ManyToOne(targetEntity: Page::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Page $verso = null;
 
     #[ORM\Column(type: Types::JSON)]
     private array $documents = [];
 
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Adherent $owner = null;
 
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Adherent $sharedService = null;
 
     #[ORM\ManyToOne(targetEntity: Intercommunal::class)]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Intercommunal $sharedIntercommunal = null;
 
     #[ORM\ManyToOne(targetEntity: Town::class)]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Town $sharedTown = null;
 
     #[ORM\Column(length: 20, nullable: true)]

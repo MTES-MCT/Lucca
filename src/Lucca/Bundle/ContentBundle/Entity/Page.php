@@ -38,7 +38,7 @@ class Page implements LoggableInterface, MediaListAsyncInterface
     #[ORM\JoinColumn(nullable: false)]
     private SubArea $subarea;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'pages')]
+    #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
     private User $author;
 
@@ -71,14 +71,13 @@ class Page implements LoggableInterface, MediaListAsyncInterface
     #[ORM\JoinColumn(nullable: false)]
     private Department $department;
 
-    // 65535 is the maximum length of a TEXT field in MySQL
-    #[ORM\Column(type: Types::TEXT, length: 65535, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $content = null;
 
     #[ORM\JoinTable(name: 'lucca_content_page_linked_media')]
     #[ORM\JoinColumn(name: 'page_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'media_id', referencedColumnName: 'id')]
-    #[ORM\ManyToMany(targetEntity: Media::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\ManyToMany(targetEntity: Media::class, cascade: ['persist', 'remove'])]
     private Collection $mediasLinked;
 
     /************************************************************************ Custom functions ************************************************************************/

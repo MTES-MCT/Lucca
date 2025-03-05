@@ -48,16 +48,15 @@ class Folder implements LoggableInterface
     #[ORM\Column(length: 150, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 150, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
-    private ?string $virtualPath;
+    private ?string $virtualPath = null;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
+    #[ORM\Column]
     #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
     private bool $public = false;
 
-    // 65535 is the maximum length of a TEXT field in MySQL
-    #[ORM\Column(type: Types::TEXT, length: 65535, nullable: true)]
-    private ?string $description;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
 
     /************************************************************************* Custom functions *****************************************************************************/
 

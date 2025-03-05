@@ -37,8 +37,7 @@ class Category
     #[Assert\NotNull(message: 'constraint.not_null')]
     private int $position;
 
-    // 65535 is the maximum length of a TEXT field in MySQL
-    #[ORM\Column(type: Types::TEXT , length: 65535, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment = null;
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/

@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\FolderBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -37,11 +38,11 @@ class CourierHumanEdition implements LoggableInterface
     #[ORM\JoinColumn(nullable: false)]
     private Human $human;
 
-    #[ORM\Column(name: "letterOffenderEdited", type: "boolean")]
+    #[ORM\Column]
     #[Assert\Type(type: "bool", message: "constraint.type")]
     private bool $letterOffenderEdited = false;
 
-    #[ORM\Column(name: "letterOffender", type: "text", nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $letterOffender = null;
 
     /************************************************************************ Custom functions ************************************************************************/

@@ -29,7 +29,7 @@ class FolderEdition implements LoggableInterface
     #[ORM\GeneratedValue]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
+    #[ORM\Column]
     #[Assert\Type(type: "bool", message: "constraint.type")]
     private bool $folderEdited = false;
 

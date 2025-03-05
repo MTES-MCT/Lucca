@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,6 +10,7 @@
 
 namespace Lucca\Bundle\MinuteBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
@@ -17,11 +19,6 @@ use Lucca\Bundle\MinuteBundle\Repository\ClosureRepository;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Closure
- *
- * @package Lucca\Bundle\MinuteBundle\Entity
- */
 #[ORM\Table(name: 'lucca_minute_closure')]
 #[ORM\Entity(repositoryClass: ClosureRepository::class)]
 class Closure implements LoggableInterface
@@ -54,12 +51,12 @@ class Closure implements LoggableInterface
     #[ORM\JoinColumn(nullable: false)]
     private Minute $minute;
 
-    #[ORM\Column(name: 'status', type: 'string', length: 35)]
+    #[ORM\Column(length: 35)]
     #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     private string $status;
 
-    #[ORM\Column(name: 'dateClosing', type: 'datetime')]
+    #[ORM\Column]
     #[Assert\DateTime(message: 'constraint.datetime')]
     private \DateTime $dateClosing;
 
@@ -67,7 +64,7 @@ class Closure implements LoggableInterface
     #[ORM\JoinColumn(nullable: false)]
     private Department $department;
 
-    #[ORM\Column(name: 'natureRegularized', type: 'string', length: 50, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Choice(choices: [
         self::NATURE_REGULARIZED_ADMINISTRATIVE,
@@ -75,7 +72,7 @@ class Closure implements LoggableInterface
     ], message: 'constraint.closure.natureRegularized')]
     private ?string $natureRegularized = null;
 
-    #[ORM\Column(name: 'initiatingStructure', type: 'string', length: 50, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Choice(choices: [
         self::INITSTRUCT_DDTM,
@@ -85,12 +82,12 @@ class Closure implements LoggableInterface
     ], message: 'constraint.closure.initiatingStructure')]
     private ?string $initiatingStructure = null;
 
-    #[ORM\Column(name: 'reason', type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 255, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private ?string $reason = null;
 
-    #[ORM\Column(name: 'observation', type: 'text', nullable: true)]
+    #[ORM\Column(Types::TEXT, nullable: true)]
     private ?string $observation = null;
 
     /************************************************************************ Custom functions ************************************************************************/

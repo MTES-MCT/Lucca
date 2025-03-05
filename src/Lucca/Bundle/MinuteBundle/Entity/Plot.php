@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,6 +10,7 @@
 
 namespace Lucca\Bundle\MinuteBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -19,11 +21,6 @@ use Lucca\Bundle\ParameterBundle\Entity\Town;
 use Lucca\Bundle\MinuteBundle\Repository\PlotRepository;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
-/**
- * Plot
- *
- * @package Lucca\Bundle\MinuteBundle\Entity
- */
 #[ORM\Table(name: 'lucca_minute_plot')]
 #[ORM\Entity(repositoryClass: PlotRepository::class)]
 class Plot implements LoggableInterface
@@ -45,49 +42,49 @@ class Plot implements LoggableInterface
     const LOCATION_FROM_MANUAL = 'choice.locationFrom.manual';
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Town::class)]
     #[ORM\JoinColumn(nullable: false)]
     private Town $town;
 
-    #[ORM\Column(name: 'parcel', type: 'string', length: 50, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private ?string $parcel = null;
 
-    #[ORM\Column(name: 'address', type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 255, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private ?string $address = null;
 
-    #[ORM\Column(name: 'isRiskZone', type: 'boolean', nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
     private ?bool $isRiskZone = null;
 
-    #[ORM\Column(name: 'risk', type: 'string', length: 50, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private ?string $risk = null;
 
-    #[ORM\Column(name: 'place', type: 'string', length: 50, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private ?string $place = null;
 
-    #[ORM\Column(name: 'latitude', type: 'decimal', precision: 40, scale: 30, nullable: true)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 40, scale: 30, nullable: true)]
     private ?string $latitude = null;
 
-    #[ORM\Column(name: 'longitude', type: 'decimal', precision: 40, scale: 30, nullable: true)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 40, scale: 30, nullable: true)]
     private ?string $longitude = null;
 
     #[ORM\ManyToOne(targetEntity: Department::class)]
     #[ORM\JoinColumn(nullable: false)]
     private Department $department;
 
-    #[ORM\Column(name: 'locationFrom', type: 'string', length: 50, nullable: false)]
+    #[ORM\Column(length: 50)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Choice(choices: [
         self::LOCATION_FROM_ADDRESS,
@@ -121,11 +118,6 @@ class Plot implements LoggableInterface
                 ->addViolation();
     }
 
-    public function getLogName(): string
-    {
-        return 'Parcelle';
-    }
-
     public function getFullAddress(): string
     {
         $address = '';
@@ -137,6 +129,14 @@ class Plot implements LoggableInterface
         $address .= $this->getTown()->getName() . ' - ' . $this->getTown()->getCode() . ' ';
 
         return $address;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getLogName(): string
+    {
+        return 'Parcelle';
     }
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/

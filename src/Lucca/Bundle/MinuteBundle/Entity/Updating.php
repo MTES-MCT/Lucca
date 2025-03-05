@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -10,6 +11,8 @@
 namespace Lucca\Bundle\MinuteBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -18,11 +21,6 @@ use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\MinuteBundle\Repository\UpdatingRepository;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
-/**
- * Updating
- *
- * @package Lucca\Bundle\MinuteBundle\Entity
- */
 #[ORM\Table(name: 'lucca_minute_updating')]
 #[ORM\Entity(repositoryClass: UpdatingRepository::class)]
 class Updating implements LoggableInterface
@@ -36,11 +34,11 @@ class Updating implements LoggableInterface
     const NATURE_REGULARIZED = 'choice.nature.regularized';
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'num', type: 'string', length: 25)]
+    #[ORM\Column(length: 25)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     private string $num;
 
@@ -53,17 +51,17 @@ class Updating implements LoggableInterface
         joinColumns: [new ORM\JoinColumn(name: 'updating_id', referencedColumnName: 'id')],
         inverseJoinColumns: [new ORM\JoinColumn(name: 'control_id', referencedColumnName: 'id')]
     )]
-    private ArrayCollection $controls;
+    private Collection $controls;
 
     #[ORM\ManyToOne(targetEntity: Department::class)]
     #[ORM\JoinColumn(nullable: false)]
     private Department $department;
 
-    #[ORM\Column(name: 'nature', type: 'string', length: 30, nullable: true)]
+    #[ORM\Column(length: 30, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     private ?string $nature = null;
 
-    #[ORM\Column(name: 'description', type: 'text', nullable: true)]
+    #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     /************************************************************************ Custom functions ************************************************************************/

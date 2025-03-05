@@ -34,7 +34,7 @@ class Group
     #[ORM\Column(type: Types::TEXT, options: ['comment' => '(DC2Type:array)'])]
     private string $roles = '';
 
-    #[ORM\Column(type: Types::BOOLEAN)]
+    #[ORM\Column]
     #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
     private bool $displayed = true;

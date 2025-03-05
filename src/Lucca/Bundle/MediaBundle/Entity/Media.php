@@ -47,20 +47,20 @@ class Media implements LoggableInterface
     #[Assert\Length(min: 2, max: 255, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private string $nameCanonical;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
+    #[ORM\Column]
     #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
     private bool $public = false;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 255, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
-    private string $filePath;
+    private ?string $filePath = null;
 
     #[ORM\Column(length:150, nullable: true)]
     private ?string $copyright = null;
 
-    #[ORM\Column( nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column]
@@ -83,7 +83,7 @@ class Media implements LoggableInterface
     #[ORM\JoinTable(name: 'lucca_media_linked_meta_data')]
     #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'meta_data_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[ORM\ManyToMany(targetEntity: MetaData::class, mappedBy: 'media', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: MetaData::class, mappedBy: 'media', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $metas;
 
     /************************************************************************* Custom functions *****************************************************************************/
@@ -178,12 +178,12 @@ class Media implements LoggableInterface
         return $this;
     }
 
-    public function getFilePath(): string
+    public function getFilePath(): ?string
     {
         return $this->filePath;
     }
 
-    public function setFilePath(string $filePath): self
+    public function setFilePath(?string $filePath): self
     {
         $this->filePath = $filePath;
 

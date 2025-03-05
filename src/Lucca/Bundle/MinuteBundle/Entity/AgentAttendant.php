@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -33,33 +34,32 @@ class AgentAttendant implements LoggableInterface
     const FUNCTION_COUNTRY_AGENT = 'choice.function.country_agent';
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id;
 
-    #[ORM\Column(type: 'string', length: 50)]
+    #[ORM\Column(length: 50)]
     #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private string $name;
 
-    #[ORM\Column(type: 'string', length: 50)]
+    #[ORM\Column(length: 50)]
     #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private string $firstname;
 
-    #[ORM\Column(type: 'string', length: 50)]
+    #[ORM\Column(length: 50)]
     #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private string $function;
+
     /************************************************************************ Custom functions ************************************************************************/
 
     /**
      * Get full name with official syntax
-     *
-     * @return string
      */
     public function getOfficialName(): string
     {
@@ -68,8 +68,6 @@ class AgentAttendant implements LoggableInterface
 
     /**
      * Get label display on form
-     *
-     * @return string
      */
     public function getFormLabel(): string
     {
@@ -77,8 +75,7 @@ class AgentAttendant implements LoggableInterface
     }
 
     /**
-     * Log name of this Class
-     * @return string
+     * @inheritdoc
      */
     public function getLogName(): string
     {
@@ -95,6 +92,7 @@ class AgentAttendant implements LoggableInterface
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -106,6 +104,7 @@ class AgentAttendant implements LoggableInterface
     public function setFirstname(string $firstname): self
     {
         $this->firstname = $firstname;
+
         return $this;
     }
 
@@ -117,6 +116,7 @@ class AgentAttendant implements LoggableInterface
     public function setFunction(string $function): self
     {
         $this->function = $function;
+
         return $this;
     }
 

@@ -30,14 +30,14 @@ class CourierEdition implements LoggableInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
+    #[ORM\Column]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
     private bool $judicialEdited = false;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $letterJudicial = null;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
+    #[ORM\Column]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
     private bool $ddtmEdited = false;
 

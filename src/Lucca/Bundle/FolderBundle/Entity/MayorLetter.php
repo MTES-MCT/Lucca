@@ -58,7 +58,7 @@ class MayorLetter implements LoggableInterface
     #[ORM\JoinColumn(nullable: false)]
     private Department $department;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Assert\DateTime(message: "constraint.datetime")]
     private ?DateTime $dateSended = null;
 

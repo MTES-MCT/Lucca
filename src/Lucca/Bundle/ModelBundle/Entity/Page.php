@@ -73,10 +73,8 @@ class Page implements LoggableInterface
     #[Assert\Length(min: 3, max: 20, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private ?string $background = null;
 
-    // 65535 is the maximum length of a TEXT field in MySQL
-    #[ORM\Column(type: Types::TEXT, length: 65535, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $cssInline = null;
-
 
     /// ------------------------------------------------------------
     /// This fields above are use only if Margins are not used :
@@ -103,19 +101,15 @@ class Page implements LoggableInterface
     private ?int $rightSize = 0;
 
     #[ORM\OneToOne(targetEntity: Margin::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Margin $marginTop = null;
 
     #[ORM\OneToOne(targetEntity: Margin::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Margin $marginBottom = null;
 
     #[ORM\OneToOne(targetEntity: Margin::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Margin $marginLeft = null;
 
     #[ORM\OneToOne(targetEntity: Margin::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Margin $marginRight = null;
 
     /************************************************************************ Custom functions ************************************************************************/

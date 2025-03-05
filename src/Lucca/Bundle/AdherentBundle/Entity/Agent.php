@@ -66,10 +66,10 @@ class Agent implements LoggableInterface
     #[ORM\JoinColumn(nullable: false)]
     private Department $department;
 
-    #[ORM\ManyToOne(targetEntity: Tribunal::class, cascade: ['persist'])]
+    #[ORM\ManyToOne(targetEntity: Tribunal::class)]
     private ?Tribunal $tribunal = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
+    #[ORM\Column(length: 25, nullable: true)]
     #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 25, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]

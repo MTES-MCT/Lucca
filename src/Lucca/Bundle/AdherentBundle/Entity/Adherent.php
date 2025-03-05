@@ -91,7 +91,7 @@ class Adherent implements LoggableInterface, MediaAsyncInterface
     #[Assert\Length(min: 5, max: 15, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private ?string $mobile = null;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
+    #[ORM\Column]
     #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
     protected bool $invitedByMail;
@@ -109,11 +109,11 @@ class Adherent implements LoggableInterface, MediaAsyncInterface
     private Collection $agents;
 
     #[ORM\Column(length: 120, nullable: true)]
-    #[Assert\Length(min: 5, max: 120, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
+    #[Assert\Length(min: 2, max: 120, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private ?string $unitAttachment = null;
 
     #[ORM\Column(length: 120, nullable: true)]
-    #[Assert\Length(min: 5, max: 120, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
+    #[Assert\Length(min: 2, max: 120, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private ?string $emailPublic = null;
 
     #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist'])]

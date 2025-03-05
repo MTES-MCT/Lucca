@@ -11,7 +11,6 @@
 namespace Lucca\Bundle\SecurityBundle\Entity;
 
 use DateTime;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -35,7 +34,7 @@ class LoginAttempt
     /**
      * List of all ip if request use proxy
      */
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?string $clientIps = null;
 
     /**
@@ -47,7 +46,7 @@ class LoginAttempt
     /**
      * Date saved by App when request has catch
      */
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column]
     private DateTime $requestedAt;
 
     /**
@@ -122,7 +121,7 @@ class LoginAttempt
     #[ORM\Column(length: 200)]
     private string $requestTime;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
+    #[ORM\Column]
     #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
     private bool $isCleared = true;

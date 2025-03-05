@@ -47,7 +47,7 @@ class Setting implements LoggableInterface
 
     #[ORM\Column(unique: true)]
     #[Assert\NotNull(message: 'constraint.not_null')]
-    private ?string $name = null;
+    private string $name;
 
     #[ORM\Column]
     #[Assert\NotNull(message: 'constraint.not_null')]
@@ -83,14 +83,13 @@ class Setting implements LoggableInterface
     #[ORM\JoinColumn(nullable: false)]
     private Department $department;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $value = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $valuesAvailable = null;
 
-    // 65535 is the maximum length of a TEXT field in MySQL
-    #[ORM\Column(type: Types::TEXT , length: 65535, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment = null;
 
     /************************************************************************ Custom functions ************************************************************************/
@@ -178,12 +177,12 @@ class Setting implements LoggableInterface
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(?string $name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 

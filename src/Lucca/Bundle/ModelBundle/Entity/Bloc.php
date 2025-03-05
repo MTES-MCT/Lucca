@@ -42,11 +42,11 @@ class Bloc implements LoggableInterface, MediaListAsyncInterface
     #[ORM\JoinColumn(nullable: false)]
     private Margin $margin;
 
-    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\Column]
     #[Assert\Type(type: 'int', message: 'constraint.type')]
     private int $height;
 
-    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\Column]
     #[Assert\Type(type: 'int', message: 'constraint.type')]
     private int $width;
 
@@ -80,12 +80,10 @@ class Bloc implements LoggableInterface, MediaListAsyncInterface
     #[Assert\Type(type: 'int', message: 'constraint.type')]
     private ?int $rightSize = null;
 
-    // 65535 is the maximum length of a TEXT field in MySQL
-    #[ORM\Column(type: Types::TEXT, length: 65535, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $content = null;
 
     #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Media $media = null;
 
     #[ORM\Column(length: 20, nullable: true)]
@@ -94,13 +92,10 @@ class Bloc implements LoggableInterface, MediaListAsyncInterface
     private ?string $color = null;
 
     #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Media $backgroundImg = null;
 
-    // 65535 is the maximum length of a TEXT field in MySQL
-    #[ORM\Column(type: Types::TEXT, length: 65535, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $cssInline = null;
-
 
     /************************************************************************ Custom functions ************************************************************************/
 
