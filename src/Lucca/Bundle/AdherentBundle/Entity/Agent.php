@@ -63,7 +63,8 @@ class Agent implements LoggableInterface
     private string $function;
 
     #[ORM\ManyToOne(targetEntity: Department::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    /** TODO: set nullable for migration */
+    #[ORM\JoinColumn(nullable: true)]
     private Department $department;
 
     #[ORM\ManyToOne(targetEntity: Tribunal::class)]
