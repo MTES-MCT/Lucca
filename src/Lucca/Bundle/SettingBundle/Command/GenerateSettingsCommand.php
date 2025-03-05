@@ -16,7 +16,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Lucca\Bundle\settingBundle\Service\SettingGenerator;
+use Lucca\Bundle\SettingBundle\Generator\SettingGenerator;
 
 class GenerateSettingsCommand extends Command
 {

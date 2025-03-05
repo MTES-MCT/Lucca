@@ -15,6 +15,8 @@ use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
 use Symfony\Component\Form\Extension\Core\Type\{TextType, CheckboxType};
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Lucca\Bundle\ParameterBundle\Entity\{Service, Town};
+
 class ServiceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -24,7 +26,7 @@ class ServiceType extends AbstractType
             ->add('name', TextType::class, ['label' => 'label.name', 'required' => true])
             ->add('enabled', CheckboxType::class, ['label' => 'label.enabled', 'required' => false])
             ->add('office', EntityType::class, [
-                'class' => 'LuccaParameterBundle:Town', 'label' => 'label.office', 'choice_label' => 'formLabel',
+                'class' => Town::class, 'label' => 'label.office', 'choice_label' => 'formLabel',
                 'multiple' => false, 'expanded' => false, 'required' => false, 'attr' => ['class' => 'chosen-select']
             ]);
     }
@@ -32,7 +34,7 @@ class ServiceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => 'Lucca\ParameterBundle\Entity\Service',
+            'data_class' => Service::class,
             'translation_domain' => 'LuccaParameterBundle',
             'required' => false
         ]);

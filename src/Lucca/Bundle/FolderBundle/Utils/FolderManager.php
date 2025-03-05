@@ -7,105 +7,57 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\Bundle\MinuteBundle\Utils;
+namespace Lucca\Bundle\FolderBundle\Utils;
 
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\ElementChecked;
-use Lucca\Bundle\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\Control;
-use Lucca\Bundle\MinuteBundle\Entity\Minute;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\ORMException;
-use Lucca\Bundle\ChecklistBundle\Entity\Checklist;
-use Lucca\Bundle\MinuteBundle\Generator\NumFolderGenerator;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-/**
- * Class FolderManager
- *
- * @package Lucca\Bundle\MinuteBundle\Utils
- * @author Térence <terence@numeric-wave.tech>
- */
-class FolderManager
+use Lucca\Bundle\ChecklistBundle\Entity\{Element, Checklist};
+use Lucca\Bundle\FolderBundle\Entity\{Folder, ElementChecked, Natinf};
+use Lucca\Bundle\FolderBundle\Generator\NumFolderGenerator;
+use Lucca\Bundle\MinuteBundle\Entity\{Control, Minute};
+
+readonly class FolderManager
 {
-    /**
-     * @var EntityManager
-     */
-    private $em;
-
-    /**
-     * @var FolderEditionManager
-     */
-    private $folderEditionManager;
-
-    /**
-     * @var NumFolderGenerator
-     */
-    private $numFolderGenerator;
-
-    /**
-     * @var CourierManager
-     */
-    private $courierManager;
-
-    /**
-     * @var $avoidBreakPageTags
-     */
-    private $avoidBreakPageTags;
-
-    /**
-     * FolderManager constructor
-     *
-     * @param EntityManager $entityManager
-     * @param FolderEditionManager $folderEditionManager
-     * @param NumFolderGenerator $numFolderGenerator
-     * @param CourierManager $courierManager
-     * @param $p_avoidBreakPageTags
-     */
-    public function __construct(EntityManager $entityManager, FolderEditionManager $folderEditionManager,
-                                NumFolderGenerator $numFolderGenerator, CourierManager $courierManager,
-                                $p_avoidBreakPageTags)
+    public function __construct(
+        private EntityManagerInterface $em,
+        private FolderEditionManager   $folderEditionManager,
+        private NumFolderGenerator     $numFolderGenerator,
+        private CourierManager         $courierManager,
+        private ParameterBagInterface  $params,
+    )
     {
-        $this->em = $entityManager;
-        $this->folderEditionManager = $folderEditionManager;
-
-        $this->numFolderGenerator = $numFolderGenerator;
-        $this->courierManager = $courierManager;
-
-        $this->avoidBreakPageTags = explode(',', $p_avoidBreakPageTags);
     }
 
     /**
      * Create a specific folder with Obstacle Nature
-     *
-     * @param Minute $p_minute
-     * @param Control $p_control
-     * @param $p_type
-     * @return bool|Folder
      */
-    public function createObstacleFolder(Minute $p_minute, Control $p_control, $p_type)
+    public function createObstacleFolder(Minute $minute, Control $control, $type): Folder|bool
     {
-        $folders = $this->em->getRepository('LuccaMinuteBundle:Folder')->findBy(array(
-            'minute' => $p_minute, 'control' => $p_control, 'nature' => Folder::NATURE_OBSTACLE
-        ));
+        $folders = $this->em->getRepository(Folder::class)->findBy([
+            'minute' => $minute, 'control' => $control, 'nature' => Folder::NATURE_OBSTACLE
+        ]);
 
-        if (count($folders) > 0)
+        if (count($folders) > 0) {
             return false;
+        }
 
         $folder = new Folder();
-        $folder->setMinute($p_minute);
-        $folder->setControl($p_control);
+        $folder->setMinute($minute);
+        $folder->setControl($control);
         $folder->setNature(Folder::NATURE_OBSTACLE);
 
-        if ($p_type === Folder::TYPE_FOLDER) {
+        if ($type === Folder::TYPE_FOLDER) {
             /** Classic Folder */
             $folder->setType(Folder::TYPE_FOLDER);
-
-        } elseif ($p_type === Folder::TYPE_REFRESH) {
+        } elseif ($type === Folder::TYPE_REFRESH) {
             /** Refresh Folder */
             $folder->setType(Folder::TYPE_REFRESH);
-
-        } else
+        } else {
             throw new NotFoundHttpException('Bad Folder type given');
+        }
 
         /** Create folder num */
         $folder->setNum($this->numFolderGenerator->generate($folder));
@@ -129,82 +81,78 @@ class FolderManager
 
     /**
      * Configure parameters for Obstacle folder
-     *
-     * @param Folder $p_folder
-     * @return bool|Folder
      */
-    public function configureObstacleFolder(Folder $p_folder)
+    public function configureObstacleFolder(Folder $folder): Folder|bool
     {
-        if ($p_folder->hasNatinf('33058'))
+        if ($folder->hasNatinf('33058')) {
             return false;
+        }
 
         /** Specific Natinf */
-        $natinfObstacle = $this->em->getRepository('LuccaMinuteBundle:Natinf')->findOneBy(array(
+        $natinfObstacle = $this->em->getRepository(Natinf::class)->findOneBy([
             'num' => '33058'
-        ));
+        ]);
 
-        $p_folder->addNatinf($natinfObstacle);
+        $folder->addNatinf($natinfObstacle);
 
-        return $p_folder;
+        return $folder;
     }
 
     /**
-     * Ad all default element on folder
-     * @param Folder $p_folder
-     * @return Folder
+     * Add all default element on folder
      */
-    public function addChecklistToFolder(Folder $p_folder)
+    public function addChecklistToFolder(Folder $folder): Folder
     {
-        if ($p_folder->getType() === Folder::TYPE_REFRESH)
+        if ($folder->getType() === Folder::TYPE_REFRESH) {
             $status = Checklist::STATUS_UPDATING;
-        else
+        } else {
             $status = Checklist::STATUS_MINUTE;
+        }
 
         /** Check if a standard checklist exist */
-        $list = $this->em->getRepository('LuccaChecklistBundle:Checklist')->findOneBy(array(
+        $list = $this->em->getRepository(Checklist::class)->findOneBy([
             'status' => $status
-        ));
+        ]);
 
         /** If list exist - add list + all elements to folder */
         if ($list) {
-            $elements = $this->em->getRepository('LuccaChecklistBundle:Element')->findActiveByChecklist($list);
+            $elements = $this->em->getRepository(Element::class)->findActiveByChecklist($list);
 
-            foreach ($elements as $element)
-                $p_folder->addElement(new ElementChecked($p_folder, $element));
+            foreach ($elements as $element) {
+                $folder->addElement(new ElementChecked($folder, $element));
+            }
         }
 
-        return $p_folder;
+        return $folder;
     }
 
     /**
      * Close folder and create Courier
-     *
-     * @param Folder $p_folder
-     * @return bool
      */
-    public function closeFolder(Folder $p_folder)
+    public function closeFolder(Folder $folder): bool
     {
-        if ($p_folder->getDateClosure())
+        if ($folder->getDateClosure()) {
             return false;
+        }
 
         /** If the folder is edited manually we need to replace the custom tag in the edited version */
-        if($p_folder->getEdition()->getFolderEdited()){
-            $p_folder->getEdition()->setFolderVersion($this->replaceCustomTags($p_folder->getEdition()->getFolderVersion()));
+        if($folder->getEdition()->getFolderEdited()){
+            $folder->getEdition()->setFolderVersion($this->replaceCustomTags($folder->getEdition()->getFolderVersion()));
         }
 
         /** Replace tag added by the user to indicate part of text that can't have page break inside */
-        $p_folder->setAscertainment($this->replaceCustomTags($p_folder->getAscertainment()));
-        $p_folder->setDetails($this->replaceCustomTags($p_folder->getDetails()));
-        $p_folder->setViolation($this->replaceCustomTags($p_folder->getViolation()));
+        $folder->setAscertainment($this->replaceCustomTags($folder->getAscertainment()));
+        $folder->setDetails($this->replaceCustomTags($folder->getDetails()));
+        $folder->setViolation($this->replaceCustomTags($folder->getViolation()));
 
-        $p_folder->setDateClosure(new \Datetime('now'));
-        $p_folder->getControl()->setIsFenced(true);
+        $folder->setDateClosure(new \Datetime('now'));
+        $folder->getControl()->setIsFenced(true);
 
-        $this->courierManager->createCourierToFolder($p_folder);
+        $this->courierManager->createCourierToFolder($folder);
 
         try {
-            $this->em->persist($p_folder->getControl());
-            $this->em->persist($p_folder);
+            $this->em->persist($folder->getControl());
+            $this->em->persist($folder);
         } catch (ORMException $ORMException) {
             echo 'Error to close Obstacle folder - ' . $ORMException->getMessage();
         }
@@ -214,13 +162,10 @@ class FolderManager
 
     /**
      * Purge empty element on Folder entity
-     *
-     * @param Folder $p_folder
-     * @return Folder $p_folder
      */
-    public function purgeChecklist(Folder $p_folder)
+    public function purgeChecklist(Folder $folder): Folder
     {
-        $elements = $p_folder->getElements();
+        $elements = $folder->getElements();
 
         /** Loop for Elements founded */
         foreach ($elements as $element) {
@@ -234,44 +179,41 @@ class FolderManager
             }
         }
 
-        return $p_folder;
+        return $folder;
     }
 
     /**
      * This function is used to replace tags that the user had to specify which part of the text can't have a page break inside
-     *
-     * @param $p_data
-     * @return mixed|string|string[]
      */
-    public function replaceCustomTags($p_data)
+    public function replaceCustomTags($data): array|string
     {
+        $avoidBreakPageTags = explode(',', $this->params->get('avoid_break_page'));
+
         /** Search if there is custom tag in the html */
-        $startOffset = strpos($p_data, $this->avoidBreakPageTags[0]);
-        $endOffset = strpos($p_data, $this->avoidBreakPageTags[1]);
+        $startOffset = strpos($data, $avoidBreakPageTags[0]);
+        $endOffset = strpos($data, $avoidBreakPageTags[1]);
 
         /** If we find at least one of them we need to do something */
         while($startOffset || $endOffset){
             /** If we find a pair of starting and ending tags we can replace by the html elements */
             if ($startOffset && $endOffset){
-                $p_data = substr_replace($p_data, '<div class="page-break-inside-avoid">', $startOffset, strlen($this->avoidBreakPageTags[0]) );
-                $endOffset = strpos($p_data, $this->avoidBreakPageTags[1]);
-                $p_data = substr_replace($p_data, '</div>', $endOffset, strlen($this->avoidBreakPageTags[1]) );
+                $data = substr_replace($data, '<div class="page-break-inside-avoid">', $startOffset, strlen($avoidBreakPageTags[0]) );
+                $endOffset = strpos($data, $avoidBreakPageTags[1]);
+                $data = substr_replace($data, '</div>', $endOffset, strlen($avoidBreakPageTags[1]) );
             }else{ /** But if we find only one tag and not a pair we need to remove it from the html */
-                $p_data = str_replace($this->avoidBreakPageTags[0], "", $p_data);
-                $p_data = str_replace($this->avoidBreakPageTags[1], "", $p_data);
+                $data = str_replace($avoidBreakPageTags[0], "", $data);
+                $data = str_replace($avoidBreakPageTags[1], "", $data);
             }
 
             /** Each loop we need to check again if there is still some custom tags */
-            $startOffset = strpos($p_data, $this->avoidBreakPageTags[0]);
-            $endOffset = strpos($p_data, $this->avoidBreakPageTags[1]);
+            $startOffset = strpos($data, $avoidBreakPageTags[0]);
+            $endOffset = strpos($data, $avoidBreakPageTags[1]);
         }
-        return $p_data;
+
+        return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'lucca.manager.folder';
     }

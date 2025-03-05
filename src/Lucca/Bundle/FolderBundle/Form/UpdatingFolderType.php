@@ -52,7 +52,7 @@ class UpdatingFolderType extends AbstractType
                 ), 'label' => 'label.reasonObstacle', 'expanded' => false, 'required' => false
             ))
 /*            ->add('checklist', EntityType::class, array(
-                'class' => 'LuccaChecklistBundle:Checklist', 'choice_label' => 'name',
+                'class' => Checklist::class, 'choice_label' => 'name',
                 'multiple' => false, 'expanded' => false, 'label' => 'label.checklist', 'required' => false,
                 'attr' => array('class' => 'chosen-select')
             ))*/

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,34 +10,23 @@
 
 namespace Lucca\Bundle\MinuteBundle\Form;
 
-use Lucca\Bundle\MinuteBundle\Entity\Minute;
-use Lucca\Bundle\AdherentBundle\Entity\Agent;
-use Lucca\Bundle\AdherentBundle\Repository\AgentRepository;
-use Lucca\Bundle\ParameterBundle\Entity\Tribunal;
-use Lucca\Bundle\ParameterBundle\Repository\TribunalRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, CollectionType, DateType, TextareaType, TextType};
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class MinuteNewType
- *
- * @package Lucca\Bundle\MinuteBundle\Form
- * @author Terence <terence@numeric-wave.tech>
- */
+use Lucca\Bundle\AdherentBundle\Entity\Agent;
+use Lucca\Bundle\AdherentBundle\Repository\AgentRepository;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\ParameterBundle\Entity\Tribunal;
+use Lucca\Bundle\ParameterBundle\Repository\TribunalRepository;
+
 class MinuteType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /** Take options Adherent entity to filter Agent */
         $adherent = $options['adherent'];
@@ -92,9 +82,9 @@ class MinuteType extends AbstractType
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('adherent');
         $resolver->setDefaults(array(
@@ -106,7 +96,7 @@ class MinuteType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'lucca_minuteBundle_minute';
     }

@@ -11,7 +11,7 @@
 namespace Lucca\Bundle\ModelBundle\Command;
 
 use DateTime;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Command\Command;
@@ -22,7 +22,7 @@ use Lucca\Bundle\ModelBundle\Entity\{Page, Model};
 class InitializationCommand extends Command
 {
     public function __construct(
-        private readonly ObjectManager $om,
+        private readonly EntityManagerInterface $em,
         private readonly TranslatorInterface $translator,
     )
     {
@@ -85,11 +85,11 @@ class InitializationCommand extends Command
     protected function initModelBundle(InputInterface $input, OutputInterface $output): void
     {
         // Turning off doctrine default logs queries for saving memory
-        $this->om->getConnection()->getConfiguration()->setSQLLogger(null);
+        $this->em->getConfiguration()->setSQLLogger(null);
 
         foreach (Model::getDocumentsChoice() as $document) {
             /** Search if model exist for this document - Do request in loop because we know the end of the loop */
-            $model = $this->om->getRepository(Model::class)->findByDocument($document);
+            $model = $this->em->getRepository(Model::class)->findByDocument($document);
 
             if (!$model) {
                 $model = new Model();
@@ -107,7 +107,7 @@ class InitializationCommand extends Command
 
                 $model->setRecto($page);
 
-                $this->om->persist($model);
+                $this->em->persist($model);
                 $output->writeln([
                     'Model created for document',
                     $document,
@@ -119,11 +119,11 @@ class InitializationCommand extends Command
                 ]);
             }
 
-            $this->om->persist($model);
+            $this->em->persist($model);
         }
 
         /** flush last items, detach all for doctrine and finish progress */
-        $this->om->flush();
-        $this->om->clear();
+        $this->em->flush();
+        $this->em->clear();
     }
 }

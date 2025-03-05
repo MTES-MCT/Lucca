@@ -16,19 +16,5 @@ use Lucca\Bundle\SettingBundle\Manager\SettingManager;
 
 class LuccaSettingBundle extends Bundle
 {
-    public function __construct(
-        private readonly SettingGenerator $settingGenerator,
-    )
-    {
-    }
 
-    /**
-     * @ihneritdoc
-     */
-    public function boot(): void
-    {
-        $settings = $this->settingGenerator->getCachedSettings(false);
-
-        SettingManager::setAll($settings);
-    }
 }

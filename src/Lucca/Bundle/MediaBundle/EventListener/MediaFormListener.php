@@ -10,7 +10,7 @@
 
 namespace Lucca\Bundle\MediaBundle\EventListener;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\{FormEvent, FormEvents};
@@ -22,7 +22,7 @@ use Lucca\Bundle\MediaBundle\Entity\Media;
 readonly class MediaFormListener implements EventSubscriberInterface
 {
     public function __construct(
-        private EntityManager $em,
+        private EntityManagerInterface $em,
         private FileManager   $fileManager,
     )
     {

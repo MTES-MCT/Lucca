@@ -11,7 +11,7 @@
 
     {#-- Form theming - apply to this form --#}
     {% if form.metas is defined %}
-        {% form_theme form.metas 'LuccaMediaBundle:MetaData/Form:theme-metaData.html.twig' %}
+        {% form_theme form.metas '@LuccaMedia/MetaData/Form/theme-metaData.html.twig' %}
     {% endif %}
 
     {#-- Display Media widget to upload file --#}

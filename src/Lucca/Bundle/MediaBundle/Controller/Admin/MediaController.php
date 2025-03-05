@@ -11,6 +11,7 @@
 namespace Lucca\Bundle\MediaBundle\Controller\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Lucca\Bundle\MediaBundle\Entity\Gallery;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
@@ -131,7 +132,7 @@ class MediaController extends AbstractController
     public function deleteAction(Media $media): Response
     {
         /** Find if Media is used by a Gallery */
-        $gallery = $this->em->getRepository('LuccaMediaBundle:Gallery')->findWithThisMedia($media);
+        $gallery = $this->em->getRepository(Gallery::class)->findWithThisMedia($media);
 
         if (!$gallery) {
             $this->fileManager->removeFile($media);

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,52 +10,30 @@
 
 namespace Lucca\Bundle\MinuteBundle\Form;
 
-use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, DateTimeType, TextType};
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\AdherentBundle\Repository\AdherentRepository;
-use Lucca\Bundle\ParameterBundle\Entity\Intercommunal;
-use Lucca\Bundle\ParameterBundle\Entity\Service;
-use Lucca\Bundle\ParameterBundle\Entity\Town;
-use Lucca\Bundle\ParameterBundle\Repository\IntercommunalRepository;
-use Lucca\Bundle\ParameterBundle\Repository\ServiceRepository;
-use Lucca\Bundle\ParameterBundle\Repository\TownRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\ParameterBundle\Entity\{Intercommunal, Service, Town};
+use Lucca\Bundle\ParameterBundle\Repository\{IntercommunalRepository, ServiceRepository, TownRepository};
 
-/**
- * Class MinuteBrowserType
- *
- * @package Lucca\Bundle\MinuteBundle\Form
- * @author Lisa <lisa.alvrez@numeric-wave.eu>
- */
 class MinuteBrowserType extends AbstractType
 {
-    /**
-     * @var AuthorizationChecker
-     */
-    private $authorizationChecker;
-
-    /**
-     * MinuteBrowserType constructor.
-     *
-     * @param AuthorizationChecker $authorizationChecker
-     */
-    public function __construct(AuthorizationChecker $authorizationChecker)
+    public function __construct(
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+    )
     {
-        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
         $adherentTowns = $options['adherent_towns'];
@@ -100,7 +79,8 @@ class MinuteBrowserType extends AbstractType
                 'multiple' => true, 'attr' => array('class' => 'chosen-select'),
                 'placeholder' => false
             ));
-        if ($adherentTowns === null || (gettype($adherentTowns) === 'array' && count($adherentTowns) > 1))
+
+        if ($adherentTowns === null || (gettype($adherentTowns) === 'array' && count($adherentTowns) > 1)) {
             $builder
                 ->add('folder_town', EntityType::class, array(
                     'class' => Town::class,
@@ -115,7 +95,8 @@ class MinuteBrowserType extends AbstractType
                         return $repo->getValuesActive();
                     }
                 ));
-        if ($adherentIntercommunals === null || (gettype($adherentIntercommunals) === 'array' && count($adherentIntercommunals) > 1))
+        }
+        if ($adherentIntercommunals === null || (gettype($adherentIntercommunals) === 'array' && count($adherentIntercommunals) > 1)) {
             $builder
                 ->add('folder_intercommunal', EntityType::class, array(
                     'class' => Intercommunal::class,
@@ -130,6 +111,7 @@ class MinuteBrowserType extends AbstractType
                         return $repo->getValuesActive();
                     }
                 ));
+        }
 
         /** Check if admin - or not */
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN') || $options['allFiltersAvailable']) {
@@ -182,9 +164,9 @@ class MinuteBrowserType extends AbstractType
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => null,
@@ -199,7 +181,7 @@ class MinuteBrowserType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'lucca_minuteBundle_minute';
     }

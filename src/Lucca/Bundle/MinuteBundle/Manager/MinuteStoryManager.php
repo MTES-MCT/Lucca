@@ -12,8 +12,8 @@ namespace Lucca\Bundle\MinuteBundle\Manager;
 
 use DateTime, DateInterval, DatePeriod;
 use Exception;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\EntityManager;
 
 use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
 use Lucca\Bundle\DecisionBundle\Entity\Decision;
@@ -23,7 +23,7 @@ use Lucca\Bundle\MinuteBundle\Entity\{Closure, Control, Minute, MinuteStory, Upd
 readonly class MinuteStoryManager
 {
     public function __construct(
-        private EntityManager  $em,
+        private EntityManagerInterface $em,
         private AdherentFinder $adherentFinder,
     )
     {

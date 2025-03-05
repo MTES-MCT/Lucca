@@ -15,8 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-use Lucca\Bundle\AdherentBundle\Entity\Adherent;
-use Lucca\Bundle\AdherentBundle\Service\AdherentFinder;
+use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
 
 #[Route(path: '/')]
 #[IsGranted('ROLE_USER')]

@@ -11,6 +11,8 @@
 namespace Lucca\Bundle\ContentBundle\Form;
 
 use Lucca\Bundle\ContentBundle\Entity\Page;
+use Lucca\Bundle\ContentBundle\Entity\SubArea;
+use Lucca\Bundle\UserBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
 use Symfony\Component\Form\Extension\Core\Type\{TextType, TextareaType, CheckboxType, IntegerType};
@@ -33,14 +35,14 @@ class PageType extends AbstractType
             ->add('content', TextareaType::class, ['label' => 'label.content', 'required' => false,
                 'attr' => ['class' => 'summernote']])
             ->add('author', EntityType::class, [
-                'class' => 'LuccaUserBundle:User', 'label' => 'label.author', 'choice_label' => 'username',
+                'class' => User::class, 'label' => 'label.author', 'choice_label' => 'username',
                 'multiple' => false, 'expanded' => false, 'required' => true, 'attr' => ['class' => 'chosen-select'],
                 'query_builder' => function (UserRepository $repo) {
                     return $repo->getValuesActive();
                 }
             ])
             ->add('subarea', EntityType::class, [
-                'class' => 'LuccaContentBundle:SubArea', 'label' => 'label.subarea', 'choice_label' => 'name',
+                'class' => SubArea::class, 'label' => 'label.subarea', 'choice_label' => 'name',
                 'multiple' => false, 'expanded' => false, 'required' => true, 'attr' => ['class' => 'chosen-select'],
                 'query_builder' => function (SubAreaRepository $repo) {
                     return $repo->getValuesActive();

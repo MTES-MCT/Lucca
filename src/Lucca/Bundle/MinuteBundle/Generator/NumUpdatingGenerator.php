@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,21 +10,14 @@
 
 namespace Lucca\Bundle\MinuteBundle\Generator;
 
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\{EntityManagerInterface, NonUniqueResultException};
 
 use Lucca\Bundle\MinuteBundle\Entity\Updating;
 
-/**
- * Class NumUpdatingGenerator
- *
- * @package Lucca\Bundle\MinuteBundle\Generator
- * @author Terence <terence@numeric-wave.tech>
- */
 readonly class NumUpdatingGenerator
 {
     public function __construct(
-        private EntityManager $em
+        private EntityManagerInterface $em
     )
     {
     }
@@ -35,8 +29,6 @@ readonly class NumUpdatingGenerator
      * $suffix - take 'PV'
      * $increment - Take the last code + 1
      *
-     * @param Updating $updating
-     * @return string
      * @throws NonUniqueResultException
      */
     public function generate(Updating $updating): string
@@ -49,16 +41,13 @@ readonly class NumUpdatingGenerator
         if ($maxCode) {
             $increment = substr($maxCode[1], -2);
             $increment = (int)$increment + 1;
-
-        } else
+        } else {
             $increment = 0;
+        }
 
         return $prefix . sprintf('%02d', $increment);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'lucca.generator.updating_num';

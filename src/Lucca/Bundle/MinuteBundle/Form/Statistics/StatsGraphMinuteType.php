@@ -10,34 +10,22 @@
 
 namespace Lucca\Bundle\MinuteBundle\Form\Statistics;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
-use Lucca\Bundle\ParameterBundle\Entity\Town;
-use Lucca\Bundle\ParameterBundle\Entity\Intercommunal;
-use Lucca\Bundle\ParameterBundle\Entity\Service;
-use Lucca\Bundle\ParameterBundle\Repository\IntercommunalRepository;
-use Lucca\Bundle\ParameterBundle\Repository\ServiceRepository;
-use Lucca\Bundle\ParameterBundle\Repository\TownRepository;
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\AdherentBundle\Repository\AdherentRepository;
+use Lucca\Bundle\ParameterBundle\Entity\{Town, Intercommunal, Service};
+use Lucca\Bundle\ParameterBundle\Repository\{IntercommunalRepository, ServiceRepository, TownRepository};
 
-/**
- * Class BrowserMinuteType
- *
- * @package Lucca\Bundle\MinuteBundle\Form\Statistics
- * @author Alizee Meyer <alizee.m@numeric-wave.eu>
- */
 class StatsGraphMinuteType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('dateStart', DateTimeType::class, array(
@@ -93,7 +81,7 @@ class StatsGraphMinuteType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => null,
@@ -105,7 +93,7 @@ class StatsGraphMinuteType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'lucca_minuteBundle_browser_minute';
     }

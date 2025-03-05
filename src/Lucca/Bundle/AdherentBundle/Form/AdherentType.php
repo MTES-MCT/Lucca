@@ -17,6 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\MediaBundle\Form\Media\MediaQuickType;
+use Lucca\Bundle\ParameterBundle\Entity\{Intercommunal, Service, Town};
 use Lucca\Bundle\ParameterBundle\Repository\{TownRepository, IntercommunalRepository, ServiceRepository};
 
 class AdherentType extends AbstractType
@@ -51,21 +52,21 @@ class AdherentType extends AbstractType
             ->add('phone', TextType::class, array('label' => 'label.phone'))
             ->add('mobile', TextType::class, array('label' => 'label.mobile', 'required' => false))
             ->add('town', EntityType::class, array(
-                'class' => 'LuccaParameterBundle:Town', 'choice_label' => 'formLabel', 'attr' => array('class' => 'chosen-select'),
+                'class' => Town::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'chosen-select'),
                 'multiple' => false, 'expanded' => false, 'label' => 'label.town', 'required' => false,
                 'query_builder' => function (TownRepository $er) {
                     return $er->getValuesActive();
                 }
             ))
             ->add('service', EntityType::class, array(
-                'class' => 'LuccaParameterBundle:Service', 'choice_label' => 'formLabel', 'attr' => array('class' => 'chosen-select'),
+                'class' => Service::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'chosen-select'),
                 'multiple' => false, 'expanded' => false, 'label' => 'label.service', 'required' => false,
                 'query_builder' => function (ServiceRepository $er) {
                     return $er->getValuesActive();
                 }
             ))
             ->add('intercommunal', EntityType::class, array(
-                'class' => 'LuccaParameterBundle:Intercommunal', 'choice_label' => 'formLabel', 'attr' => array('class' => 'chosen-select'),
+                'class' => Intercommunal::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'chosen-select'),
                 'multiple' => false, 'expanded' => false, 'label' => 'label.intercommunal', 'required' => false,
                 'query_builder' => function (IntercommunalRepository $er) {
                     return $er->getValuesActive();

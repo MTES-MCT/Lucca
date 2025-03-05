@@ -16,9 +16,9 @@ use Lucca\Bundle\SettingBundle\Manager\SettingManager;
 
 class LogoFinder
 {
-    public function __construct(
-        private $officialLogo,
-    )
+    private ?string $officialLogo;
+
+    public function __construct()
     {
         $this->officialLogo = SettingManager::get('setting.pdf.logo.name');
     }

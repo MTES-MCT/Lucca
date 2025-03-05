@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\ContentBundle\Form;
 
+use Lucca\Bundle\ContentBundle\Entity\Area;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
 use Symfony\Component\Form\Extension\Core\Type\{TextType, CheckboxType, IntegerType};
@@ -31,7 +32,7 @@ class SubAreaType extends AbstractType
                 'attr' => ['class' => 'form-control colorpicker-element']])
             ->add('title', TextType::class, ['label' => 'label.title', 'required' => true])
             ->add('area', EntityType::class, [
-                'class' => 'LuccaContentBundle:Area', 'label' => 'label.area', 'choice_label' => 'name',
+                'class' => Area::class, 'label' => 'label.area', 'choice_label' => 'name',
                 'multiple' => false, 'expanded' => false, 'required' => true, 'attr' => ['class' => 'chosen-select'],
                 'query_builder' => function (AreaRepository $repo) {
                     return $repo->getValuesActive();

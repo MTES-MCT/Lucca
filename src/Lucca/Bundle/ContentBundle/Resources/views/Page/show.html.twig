@@ -62,7 +62,7 @@
                                     <th>{{ 'label.mediasLinked'|trans }}</th>
                                     <td>
                                         {% for media in page.mediasLinked %}
-                                            {% include 'LuccaMediaBundle:Media/Embed:_element-media.html.twig' with {'media': media, 'colSize': 4 } %}
+                                            {% include '@LuccaMedia/Media/Embed/_element-media.html.twig' with {'media': media, 'colSize': 4 } %}
                                         {% endfor %}
                                     </td>
                                 </tr>

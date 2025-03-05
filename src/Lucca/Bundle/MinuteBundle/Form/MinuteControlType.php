@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,42 +10,26 @@
 
 namespace Lucca\Bundle\MinuteBundle\Form;
 
-use Lucca\Bundle\MinuteBundle\Entity\Control;
-use Lucca\Bundle\MinuteBundle\Entity\Human;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TimeType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, CollectionType, DateType, TextType, TimeType};
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class MinuteControlType
- *
- * @package Lucca\Bundle\MinuteBundle\Form
- * @author Terence <terence@numeric-wave.tech>
- */
+use Lucca\Bundle\MinuteBundle\Entity\{Control, Human};
+
 class MinuteControlType extends AbstractType
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+    )
     {
-        $this->translator = $translator;
     }
 
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('stateControl', ChoiceType::class, array(
@@ -121,11 +106,12 @@ class MinuteControlType extends AbstractType
          * Part human - Create a new one or select existant
          */
         $choicesHuman = $options['minute']->getHumans();
-        if ($options['human'])
+        if ($options['human']) {
             $choicesHuman = array_merge($options['minute']->getHumans()->toArray(), $options['human']->toArray());
+        }
 
         $builder->add('humansByMinute', EntityType::class, array(
-            'class' => 'LuccaMinuteBundle:Human', 'label' => false, 'required' => false,
+            'class' => Human::class, 'label' => false, 'required' => false,
             'multiple' => true, 'expanded' => false, 'choices' => $choicesHuman,
             'attr' => array(
                 'class' => 'select2',
@@ -146,9 +132,9 @@ class MinuteControlType extends AbstractType
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('minute');
         $resolver->setDefaults(array(
@@ -161,7 +147,7 @@ class MinuteControlType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'lucca_minuteBundle_minute_control';
     }

@@ -11,17 +11,18 @@
 namespace Lucca\Bundle\MediaBundle\Utils;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Generator\UrlGenerator;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\MediaBundle\Entity\Media;
 
-class PathFormatter
+readonly class PathFormatter
 {
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly Router                 $router,
-        private string                          $localesAuthorized,
+        private EntityManagerInterface $em,
+        private RouterInterface        $router,
+        private ParameterBagInterface  $params,
     )
     {
     }
@@ -44,7 +45,7 @@ class PathFormatter
         $relativeWebPath = str_replace($randomMedia->getNameCanonical(), "", $randomWebPath);
 
         /** Explode the locales authorized to be able to iterate on it */
-        $languages = explode("|", $this->localesAuthorized);
+        $languages = explode("|", $this->params->get('locales_authorized'));
         $firstLanguage = "";
         /** First loop to find what is the language of the relative path */
         foreach ($languages as $language) {
@@ -95,7 +96,7 @@ class PathFormatter
             /** If the target is a PDF we need to get local path */
             /** If the target is an export we need to get web path with domain name */
             if ($target == "PDF") {
-                $media = $this->em->getRepository('LuccaMediaBundle:Media')->findOneFileByName($mediaName);
+                $media = $this->em->getRepository(Media::class)->findOneFileByName($mediaName);
                 /** Change the file for a local path
                  * Example:
                  * faerun/media/show/614b1fd613079_selection-002-png -> /srv/docs/uploads/2021/38/614b1fd613079_selection-002-png

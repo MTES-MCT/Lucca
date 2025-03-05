@@ -22,9 +22,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Lucca\Bundle\FolderBundle\Entity\{Courier, Folder};
 use Lucca\Bundle\FolderBundle\Form\{FolderType, UpdatingFolderType};
 use Lucca\Bundle\FolderBundle\Generator\NumFolderGenerator;
-use Lucca\Bundle\MinuteBundle\Manager\CourierEditionManager;
-use Lucca\Bundle\MinuteBundle\Manager\FolderEditionManager;
-use Lucca\Bundle\MinuteBundle\Manager\FolderManager;
+use Lucca\Bundle\FolderBundle\Utils\{CourierEditionManager, FolderEditionManager, FolderManager};
 use Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
 use Lucca\Bundle\MinuteBundle\Entity\{Minute, Updating};
 

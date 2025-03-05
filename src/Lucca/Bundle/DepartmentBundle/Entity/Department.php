@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\CoreBundle\Entity\ToggleableTrait;
-use Lucca\Bundle\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 
 use Lucca\Bundle\DepartmentBundle\Repository\DepartmentRepository;
 

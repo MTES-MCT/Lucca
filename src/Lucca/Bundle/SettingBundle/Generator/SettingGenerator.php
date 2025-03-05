@@ -14,12 +14,10 @@ use Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
-use Lucca\Bundle\SettingBundle\Entity\Category;
+use Lucca\Bundle\SettingBundle\Entity\{Category, Setting};
 use Lucca\Bundle\SettingBundle\Manager\SettingManager;
-use Lucca\Bundle\SettingBundle\Entity\Setting;
-use Lucca\Bundle\SettingBundle\Repository\SettingRepository;
-use Symfony\Component\VarDumper\Cloner\Data;
 
 /**
  * Setting Generator stores settings in database if they do not exist yet.
@@ -37,12 +35,14 @@ class SettingGenerator
     /** Setting in their minimal shape */
     protected array $aOutputDictionary;
 
+    protected array $settings;
+    protected array $categories;
+
     public function __construct(
         protected readonly EntityManagerInterface $em,
-        protected readonly AdapterInterface $cache,
-        protected readonly DataGenerator $dataGenerator,
-        protected array $settings,
-        protected array $categories,
+//        protected readonly AdapterInterface       $cache,
+        protected readonly DataGenerator          $dataGenerator,
+        protected readonly CacheInterface         $settingsCache,
     )
     {
         $this->settings = $dataGenerator->settings;
@@ -54,7 +54,7 @@ class SettingGenerator
      */
     public function clearCachedSettings(): void
     {
-        $this->cache->deleteItem(self::SETTINGS_CACHE_KEY);
+        $this->settingsCache->deleteItem(self::SETTINGS_CACHE_KEY);
     }
 
     /**
@@ -64,7 +64,7 @@ class SettingGenerator
      */
     public function updateCachedSetting(string $name, mixed $value): void
     {
-        $item = $this->cache->getItem(self::SETTINGS_CACHE_KEY);
+        $item = $this->settingsCache->getItem(self::SETTINGS_CACHE_KEY);
 
         if ($item->isHit()) {
             $aDictionary = $item->get();
@@ -72,7 +72,7 @@ class SettingGenerator
             if (isset($aDictionary[$name]) && $aDictionary[$name] !== $value) {
                 $aDictionary[$name] = $value;
                 $item->set($aDictionary);
-                $this->cache->save($item);
+                $this->settingsCache->save($item);
             }
         }
     }
@@ -86,7 +86,7 @@ class SettingGenerator
      */
     public function getCachedSettings(bool $bypassCache = false): array
     {
-        $item = $this->cache->getItem(self::SETTINGS_CACHE_KEY);
+        $item = $this->settingsCache->getItem(self::SETTINGS_CACHE_KEY);
 
         if (!$item->isHit() || $bypassCache) {
             /** Check if all parameters exist in database in order to create them */
@@ -94,7 +94,7 @@ class SettingGenerator
                 $aSettingDictionary = $this->generateMissingSettings();
 
                 $item->set($aSettingDictionary);
-                $this->cache->save($item);
+                $this->settingsCache->save($item);
 
                 $this->em->flush();
             } catch (Exception $e) {

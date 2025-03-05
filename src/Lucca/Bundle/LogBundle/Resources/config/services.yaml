@@ -14,7 +14,7 @@ services:
 
     ## Subscriber on LogEvent and create all necessary log
     lucca.subscriber.log:
-        class: Lucca\Bundle\LogBundle\EventSubscriber\LogSubscriber
+        class: Lucca\Bundle\LogBundle\EventSubscriber\LogCreatorSubscriber
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@security.token_storage"

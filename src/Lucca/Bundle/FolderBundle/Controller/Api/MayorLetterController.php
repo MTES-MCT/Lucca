@@ -20,8 +20,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
 use Lucca\Bundle\DecisionBundle\Entity\Decision;
 use Lucca\Bundle\FolderBundle\Entity\{Folder, Tag};
+use Lucca\Bundle\FolderBundle\Utils\MayorLetterManager;
 use Lucca\Bundle\MinuteBundle\Entity\Human;
-use Lucca\Bundle\MinuteBundle\Manager\MayorLetterManager;
 use Lucca\Bundle\ParameterBundle\Entity\Town;
 
 #[IsGranted('ROLE_USER')]

@@ -15,8 +15,8 @@
 
     {#Form theme apply for child only#}
     {% form_theme form  '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig' %}
-    {% form_theme form.humansByFolder 'LuccaFolderBundle:Human:human-theme.html.twig' %}
-    {% form_theme form.elements 'LuccaFolderBundle:Element:element-theme.html.twig' %}
+    {% form_theme form.humansByFolder '@LuccaFolder/Human/human-theme.html.twig' %}
+    {% form_theme form.elements '@LuccaFolder/Element/element-theme.html.twig' %}
 
     <div class="row">
 

@@ -13,22 +13,22 @@ namespace Lucca\Bundle\SettingBundle\Controller\Admin;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Routing\Attribute\Route;
 
 use Lucca\Bundle\SettingBundle\Entity\{Category, Setting};
 use Lucca\Bundle\SettingBundle\Form\SettingType;
-use Lucca\Bundle\SettingBundle\Service\GeneratorSetting;
+use Lucca\Bundle\SettingBundle\Generator\SettingGenerator;
 
 #[Route(path: '/setting')]
 #[IsGranted('ROLE_ADMIN')]
 class SettingController extends AbstractController
 {
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly AuthorizationChecker $authorizationChecker,
-        private readonly GeneratorSetting $generatorSetting,
+        private readonly EntityManagerInterface        $em,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly SettingGenerator              $generatorSetting,
     )
     {
     }

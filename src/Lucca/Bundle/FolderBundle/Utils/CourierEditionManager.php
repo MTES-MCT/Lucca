@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -7,59 +8,41 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\Bundle\MinuteBundle\Utils;
+namespace Lucca\Bundle\FolderBundle\Utils;
 
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\Courier;
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\CourierEdition;
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\CourierHumanEdition;
-use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Doctrine\Common\Collections\{ArrayCollection, Collection};
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Exception\ORMException;
+
+use Lucca\Bundle\FolderBundle\Entity\{Courier, CourierEdition, CourierHumanEdition, Folder};
 use Lucca\Bundle\MinuteBundle\Entity\Human;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\ORMException;
 
-/**
- * Class CourierEditionManager
- *
- * @package Lucca\Bundle\MinuteBundle\Utils
- * @author Térence <terence@numeric-wave.tech>
- */
-class CourierEditionManager
+readonly class CourierEditionManager
 {
-    /**
-     * @var EntityManager
-     */
-    private $em;
-
-    /**
-     * CourierEditionManager constructor
-     *
-     * @param EntityManager $entityManager
-     */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(
+        private EntityManagerInterface $em,
+    )
     {
-        $this->em = $entityManager;
     }
 
     /**
      * Manage all editions after a submission form
-     *
-     * @param Courier $p_courier
-     * @return Courier
      */
-    public function manageEditionsOnFormSubmission(Courier $p_courier)
+    public function manageEditionsOnFormSubmission(Courier $courier): Courier
     {
-        $editions = $this->em->getRepository('LuccaMinuteBundle:CourierHumanEdition')->findBy(array(
-            'courier' => $p_courier
-        ));
+        $editions = $this->em->getRepository(CourierHumanEdition::class)->findBy([
 
-        if ($p_courier->getHumansEditions() === null || $p_courier->getHumansEditions()->count() === 0) {
-            $this->createEditions($p_courier);
-            return $p_courier;
+            'courier' => $courier
+        ]);
+
+        if ($courier->getHumansEditions() === null || $courier->getHumansEditions()->count() === 0) {
+            $this->createEditions($courier);
+
+            return $courier;
         }
 
         /** @var Human $humans linked to Folder */
-        $humans = $this->selectHumans($p_courier->getFolder());
+        $humans = $this->selectHumans($courier->getFolder());
 
         /** 1 - Loop for Humans defined in Minute list */
         foreach ($humans as $human) {
@@ -74,42 +57,43 @@ class CourierEditionManager
             }
 
             /**  If an edition does not exist then create one */
-            if (!$flagEditionExist)
-                $this->createOneHumanEdition($p_courier, $human);
+            if (!$flagEditionExist) {
+                $this->createOneHumanEdition($courier, $human);
+            }
         }
 
         /**  If an edition stay after loops - then a human has been deleted then delete all rest editions */
         if (sizeof($editions) > 0) {
-            foreach ($editions as $edition)
-                $this->removeEdition($p_courier, $edition);
+            foreach ($editions as $edition) {
+                $this->removeEdition($courier, $edition);
+            }
         }
 
         /** 2 - Manage edition for judicial and ddtm courier */
-        if (!$p_courier->getEdition()) {
+        if (!$courier->getEdition()) {
             $edition = new CourierEdition();
-            $p_courier->setEdition($edition);
+            $courier->setEdition($edition);
         }
 
-        return $p_courier;
+        return $courier;
     }
 
     /**
      * Create all editions needed
-     * @param Courier $p_courier
-     * @return Courier
      */
-    public function createEditions(Courier $p_courier)
+    public function createEditions(Courier $courier): Courier
     {
         /** @var Human $humans linked to Folder */
-        $humans = $this->selectHumans($p_courier->getFolder());
+        $humans = $this->selectHumans($courier->getFolder());
 
         /** 1 - Loop for Humans defined in Minute list */
-        foreach ($humans as $human)
-            $this->createOneHumanEdition($p_courier, $human);
+        foreach ($humans as $human) {
+            $this->createOneHumanEdition($courier, $human);
+        }
 
         /** 2 - Manage edition for judicial and ddtm courier */
         $edition = new CourierEdition();
-        $p_courier->setEdition($edition);
+        $courier->setEdition($edition);
 
         try {
             $this->em->persist($edition);
@@ -117,21 +101,17 @@ class CourierEditionManager
             echo 'New exception thrown when created Courier Edition - ' . $ORMException->getMessage();
         }
 
-        return $p_courier;
+        return $courier;
     }
 
     /**
      * Create one Edition and linked this to Control
-     *
-     * @param Courier $p_courier
-     * @param Human $p_human
-     * @return Courier
      */
-    private function createOneHumanEdition(Courier $p_courier, Human $p_human)
+    private function createOneHumanEdition(Courier $courier, Human $human): Courier
     {
         $edition = new CourierHumanEdition();
-        $p_courier->addHumansEdition($edition);
-        $edition->setHuman($p_human);
+        $courier->addHumansEdition($edition);
+        $edition->setHuman($human);
 
         try {
             $this->em->persist($edition);
@@ -139,47 +119,43 @@ class CourierEditionManager
             echo 'New exception thrown when created Courier Human Edition - ' . $ORMException->getMessage();
         }
 
-        return $p_courier;
+        return $courier;
     }
 
     /**
      * Select Humans to create HumanEdition
-     *
-     * @param Folder $p_folder
-     * @return ArrayCollection|\Doctrine\Common\Collections\Collection
      */
-    private function selectHumans(Folder $p_folder)
+    private function selectHumans(Folder $folder): Collection
     {
         /** If Obstacle folder - then select only humans in frame 3 - else humans on frame 1 */
-        if ($p_folder->getNature() === Folder::NATURE_OBSTACLE)
+        if ($folder->getNature() === Folder::NATURE_OBSTACLE)
             return new ArrayCollection(array_merge(
-                $p_folder->getHumansByMinute()->toArray(),
-                $p_folder->getHumansByFolder()->toArray()
+                $folder->getHumansByMinute()->toArray(),
+                $folder->getHumansByFolder()->toArray()
             ));
 
-        return $p_folder->getMinute()->getHumans();
+        return $folder->getMinute()->getHumans();
     }
 
     /**
      * Purge empty editions on Control entity
-     *
-     * @param Courier $courier
-     * @return Courier $courier
      */
-    public function purgeEditions(Courier $courier)
+    public function purgeEditions(Courier $courier): Courier
     {
         /** Loop for Editions based on Humans */
         foreach ($courier->getHumansEditions() as $edition) {
             /**  If no customization on Edition - delete it */
-            if (!$edition->getLetterOffenderEdited())
+            if (!$edition->getLetterOffenderEdited()) {
                 $this->removeOneHumanEdition($courier, $edition);
+            }
         }
 
         $edition = $courier->getEdition();
         if ($edition) {
             /**  If no customization on Edition - delete it */
-            if (!$edition->getJudicialEdited() && !$edition->getDdtmEdited())
+            if (!$edition->getJudicialEdited() && !$edition->getDdtmEdited()) {
                 $this->removeEdition($courier, $edition);
+            }
         }
 
         return $courier;
@@ -187,48 +163,37 @@ class CourierEditionManager
 
     /**
      * Remove one Edition of Control
-     *
-     * @param Courier $p_courier
-     * @param CourierEdition $p_courierEdition
-     * @return Courier
      */
-    private function removeEdition(Courier $p_courier, CourierEdition $p_courierEdition)
+    private function removeEdition(Courier $courier, CourierEdition $courierEdition): Courier
     {
-        $p_courier->setEdition(null);
+        $courier->setEdition(null);
 
         try {
-            $this->em->remove($p_courierEdition);
+            $this->em->remove($courierEdition);
         } catch (ORMException $ORMException) {
             echo 'New exception thrown when remove Courier Edition - ' . $ORMException->getMessage();
         }
 
-        return $p_courier;
+        return $courier;
     }
 
     /**
      * Remove one Human Edition of Control
-     *
-     * @param Courier $p_courier
-     * @param CourierHumanEdition $p_courierHumanEdition
-     * @return Courier
      */
-    private function removeOneHumanEdition(Courier $p_courier, CourierHumanEdition $p_courierHumanEdition)
+    private function removeOneHumanEdition(Courier $courier, CourierHumanEdition $courierHumanEdition): Courier
     {
-        $p_courier->removeHumansEdition($p_courierHumanEdition);
+        $courier->removeHumansEdition($courierHumanEdition);
 
         try {
-            $this->em->remove($p_courierHumanEdition);
+            $this->em->remove($courierHumanEdition);
         } catch (ORMException $ORMException) {
             echo 'New exception thrown when remove Courier Human Edition - ' . $ORMException->getMessage();
         }
 
-        return $p_courier;
+        return $courier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'lucca.manager.courier_human_edition';
     }

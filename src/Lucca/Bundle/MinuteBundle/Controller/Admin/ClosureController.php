@@ -9,8 +9,8 @@
 
 namespace Lucca\Bundle\MinuteBundle\Controller\Admin;
 
-use App\Lucca\Bundle\MinuteBundle\Manager\ClosureManager;
-use App\Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
+use Lucca\Bundle\MinuteBundle\Manager\ClosureManager;
+use Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Lucca\Bundle\MinuteBundle\Entity\Closure;
 use Lucca\Bundle\MinuteBundle\Entity\Minute;

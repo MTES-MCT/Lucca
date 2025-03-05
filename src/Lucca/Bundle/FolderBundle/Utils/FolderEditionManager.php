@@ -7,58 +7,37 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\Bundle\MinuteBundle\Utils;
+namespace Lucca\Bundle\FolderBundle\Utils;
 
-use Lucca\Bundle\FolderBundle\Entity\Folder;
-use Lucca\Bundle\FolderBundle\Entity\FolderEdition;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * Class FolderEditionManager
- *
- * @package Lucca\Bundle\MinuteBundle\Utils
- * @author Térence <terence@numeric-wave.tech>
- */
-class FolderEditionManager
+use Lucca\Bundle\FolderBundle\Entity\{Folder, FolderEdition};
+
+readonly class FolderEditionManager
 {
-    /**
-     * @var EntityManager
-     */
-    private $em;
-
-    /**
-     * FolderEditionManager constructor
-     *
-     * @param EntityManager $entityManager
-     */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(
+        private EntityManagerInterface $em,
+    )
     {
-        $this->em = $entityManager;
     }
 
-    /**
-     * @param Folder $folder
-     * @return FolderEdition
-     */
-    public function manageEditionsOnFormSubmission(Folder $folder)
+    public function manageEditionsOnFormSubmission(Folder $folder): FolderEdition
     {
         if (!$folder->getEdition()) {
             $edition = new FolderEdition();
             $folder->setEdition($edition);
-        } else
+        } else {
             $edition = $folder->getEdition();
+        }
 
         return $edition;
     }
 
     /**
      * Purge empty edition on Folder entity
-     *
-     * @param Folder $folder
-     * @return Folder $folder
      */
-    public function purgeEdition(Folder $folder)
+    public function purgeEdition(Folder $folder): Folder
     {
         $edition = $folder->getEdition();
         /**  If no customization on Edition - delete it */
@@ -75,10 +54,7 @@ class FolderEditionManager
         return $folder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'lucca.manager.folder_edition';
     }

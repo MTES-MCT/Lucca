@@ -12,7 +12,7 @@
 
 {% block lucca_list %}
 
-    {% include 'LuccaAdherentBundle:MyAgent:list-myAgent.html.twig' with { 'agents': agents } %}
+    {% include '@LuccaAdherent/MyAgent/list-myAgent.html.twig' with { 'agents': agents } %}
 
     <a class="btn btn-primary btn-lg" href="{{ path('lucca_myagent_new') }}" title="{{ 'link.agent.new'|trans }}">
         <i class="fa fa-plus"></i></a>

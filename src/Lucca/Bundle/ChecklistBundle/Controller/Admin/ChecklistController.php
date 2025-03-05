@@ -37,7 +37,7 @@ class ChecklistController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function indexAction(): Response
     {
-        $checklists = $this->em->getRepository('LuccaChecklistBundle:Checklist')->findAll();
+        $checklists = $this->em->getRepository(Checklist::class)->findAll();
 
         return $this->render('@LuccaChecklist/Checklist/index.html.twig', [
             'checklists' => $checklists

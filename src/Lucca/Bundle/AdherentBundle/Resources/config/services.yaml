@@ -1,6 +1,6 @@
 # LuccaAdherentBundle parameters
 parameters:
-    path.lucca: "%kernel.root_dir%/../../lucca.doc/"
+    path.lucca: "%kernel.project_dir%/../../lucca.doc/"
     path.import: "%path.lucca%/importFile/"
     path.historic: "%path.lucca%/historic/"
     
@@ -38,11 +38,11 @@ services:
     ## Mailer
     #################################################################
     
-    ## Mailer subscription
-    lucca.mailer.adherent.subscription.summary:
-        class: Lucca\Bundle\AdherentBundle\Mailer\SummaryAdherentSubscriptionMailer
-        arguments:
-            $container: "@service_container"
+#    ## Mailer subscription
+#    lucca.mailer.adherent.subscription.summary:
+#        class: Lucca\Bundle\AdherentBundle\Mailer\SummaryAdherentSubscriptionMailer
+#        arguments:
+#            $container: "@service_container"
     
     #################################################################
     ## Finder
@@ -54,20 +54,10 @@ services:
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@security.token_storage"
-    
-    ## Finder logo used by Adherent
-    lucca.finder.logo:
-        class: Lucca\Bundle\AdherentBundle\Finder\LogoFinder
-        arguments:
-            - "@doctrine.orm.entity_manager"
 
-    #################################################################
-    ## Twig
-    #################################################################
-    ## Twig extension
-    lucca.twig.adherent:
-        class: Lucca\Bundle\AdherentBundle\Twig\AdherentExtension
-        arguments:
-            - "@doctrine.orm.entity_manager"
-        tags:
-            - { name: twig.extension }
+#    ## Finder logo used by Adherent
+#    lucca.finder.logo:
+#        class: Lucca\Bundle\AdherentBundle\Finder\LogoFinder
+#        arguments:
+#            $officialLogo: ''
+

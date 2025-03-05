@@ -10,7 +10,7 @@
 
 namespace Lucca\Bundle\MinuteBundle\Manager;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 
 use Lucca\Bundle\MinuteBundle\Entity\{Control, ControlEdition, Human};
@@ -18,7 +18,7 @@ use Lucca\Bundle\MinuteBundle\Entity\{Control, ControlEdition, Human};
 readonly class ControlEditionManager
 {
     public function __construct(
-        private EntityManager $em,
+        private EntityManagerInterface $em,
     )
     {
     }

@@ -24,7 +24,7 @@ class FolderStep3Type extends AbstractType
 
         $builder
             ->add('natinfs', EntityType::class, array(
-                'class' => 'LuccaFolderBundle:Natinf', 'choice_label' => 'num', 'choices' => $natinfsFiltered,
+                'class' => Natinf::class, 'choice_label' => 'num', 'choices' => $natinfsFiltered,
                 'multiple' => true, 'expanded' => true, 'label' => 'label.natinfs', 'required' => false,
                 'attr' => array('class' => 'chosen-select',)
             ));

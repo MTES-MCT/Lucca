@@ -22,7 +22,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Lucca\Bundle\FolderBundle\Form\CourierType;
 use Lucca\Bundle\FolderBundle\Entity\Courier;
 use Lucca\Bundle\MinuteBundle\Entity\Minute;
-use Lucca\Bundle\MinuteBundle\Utils\{MinuteStoryManager, HtmlCleaner};
+use Lucca\Bundle\MinuteBundle\Utils\HtmlCleaner;
+use Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
 
 #[IsGranted('ROLE_LUCCA')]
 #[Route(path: '/minute-{minute_id}/courier')]

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -7,61 +8,28 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\Bundle\MinuteBundle\Utils;
+namespace Lucca\Bundle\FolderBundle\Utils;
 
-use Lucca\Bundle\MinuteBundle\Entity\FolderBundle\Entity\MayorLetter;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\ORMException;
-use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
-use Symfony\Component\Translation\TranslatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class FolderManager
- *
- * @package Lucca\Bundle\MinuteBundle\Utils
- * @author Térence <terence@numeric-wave.tech>
- */
-class MayorLetterManager
+use Lucca\Bundle\FolderBundle\Entity\MayorLetter;
+
+readonly class MayorLetterManager
 {
-    /**
-     * @var EntityManager
-     */
-    private $em;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var AdherentFinder
-     */
-    private $adherentFinder;
-
-
-    /**
-     * FolderManager constructor
-     *
-     * @param EntityManager $entityManager
-     * @param TranslatorInterface $translator
-     * @param AdherentFinder $adherentFinder
-     */
-    public function __construct(EntityManager $entityManager, TranslatorInterface $translator, AdherentFinder $adherentFinder)
+    public function __construct(
+        private EntityManagerInterface $em,
+        private TranslatorInterface    $translator,
+    )
     {
-        $this->em = $entityManager;
-        $this->translator = $translator;
-        $this->adherentFinder = $adherentFinder;
     }
 
     /**
      * Check all field it's not null
-     *
-     * @param $data
-     * @param MayorLetter|null $mayorLetter
-     *
-     * @return string
      */
-    public function checkMayorLetterField($data, MayorLetter $mayorLetter = null)
+    public function checkMayorLetterField($data, ?MayorLetter $mayorLetter = null): string
     {
         $message = "";
 
@@ -69,7 +37,7 @@ class MayorLetterManager
         if ( $mayorLetter == null && (
             !$data->gender || !$data->nameMayor || !$data->addressMayor || !$data->town || count($data->folders) == 0 )
         ) {
-            $message = $this->translator->trans("text.mayorLetter.badField", array(), 'LuccaMinuteBundle');
+            $message = $this->translator->trans("text.mayorLetter.badField", [], 'LuccaMinuteBundle');
         }
 
         return $message;
@@ -78,22 +46,17 @@ class MayorLetterManager
     /**
      * Delete a Mayor Letter
      *
-     * @param MayorLetter $mayorLetter
      * @throws ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws OptimisticLockException
      */
-    public function deleteMayorLetter(MayorLetter $mayorLetter)
+    public function deleteMayorLetter(MayorLetter $mayorLetter): void
     {
         $this->em->remove($mayorLetter);
         $this->em->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'lucca.manager.mayor.letter';
     }
-
 }

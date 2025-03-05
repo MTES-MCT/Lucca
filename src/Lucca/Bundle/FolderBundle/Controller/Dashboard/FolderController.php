@@ -13,10 +13,11 @@ namespace Lucca\Bundle\FolderBundle\Controller\Dashboard;
 use DateTime;
 use Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\attribute\Route;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
@@ -37,7 +38,7 @@ class FolderController extends AbstractController
      */
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly AuthorizationChecker $authorizationChecker,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly AdherentFinder $adherentFinder,
     )
     {
@@ -101,10 +102,10 @@ class FolderController extends AbstractController
         }
 
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
-            $folders = $this->em->getRepository('LuccaFolderBundle:Folder')->findFolderBrowser(null,
+            $folders = $this->em->getRepository(Folder::class)->findFolderBrowser(null,
                 $filters['dateStart'], $filters['dateEnd'], $filters['num'], $filters['numFolder'], $filters['adherent'], $filters['town'], $filters['intercommunal'], $filters['service']);
         } else {
-            $folders = $this->em->getRepository('LuccaFolderBundle:Folder')->findFolderBrowser($adherent,
+            $folders = $this->em->getRepository(Folder::class)->findFolderBrowser($adherent,
                 $filters['dateStart'], $filters['dateEnd'], $filters['num'], $filters['numFolder']);
         }
 

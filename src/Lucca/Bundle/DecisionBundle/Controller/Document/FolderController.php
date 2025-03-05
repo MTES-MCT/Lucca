@@ -41,7 +41,7 @@ class FolderController extends AbstractController
     ): Response
     {
         // TODO Check performance issue
-//        $folder = $this->em->getRepository('LuccaDecisionBundle:Folder')->findCompleteFolder($folder);
+//        $folder = $this->em->getRepository(Folder::class)->findCompleteFolder($folder);
         $update = $this->em->getRepository(Updating::class)->findUpdatingByControl($folder->getControl());
 
         return $this->render('@LuccaDecision/Printing/Basic/doc.html.twig', [

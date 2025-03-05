@@ -10,8 +10,8 @@
 
 namespace Lucca\Bundle\MinuteBundle\Manager;
 
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\FolderBundle\Entity\{Courier, Folder};
@@ -20,8 +20,8 @@ use Lucca\Bundle\MinuteBundle\Entity\{Human, Minute};
 readonly class MinuteManager
 {
     public function __construct(
-        private EntityManager  $em,
-        private Session        $session,
+        private EntityManagerInterface $em,
+        private RequestStack           $requestStack,
     )
     {
     }
@@ -62,16 +62,16 @@ readonly class MinuteManager
         /** @var Human $human - Check each Human linked to this Minute */
         foreach ($minute->getHumans() as $human) {
             if (!$human->getName()) {
-                $this->session->getFlashBag()->add('danger', 'flash.human.nameIsRequired');
+                $this->requestStack->getSession()->getFlashBag()->add('danger', 'flash.human.nameIsRequired');
             }
 
             if (!$human->getFirstname()) {
-                $this->session->getFlashBag()->add('danger', 'flash.human.firstnameIsRequired');
+                $this->requestStack->getSession()->getFlashBag()->add('danger', 'flash.human.firstnameIsRequired');
             }
         }
 
         /** Check if an dangerous message has been thrown by test */
-        if ($this->session->getFlashBag()->has('danger')) {
+        if ($this->requestStack->getSession()->getFlashBag()->has('danger')) {
             return false;
         }
 

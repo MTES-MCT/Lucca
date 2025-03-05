@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,19 +10,14 @@
 
 namespace Lucca\Bundle\MinuteBundle\Generator;
 
-use Lucca\Bundle\MinuteBundle\Entity\Minute;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * Class NumMinuteGenerator
- *
- * @package Lucca\Bundle\MinuteBundle\Generator
- * @author Terence <terence@numeric-wave.tech>
- */
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+
 readonly class NumMinuteGenerator
 {
     public function __construct(
-        private EntityManager $em
+        private EntityManagerInterface $em
     )
     {
     }
@@ -32,9 +28,6 @@ readonly class NumMinuteGenerator
      * $year - take 2 letters (17)
      * $siren - take 'siren' of authority
      * $increment - Take the last code + 1
-     *
-     * @param Minute $minute
-     * @return string
      */
     public function generate(Minute $minute): string
     {
@@ -42,18 +35,20 @@ readonly class NumMinuteGenerator
         if (!$minute->getDateComplaint()) {
             $now = new \DateTime();
             $year = $now->format('y');
-        } else
+        } else {
             $year = $minute->getDateComplaint()->format('y');
+        }
 
         $adherent = $minute->getAdherent();
         $authority = null;
 
-        if ($adherent->getTown())
+        if ($adherent->getTown()) {
             $authority = $adherent->getTown()->getCode();
-        elseif ($adherent->getIntercommunal())
+        } elseif ($adherent->getIntercommunal()) {
             $authority = $adherent->getIntercommunal()->getCode();
-        elseif ($adherent->getService())
+        } elseif ($adherent->getService()) {
             $authority = $adherent->getService()->getCode();
+        }
 
         $prefix = $year . '-' . $authority . '-';
 
@@ -62,16 +57,13 @@ readonly class NumMinuteGenerator
         if ($maxCode) {
             $increment = substr($maxCode[1], -3);
             $increment = (int)$increment + 1;
-
-        } else
+        } else {
             $increment = 0;
+        }
 
         return $prefix . sprintf('%03d', $increment);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'lucca.generator.minute_num';

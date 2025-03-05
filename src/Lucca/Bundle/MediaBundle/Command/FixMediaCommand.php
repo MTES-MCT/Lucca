@@ -11,6 +11,10 @@
 namespace Lucca\Bundle\MediaBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Lucca\Bundle\FolderBundle\Entity\CourierEdition;
+use Lucca\Bundle\FolderBundle\Entity\CourierHumanEdition;
+use Lucca\Bundle\FolderBundle\Entity\FolderEdition;
+use Lucca\Bundle\MinuteBundle\Entity\ControlEdition;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand,
     Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Output\OutputInterface;
@@ -113,7 +117,7 @@ class FixMediaCommand extends Command
         $oldPath = $p_optionPath;
 
         /** Get all control editions */
-        $editions = $em->getRepository('LuccaMinuteBundle:ControlEdition')->findAll();
+        $editions = $em->getRepository(ControlEdition::class)->findAll();
 
         /** Create progress bar */
         $progress = new ProgressBar($p_output, count($editions));
@@ -143,7 +147,7 @@ class FixMediaCommand extends Command
         $p_output->writeln(sprintf('<comment>[INFO] End of control edition migration</comment>'));
 
         /********* Get all courrier editions **********/
-        $editions = $em->getRepository('LuccaMinuteBundle:CourierEdition')->findAll();
+        $editions = $em->getRepository(CourierEdition::class)->findAll();
 
         /** Create progress bar */
         $progress = new ProgressBar($p_output, count($editions));
@@ -172,7 +176,7 @@ class FixMediaCommand extends Command
         $p_output->writeln(sprintf('<comment>[INFO] End of courier edition migration</comment>'));
 
         /************* Get all folder editions *************/
-        $editions = $em->getRepository('LuccaMinuteBundle:FolderEdition')->findAll();
+        $editions = $em->getRepository(FolderEdition::class)->findAll();
 
         /** Create progress bar */
         $progress = new ProgressBar($p_output, count($editions));
@@ -197,7 +201,7 @@ class FixMediaCommand extends Command
         $p_output->writeln(sprintf('<comment>[INFO] End of folder edition migration</comment>'));
 
         /*********** Get all courier human editions *************/
-        $editions = $em->getRepository('LuccaMinuteBundle:CourierHumanEdition')->findAll();
+        $editions = $em->getRepository(CourierHumanEdition::class)->findAll();
 
         /** Create progress bar */
         $progress = new ProgressBar($p_output, count($editions));

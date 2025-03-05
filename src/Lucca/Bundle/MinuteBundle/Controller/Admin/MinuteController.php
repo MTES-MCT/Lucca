@@ -9,9 +9,9 @@
 
 namespace Lucca\Bundle\MinuteBundle\Controller\Admin;
 
-use App\Lucca\Bundle\MinuteBundle\Manager\MinuteManager;
-use App\Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
-use App\Lucca\Bundle\MinuteBundle\Manager\PlotManager;
+use Lucca\Bundle\MinuteBundle\Manager\MinuteManager;
+use Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
+use Lucca\Bundle\MinuteBundle\Manager\PlotManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;

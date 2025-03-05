@@ -10,9 +10,9 @@
 
 namespace Lucca\Bundle\AdherentBundle\Mailer;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\MailerInterface;
 use Twig\Environment;
 use Twig\Error\Error;
 
@@ -32,10 +32,10 @@ class SummaryAdherentSubscriptionMailer
     private string $nameAuto = 'Térence Gusse';
 
     public function __construct(
-        private readonly ContainerInterface $container,
+        private readonly ParameterBagInterface $params,
         private readonly RequestStack $requestStack,
         private readonly Environment $twig,
-        private readonly Mailer $mailer,
+        private readonly MailerInterface $mailer,
     )
     {
     }
@@ -70,7 +70,7 @@ class SummaryAdherentSubscriptionMailer
         /** Step VII - Build parameters: one/many attachments  */
         /** Create template mail */
         $logo = $swiftMail->embed(\Swift_Image::fromPath(
-            $this->container->getParameter('kernel.root_dir') . '/../web/assets/logo/lucca-logo-transparent.png'
+            $this->params->get('kernel.project_dir') . '/../web/assets/logo/lucca-logo-transparent.png'
         ));
         $web_url = SettingManager::get('setting.general.url.name');
 

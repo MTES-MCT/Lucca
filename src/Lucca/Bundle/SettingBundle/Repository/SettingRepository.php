@@ -12,7 +12,7 @@ namespace Lucca\Bundle\SettingBundle\Repository;
 
 use Doctrine\ORM\{EntityRepository, NonUniqueResultException, QueryBuilder};
 
-use Lucca\SettingBundle\Entity\Setting;
+use Lucca\Bundle\SettingBundle\Entity\Setting;
 
 class SettingRepository extends EntityRepository
 {

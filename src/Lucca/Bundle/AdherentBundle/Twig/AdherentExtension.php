@@ -10,7 +10,7 @@
 
 namespace Lucca\Bundle\AdherentBundle\Twig;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -20,7 +20,7 @@ use Lucca\Bundle\UserBundle\Entity\User;
 class AdherentExtension extends AbstractExtension
 {
     public function __construct(
-        private readonly EntityManager $em,
+        private readonly EntityManagerInterface $em,
     )
     {
     }

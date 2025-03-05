@@ -18,9 +18,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
-use Lucca\Bundle\AdherentBundle\Service\AdherentFinder;
-use Lucca\Bundle\AdherentBundle\Service\GeoLocatorService;
-use Lucca\Bundle\MinuteBundle\Entity\{MinuteStory, Plot};
+use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
+use Lucca\Bundle\CoreBundle\Service\GeoLocator;
+use Lucca\Bundle\DecisionBundle\Entity\Decision;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\{Closure, Control, Minute, MinuteStory, Plot, Updating};
 use Lucca\Bundle\SettingBundle\Manager\SettingManager;
 
 #[Route(path: '/')]
@@ -31,7 +33,7 @@ class DashboardController extends AbstractController
         private readonly EntityManagerInterface $em,
         private readonly TranslatorInterface $translator,
         private readonly AdherentFinder $adherentFinder,
-        private readonly GeoLocatorService $geoLocator,
+        private readonly GeoLocator $geoLocator,
     )
     {
     }
@@ -259,7 +261,7 @@ class DashboardController extends AbstractController
         $lonMax = $data['geoCode']['lon'] + $radius;
 
         /** Find all folder open and move object in spotting array if there is no documents link to the minute */
-        $foldersOpen = $this->em->getRepository('LuccaMinuteBundle:Minute')->findAllInArea($latMin, $latMax, $lonMin, $lonMax, $adherent);
+        $foldersOpen = $this->em->getRepository(Minute::class)->findAllInArea($latMin, $latMax, $lonMin, $lonMax, $adherent);
         $spotting = [];
 
         foreach ($foldersOpen as $ind => $minute) {
@@ -270,12 +272,12 @@ class DashboardController extends AbstractController
         }
 
         /** Add max results to the request to avoid map to crash due to quantity of data */
-        $foldersClosed = $this->em->getRepository('LuccaMinuteBundle:Minute')->findAllInArea($latMin, $latMax, $lonMin, $lonMax, $adherent, [Closure::STATUS_REGULARIZED]);
-        $foldersClosedOther = $this->em->getRepository('LuccaMinuteBundle:Minute')->findAllInArea($latMin, $latMax, $lonMin, $lonMax, $adherent, [Closure::STATUS_EXEC_OFFICE, Closure::STATUS_OTHER, Closure::STATUS_RELAXED]);
-        $controls = $this->em->getRepository('LuccaMinuteBundle:Control')->findAllInArea($latMin, $latMax, $lonMin, $lonMax, $adherent);
-        $decisions = $this->em->getRepository('LuccaMinuteBundle:Decision')->findAllInArea($latMin, $latMax, $lonMin, $lonMax, $adherent);
-        $folders = $this->em->getRepository('LuccaMinuteBundle:Folder')->findAllInArea($latMin, $latMax, $lonMin, $lonMax, $adherent);
-        $redo = $this->em->getRepository('LuccaMinuteBundle:Updating')->findAllInArea($latMin, $latMax, $lonMin, $lonMax, $adherent);
+        $foldersClosed = $this->em->getRepository(Minute::class)->findAllInArea($latMin, $latMax, $lonMin, $lonMax, $adherent, [Closure::STATUS_REGULARIZED]);
+        $foldersClosedOther = $this->em->getRepository(Minute::class)->findAllInArea($latMin, $latMax, $lonMin, $lonMax, $adherent, [Closure::STATUS_EXEC_OFFICE, Closure::STATUS_OTHER, Closure::STATUS_RELAXED]);
+        $controls = $this->em->getRepository(Control::class)->findAllInArea($latMin, $latMax, $lonMin, $lonMax, $adherent);
+        $decisions = $this->em->getRepository(Decision::class)->findAllInArea($latMin, $latMax, $lonMin, $lonMax, $adherent);
+        $folders = $this->em->getRepository(Folder::class)->findAllInArea($latMin, $latMax, $lonMin, $lonMax, $adherent);
+        $redo = $this->em->getRepository(Updating::class)->findAllInArea($latMin, $latMax, $lonMin, $lonMax, $adherent);
 
         /**
          *  Add in tab data the list of spotting in area
@@ -382,10 +384,10 @@ class DashboardController extends AbstractController
                 /** If the minute array is empty, return an empty folder array */
                 $controls = [];
             } else {
-                $controls = $this->em->getRepository('LuccaMinuteBundle:Control')->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent, SettingManager::get('setting.map.maxResults.name'), $minutes);
+                $controls = $this->em->getRepository(Control::class)->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent, SettingManager::get('setting.map.maxResults.name'), $minutes);
             }
         } else {
-            $controls = $this->em->getRepository('LuccaMinuteBundle:Control')->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent, SettingManager::get('setting.map.maxResults.name'));
+            $controls = $this->em->getRepository(Control::class)->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent, SettingManager::get('setting.map.maxResults.name'));
         }
         $data = [];
 
@@ -455,10 +457,10 @@ class DashboardController extends AbstractController
                 /** If the minute array is empty, return an empty folder array */
                 $decisions = [];
             } else {
-                $decisions = $this->em->getRepository('LuccaMinuteBundle:Decision')->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent, SettingManager::get('setting.map.maxResults.name'), $minutes);
+                $decisions = $this->em->getRepository(Decision::class)->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent, SettingManager::get('setting.map.maxResults.name'), $minutes);
             }
         } else {
-            $decisions = $this->em->getRepository('LuccaMinuteBundle:Decision')->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent, SettingManager::get('setting.map.maxResults.name'));
+            $decisions = $this->em->getRepository(Decision::class)->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent, SettingManager::get('setting.map.maxResults.name'));
         }
 
         $data = [];
@@ -539,11 +541,11 @@ class DashboardController extends AbstractController
                 /** If the minute array is empty, return an empty folder array */
                 $folders = [];
             } else {
-                $folders = $this->em->getRepository('LuccaMinuteBundle:Folder')->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent, SettingManager::get('setting.map.maxResults.name'), $minutes);
+                $folders = $this->em->getRepository(Folder::class)->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent, SettingManager::get('setting.map.maxResults.name'), $minutes);
             }
         } else {
             /** If there is no start date keep the logic in place */
-            $folders = $this->em->getRepository('LuccaMinuteBundle:Folder')->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent, SettingManager::get('setting.map.maxResults.name'));
+            $folders = $this->em->getRepository(Folder::class)->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent, SettingManager::get('setting.map.maxResults.name'));
         }
         $data = [];
 
@@ -632,12 +634,12 @@ class DashboardController extends AbstractController
                 /** If the minute array is empty, return an empty folder array */
                 $minutesClosedRegular = [];
             } else {
-                $minutesClosedRegular = $this->em->getRepository('LuccaMinuteBundle:Minute')->findAllInArea($minLat, $maxLat, $minLon, $maxLon,
+                $minutesClosedRegular = $this->em->getRepository(Minute::class)->findAllInArea($minLat, $maxLat, $minLon, $maxLon,
                     $adherent, [Closure::STATUS_REGULARIZED], SettingManager::get('setting.map.maxResults.name'), $minutes
                 );
             }
         } else {
-            $minutesClosedRegular = $this->em->getRepository('LuccaMinuteBundle:Minute')->findAllInArea($minLat, $maxLat, $minLon, $maxLon,
+            $minutesClosedRegular = $this->em->getRepository(Minute::class)->findAllInArea($minLat, $maxLat, $minLon, $maxLon,
                 $adherent, [Closure::STATUS_REGULARIZED], SettingManager::get('setting.map.maxResults.name')
             );
         }
@@ -688,12 +690,12 @@ class DashboardController extends AbstractController
                 /** If the minute array is empty, return an empty folder array */
                 $minutesClosedOther = [];
             } else {
-                $minutesClosedOther = $this->em->getRepository('LuccaMinuteBundle:Minute')->findAllInArea($minLat, $maxLat, $minLon, $maxLon,
+                $minutesClosedOther = $this->em->getRepository(Minute::class)->findAllInArea($minLat, $maxLat, $minLon, $maxLon,
                     $adherent, [Closure::STATUS_EXEC_OFFICE, Closure::STATUS_OTHER, Closure::STATUS_RELAXED], SettingManager::get('setting.map.maxResults.name', $minutes)
                 );
             }
         } else {
-            $minutesClosedOther = $this->em->getRepository('LuccaMinuteBundle:Minute')->findAllInArea($minLat, $maxLat, $minLon, $maxLon,
+            $minutesClosedOther = $this->em->getRepository(Minute::class)->findAllInArea($minLat, $maxLat, $minLon, $maxLon,
                 $adherent, [Closure::STATUS_EXEC_OFFICE, Closure::STATUS_OTHER, Closure::STATUS_RELAXED], SettingManager::get('setting.map.maxResults.name')
             );
         }
@@ -750,10 +752,10 @@ class DashboardController extends AbstractController
                 /** If the minute array is empty, return an empty folder array */
                 $updatings = [];
             } else {
-                $updatings = $this->em->getRepository('LuccaMinuteBundle:Updating')->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent, SettingManager::get('setting.map.maxResults.name', $minutes));
+                $updatings = $this->em->getRepository(Updating::class)->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent, SettingManager::get('setting.map.maxResults.name', $minutes));
             }
         } else {
-            $updatings = $this->em->getRepository('LuccaMinuteBundle:Updating')->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent, SettingManager::get('setting.map.maxResults.name'));
+            $updatings = $this->em->getRepository(Updating::class)->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent, SettingManager::get('setting.map.maxResults.name'));
         }
         $data = [];
 
@@ -804,11 +806,11 @@ class DashboardController extends AbstractController
                 /** If the minute array is empty, return an empty folder array */
                 $foldersOpen = [];
             } else {
-                $foldersOpen = $this->em->getRepository('LuccaMinuteBundle:Minute')->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent, null, null, $minutes);
+                $foldersOpen = $this->em->getRepository(Minute::class)->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent, null, null, $minutes);
             }
         } else {
             /** We can't use max result here because we don't get ony spotting */
-            $foldersOpen = $this->em->getRepository('LuccaMinuteBundle:Minute')->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent);
+            $foldersOpen = $this->em->getRepository(Minute::class)->findAllInArea($minLat, $maxLat, $minLon, $maxLon, $adherent);
         }
 
         $minutesSpotted = [];
@@ -858,7 +860,7 @@ class DashboardController extends AbstractController
         $datetimeStart = (new \DateTime())->createFromFormat('d/m/Y', $dateStart);
         $datetimeEnd = (new \DateTime())->createFromFormat('d/m/Y', $dateEnd);
         /** Get all the stories between to date with the right status */
-        $stories = $this->em->getRepository('LuccaMinuteBundle:MinuteStory')->findLast($datetimeStart, $datetimeEnd, [$status]);
+        $stories = $this->em->getRepository(MinuteStory::class)->findLast($datetimeStart, $datetimeEnd, [$status]);
         $minutes = [];
         /** For each story get the associated minutes */
         foreach ($stories as $story) {

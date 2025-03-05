@@ -10,26 +10,18 @@
 
 namespace Lucca\Bundle\MinuteBundle\Form\Control;
 
-use Lucca\Bundle\MinuteBundle\Entity\ControlEdition;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
+use Symfony\Component\Form\Extension\Core\Type\{CheckboxType, TextareaType};
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class ControlEditionConvocationType
- *
- * @package Lucca\Bundle\MinuteBundle\Form\Control
- * @author Terence <terence@numeric-wave.tech>
- */
+use Lucca\Bundle\MinuteBundle\Entity\ControlEdition;
+
 class ControlEditionConvocationType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('convocationEdited', CheckboxType::class, array('label' => 'label.convocationEdited', 'required' => false))
@@ -39,9 +31,9 @@ class ControlEditionConvocationType extends AbstractType
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => ControlEdition::class,
@@ -52,7 +44,7 @@ class ControlEditionConvocationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'lucca_minuteBundle_controlEdition_convocation';
     }

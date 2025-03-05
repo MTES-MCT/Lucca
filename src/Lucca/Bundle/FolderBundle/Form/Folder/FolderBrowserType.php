@@ -10,12 +10,13 @@
 
 namespace Lucca\Bundle\FolderBundle\Form\Folder;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\AdherentBundle\Repository\AdherentRepository;
@@ -26,7 +27,6 @@ use Lucca\Bundle\ParameterBundle\Repository\IntercommunalRepository;
 use Lucca\Bundle\ParameterBundle\Entity\Service;
 
 use Lucca\Bundle\ParameterBundle\Repository\ServiceRepository;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 /**
  * Class FolderBrowserType
@@ -37,7 +37,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 class FolderBrowserType extends AbstractType
 {
     public function __construct(
-        private readonly AuthorizationChecker $authorizationChecker,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
     )
     {
     }

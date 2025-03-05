@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
-use Lucca\Bundle\AdherentBundle\Service\AdherentFinder;
+use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
 use Lucca\Bundle\CoreBundle\Form\Admin\BrowserDashboardType;
 use Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
 use Lucca\Bundle\MinuteBundle\Entity\MinuteStory;

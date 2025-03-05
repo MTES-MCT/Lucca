@@ -194,6 +194,24 @@ class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncIn
         return false;
     }
 
+    public function addElement(ElementChecked $elementChecked): self
+    {
+        if (!$this->elements->contains($elementChecked)) {
+            $this->elements[] = $elementChecked;
+        }
+
+        return $this;
+    }
+
+    public function addNatinf(Natinf $natinf): self
+    {
+        if (!$this->natinfs->contains($natinf)) {
+            $this->natinfs[] = $natinf;
+        }
+
+        return $this;
+    }
+
     /**
      * Set media by asynchronous method.
      */

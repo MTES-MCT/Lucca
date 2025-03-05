@@ -11,7 +11,7 @@
 namespace Lucca\Bundle\AdherentBundle\Generator;
 
 use Exception;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\SettingBundle\Manager\SettingManager;
@@ -19,7 +19,7 @@ use Lucca\Bundle\SettingBundle\Manager\SettingManager;
 readonly class CodeGenerator
 {
     public function __construct(
-        private EntityManager $em,
+        private EntityManagerInterface $em,
     )
     {
     }

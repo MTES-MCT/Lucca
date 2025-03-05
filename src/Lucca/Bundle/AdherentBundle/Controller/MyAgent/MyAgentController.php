@@ -10,73 +10,61 @@
 
 namespace Lucca\Bundle\AdherentBundle\Controller\MyAgent;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller,
-    Sensio\Bundle\FrameworkExtraBundle\Configuration\Security,
-    Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\Routing\Annotation\Route;
-
-use Lucca\Bundle\AdherentBundle\Entity\Agent;
-use Lucca\Bundle\AdherentBundle\Form\AgentType;
+use Exception;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\{Request, Response};
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Routing\Attribute\Route;
 
-/**
- * Class AgentController
- *
- * @Security("has_role('ROLE_VISU')")
- * @Route("/my-agent")
- *
- * @package Lucca\AdherentBundle\Controller\MyAgent
- * @author Terence <terence@numeric-wave.tech>
- */
+use Lucca\Bundle\AdherentBundle\Entity\{Adherent, Agent};
+use Lucca\Bundle\AdherentBundle\Form\AgentType;
 
-#[\Symfony\Component\Routing\Attribute\Route(path: '/statistics')]
-#[IsGranted('ROLE_ADMIN')]
-class MyAgentController extends Controller
+#[Route(path: '/my-agent')]
+#[IsGranted('ROLE_VISU')]
+class MyAgentController extends AbstractController
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly TokenStorageInterface $tokenStorage,
+    )
+    {
+    }
+
     /**
      * List of Agent
-     *
-     * @Security("has_role('ROLE_VISU')")
-     * @Route("/", name="lucca_myagent_index", methods={"GET"})
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    #[Route(path: '/', name: 'lucca_myagent_index', methods: ['GET'])]
+    #[IsGranted('ROLE_VISU')]
+    public function indexAction(): Response
     {
-        $em = $this->getDoctrine()->getManager();
-
         /** Find Adherent by connected User */
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $adherent = $em->getRepository('LuccaAdherentBundle:Adherent')->findOneBy(array(
+        $user = $this->tokenStorage->getToken()->getUser();
+        $adherent = $this->em->getRepository(Adherent::class)->findOneBy([
             'user' => $user
-        ));
+        ]);
 
-        $agents = $em->getRepository('LuccaAdherentBundle:Agent')->findAllByAdherent($adherent);
+        $agents = $this->em->getRepository(Agent::class)->findAllByAdherent($adherent);
 
-        return $this->render('LuccaAdherentBundle:MyAgent:index.html.twig', array(
+        return $this->render('@LuccaAdherent/MyAgent/index.html.twig', [
             'user' => $user,
             'agents' => $agents
-        ));
+        ]);
     }
 
     /**
      * Creates a new Agent entity.
-     *
-     * @Route("/new", name="lucca_myagent_new", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function newAction(Request $request)
+    #[Route(path: '/new', name: 'lucca_myagent_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function newAction(Request $request): Response
     {
-        $em = $this->getDoctrine()->getManager();
-
         /** Find Adherent by connected User */
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $adherent = $em->getRepository('LuccaAdherentBundle:Adherent')->findOneBy(array(
+        $user = $this->tokenStorage->getToken()->getUser();
+        $adherent = $this->em->getRepository(Adherent::class)->findOneBy([
             'user' => $user
-        ));
+        ]);
 
         $agent = new Agent();
         $form = $this->createForm(AgentType::class, $agent);
@@ -85,88 +73,80 @@ class MyAgentController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $adherent->addAgent($agent);
 
-            $em->persist($adherent);
-            $em->persist($agent);
-            $em->flush();
+            $this->em->persist($adherent);
+            $this->em->persist($agent);
+            $this->em->flush();
 
             $this->addFlash('success', 'flash.agent.createdSuccessfully');
+
             return $this->redirectToRoute('lucca_myagent_index');
         }
 
-        return $this->render('LuccaAdherentBundle:MyAgent:new.html.twig', array(
+        return $this->render('@LuccaAdherent/MyAgent/new.html.twig', [
             'agent' => $agent,
             'adherent' => $adherent,
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
      * Displays a form to edit an existing Agent entity.
      *
-     * @Route("/{id}/edit", name="lucca_myagent_edit", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
-     * @param Request $request
-     * @param Agent $agent
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
+     * @throws Exception
      */
-    public function editAction(Request $request, Agent $agent)
+    #[Route(path: '/{id}/edit', name: 'lucca_myagent_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function editAction(Request $request, Agent $agent): Response
     {
-        $em = $this->getDoctrine()->getManager();
-
         /** Find Adherent by connected User */
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $adherent = $em->getRepository('LuccaAdherentBundle:Adherent')->findOneBy(array(
+        $user = $this->tokenStorage->getToken()->getUser();
+        $adherent = $this->em->getRepository(Adherent::class)->findOneBy([
             'user' => $user
-        ));
+        ]);
 
         /** Check if agent is registered in Adherent profile */
-        if (!in_array($agent, $adherent->getAgents()->toArray()))
-            throw new \Exception('Agent is not registered in your Adherent profile.');
+        if (!in_array($agent, $adherent->getAgents()->toArray())) {
+            throw new Exception('Agent is not registered in your Adherent profile.');
+        }
 
         $editForm = $this->createForm(AgentType::class, $agent);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em->persist($agent);
-            $em->flush();
+            $this->em->persist($agent);
+            $this->em->flush();
 
             $this->addFlash('info', 'flash.agent.updatedSuccessfully');
+
             return $this->redirectToRoute('lucca_myagent_index');
         }
 
-        return $this->render('LuccaAdherentBundle:MyAgent:edit.html.twig', array(
+        return $this->render('@LuccaAdherent/MyAgent/edit.html.twig', [
             'agent' => $agent,
             'adherent' => $adherent,
             'edit_form' => $editForm->createView(),
-        ));
+        ]);
     }
-
 
     /**
      * Finds and enable / disable a Agent entity.
      *
-     * @Route("/{id}/enable", name="lucca_myagent_enable", methods={"GET"})
-     * @Security("has_role('ROLE_LUCCA')")
-     *
-     * @param Agent $agent
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @throws \Exception
+     * @throws Exception
      */
-    public function enableAction(Agent $agent)
+    #[Route(path: '/{id}/enable', name: 'lucca_myagent_enable', methods: ['GET'])]
+    #[IsGranted('ROLE_LUCCA')]
+    public function enableAction(Agent $agent): Response
     {
-        $em = $this->getDoctrine()->getManager();
-
         /** Find Adherent by connected User */
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $adherent = $em->getRepository('LuccaAdherentBundle:Adherent')->findOneBy(array(
+        $user = $this->tokenStorage->getToken()->getUser();
+        $adherent = $this->em->getRepository(Adherent::class)->findOneBy([
             'user' => $user
-        ));
+        ]);
 
         /** Check if agent is registered in Adherent profile */
-        if (!in_array($agent, $adherent->getAgents()->toArray()))
+        if (!in_array($agent, $adherent->getAgents()->toArray())) {
             throw new \Exception('Agent is not registered in your Adherent profile.');
+        }
 
         if ($agent->isEnabled()) {
             $agent->setEnabled(false);
@@ -176,7 +156,7 @@ class MyAgentController extends Controller
             $this->addFlash('info', 'flash.agent.enabledSuccessfully');
         }
 
-        $em->flush();
+        $this->em->flush();
 
         return $this->redirectToRoute('lucca_myagent_index');
     }

@@ -16,9 +16,9 @@ use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, CollectionType};
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-use Lucca\Bundle\FolderBundle\Entity\{Folder, Control};
-use Lucca\Bundle\FolderBundle\Form\Human\HumanFolderType;
-use Lucca\Bundle\MinuteBundle\Entity\Human;
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\{Human, Control};
+use Lucca\Bundle\MinuteBundle\Form\Human\HumanFolderType;
 
 class FolderType extends AbstractType
 {
@@ -61,7 +61,7 @@ class FolderType extends AbstractType
         $choicesHuman = $options['minute']->getHumans();
         $builder
             ->add('humansByMinute', EntityType::class, array(
-                'class' => 'LuccaFolderBundle:Human', 'label' => false, 'required' => false,
+                'class' => Human::class, 'label' => false, 'required' => false,
                 'multiple' => true, 'expanded' => false, 'choices' => $choicesHuman,
                 'attr' => array(
                     'class' => 'chosen-select',
@@ -85,7 +85,7 @@ class FolderType extends AbstractType
 
         $builder
             ->add('control', EntityType::class, array(
-                'class' => 'LuccaFolderBundle:Control', 'label' => 'label.control', 'required' => true,
+                'class' => Control::class, 'label' => 'label.control', 'required' => true,
                 'multiple' => false, 'expanded' => false, 'choices' => $choicesControl,
                 'attr' => array(
                     'class' => 'chosen-select js-control',

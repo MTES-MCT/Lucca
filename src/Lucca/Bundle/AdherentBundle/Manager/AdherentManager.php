@@ -13,6 +13,7 @@ namespace Lucca\Bundle\AdherentBundle\Manager;
 use Exception;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
@@ -25,7 +26,7 @@ readonly class AdherentManager
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private Session                $session,
+        private RequestStack           $requestStack,
         private UserManager            $userManager,
         private CodeGenerator          $codeGenerator,
     )
@@ -106,11 +107,11 @@ readonly class AdherentManager
         ));
 
         if ($userExisting !== null && $userExisting !== $adherent->getUser()) {
-            $this->session->getFlashBag()->add('danger', 'flash.adherent.userAlreadyExist');
+            $this->requestStack->getSession()->getFlashBag()->add('danger', 'flash.adherent.userAlreadyExist');
         }
 
         /** Return true if a dangerous message has been found in Session */
-        return !$this->session->getFlashBag()->has('danger');
+        return !$this->requestStack->getSession()->getFlashBag()->has('danger');
     }
 
     public function getName(): string

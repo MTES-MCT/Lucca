@@ -14,7 +14,7 @@ use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
 use Symfony\Component\Form\Extension\Core\Type\{TextType, CheckboxType};
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Lucca\Bundle\ParameterBundle\Entity\Town;
+use Lucca\Bundle\ParameterBundle\Entity\{Intercommunal, Town};
 
 class TownType extends AbstractType
 {
@@ -27,7 +27,7 @@ class TownType extends AbstractType
             ->add('office', TextType::class, ['label' => 'label.office'])
             ->add('zipcode', TextType::class, ['label' => 'label.zipcode'])
             ->add('intercommunal', EntityType::class, [
-                'class' => 'LuccaParameterBundle:Intercommunal', 'label' => 'label.intercommunal', 'choice_label' => 'name',
+                'class' => Intercommunal::class, 'label' => 'label.intercommunal', 'choice_label' => 'name',
                 'multiple' => false, 'expanded' => false, 'required' => false, 'attr' => ['class' => 'chosen-select']
             ]);
     }

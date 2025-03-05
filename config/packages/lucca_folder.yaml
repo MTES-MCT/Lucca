@@ -1,0 +1,3 @@
+## LuccaCoreBundle Configuration
+lucca_folder:
+    avoid_break_page: "%env(LUCCA_AVOID_BREAK_PAGE)%"

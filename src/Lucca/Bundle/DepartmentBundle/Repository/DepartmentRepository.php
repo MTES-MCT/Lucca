@@ -109,13 +109,8 @@ class DepartmentRepository extends EntityRepository
     /**
      * Override find method
      * with Department dependencies
-     *
-     * @param mixed $id
-     * @param null $lockMode
-     * @param null $lockVersion
-     * @return mixed
      */
-    public function find($id, $lockMode = null, $lockVersion = null): mixed
+    public function find(mixed $id, $lockMode = null, $lockVersion = null): ?object
     {
         $qb = $this->queryDepartment();
 
@@ -126,7 +121,8 @@ class DepartmentRepository extends EntityRepository
             return $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             echo 'NonUniqueResultException has been thrown - Department Repository - ' . $e->getMessage();
-            return false;
+
+            return null;
         }
     }
 

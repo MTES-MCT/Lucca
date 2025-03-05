@@ -1,6 +1,6 @@
 # LuccaParameterBundle parameters
 parameters:
-    path.lucca: "%kernel.root_dir%/../../lucca.doc/"
+    path.lucca: "%kernel.project_dir%/../../lucca.doc/"
     path.import: "%path.lucca%/importFile/"
     path.historic: "%path.lucca%/historic/"
 

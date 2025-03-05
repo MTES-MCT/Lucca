@@ -21,6 +21,13 @@ framework:
     #fragments: true
     php_errors:
         log: true
+        
+    ## Enable setting to work and store it in cache
+    cache:
+        pools:
+            setting.cache:
+                adapter: cache.adapter.filesystem
+                default_lifetime: 0
 
 when@test:
     framework:

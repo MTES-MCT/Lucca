@@ -10,7 +10,7 @@
 
 namespace Lucca\Bundle\MinuteBundle\Manager;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 use Lucca\Bundle\CoreBundle\Service\GeoLocator;
@@ -20,9 +20,9 @@ use Lucca\Bundle\ParameterBundle\Entity\Town;
 readonly class PlotManager
 {
     public function __construct(
-       private EntityManager $em,
-       private GeoLocator $geoLocator,
-       private RequestStack $requestStack,
+        private EntityManagerInterface $em,
+        private GeoLocator             $geoLocator,
+        private RequestStack           $requestStack,
     )
     {
     }

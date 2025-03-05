@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\FolderBundle\Controller\Admin;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,9 +19,10 @@ use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-use Lucca\Bundle\FolderBundle\Generator\NumFolderGenerator;
-use Lucca\Bundle\FolderBundle\Form\{FolderStep1Type, FolderStep2Type, FolderStep3Type, FolderType};
 use Lucca\Bundle\FolderBundle\Entity\{Folder, Natinf, Tag};
+use Lucca\Bundle\FolderBundle\Form\{FolderStep1Type, FolderStep2Type, FolderStep3Type, FolderType};
+use Lucca\Bundle\FolderBundle\Generator\NumFolderGenerator;
+use Lucca\Bundle\FolderBundle\Utils\{FolderEditionManager, FolderManager};
 use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
 use Lucca\Bundle\MinuteBundle\Utils\HtmlCleaner;

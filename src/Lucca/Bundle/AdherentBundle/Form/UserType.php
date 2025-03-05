@@ -15,6 +15,7 @@ use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
 use Symfony\Component\Form\Extension\Core\Type\{EmailType, RepeatedType, PasswordType};
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Lucca\Bundle\UserBundle\Entity\{Group, User};
 use Lucca\Bundle\UserBundle\Repository\GroupRepository;
 
 class UserType extends AbstractType
@@ -35,7 +36,7 @@ class UserType extends AbstractType
                 'required' => false
             ))
             ->add('groups', EntityType::class, array(
-                'class' => 'LuccaUserBundle:Group', 'choice_label' => 'name',
+                'class' => Group::class, 'choice_label' => 'name',
                 'multiple' => true, 'expanded' => true, 'label' => 'label.groups',
                 'query_builder' => function (GroupRepository $er) {
                     return $er->getFormGroup();
@@ -49,7 +50,7 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Lucca\UserBundle\Entity\User',
+            'data_class' => User::class,
             'translation_domain' => 'LuccaUserBundle',
             'required' => true
         ));

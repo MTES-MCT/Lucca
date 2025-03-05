@@ -12,19 +12,19 @@ namespace Lucca\Bundle\ContentBundle\Command;
 
 use DateTime;
 use Exception;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\{EntityManagerInterface, NonUniqueResultException};
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Lucca\Bundle\ContentBundle\Entity\{Area, Page, SubArea};
 use Lucca\Bundle\CoreBundle\Utils\Canonalizer;
+use Lucca\Bundle\UserBundle\Entity\User;
 
 class InitializationCommand extends Command
 {
     public function __construct(
-        private readonly ObjectManager $om,
+        private readonly EntityManagerInterface $em,
         private readonly Canonalizer $canonalizer,
     )
     {
@@ -91,7 +91,7 @@ class InitializationCommand extends Command
     protected function initContentBundle(InputInterface $input, OutputInterface $output): void
     {
         // Turning off doctrine default logs queries for saving memory
-        $this->om->getConnection()->getConfiguration()->setSQLLogger(null);
+        $this->em->getConfiguration()->setSQLLogger(null);
 
         $areas = [
             ['name' => 'Zone principale', 'position' => 'choice.position.content'],
@@ -129,30 +129,30 @@ class InitializationCommand extends Command
 
         foreach ($areas as $area) {
             /** Search Area - if it does not exists, then create it - if it is disabled then enable it */
-            $existingArea = $this->om->getRepository(Area::class)->findOneBy(["position" => $area["position"]]);
+            $existingArea = $this->em->getRepository(Area::class)->findOneBy(["position" => $area["position"]]);
 
             if (!$existingArea){
                 $newArea = new Area();
                 $newArea->setName($area["name"]);
                 $newArea->setPosition($area["position"]);
-                $this->om->persist($newArea);
+                $this->em->persist($newArea);
 
                 $output->writeln($area["name"] . ' Created');
             } elseif (!$existingArea->isEnabled()){
                 $existingArea->enable();
-                $this->om->persist($existingArea);
+                $this->em->persist($existingArea);
                 $output->writeln($area["name"] . ' Enabled');
             } else {
                 $output->writeln( $area["name"] . ' already exists !');
             }
         }
         /** flush last items, detach all for doctrine and finish progress */
-        $this->om->flush();
-        $this->om->clear();
+        $this->em->flush();
+        $this->em->clear();
         foreach ($subAreas as $subArea) {
             /** Search Area - if it does not exists, then create it - if it is disabled then enable it */
-            $existingSubArea = $this->om->getRepository(SubArea::class)->findOneBy(array("code" => $subArea["code"]));
-            $linkedArea = $this->om->getRepository(Area::class)->findOneBy(array("position" => $subArea["area"]));
+            $existingSubArea = $this->em->getRepository(SubArea::class)->findOneBy(array("code" => $subArea["code"]));
+            $linkedArea = $this->em->getRepository(Area::class)->findOneBy(array("position" => $subArea["area"]));
 
             if (!$existingSubArea) {
                 $newSubArea = new SubArea();
@@ -164,12 +164,12 @@ class InitializationCommand extends Command
                 $newSubArea->setArea($linkedArea);
                 $newSubArea->setCode($subArea["code"]);
 
-                $this->om->persist($newSubArea);
+                $this->em->persist($newSubArea);
 
                 $output->writeln($subArea["name"] . ' Created');
             } elseif (!$existingSubArea->isEnabled()) {
                 $existingSubArea->enable();
-                $this->om->persist($existingSubArea);
+                $this->em->persist($existingSubArea);
                 $output->writeln($subArea["name"] . ' Enabled');
             } else {
                 $output->writeln( $subArea["name"] . ' already exists !');
@@ -177,14 +177,14 @@ class InitializationCommand extends Command
         }
 
         /** flush last items, detach all for doctrine and finish progress */
-        $this->om->flush();
-        $this->om->clear();
+        $this->em->flush();
+        $this->em->clear();
 
         foreach ($pages as $page) {
             /** Search Area - if it does not exists, then create it - if it is disabled then enable it */
-            $existingPage = $this->om->getRepository(Page::class)->findOneBy(["name" => $page["name"]]);
-            $linkedSubArea = $this->om->getRepository(SubArea::class)->findOneBy(["code" => $page["subarea"]]);
-            $author = $this->om->getRepository('LuccaUserBundle:User')->findOneBy(["username" => $page["author"]]);
+            $existingPage = $this->em->getRepository(Page::class)->findOneBy(["name" => $page["name"]]);
+            $linkedSubArea = $this->em->getRepository(SubArea::class)->findOneBy(["code" => $page["subarea"]]);
+            $author = $this->em->getRepository(User::class)->findOneBy(["username" => $page["author"]]);
 
             if (!$existingPage) {
                 $newPage = new Page();
@@ -195,12 +195,12 @@ class InitializationCommand extends Command
                 $newPage->setPosition($page["position"]);
                 $newPage->setSubarea($linkedSubArea);
                 $newPage->setAuthor($author);
-                $this->om->persist($newPage);
+                $this->em->persist($newPage);
 
                 $output->writeln($page["name"] . ' Created');
             } elseif (!$existingPage->isEnabled()){
                 $existingPage->enable();
-                $this->om->persist($existingPage);
+                $this->em->persist($existingPage);
                 $output->writeln($page["name"] . ' Enabled');
             } else {
                 $output->writeln( $page["name"] . ' already exists !');
@@ -208,7 +208,7 @@ class InitializationCommand extends Command
         }
 
         /** flush last items, detach all for doctrine and finish progress */
-        $this->om->flush();
-        $this->om->clear();
+        $this->em->flush();
+        $this->em->clear();
     }
 }

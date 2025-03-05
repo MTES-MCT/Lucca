@@ -10,25 +10,18 @@
 
 namespace Lucca\Bundle\MinuteBundle\Form\Control;
 
-use Lucca\Bundle\MinuteBundle\Entity\Control;
-use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class ControlAccessType
- *
- * @package Lucca\Bundle\MinuteBundle\Form\Control
- * @author Terence <terence@numeric-wave.tech>
- */
+use Lucca\Bundle\MinuteBundle\Entity\Control;
+
 class ControlAccessType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('editions', CollectionType::class, array(
@@ -41,9 +34,9 @@ class ControlAccessType extends AbstractType
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => Control::class,
@@ -54,7 +47,7 @@ class ControlAccessType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'lucca_minuteBundle_control_access';
     }

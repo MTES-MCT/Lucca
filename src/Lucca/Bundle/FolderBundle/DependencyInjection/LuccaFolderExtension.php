@@ -17,8 +17,6 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
-use Lucca\Bundle\CoreBundle\DependencyInjection\Configuration;
-
 class LuccaFolderExtension extends Extension implements PrependExtensionInterface
 {
     /**
@@ -29,10 +27,16 @@ class LuccaFolderExtension extends Extension implements PrependExtensionInterfac
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
-        $this->processConfiguration($configuration, $configs);
+        $config = $this->processConfiguration($configuration, $configs);
+        $container->setParameter('lucca_folder', $config);
+
+        /** Path parameters to register */
+        foreach ($config as $parameter => $value) {
+            $container->setParameter(sprintf('lucca_folder.%s', $parameter), $value);
+        }
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.yml');
+        $loader->load('services.yaml');
     }
 
     /**

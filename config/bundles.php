@@ -8,7 +8,6 @@ return [
     Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
     Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
-    Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class => ['all' => true],
     Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
 
@@ -21,6 +20,8 @@ return [
     Lucca\Bundle\AdherentBundle\LuccaAdherentBundle::class => ['all' => true],
     Lucca\Bundle\ContentBundle\LuccaContentBundle::class => ['all' => true],
     Lucca\Bundle\CoreBundle\LuccaCoreBundle::class => ['all' => true],
+    Lucca\Bundle\ChecklistBundle\LuccaChecklistBundle::class => ['all' => true],
+    Lucca\Bundle\DepartmentBundle\LuccaDepartmentBundle::class => ['all' => true],
     Lucca\Bundle\LogBundle\LuccaLogBundle::class => ['all' => true],
     Lucca\Bundle\MediaBundle\LuccaMediaBundle::class => ['all' => true],
     Lucca\Bundle\ModelBundle\LuccaModelBundle::class => ['all' => true],

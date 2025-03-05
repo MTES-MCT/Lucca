@@ -10,7 +10,7 @@
 
 namespace Lucca\Bundle\DecisionBundle\Controller\Admin;
 
-use App\Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
+use Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Lucca\Bundle\DecisionBundle\Entity\Decision;

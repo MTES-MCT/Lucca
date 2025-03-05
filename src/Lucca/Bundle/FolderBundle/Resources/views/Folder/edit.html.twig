@@ -14,8 +14,8 @@
     {% form_theme edit_form  '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig' %}
 
     {# Form theme apply for child only #}
-    {% form_theme edit_form.humansByFolder 'LuccaFolderBundle:Human:human-theme.html.twig' %}
-    {% form_theme edit_form.elements 'LuccaFolderBundle:Element:element-theme.html.twig' %}
+    {% form_theme edit_form.humansByFolder '@LuccaFolder/Human/human-theme.html.twig' %}
+    {% form_theme edit_form.elements '@LuccaFolder/Element/element-theme.html.twig' %}
 
     {{ form_errors(edit_form) }}
 

@@ -10,7 +10,7 @@
 
 namespace Lucca\Bundle\MinuteBundle\Manager;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 use Lucca\Bundle\FolderBundle\Entity\{Courier, Folder};
 use Lucca\Bundle\MinuteBundle\Entity\{Control, Minute, Updating};
@@ -19,11 +19,11 @@ use Lucca\Bundle\FolderBundle\Utils\{CourierEditionManager, FolderEditionManager
 readonly class ClosureManager
 {
     public function __construct(
-        private EntityManager         $em,
-        private ControlEditionManager $controlEditionManager,
-        private FolderManager         $folderManager,
-        private FolderEditionManager  $folderEditionManager,
-        private CourierEditionManager $courierEditionManager
+        private EntityManagerInterface $em,
+        private ControlEditionManager  $controlEditionManager,
+        private FolderManager          $folderManager,
+        private FolderEditionManager   $folderEditionManager,
+        private CourierEditionManager  $courierEditionManager
     )
     {
     }

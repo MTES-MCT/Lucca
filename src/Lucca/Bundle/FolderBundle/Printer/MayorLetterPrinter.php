@@ -68,7 +68,7 @@ class MayorLetterPrinter
         }
 
         try {
-            $footer = $this->twig->render('@LuccaThemeAngleBundle:Print:footer.html.twig');
+            $footer = $this->twig->render('@LuccaThemeAngle/Print/footer.html.twig');
         } catch (Error $twig_Error) {
             echo 'Twig_Error has been thrown - Footer Folder ' . $twig_Error->getMessage();
         }

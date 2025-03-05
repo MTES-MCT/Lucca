@@ -39,7 +39,7 @@ class TownController extends AbstractController
     {
         $towns = $this->em->getRepository(Town::class)->findAll();
 
-        return $this->render('@LuccaParameterBundle:Town:index.html.twig', [
+        return $this->render('@LuccaParameter/Town/index.html.twig', [
             'towns' => $towns
         ]);
     }

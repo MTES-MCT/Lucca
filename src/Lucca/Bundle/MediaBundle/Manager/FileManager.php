@@ -14,7 +14,7 @@ use DateTime;
 use Exception;
 use Doctrine\ORM\{EntityManagerInterface, EntityNotFoundException};
 use Doctrine\ORM\Exception\ORMException;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -26,8 +26,8 @@ use Lucca\Bundle\UserBundle\Entity\User;
 readonly class FileManager
 {
     public function __construct(
-        private ContainerInterface      $container,
         private EntityManagerInterface  $em,
+        private ParameterBagInterface   $params,
         private TokenStorageInterface   $tokenStorage,
     )
     {
@@ -77,7 +77,7 @@ readonly class FileManager
          * Step 3 - Create Media Name
          */
         /** @var $serviceMediaNaming MediaNamerInterface */
-        $serviceMediaNaming = $this->container->get($storager->getServiceMediaNaming());
+        $serviceMediaNaming = new ($storager->getServiceMediaNaming());
 
         /** Create names by a specific service */
         $media = $serviceMediaNaming->createMediaName($media, $fileName);
@@ -86,7 +86,7 @@ readonly class FileManager
          * Step 4 - Define the folder
          */
         /** @var $serviceFolderNaming FolderNamerInterface */
-        $serviceFolderNaming = $this->container->get($storager->getServiceFolderNaming());
+        $serviceFolderNaming = new ($storager->getServiceFolderNaming());
 
         $folder = $serviceFolderNaming->searchFolder($media, $createdAt);
 
@@ -178,7 +178,7 @@ readonly class FileManager
      */
     public function getMediaPath(Media $media): string
     {
-        return $this->container->getParameter('lucca_media.upload_directory') . '/' . $media->getFilePath();
+        return $this->params->get('lucca_media.upload_directory') . '/' . $media->getFilePath();
     }
 
     /**
@@ -186,7 +186,7 @@ readonly class FileManager
      */
     public function getFolderPath(Folder $folder): string
     {
-        return $this->container->getParameter('lucca_media.upload_directory') . '/' . $folder->getPath();
+        return $this->params->get('lucca_media.upload_directory') . '/' . $folder->getPath();
     }
 
     /**
@@ -194,6 +194,6 @@ readonly class FileManager
      */
     public function getTmpPath(): string
     {
-        return $this->container->getParameter('lucca_media.upload_tmp_directory');
+        return $this->params->get('lucca_media.upload_tmp_directory');
     }
 }

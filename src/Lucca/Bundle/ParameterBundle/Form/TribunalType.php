@@ -15,7 +15,7 @@ use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
 use Symfony\Component\Form\Extension\Core\Type\{TextType, CheckboxType, CountryType};
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Lucca\Bundle\ParameterBundle\Entity\Tribunal;
+use Lucca\Bundle\ParameterBundle\Entity\{Town, Tribunal};
 
 class TribunalType extends AbstractType
 {
@@ -35,7 +35,7 @@ class TribunalType extends AbstractType
                 'attr' => ['class' => 'select2']
             ])
             ->add('office', EntityType::class, [
-                'class' => 'LuccaParameterBundle:Town', 'label' => 'label.office', 'choice_label' => 'formLabel',
+                'class' => Town::class, 'label' => 'label.office', 'choice_label' => 'formLabel',
                 'multiple' => false, 'expanded' => false, 'required' => false, 'attr' => ['class' => 'chosen-select']
             ]);
     }

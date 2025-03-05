@@ -10,7 +10,7 @@
 
 namespace Lucca\Bundle\MinuteBundle\Controller\ManualEdit;
 
-use App\Lucca\Bundle\MinuteBundle\Manager\ControlEditionManager;
+use Lucca\Bundle\MinuteBundle\Manager\ControlEditionManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Lucca\Bundle\MinuteBundle\Entity\Control;
 use Lucca\Bundle\MinuteBundle\Entity\ControlEdition;

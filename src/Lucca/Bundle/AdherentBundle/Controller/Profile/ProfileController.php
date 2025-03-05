@@ -1,66 +1,69 @@
 <?php
 
+/*
+ * Copyright (c) 2025. Numeric Wave
+ *
+ * Afero General Public License (AGPL) v3
+ *
+ * For more information, please refer to the LICENSE file at the root of the project.
+ */
+
 namespace Lucca\AdherentBundle\Controller\Profile;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller,
-    Sensio\Bundle\FrameworkExtraBundle\Configuration\Security,
-    Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\{Request, Response};
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\AdherentBundle\Form\ProfileType;
+use Lucca\Bundle\UserBundle\Entity\User;
+use Lucca\Bundle\UserBundle\Manager\UserManager;
 
-/**
- * Class ProfileController
- *
- * @Security("has_role('ROLE_USER')")
- * @Route("/my-profile")
- *
- * @package Lucca\AdherentBundle\Controller\Profile
- * @author Terence <terence@numeric-wave.tech>
- */
-class ProfileController extends Controller
+#[Route(path: '/my-profile')]
+#[IsGranted('ROLE_USER')]
+class ProfileController extends AbstractController
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly TokenStorageInterface  $tokenStorage,
+        private readonly UserManager            $userManager
+    )
+    {
+    }
+
     /**
      * Finds and displays a Adherent entity.
-     *
-     * @Route("/", name="lucca_adherent_profile_show", methods={"GET"})
-     * @Security("has_role('ROLE_USER')")
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showProfileAction()
+    #[Route(path: '/', name: 'lucca_adherent_profile_show', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
+    public function showProfileAction(): Response
     {
-        $em = $this->getDoctrine()->getManager();
-
         /** Find Adherent by connected User */
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $adherent = $em->getRepository('LuccaAdherentBundle:Adherent')->findOneBy(array(
+        $user = $this->tokenStorage->getToken()->getUser();
+        $adherent = $this->em->getRepository(Adherent::class)->findOneBy([
             'user' => $user
-        ));
+        ]);
 
-        return $this->render('LuccaAdherentBundle:Profile:show.html.twig', array(
+        return $this->render('@LuccaAdherent/Profile/show.html.twig', [
             'adherent' => $adherent,
-        ));
+        ]);
     }
 
     /**
      * Displays a form to edit an existing Adherent entity.
-     *
-     * @Route("/edit", name="lucca_adherent_profile_edit", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_USER')")
-     *
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request)
+    #[Route(path: '/edit', name: 'lucca_adherent_profile_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
+    public function editAction(Request $request): Response
     {
-        $em = $this->getDoctrine()->getManager();
-
         /** Find Adherent by connected User */
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $adherent = $em->getRepository('LuccaAdherentBundle:Adherent')->findOneBy(array(
+        $user = $this->tokenStorage->getToken()->getUser();
+        $adherent = $this->em->getRepository(Adherent::class)->findOneBy([
             'user' => $user
-        ));
+        ]);
 
         $editForm = $this->createForm(ProfileType::class, $adherent);
 
@@ -70,38 +73,36 @@ class ProfileController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
             /** If user with this email already exist */
-            $userExisting = $em->getRepository('LuccaUserBundle:User')->findOneBy(array(
+            $userExisting = $this->em->getRepository(User::class)->findOneBy([
                 'email' => $editForm->get('email')->getData()
-            ));
+            ]);
             if ($userExisting and $userExisting !== $adherent->getUser()) {
                 $this->addFlash('warning', 'flash.adherent.userAlreadyExist');
-                return $this->render('LuccaAdherentBundle:Profile:edit.html.twig', array(
+
+                return $this->render('@LuccaAdherent/Profile/edit.html.twig', [
                     'adherent' => $adherent,
                     'edit_form' => $editForm->createView(),
-                ));
+                ]);
             }
 
             /** If no other user exist */
-            $userManager = $this->get('fos_user.user_manager');
-
             $user = $adherent->getUser();
             $user->setName($adherent->getName());
             $user->setEmail($editForm->get('email')->getData());
 
-            $userManager->updateUser($user, false);
-            $em->persist($adherent);
-            $em->flush();
+            $this->userManager->updateUser($user);
+            $this->em->persist($adherent);
+            $this->em->flush();
 
             $this->addFlash('info', 'flash.adherent.updatedSuccessfully');
+
             return $this->redirectToRoute('lucca_adherent_profile_show');
         }
 
-        return $this->render('LuccaAdherentBundle:Profile:edit.html.twig', array(
+        return $this->render('@LuccaAdherent/Profile/edit.html.twig', [
             'adherent' => $adherent,
             'edit_form' => $editForm->createView(),
-        ));
+        ]);
     }
 }

@@ -16,11 +16,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Lucca\Bundle\SettingBundle\Repository\SettingRepository;
-use Lucca\LogBundle\Entity\LogInterface;
+use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 
 #[ORM\Entity(repositoryClass: SettingRepository::class)]
 #[ORM\Table(name: 'lucca_setting')]
-class Setting implements LogInterface
+class Setting implements LoggableInterface
 {
     /** Setting TYPE constants */
     const TYPE_INTEGER = 'choice.setting.type.integer';

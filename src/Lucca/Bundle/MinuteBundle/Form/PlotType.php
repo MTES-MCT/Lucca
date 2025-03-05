@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025. Numeric Wave
  *
@@ -9,45 +10,28 @@
 
 namespace Lucca\Bundle\MinuteBundle\Form;
 
+use Lucca\Bundle\ParameterBundle\Entity\Town;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, NumberType, TextType};
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+
 use Lucca\Bundle\MinuteBundle\Entity\Plot;
 use Lucca\Bundle\ParameterBundle\Repository\TownRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
-/**
- * Class PlotType
- *
- * @package Lucca\Bundle\MinuteBundle\Form
- * @author Terence <terence@numeric-wave.tech>
- */
 class PlotType extends AbstractType
 {
-    /**
-     * @var AuthorizationChecker
-     */
-    private $authorizationChecker;
-
-    /**
-     * PlotType constructor.
-     *
-     * @param AuthorizationChecker $authorizationChecker
-     */
-    public function __construct(AuthorizationChecker $authorizationChecker)
+    public function __construct(
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+    )
     {
-        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('parcel', TextType::class, array('label' => 'label.parcel', 'attr' => array(
@@ -89,7 +73,7 @@ class PlotType extends AbstractType
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             $builder
                 ->add('town', EntityType::class, array(
-                    'class' => 'LuccaParameterBundle:Town', 'choice_label' => 'formLabel', 'attr' => array('class' => 'chosen-select'),
+                    'class' => Town::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'chosen-select'),
                     'multiple' => false, 'expanded' => false, 'label' => 'label.town', 'required' => true,
                     'query_builder' => function (TownRepository $er) {
                         return $er->getValuesOrderedByName();
@@ -100,7 +84,7 @@ class PlotType extends AbstractType
 
             $builder
                 ->add('town', EntityType::class, array(
-                    'class' => 'LuccaParameterBundle:Town', 'choice_label' => 'formLabel', 'attr' => array('class' => 'chosen-select'),
+                    'class' => Town::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'chosen-select'),
                     'multiple' => false, 'expanded' => false, 'label' => 'label.town', 'required' => true,
                     'query_builder' => function (TownRepository $er) use ($adherent) {
                         return $er->getTownByAdherent($adherent);
@@ -110,9 +94,9 @@ class PlotType extends AbstractType
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('adherent');
         $resolver->setDefaults(array(

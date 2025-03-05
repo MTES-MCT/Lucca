@@ -12,9 +12,9 @@ namespace Lucca\Bundle\UserBundle\Form;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Form\Extension\Core\Type\{TextType, EmailType, CheckboxType, RepeatedType, PasswordType};
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 use Lucca\Bundle\UserBundle\Entity\{User, Group};
 use Lucca\Bundle\UserBundle\Repository\GroupRepository;
@@ -22,7 +22,7 @@ use Lucca\Bundle\UserBundle\Repository\GroupRepository;
 class UserType extends AbstractType
 {
     public function __construct(
-        private readonly AuthorizationChecker $authorizationChecker,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
     )
     {
     }

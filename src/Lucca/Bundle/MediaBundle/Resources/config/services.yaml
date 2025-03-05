@@ -1,30 +1,6 @@
 services:
 
     #################################################################
-    ## Twig
-    #################################################################
-
-    ## Twig extension for file display
-    lucca.twig.classEntity:
-        public: false
-        class: Lucca\Bundle\MediaBundle\Twig\ClassEntityExtension
-        tags:
-            - { name: twig.extension }
-
-    ## Twig extension for file display
-    lucca.twig.media:
-        public: false
-        class: Lucca\Bundle\MediaBundle\Twig\MediaExtension
-        arguments:
-            - "@router"
-            - "@lucca.decision_maker.format"
-            - "%env(resolve:LUCCA_UPLOAD_DIR)%"
-            - "@lucca.utils.manager.gallery_for_pdf"
-            - "@lucca.utils.formatter.media_path"
-        tags:
-            - { name: twig.extension }
-
-    #################################################################
     ## Namer
     #################################################################
 
@@ -67,12 +43,12 @@ services:
     lucca.decision_maker.format:
         class: Lucca\Bundle\MediaBundle\Utils\FormatDecisionMaker
 
-    ## Resize image
-    lucca.resizer.image:
-        class: Lucca\Bundle\MediaBundle\Utils\ImageResizer
-        arguments:
-            - '@lucca.decision_maker.format'
-            - '%env(resolve:LUCCA_UPLOAD_DIR)%'
+#    ## Resize image
+#    lucca.resizer.image:
+#        class: Lucca\Bundle\MediaBundle\Utils\ImageResizer
+#        arguments:
+#            - '@lucca.decision_maker.format'
+#            - '%env(resolve:LUCCA_UPLOAD_DIR)%'
 
     ## Manager file to create Media
     lucca.utils.manager.gallery_for_pdf:

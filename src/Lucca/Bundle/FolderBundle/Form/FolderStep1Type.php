@@ -28,7 +28,7 @@ class FolderStep1Type extends AbstractType
                 'attr' => array('class' => 'summernote-light')
             ))
             ->add('tagsNature', EntityType::class, array(
-                'class' => 'LuccaFolderBundle:Tag', 'choice_label' => 'name',
+                'class' => Tag::class, 'choice_label' => 'name',
                 'multiple' => true, 'expanded' => true, 'label' => 'label.nature', 'required' => true,
                 'attr' => array('data-placeholder' => 'Choisissez un tag'),
                 'query_builder' => function (TagRepository $er) {

@@ -43,7 +43,7 @@ class PageController extends AbstractController
     public function toolsAction(): ?Response
     {
         $user = $this->tokenStorage->getToken()->getUser();
-        $area = $this->em->getRepository('LuccaContentBundle:Area')->findDashboard(Area::POSI_ADMIN);
+        $area = $this->em->getRepository(Area::class)->findDashboard(Area::POSI_ADMIN);
 
         return $this->render('@LuccaCore/Page/tools.html.twig', [
             $user => 'user',

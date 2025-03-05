@@ -12,6 +12,7 @@ namespace Lucca\Bundle\AdherentBundle\Finder;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
@@ -21,7 +22,7 @@ readonly class AdherentFinder
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private TokenStorage           $tokenStorage,
+        private TokenStorageInterface  $tokenStorage,
     )
     {
     }

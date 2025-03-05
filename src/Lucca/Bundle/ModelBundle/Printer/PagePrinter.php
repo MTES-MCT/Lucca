@@ -18,10 +18,11 @@ use Lucca\Bundle\ModelBundle\Entity\Model;
 
 class PagePrinter
 {
+    private array $options;
+
     public function __construct(
-        private readonly Environment $twig,
+        private readonly Environment         $twig,
         private readonly TranslatorInterface $translator,
-        private array $options,
     )
     {
         $this->options = [

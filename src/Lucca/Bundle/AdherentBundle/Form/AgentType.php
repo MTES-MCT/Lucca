@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\{TextType, ChoiceType};
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Lucca\Bundle\AdherentBundle\Entity\Agent;
+use Lucca\Bundle\ParameterBundle\Entity\Tribunal;
 
 class AgentType extends AbstractType
 {
@@ -44,7 +45,7 @@ class AgentType extends AbstractType
             ))
             ->add('commission', TextType::class, array('label' => 'label.commission', 'required' => false))
             ->add('tribunal', EntityType::class, array(
-                'class' => 'LuccaParameterBundle:Tribunal', 'choice_label' => 'formLabel',
+                'class' => Tribunal::class, 'choice_label' => 'formLabel',
                 'multiple' => false, 'expanded' => false, 'label' => 'label.tribunal', 'required' => true,
                 'attr' => array('class' => 'chosen-select', 'data-placeholder' => 'Choisissez une option'),
             ));

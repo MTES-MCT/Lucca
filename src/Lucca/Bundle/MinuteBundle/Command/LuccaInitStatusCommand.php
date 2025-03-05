@@ -9,7 +9,7 @@
 
 namespace Lucca\Bundle\MinuteBundle\Command;
 
-use App\Lucca\Bundle\MinuteBundle\Manager\MinuteManager;
+use Lucca\Bundle\MinuteBundle\Manager\MinuteManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Symfony\Component\Console\Command\Command;

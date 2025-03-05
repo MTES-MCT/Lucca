@@ -9,7 +9,7 @@
 
 namespace Lucca\Bundle\MinuteBundle\Controller\Admin;
 
-use App\Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
+use Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Lucca\Bundle\FolderBundle\Entity\Folder;
 use Lucca\Bundle\MinuteBundle\Entity\Minute;

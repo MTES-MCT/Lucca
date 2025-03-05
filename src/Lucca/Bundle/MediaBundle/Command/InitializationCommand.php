@@ -106,7 +106,7 @@ class InitializationCommand extends ContainerAwareCommand
         $em->getConnection()->getConfiguration()->setSQLLogger(null);
 
         /** Search default Category - if not create it */
-        $category = $em->getRepository('LuccaMediaBundle:Category')->findDefaultCategory();
+        $category = $em->getRepository(Category::class)->findDefaultCategory();
 
         if (!$category) {
             $category = new Category();
@@ -133,7 +133,7 @@ class InitializationCommand extends ContainerAwareCommand
 
 
         /** Search default Storager - if not create it */
-        $storager = $em->getRepository('LuccaMediaBundle:Storager')->findByName(Storager::DEFAULT_NAME);
+        $storager = $em->getRepository(Storager::class)->findByName(Storager::DEFAULT_NAME);
 
         if (!$storager) {
             $storager = new Storager();
