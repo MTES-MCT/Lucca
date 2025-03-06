@@ -31,8 +31,8 @@ class ClosureControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-//            new UrlTest($router->generate('lucca_minute_open'), ['id' => $closure->getId()]),
-            new UrlTest($router->generate('lucca_minute_close'), ['id' => $closure->getId()]),
+//            new UrlTest($router->generate('lucca_minute_open', ['id' => $closure->getId()])),
+            new UrlTest($router->generate('lucca_minute_close', ['id' => $closure->getId()])),
         ];
     }
 }

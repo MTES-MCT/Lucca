@@ -32,11 +32,11 @@ class GalleryControllerTest extends BasicLuccaTestCase
         /** Urls to test */
         return [
             new UrlTest($router->generate('lucca_media_gallery_index')),
-            new UrlTest($router->generate('lucca_media_gallery_new'), ['id' => $gallery->getId()]),
-            new UrlTest($router->generate('lucca_media_gallery_show'), ['id' => $gallery->getId()]),
-            new UrlTest($router->generate('lucca_media_gallery_edit'), ['id' => $gallery->getId()]),
-            new UrlTest($router->generate('lucca_media_gallery_disable'), ['id' => $gallery->getId()], 302, 302),
-            new UrlTest($router->generate('lucca_media_gallery_enable'), ['id' => $gallery->getId()], 302, 302),
+            new UrlTest($router->generate('lucca_media_gallery_new', ['id' => $gallery->getId()])),
+            new UrlTest($router->generate('lucca_media_gallery_show', ['id' => $gallery->getId()])),
+            new UrlTest($router->generate('lucca_media_gallery_edit', ['id' => $gallery->getId()])),
+            new UrlTest($router->generate('lucca_media_gallery_disable', ['id' => $gallery->getId()]), 302, 302),
+            new UrlTest($router->generate('lucca_media_gallery_enable', ['id' => $gallery->getId()]), 302, 302),
         ];
     }
 }

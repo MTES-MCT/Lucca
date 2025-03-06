@@ -32,11 +32,11 @@ class StoragerControllerTest extends BasicLuccaTestCase
         /** Urls to test */
         return [
             new UrlTest($router->generate('lucca_media_storager_index')),
-            new UrlTest($router->generate('lucca_media_storager_new'), ['id' => $storager->getId()]),
-            new UrlTest($router->generate('lucca_media_storager_show'), ['id' => $storager->getId()]),
-            new UrlTest($router->generate('lucca_media_storager_edit'), ['id' => $storager->getId()]),
-            new UrlTest($router->generate('lucca_media_storager_disable'), ['id' => $storager->getId()], 302, 302),
-            new UrlTest($router->generate('lucca_media_storager_enable'), ['id' => $storager->getId()], 302, 302),
+            new UrlTest($router->generate('lucca_media_storager_new', ['id' => $storager->getId()])),
+            new UrlTest($router->generate('lucca_media_storager_show', ['id' => $storager->getId()])),
+            new UrlTest($router->generate('lucca_media_storager_edit', ['id' => $storager->getId()])),
+            new UrlTest($router->generate('lucca_media_storager_disable', ['id' => $storager->getId()]), 302, 302),
+            new UrlTest($router->generate('lucca_media_storager_enable', ['id' => $storager->getId()]), 302, 302),
         ];
     }
 }

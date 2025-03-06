@@ -32,12 +32,12 @@ class UpdatingControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_updating_new'), [
+            new UrlTest($router->generate('lucca_updating_new', [
                 'minute_id' => $updating->getMinute()->getId(),
-            ], 302, 302),
-            new UrlTest($router->generate('lucca_updating_step1'), [
+            ]), 302, 302),
+            new UrlTest($router->generate('lucca_updating_step1', [
                 'minute_id' => $updating->getMinute()->getId(), 'id' => $updating->getId(),
-            ]),
+            ])),
         ];
     }
 }

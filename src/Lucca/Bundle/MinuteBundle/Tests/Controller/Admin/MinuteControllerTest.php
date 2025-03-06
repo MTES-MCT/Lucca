@@ -33,8 +33,8 @@ class MinuteControllerTest extends BasicLuccaTestCase
         return [
             new UrlTest($router->generate('lucca_minute_index')),
             new UrlTest($router->generate('lucca_minute_new')),
-            new UrlTest($router->generate('lucca_minute_show'), ['id' => $minute->getId()]),
-            new UrlTest($router->generate('lucca_minute_edit'), ['id' => $minute->getId()]),
+            new UrlTest($router->generate('lucca_minute_show', ['id' => $minute->getId()])),
+            new UrlTest($router->generate('lucca_minute_edit', ['id' => $minute->getId()])),
         ];
     }
 }

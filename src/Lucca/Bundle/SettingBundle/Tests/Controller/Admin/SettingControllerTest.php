@@ -32,8 +32,8 @@ class SettingControllerTest extends BasicLuccaTestCase
         /** Urls to test */
         return [
             new UrlTest($router->generate('lucca_setting_index')),
-            new UrlTest($router->generate('lucca_setting_edit'), ['id' => $setting->getId()]),
-            new UrlTest($router->generate('lucca_setting_show'), ['id' => $setting->getId()]),
+            new UrlTest($router->generate('lucca_setting_edit', ['id' => $setting->getId()])),
+            new UrlTest($router->generate('lucca_setting_show', ['id' => $setting->getId()])),
         ];
     }
 }

@@ -33,10 +33,10 @@ class UserControllerTest extends BasicLuccaTestCase
         return [
             new UrlTest($router->generate('lucca_user_index')),
             new UrlTest($router->generate('lucca_user_new')),
-            new UrlTest($router->generate('lucca_user_show'), ['id' => $user->getId()]),
-            new UrlTest($router->generate('lucca_user_edit'), ['id' => $user->getId()]),
-            new UrlTest($router->generate('lucca_user_enable'), ['id' => $user->getId()], 302, 302), // disable
-            new UrlTest($router->generate('lucca_user_enable'), ['id' => $user->getId()], 302, 302),
+            new UrlTest($router->generate('lucca_user_show', ['id' => $user->getId()])),
+            new UrlTest($router->generate('lucca_user_edit', ['id' => $user->getId()])),
+            new UrlTest($router->generate('lucca_user_enable', ['id' => $user->getId()]), 302, 302), // disable
+            new UrlTest($router->generate('lucca_user_enable', ['id' => $user->getId()]), 302, 302),
         ];
     }
 }
