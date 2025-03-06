@@ -32,7 +32,6 @@ class SettingExtension extends AbstractExtension
      */
     public function settingFilter(string $settingName): mixed
     {
-        dump(SettingManager::getAll());
         return SettingManager::get($settingName);
     }
 
