@@ -80,7 +80,7 @@ class MinuteHumanType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Lucca\MinuteBundle\Entity\Human',
+            'data_class' => Human::class,
             'translation_domain' => 'LuccaMinuteBundle',
             'required' => true
         ));

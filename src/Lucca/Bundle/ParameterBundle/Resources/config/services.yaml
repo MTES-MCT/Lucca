@@ -11,6 +11,3 @@ parameters:
     file.tribunal: "tribunal.csv"
 
 services:
-#    lucca_location.example:
-#        class: Lucca\ParameterBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]

@@ -53,7 +53,7 @@ class TribunalController extends AbstractController
     {
         $tribunal = new Tribunal();
 
-        $form = $this->createForm('Lucca\ParameterBundle\Form\TribunalType', $tribunal);
+        $form = $this->createForm(TribunalType::class, $tribunal);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

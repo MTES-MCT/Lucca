@@ -53,7 +53,7 @@ class ServiceController extends AbstractController
     {
         $service = new Service();
 
-        $form = $this->createForm('Lucca\ParameterBundle\Form\ServiceType', $service);
+        $form = $this->createForm(ServiceType::class, $service);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

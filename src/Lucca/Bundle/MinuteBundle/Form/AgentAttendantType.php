@@ -11,9 +11,10 @@
 namespace Lucca\Bundle\MinuteBundle\Form;
 
 use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Lucca\Bundle\MinuteBundle\Entity\AgentAttendant;
 
 class AgentAttendantType extends AbstractType
 {
@@ -34,7 +35,7 @@ class AgentAttendantType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Lucca\MinuteBundle\Entity\AgentAttendant',
+            'data_class' => AgentAttendant::class,
             'translation_domain' => 'LuccaMinuteBundle',
             'required' => true
         ));

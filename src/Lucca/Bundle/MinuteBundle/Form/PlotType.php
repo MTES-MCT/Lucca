@@ -100,7 +100,7 @@ class PlotType extends AbstractType
     {
         $resolver->setRequired('adherent');
         $resolver->setDefaults(array(
-            'data_class' => 'Lucca\MinuteBundle\Entity\Plot',
+            'data_class' => Plot::class,
             'translation_domain' => 'LuccaMinuteBundle',
             'required' => true
         ));

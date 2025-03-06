@@ -1,35 +1,34 @@
 <?php
 
+/*
+ * Copyright (c) 2025. Numeric Wave
+ *
+ * Afero General Public License (AGPL) v3
+ *
+ * For more information, please refer to the LICENSE file at the root of the project.
+ */
+
 namespace Lucca\Bundle\MediaBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand,
-    Symfony\Component\Console\Input\InputInterface,
+use Exception;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Command\Command;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Lucca\Bundle\MediaBundle\Entity\Category;
-use Lucca\Bundle\MediaBundle\Entity\Extension;
-use Lucca\Bundle\MediaBundle\Entity\Storager;
-use Lucca\Bundle\MediaBundle\Namer\FolderNamerInterface;
-use Lucca\Bundle\MediaBundle\Namer\MediaNamerInterface;
+use Lucca\Bundle\MediaBundle\Entity\{Category, Extension, Storager};
+use Lucca\Bundle\MediaBundle\Namer\{FolderNamerInterface, MediaNamerInterface};
 
-/**
- * Class InitializationCommand
- *
- * @package Lucca\MediaBundle\Command
- * @author Terence <terence@numeric-wave.tech>
- */
-class InitializationCommand extends ContainerAwareCommand
+class InitializationCommand extends Command
 {
-    /**
-     * @var ObjectManager
-     */
-    private $em;
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+    )
+    {
+        parent::__construct();
+    }
 
-    /**
-     * Configure command parameters
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('lucca:init:media')
@@ -38,72 +37,55 @@ class InitializationCommand extends ContainerAwareCommand
     }
 
     /**
-     * Initialize var for process from argument/option Command
-     *
-     * @param InputInterface $p_input
-     * @param OutputInterface $p_output
-     */
-    protected function initialize(InputInterface $p_input, OutputInterface $p_output)
-    {
-        $this->em = $this->getContainer()->get('doctrine')->getManager();
-    }
-
-    /**
      * Execute command
      * Write log and start the import
      *
-     * @param InputInterface $p_input
-     * @param OutputInterface $p_output
-     * @return bool|int|null
-     * @throws \Exception
+     * @throws Exception
      */
-    protected function execute(InputInterface $p_input, OutputInterface $p_output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $startTime = microtime(true);
 
         // Start command
         $now = new \DateTime('now');
-        $p_output->writeln([
+        $output->writeln([
             '',
             'Initialize default configuration in Lucca',
-            'Start: ' . $now->format('d-m-Y H:i:s') . '',
+            'Start: ' . $now->format('d-m-Y H:i:s'),
             '-----------------------------------------------',
         ]);
 
         // Command logic stored here
-        $this->initMediaBundle($p_input, $p_output);
+        $this->initMediaBundle($input, $output);
 
         // Showing when the script is over
         $now = new \DateTime('now');
-        $p_output->writeln([
+        $output->writeln([
             '',
             '-----------------------------------------------',
-            'End: ' . $now->format('d-m-Y H:i:s') . '',
+            'End: ' . $now->format('d-m-Y H:i:s'),
         ]);
 
         $finishTime = microtime(true);
         $elapsedTime = $finishTime - $startTime;
-        $p_output->writeln([
+        $output->writeln([
             '',
             sprintf('<comment>[INFO] Import stored in database: Elapsed time %.2f ms</comment>', $elapsedTime * 1000),
             '-----------------------------------------------',
         ]);
 
-        return true;
+        return 1;
     }
 
     /**
      * Import from file and create objects
-     *
-     * @param InputInterface $p_input
-     * @param OutputInterface $p_output
      */
-    protected function initMediaBundle(InputInterface $p_input, OutputInterface $p_output)
+    protected function initMediaBundle(InputInterface $input, OutputInterface $output): void
     {
         $em = $this->em;
 
         // Turning off doctrine default logs queries for saving memory
-        $em->getConnection()->getConfiguration()->setSQLLogger(null);
+        $em->getConfiguration()->setSQLLogger(null);
 
         /** Search default Category - if not create it */
         $category = $em->getRepository(Category::class)->findDefaultCategory();
@@ -113,9 +95,10 @@ class InitializationCommand extends ContainerAwareCommand
             $category->setName(Category::DEFAULT_NAME);
             $category->setDescription('Default category for all medias');
 
-            $p_output->writeln('Create default Category and save it');
-        } else
-            $p_output->writeln('Default Category existing !');
+            $output->writeln('Create default Category and save it');
+        } else {
+            $output->writeln('Default Category existing !');
+        }
 
 
         /** Search default Extension - if not create it and associated to Category */
@@ -127,9 +110,10 @@ class InitializationCommand extends ContainerAwareCommand
 
             $category->addExtension($extension);
 //            $em->persist($extension);
-            $p_output->writeln('Create default Extension and save it');
-        } else
-            $p_output->writeln('Wildcard Extension existing !');
+            $output->writeln('Create default Extension and save it');
+        } else {
+            $output->writeln('Wildcard Extension existing !');
+        }
 
 
         /** Search default Storager - if not create it */
@@ -145,9 +129,10 @@ class InitializationCommand extends ContainerAwareCommand
 
             $category->setStorager($storager);
             $em->persist($storager);
-            $p_output->writeln('Create default Storager and save it');
-        } else
-            $p_output->writeln('Storager existing !');
+            $output->writeln('Create default Storager and save it');
+        } else {
+            $output->writeln('Storager existing !');
+        }
 
         $em->persist($category);
 

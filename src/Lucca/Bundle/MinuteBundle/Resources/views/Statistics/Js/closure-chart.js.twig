@@ -35,46 +35,46 @@ const closureChart = new Chart(closureCtx, {
             {#-Don't use a loop for in oreder to mange dataset case by case
             #-and in order to display data in specifc order wothout adding complexity in manager-#}
             {################################# STATUS_REGULARIZED ##################################################}
-            {#{% if constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_REGULARIZED') in closures|keys %}#}
+            {#{% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\Closure::STATUS_REGULARIZED') in closures|keys %}#}
             {#{#}
-            {#label: "{{ constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_REGULARIZED') | trans }}",#}
+            {#label: "{{ constant('Lucca\\Bundle\\MinuteBundle\\Entity\\Closure::STATUS_REGULARIZED') | trans }}",#}
             {#backgroundColor:#}
             {#"#f9902c"#}
             {#,#}
-            {#data: {{ closures[constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_REGULARIZED')] }}#}
+            {#data: {{ closures[constant('Lucca\\Bundle\\MinuteBundle\\Entity\\Closure::STATUS_REGULARIZED')] }}#}
 
             {#},#}
             {#{% endif %}#}
             {##}{################################# STATUS_EXEC_OFFICE ##################################################}
-            {#{% if constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_EXEC_OFFICE') in closures|keys %}#}
+            {#{% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\Closure::STATUS_EXEC_OFFICE') in closures|keys %}#}
             {#{#}
-            {#label: "{{ constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_EXEC_OFFICE') | trans }}",#}
+            {#label: "{{ constant('Lucca\\Bundle\\MinuteBundle\\Entity\\Closure::STATUS_EXEC_OFFICE') | trans }}",#}
             {#backgroundColor:#}
             {#"#f9902c"#}
             {#,#}
-            {#data: {{ closures[constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_EXEC_OFFICE')] }}#}
+            {#data: {{ closures[constant('Lucca\\Bundle\\MinuteBundle\\Entity\\Closure::STATUS_EXEC_OFFICE')] }}#}
 
             {#},#}
             {#{% endif %}#}
             {##}{################################# STATUS_REGULARIZED ##################################################}
-            {#{% if constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_RELAXED') in closures|keys %}#}
+            {#{% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\Closure::STATUS_RELAXED') in closures|keys %}#}
             {#{#}
-            {#label: "{{ constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_RELAXED') | trans }}",#}
+            {#label: "{{ constant('Lucca\\Bundle\\MinuteBundle\\Entity\\Closure::STATUS_RELAXED') | trans }}",#}
             {#backgroundColor:#}
             {#"#f9902c"#}
             {#,#}
-            {#data: {{ closures[constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_RELAXED')] }}#}
+            {#data: {{ closures[constant('Lucca\\Bundle\\MinuteBundle\\Entity\\Closure::STATUS_RELAXED')] }}#}
 
             {#},#}
             {#{% endif %}#}
             {##}{################################# STATUS_REGULARIZED ##################################################}
-            {#{% if constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_OTHER') in closures|keys %}#}
+            {#{% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\Closure::STATUS_OTHER') in closures|keys %}#}
             {#{#}
-            {#label: "{{ constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_OTHER') | trans }}",#}
+            {#label: "{{ constant('Lucca\\Bundle\\MinuteBundle\\Entity\\Closure::STATUS_OTHER') | trans }}",#}
             {#backgroundColor:#}
             {#"#f9902c"#}
             {#,#}
-            {#data: {{ closures[constant('Lucca\\MinuteBundle\\Entity\\Closure::STATUS_OTHER')] }}#}
+            {#data: {{ closures[constant('Lucca\\Bundle\\MinuteBundle\\Entity\\Closure::STATUS_OTHER')] }}#}
 
             {#},#}
             {#{% endif %}#}

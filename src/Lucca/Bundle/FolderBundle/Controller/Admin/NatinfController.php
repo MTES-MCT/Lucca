@@ -18,6 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 use Lucca\Bundle\FolderBundle\Entity\Natinf;
+use Lucca\Bundle\FolderBundle\Form\NatinfType;
 
 #[IsGranted('ROLE_USER')]
 #[Route(path: '/natinf')]
@@ -53,7 +54,7 @@ class NatinfController extends AbstractController
     {
         $natinf = new Natinf();
 
-        $form = $this->createForm('Lucca\FolderBundle\Form\NatinfType', $natinf);
+        $form = $this->createForm(NatinfType::class, $natinf);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -94,7 +95,7 @@ class NatinfController extends AbstractController
     public function editAction(Request $request, Natinf $natinf): Response
     {
         $deleteForm = $this->createDeleteForm($natinf);
-        $editForm = $this->createForm('Lucca\FolderBundle\Form\NatinfType', $natinf);
+        $editForm = $this->createForm(NatinfType::class, $natinf);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

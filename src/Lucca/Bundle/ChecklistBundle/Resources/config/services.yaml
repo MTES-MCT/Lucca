@@ -1,4 +1,1 @@
 services:
-#    lucca_checklist.example:
-#        class: Lucca\ChecklistBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
