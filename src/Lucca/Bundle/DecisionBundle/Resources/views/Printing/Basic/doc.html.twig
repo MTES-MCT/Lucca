@@ -1,7 +1,7 @@
 {% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
 {% trans_default_domain 'DecisionBundle' %}
 
-{% set entity_trans_key='entity.folder' %}
+{% set entity_trans='entity.folder'|trans %}
 {% block menuActive_minute %} class="active"{% endblock %}
 
 {% if 'setting.folder.useRefreshAgentForRefreshSignature.name'|setting and update.controls is defined and update.controls|length == 1 %}

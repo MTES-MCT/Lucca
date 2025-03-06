@@ -1,7 +1,7 @@
 {% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig' %}
 {% trans_default_domain 'LuccaSettingBundle' %}
 
-{% set entity_trans_key='entity.setting' %}
+{% set entity_trans='entity.setting'|trans %}
 
 
 {% block lucca_panels %}
@@ -9,7 +9,7 @@
     <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
         <div class="card card-default">
             <div class="card-header">
-                {{ 'title.new'|trans({}, 'LuccaThemeAngleBundle') }} - <b>{{ entity_trans_key|trans }}</b>
+                {{ 'title.new'|trans({}, 'LuccaThemeAngleBundle') }} - <b>{{ entity_trans }}</b>
             </div>
 
             <div class="card-wrapper">

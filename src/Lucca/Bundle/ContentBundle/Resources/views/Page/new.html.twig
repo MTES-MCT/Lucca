@@ -1,7 +1,7 @@
 {% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
 {% trans_default_domain 'LuccaContentBundle' %}
 
-{% set entity_trans_key='entity.page' %}
+{% set entity_trans='entity.page'|trans %}
 {% block menuActive_page %}class="active"{% endblock %}
 
 {# Media - Set isPublic to true in order to make the media public and uploaded #}
@@ -21,7 +21,7 @@
         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
             <div class="card card-default">
                 <div class="card-header">
-                    {{ 'title.new'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ entity_trans_key|trans }}</b>
+                    {{ 'title.new'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ entity_trans }}</b>
                 </div>
 
                 <div class="card-wrapper">
