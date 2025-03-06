@@ -47,15 +47,15 @@
                     </div>
 
                     <div class="col-12 mt-4">
-                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_user_group_list') }}"
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_user_group_index') }}"
                            title="{{ 'link.back'|trans }}"><i class="fa fa-reply"></i></a>
 
                         <a class="btn btn-warning btn-lg"
-                           href="{{ path('lucca_user_group_edit', { 'groupName': group.name }) }}"
+                           href="{{ path('lucca_user_group_edit', { 'id': group.id }) }}"
                            title="{{ 'link.edit'|trans }}"><i class="fas fa-pencil-alt"></i></a>
 
                         <a class="btn btn-danger btn-lg pull-right"
-                           href="{{ path('lucca_user_group_delete', { 'groupName': group.name }) }}"
+                           href="{{ path('lucca_user_group_delete', { 'id': group.id }) }}"
                            title="{{ 'link.delete'|trans }}"><i class="fas fa-times"></i></a>
                     </div>
 

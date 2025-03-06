@@ -102,7 +102,7 @@ class UserController extends AbstractController
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->userManager->updateUser($user);
 
-            $this->addFlash('success', 'user.updated_successfully');
+            $this->addFlash('success', 'flashes.updated_successfully');
 
             return $this->redirectToRoute('lucca_user_show', ['id' => $user->getId()]);
         }
@@ -128,7 +128,7 @@ class UserController extends AbstractController
             $this->userManager->deleteUser($user);
         }
 
-        $this->addFlash('success', 'user.deleted_successfully');
+        $this->addFlash('success', 'flashes.deleted_successfully');
 
         return $this->redirectToRoute('lucca_user_index');
     }

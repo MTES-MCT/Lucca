@@ -11,10 +11,9 @@
 namespace Lucca\Bundle\UserBundle\Form\Type;
 
 use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
-use Symfony\Component\Form\Extension\Core\Type\{EnumType, TextType, CheckboxType};
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, TextType, CheckboxType};
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Lucca\Bundle\UserBundle\Config\Role;
 use Lucca\Bundle\UserBundle\Entity\Group;
 
 class GroupFormType extends AbstractType
@@ -28,9 +27,17 @@ class GroupFormType extends AbstractType
         $builder
             ->add('name', TextType::class, ['label' => 'label.name'])
             ->add('displayed', CheckboxType::class, ['label' => 'label.displayed'])
-            ->add('roles', EnumType::class, [
-                'class' => Role::class, 'label' => 'label.roles', 'multiple' => true, 'expanded' => true
-            ])
+            ->add('roles', ChoiceType::class, array(
+                'choices' => array(
+                    'choice.roles.superAdmin' => 'ROLE_SUPER_ADMIN',
+                    'choice.roles.admin' => 'ROLE_ADMIN',
+                    'choice.roles.lucca' => 'ROLE_LUCCA',
+                    'choice.roles.visu' => 'ROLE_VISU',
+                    'choice.roles.openFolder' => 'ROLE_FOLDER_OPEN',
+                    'choice.roles.deleteFolder' => 'ROLE_DELETE_FOLDER',
+                ),
+                'multiple' => true, 'expanded' => true, 'required' => true, 'label' => 'label.roles'
+            ));
         ;
     }
 
@@ -44,15 +51,6 @@ class GroupFormType extends AbstractType
             'translation_domain' => 'LuccaUserBundle',
             'required' => true
         ));
-    }
-
-    /**
-     * Get FOSUserBundle form parent
-     * @return string
-     */
-    public function getParent(): string
-    {
-        return 'FOS\UserBundle\Form\Type\GroupFormType';
     }
 
     /**

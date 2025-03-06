@@ -14,23 +14,23 @@
 
         <div class="card card-default">
             <div class="card-header">
-                {{ 'title.edit'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ group_name }}</b>
+                {{ 'title.edit'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ group.name }}</b>
             </div>
 
             <div class="card-wrapper">
                 <div class="card-body">
                     <div class="col-12">
-                        {{ form_start(form, { 'action': path('lucca_user_group_edit', {'groupName': group_name}), 'attr': { 'class': 'lucca_user_group_edit' } }) }}
-                        {{ form_widget(form) }}
+                        {{ form_start(edit_form, { 'action': path('lucca_user_group_edit', {'id': group.id}), 'attr': { 'class': 'lucca_user_group_edit' } }) }}
+                        {{ form_widget(edit_form) }}
 
-                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_user_group_list') }}"
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_user_group_index') }}"
                            title="{{ 'link.back'|trans }}"><i class="fa fa-reply"></i></a>
 
                         <button type="submit" class="btn btn-success btn-lg"
                                 title="{{ 'link.new'|trans }}"><i class="fa fa-check"></i></button>
 
-                        {{ form_rest(form) }}
-                        {{ form_end(form) }}
+                        {{ form_rest(edit_form) }}
+                        {{ form_end(edit_form) }}
                     </div>
                 </div>
             </div>
