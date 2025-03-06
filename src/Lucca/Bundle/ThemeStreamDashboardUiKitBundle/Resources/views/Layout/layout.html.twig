@@ -131,7 +131,7 @@
                                 {#-- Password --#}
                                 {#TODO: fix icon#}
                                 <a class="d-flex align-items-center link-dark"
-                                   href="{{ path('fos_user_change_password') }}">
+                                   href="{{ path('lucca_user_myProfile_changePassword') }}">
                                     <span class="h3 mb-0"><i
                                                 class="far fa-keys text-muted mr-3"></i></span> {{ 'menu.changePassword'|trans }}
                                 </a>
@@ -139,7 +139,7 @@
                             <li>
                                 {#-- Logout --#}
                                 <a class="d-flex align-items-center link-dark "
-                                   href="{{ path('fos_user_security_logout') }}">
+                                   href="{{ path('lucca_user_security_logout') }}">
                                     <span class="h3 mb-0"><i
                                                 class="far fa-share-square text-muted mr-3"></i></span> {{ 'menu.logout'|trans }}
                                 </a>
@@ -401,7 +401,7 @@
                                 </li>
                                 <li class="u-sidebar-nav-menu__item">
                                     <a class="u-sidebar-nav-menu__link {% block menuActive_group %}{% endblock %}"
-                                       href="{{ path('fos_user_group_list') }}" title="{{ 'menu.group'|trans }}">
+                                       href="{{ path('lucca_user_group_list') }}" title="{{ 'menu.group'|trans }}">
                                         <span class="u-sidebar-nav-menu__item-title">{{ 'menu.group'|trans }}</span>
                                     </a>
                                 </li>

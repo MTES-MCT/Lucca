@@ -1,20 +1,20 @@
 services:
-    ## Form - user
-    lucca.form.user:
-        class: Lucca\Bundle\UserBundle\Form\UserType
-        arguments:
-             - '@security.authorization_checker'
-        tags:
-            - { name: form.type, alias: lucca_user_profile }
-
-    ## Form - user profile
-    lucca.form.profile:
-        class: Lucca\Bundle\UserBundle\Form\Type\ProfileFormType
-        tags:
-            - { name: form.type, alias: lucca_user_profile }
-
-    ## Form - group profile
-    lucca.form.group:
-        class: Lucca\Bundle\UserBundle\Form\Type\GroupFormType
-        tags:
-            - { name: form.type, alias: lucca_user_group }
+#    ## Form - user
+#    lucca.form.user:
+#        class: Lucca\Bundle\UserBundle\Form\UserType
+#        arguments:
+#             - '@security.authorization_checker'
+#        tags:
+#            - { name: form.type, alias: lucca_user_profile }
+#
+#    ## Form - user profile
+#    lucca.form.profile:
+#        class: Lucca\Bundle\UserBundle\Form\Type\ProfileFormType
+#        tags:
+#            - { name: form.type, alias: lucca_user_profile }
+#
+#    ## Form - group profile
+#    lucca.form.group:
+#        class: Lucca\Bundle\UserBundle\Form\Type\GroupFormType
+#        tags:
+#            - { name: form.type, alias: lucca_user_group }

@@ -1,9 +1,0 @@
-fos_user:
-    db_driver: orm
-    firewall_name: main
-    user_class: Lucca\UserBundle\Entity\User
-    from_email:
-        address: '%env(resolve:FROM_EMAIL_ADDRESS)%'
-        sender_name: '%env(resolve:FROM_EMAIL_SENDER_NAME)%'
-    service:
-        mailer: fos_user.mailer.twig_symfony

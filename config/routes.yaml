@@ -18,8 +18,16 @@ LuccaCoreBundle:
     resource: "@LuccaCoreBundle/Resources/config/routing.yaml"
     prefix:   /
 
+DecisionBundle:
+    resource: "@DecisionBundle/Resources/config/routing.yaml"
+    prefix:   /
+
 LuccaDepartmentBundle:
     resource: "@LuccaDepartmentBundle/Resources/config/routing.yaml"
+    prefix:   /
+
+LuccaFolderBundle:
+    resource: "@LuccaFolderBundle/Resources/config/routing.yaml"
     prefix:   /
 
 LuccaLogBundle:
@@ -30,16 +38,24 @@ LuccaMediaBundle:
     resource: "@LuccaMediaBundle/Resources/config/routing.yaml"
     prefix:   /
 
+LuccaMinuteBundle:
+    resource: "@LuccaMinuteBundle/Resources/config/routing.yaml"
+    prefix:   /
+
 LuccaModelBundle:
     resource: "@LuccaModelBundle/Resources/config/routing.yaml"
     prefix:   /
-    
+
 LuccaParameterBundle:
     resource: "@LuccaParameterBundle/Resources/config/routing.yaml"
     prefix: /
 
 LuccaSecurityBundle:
     resource: "@LuccaSecurityBundle/Resources/config/routing.yaml"
+    prefix:   /
+
+SecurityBundle:
+    resource: "@SecurityBundle/Resources/config/routing.yaml"
     prefix:   /
 
 LuccaUserBundle:

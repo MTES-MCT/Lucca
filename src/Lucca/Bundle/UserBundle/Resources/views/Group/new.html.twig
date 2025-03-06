@@ -20,11 +20,11 @@
             <div class="card-wrapper">
                 <div class="card-body">
                     <div class="col-12">
-                        {{ form_start(form, { 'action': path('fos_user_group_new'), 'attr': { 'class': 'fos_user_group_new' } }) }}
+                        {{ form_start(form, { 'action': path('lucca_user_group_new'), 'attr': { 'class': 'lucca_user_group_new' } }) }}
 
                         {{ form_widget(form) }}
 
-                        <a class="btn btn-secondary btn-lg" href="{{ path('fos_user_group_list') }}"
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_user_group_list') }}"
                            title="{{ 'link.back'|trans }}"><i class="fa fa-reply"></i></a>
 
                         <button type="submit" class="btn btn-success btn-lg"

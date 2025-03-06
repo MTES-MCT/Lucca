@@ -13,11 +13,6 @@ namespace Lucca\Bundle\MinuteBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * Class LuccaMinuteBundle
- *
- * @package Lucca\Bundle\LuccaMinuteBundle
- */
 class LuccaMinuteBundle extends Bundle
 {
 }

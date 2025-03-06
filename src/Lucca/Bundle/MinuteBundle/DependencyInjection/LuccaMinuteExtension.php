@@ -12,6 +12,7 @@ namespace Lucca\Bundle\MinuteBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
@@ -24,7 +25,7 @@ use Lucca\Bundle\CoreBundle\DependencyInjection\Configuration;
  * @package Lucca\Bundle\MinuteBundle\DependencyInjection
  * @author Terence <terence@numeric-wave.tech>
  */
-class LuccaMinuteExtension extends Extension
+class LuccaMinuteExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * Load configuration of this Bundle

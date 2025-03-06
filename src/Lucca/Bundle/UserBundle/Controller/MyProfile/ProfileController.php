@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\Response,
-    Symfony\Component\Routing\Annotation\Route;
+    Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 use Lucca\Bundle\UserBundle\Form\MyProfile\{ProfileType, ProfilePasswordType};
@@ -50,7 +50,7 @@ class ProfileController extends AbstractController
     /**
      * Displays a form to edit an existing User profile.
      */
-    #[Route(path: '/edit', name: 'nw_user_myProfile_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
+    #[Route(path: '/edit', name: 'nw_user_myProfile_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
     public function editAction(Request $p_request): Response
     {
