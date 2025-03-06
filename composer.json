@@ -40,7 +40,9 @@
         "twig/twig": "^3.0"
     },
     "require-dev": {
+        "dama/doctrine-test-bundle": "^8.0.2",
         "doctrine/doctrine-fixtures-bundle": "*",
+        "symfony/browser-kit": "7.2.*",
         "symfony/css-selector": "7.2.*",
         "symfony/debug-bundle": "7.2.*",
         "symfony/phpunit-bridge": "7.2.*",
@@ -71,7 +73,7 @@
             "Lucca\\Bundle\\": "src/Lucca/Bundle"
         },
         "exclude-from-classmap": [
-            "src/App/*/*/Tests/"
+            "src/Lucca/*/*/Tests/"
         ]
     },
     "autoload-dev": {
