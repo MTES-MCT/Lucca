@@ -1,4 +1,4 @@
-{% extends "LuccaThemeStreamDashboardUiKit:Layout:layout.html.twig" %}
+{% extends "@LuccaThemeStreamDashboardUiKit/Layout/layout.html.twig" %}
 {% trans_default_domain 'LuccaThemeStreamDashboardUiKit' %}
 
 {% set param_topbar='gray-bg' %}
@@ -10,7 +10,7 @@
 
 {% block lucca_page %}
 
-    {% include 'LuccaThemeStreamDashboardUiKit:Flash:flashes.html.twig' %}
+    {% include '@LuccaThemeStreamDashboardUiKit/Flash/flashes.html.twig' %}
 
     {% block lucca_block %}
 

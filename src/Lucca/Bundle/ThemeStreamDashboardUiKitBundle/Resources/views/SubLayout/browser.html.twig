@@ -1,5 +1,5 @@
 {#-- Extends view --#}
-{% extends "LuccaThemeStreamDashboardUiKit:Layout:layout.html.twig" %}
+{% extends "@LuccaThemeStreamDashboardUiKit/Layout/layout.html.twig" %}
 
 {#-- Translation domain --#}
 {% trans_default_domain 'LuccaThemeStreamDashboardUiKit' %}
@@ -56,7 +56,7 @@
     {#-- End Panel - filters --#}
 
 
-    {% include 'LuccaThemeStreamDashboardUiKit:Flash:flashes.html.twig' %}
+    {% include '@LuccaThemeStreamDashboardUiKit/Flash/flashes.html.twig' %}
 
     {#-- Panel - browser --#}
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -127,7 +127,7 @@
     </script>
 
     {#-- Plugin - DataTables --#}
-    {% include "LuccaThemeStreamDashboardUiKit:Plugins:datatables.js.html.twig" with { 'params' :
+    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/datatables.js.html.twig" with { 'params' :
         { 'id_datatable': '.dataTables', 'pageLength': 10 }
     } %}
 
