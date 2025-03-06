@@ -1,9 +1,7 @@
 {% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
 {% trans_default_domain 'LuccaUserBundle' %}
 
-{% set param_entity='entity.group'|transchoice(1) %}
-{% set param_entities='entity.group'|transchoice(2) %}
-
+{% set entity_trans_key='entity.group' %}
 {% block menuActive_group %}class="active"{% endblock menuActive_group %}
 
 
@@ -14,7 +12,7 @@
 
         <div class="card card-default">
             <div class="card-header">
-                {{ 'title.new'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ param_entity }}</b>
+                {{ 'title.new'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ entity_trans_key|trans }}</b>
             </div>
 
             <div class="card-wrapper">

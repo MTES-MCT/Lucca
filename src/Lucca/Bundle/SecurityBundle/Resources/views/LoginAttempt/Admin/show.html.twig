@@ -5,13 +5,12 @@
 {% trans_default_domain 'LuccaSecurityBundle' %}
 
 {#-- Parameters --#}
-{% set param_entity='entity.loginAttempt'|transchoice(1) %}
-{% set param_entities='entity.loginAttempt'|transchoice(2) %}
+{% set entity_trans_key='entity.loginAttempt' %}
 {% block menuActive_parameter %} class="active"{% endblock %}
 
 
 {% block lucca_title_name %}
-    <h2>{{ param_entity }} - <b>{{ loginAttempt.requestIp }}</b></h2>
+    <h2>{{ entity_trans_key|trans }} - <b>{{ loginAttempt.requestIp }}</b></h2>
 {% endblock lucca_title_name %}
 
 
@@ -23,7 +22,7 @@
             <div class="card card-default">
                 <div class="card-header">
                     <a class="collapse-link" title="{{ 'link.reducePanel'|trans }}">
-                        <h5><i class="fas fa-book-dead"></i> {{ param_entity }} </h5>
+                        <h5><i class="fas fa-book-dead"></i> {{ entity_trans_key|trans }} </h5>
                     </a>
                 </div>
 
@@ -96,7 +95,7 @@
             <div class="card card-default">
                 <div class="card-header">
                     <a class="collapse-link" title="{{ 'link.reducePanel'|trans }}">
-                        <h5><i class="fas fa-book-dead"></i> {{ param_entity }} </h5>
+                        <h5><i class="fas fa-book-dead"></i> {{ entity_trans_key|trans }} </h5>
                     </a>
                 </div>
 

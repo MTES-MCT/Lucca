@@ -1,8 +1,8 @@
 {% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig" %}
 {% trans_default_domain 'LuccaModelBundle' %}
 
-{% set param_entity='entity.margin'|transchoice(1) %}
-{% set param_entities='entity.margin'|transchoice(2) %}
+{% set entity_trans_key='entity.margin' %}
+
 
 {% block menuActive_model %}class="active"{% endblock menuActive_model %}
 
@@ -22,7 +22,7 @@
             <div class="card card-default">
 
                 <div class="card-header">
-                    {{ 'title.edit'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ param_entity }} ({{ margin.position|trans }})</b>
+                    {{ 'title.edit'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ entity_trans_key|trans }} ({{ margin.position|trans }})</b>
                 </div>
 
                 <span class="jumbotron-warning m-2 p-2">

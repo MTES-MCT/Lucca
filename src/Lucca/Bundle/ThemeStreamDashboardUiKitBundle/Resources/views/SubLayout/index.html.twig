@@ -4,11 +4,11 @@
 {% set param_topbar='gray-bg' %}
 
 {% block lucca_title %}
-    <title>{{ 'setting.general.app.name'| setting }} | {{ param_entity }} - {{ 'title.index'|trans }}</title>
+    <title>{{ 'setting.general.app.name'| setting }} | {{ entity_trans_key|trans }} - {{ 'title.index'|trans }}</title>
 {% endblock lucca_title %}
 
 {% block lucca_header %}
-    {{ param_entities }}
+    {{ entity_trans_key|trans }}
 {% endblock lucca_header %}
 
 {% block lucca_page %}
@@ -25,7 +25,7 @@
                 </a>
                 <div class="card-title">
                     {% block lucca_card_title %}
-                        {{ 'title.manage'|trans }} - <b>{{ param_entities }}</b>
+                        {{ 'title.manage'|trans }} - <b>{{ entity_trans_key|trans }}</b>
                     {% endblock lucca_card_title %}
                 </div>
             </div>

@@ -5,8 +5,7 @@
 {% trans_default_domain 'LuccaParameterBundle' %}
 
 {#-- Parameters --#}
-{% set param_entity='entity.town'|transchoice(1) %}
-{% set param_entities='entity.town'|transchoice(2) %}
+{% set entity_trans_key='entity.town' %}
 {% block menuActive_parameter %}class="active"{% endblock menuActive_parameter %}
 
 
@@ -19,7 +18,7 @@
     <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
         <div class="card card-default">
             <div class="card-header">
-                {{ 'title.new'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ param_entity }}</b>
+                {{ 'title.new'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ entity_trans_key|trans }}</b>
             </div>
 
             <div class="card-wrapper">

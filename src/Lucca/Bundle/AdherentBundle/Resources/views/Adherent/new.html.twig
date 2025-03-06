@@ -5,8 +5,7 @@
 {% trans_default_domain 'LuccaAdherentBundle' %}
 
 {#-- Parameters --#}
-{% set param_entity='entity.adherent'|transchoice(1) %}
-{% set param_entities='entity.adherent'|transchoice(2) %}
+{% set entity_trans_key='entity.adherent' %}
 {% block menuActive_adherent %}class="active"{% endblock %}
 
 
@@ -20,7 +19,7 @@
         <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
             <div class="card card-default">
                 <div class="card-header">
-                    {{ 'title.new'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ param_entity }}</b>
+                    {{ 'title.new'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ entity_trans_key|trans }}</b>
                 </div>
 
                 <div class="card-wrapper">
@@ -92,7 +91,7 @@
         <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
             <div class="card card-default">
                 <div class="card-header">
-                    {{ 'title.new'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ param_entity }}</b>
+                    {{ 'title.new'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ entity_trans_key|trans }}</b>
                 </div>
 
                 <div class="card-wrapper">

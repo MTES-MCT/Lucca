@@ -4,8 +4,8 @@
 {#--  Import specific macro  --#}
 {% import "@LuccaThemeAngle/Macro/buttonHelp.html.twig" as macroButtonHelp %}
 
-{% set param_entity='entity.folder'|transchoice(1) %}
-{% set param_entities='entity.folder'|transchoice(2) %}
+{% set entity_trans_key='entity.folder' %}
+
 
 {% block menuActive_minute %}class="active"{% endblock %}
 

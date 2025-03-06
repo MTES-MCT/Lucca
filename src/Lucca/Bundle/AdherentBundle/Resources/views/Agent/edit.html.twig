@@ -5,8 +5,7 @@
 {% trans_default_domain 'LuccaAdherentBundle' %}
 
 {#-- Parameters --#}
-{% set param_entity='entity.agent'|transchoice(1) %}
-{% set param_entities='entity.agent'|transchoice(2) %}
+{% set entity_trans_key='entity.agent' %}
 {% block menuActive_adherent %}class="active"{% endblock %}
 
 {% block lucca_panels %}

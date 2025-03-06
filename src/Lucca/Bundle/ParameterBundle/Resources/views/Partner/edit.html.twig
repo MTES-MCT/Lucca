@@ -5,8 +5,7 @@
 {% trans_default_domain 'LuccaParameterBundle' %}
 
 {#-- Parameters --#}
-{% set param_entity='entity.partner'|transchoice(1) %}
-{% set param_entities='entity.partner'|transchoice(2) %}
+{% set entity_trans_key='entity.partner' %}
 {% block menuActive_parameter %}class="active"{% endblock %}
 
 

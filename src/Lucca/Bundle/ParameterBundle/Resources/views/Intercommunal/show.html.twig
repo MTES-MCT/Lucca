@@ -5,8 +5,7 @@
 {% trans_default_domain 'LuccaParameterBundle' %}
 
 {#-- Parameters --#}
-{% set param_entity='entity.intercommunal'|transchoice(1) %}
-{% set param_entities='entity.intercommunal'|transchoice(2) %}
+{% set entity_trans_key='entity.intercommunal' %}
 {% block menuActive_parameter %} class="active"{% endblock menuActive_parameter %}
 
 

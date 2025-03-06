@@ -5,8 +5,7 @@
 {% trans_default_domain 'LuccaContentBundle' %}
 
 {#-- Parameters --#}
-{% set param_entity='entity.page'|transchoice(1) %}
-{% set param_entities='entity.page'|transchoice(2) %}
+{% set entity_trans_key='entity.page' %}
 {% block menuActive_page %}class="active"{% endblock %}
 
 {# Media - Set isPublic to true in order to make the media public and uploaded #}

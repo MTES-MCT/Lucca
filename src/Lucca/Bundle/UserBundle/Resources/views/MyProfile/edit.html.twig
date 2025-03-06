@@ -1,8 +1,8 @@
 {% extends "@LuccaThemeStreamDashboardUiKit/Layout/layout.html.twig" %}
 {% trans_default_domain 'LuccaUserBundle' %}
 
-{% set param_entity='entity.user'|transchoice(1) %}
-{% set param_entities='entity.user'|transchoice(2) %}
+{% set entity_trans_key='entity.user' %}
+
 
 {% block menuActive_profile %}class="active"{% endblock menuActive_profile %}
 
