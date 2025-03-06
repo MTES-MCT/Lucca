@@ -1,5 +1,5 @@
 ## LuccaSettingBundle Routing
 lucca_setting_bundle:
-    resource: "@LuccaSettingBundle/Controller/"
+    resource: "@LuccaSettingBundle/Controller/Admin"
     type: attribute
     prefix: /back-office

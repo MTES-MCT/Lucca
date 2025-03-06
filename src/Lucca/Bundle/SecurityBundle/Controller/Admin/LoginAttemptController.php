@@ -32,7 +32,7 @@ class LoginAttemptController extends AbstractController
     /**
      * List of LoginAttempt
      */
-    #[Route(path: '/', name: 'lucca_security_loginAttempt_index', methods: ['GET'])]
+    #[Route(path: '/', name: 'lucca_security_login_attempt_index', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
     public function indexAction(): Response
     {
@@ -46,7 +46,7 @@ class LoginAttemptController extends AbstractController
     /**
      * Finds and displays a LoginAttempt entity.
      */
-    #[Route(path: '-{id}', name: 'lucca_security_loginAttempt_show', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Route(path: '-{id}', name: 'lucca_security_login_attempt_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
     public function showAction(LoginAttempt $p_loginAttempt): Response
     {
@@ -58,7 +58,7 @@ class LoginAttemptController extends AbstractController
     /**
      * Finds and displays a LoginAttempt entity
      */
-    #[Route(path: '-{id}/approve-ip', name: 'lucca_security_loginAttempt_approve_ip', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Route(path: '-{id}/approve-ip', name: 'lucca_security_login_attempt_approve_ip', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
     public function approveIpAction(LoginAttempt $p_loginAttempt): Response
     {
@@ -68,6 +68,6 @@ class LoginAttemptController extends AbstractController
             $this->addFlash('success', 'flash.loginAttempt.ipClearedSuccessfully');
         }
 
-        return $this->redirectToRoute('lucca_security_loginAttempt_show', ['id' => $p_loginAttempt->getId()]);
+        return $this->redirectToRoute('lucca_security_login_attempt_show', ['id' => $p_loginAttempt->getId()]);
     }
 }
