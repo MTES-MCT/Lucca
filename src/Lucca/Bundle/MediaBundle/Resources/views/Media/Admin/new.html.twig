@@ -5,8 +5,7 @@
 {% trans_default_domain 'LuccaMediaBundle' %}
 
 {#-- Parameters --#}
-{% set param_entity='entity.media'|transchoice(1) %}
-{% set param_entities='entity.media'|transchoice(2) %}
+{% set entity_trans_key='entity.media' %}
 {% block menuActive_parameter %}class="active"{% endblock %}
 
 

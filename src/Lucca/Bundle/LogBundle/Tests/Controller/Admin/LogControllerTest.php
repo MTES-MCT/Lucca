@@ -32,7 +32,7 @@ class LogControllerTest extends BasicLuccaTestCase
         /** Urls to test */
         return [
             new UrlTest($router->generate('lucca_log_index')),
-            new UrlTest($router->generate('lucca_log_show'), ['id' => $log->getId()]),
+            new UrlTest($router->generate('lucca_log_show', ['id' => $log->getId()])),
         ];
     }
 }

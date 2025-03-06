@@ -1,11 +1,11 @@
 {% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
 {% trans_default_domain 'LuccaSettingBundle' %}
 
-{% set param_entity='entity.setting'|transchoice(1) %}
-{% set param_entities='entity.setting'|transchoice(2) %}
+{% set entity_trans_key='entity.setting' %}
+
 
 {% block lucca_title_name %}
-    <h2>{{ param_entity }} - <b>{{ (setting.name)|trans }}</b></h2>
+    <h2>{{ entity_trans_key|trans }} - <b>{{ (setting.name)|trans }}</b></h2>
 {% endblock lucca_title_name %}
 
 {% block lucca_panels %}

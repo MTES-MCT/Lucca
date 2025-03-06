@@ -33,9 +33,9 @@ class MediaControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_media_api_meta_datas'), ['categoryId' => $category->getId(),]),
-            new UrlTest($router->generate('lucca_media_api_meta_datas_by_extension'), ['extension' => $extension->getId()]),
-            new UrlTest($router->generate('lucca_media_api_get_delete_modal'), ['id' => $media->getId()]),
+            new UrlTest($router->generate('lucca_media_api_meta_datas', ['categoryId' => $category->getId()])),
+            new UrlTest($router->generate('lucca_media_api_meta_datas_by_extension', ['extension' => $extension->getId()])),
+            new UrlTest($router->generate('lucca_media_api_get_delete_modal', ['id' => $media->getId()])),
         ];
     }
 }

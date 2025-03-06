@@ -35,12 +35,12 @@ class ControlControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_control_access_manual'), [
+            new UrlTest($router->generate('lucca_control_access_manual', [
                 'minute_id' => $minute->getId(), 'id' => $control->getId(),
-            ]),
-            new UrlTest($router->generate('lucca_control_convocation_manual'), [
+            ])),
+            new UrlTest($router->generate('lucca_control_convocation_manual', [
                 'minute_id' => $minute->getId(), 'id' => $control->getId(),
-            ]),
+            ])),
         ];
     }
 }

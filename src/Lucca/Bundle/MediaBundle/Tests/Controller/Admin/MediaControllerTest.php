@@ -32,8 +32,8 @@ class MediaControllerTest extends BasicLuccaTestCase
         /** Urls to test */
         return [
             new UrlTest($router->generate('lucca_media_index')),
-            new UrlTest($router->generate('lucca_media_disable'), ['id' => $media->getId()], 302, 302),
-            new UrlTest($router->generate('lucca_media_enable'), ['id' => $media->getId()], 302, 302),
+            new UrlTest($router->generate('lucca_media_disable', ['id' => $media->getId()]), 302, 302),
+            new UrlTest($router->generate('lucca_media_enable', ['id' => $media->getId()]), 302, 302),
         ];
     }
 }

@@ -5,8 +5,7 @@
 {% trans_default_domain 'LuccaFolderBundle' %}
 
 {#- - Parameters - -#}
-{% set param_entity='entity.folder'|transchoice(1) %}
-{% set param_entities='entity.folder'|transchoice(2) %}
+{% set entity_trans_key='entity.folder' %}
 {% block menuActive_minute %}class="active"{% endblock %}
 
 {% block lucca_panels %}

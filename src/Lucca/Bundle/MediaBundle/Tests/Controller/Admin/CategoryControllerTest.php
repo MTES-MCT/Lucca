@@ -32,11 +32,11 @@ class CategoryControllerTest extends BasicLuccaTestCase
         /** Urls to test */
         return [
             new UrlTest($router->generate('lucca_media_category_index')),
-            new UrlTest($router->generate('lucca_media_category_new'), ['id' => $category->getId()]),
-            new UrlTest($router->generate('lucca_media_category_show'), ['id' => $category->getId()]),
-            new UrlTest($router->generate('lucca_media_category_edit'), ['id' => $category->getId()]),
-            new UrlTest($router->generate('lucca_media_category_disable'), ['id' => $category->getId()], 302, 302),
-            new UrlTest($router->generate('lucca_media_category_enable'), ['id' => $category->getId()], 302, 302),
+            new UrlTest($router->generate('lucca_media_category_new', ['id' => $category->getId()])),
+            new UrlTest($router->generate('lucca_media_category_show', ['id' => $category->getId()])),
+            new UrlTest($router->generate('lucca_media_category_edit', ['id' => $category->getId()])),
+            new UrlTest($router->generate('lucca_media_category_disable', ['id' => $category->getId()]), 302, 302),
+            new UrlTest($router->generate('lucca_media_category_enable', ['id' => $category->getId()]), 302, 302),
         ];
     }
 }

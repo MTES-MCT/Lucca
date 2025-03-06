@@ -5,8 +5,7 @@
 {% trans_default_domain 'LuccaFolderBundle' %}
 
 {#-- Parameters --#}
-{% set param_entity='entity.tag'|transchoice(1) %}
-{% set param_entities='entity.tag'|transchoice(2) %}
+{% set entity_trans_key='entity.tag' %}
 {% block menuActive_parameter %}class="active"{% endblock menuActive_parameter %}
 
 
@@ -25,7 +24,7 @@
         <div class="col-6">
             <div class="card card-default">
                 <div class="card-header">
-                    {{ 'title.new'|trans({}, 'LuccaThemeAngleBundle') }} - <b>{{ param_entity }}</b>
+                    {{ 'title.new'|trans({}, 'LuccaThemeAngleBundle') }} - <b>{{ entity_trans_key|trans }}</b>
                 </div>
 
                 <div class="card-wrapper">

@@ -5,18 +5,17 @@
 {% trans_default_domain 'LuccaMediaBundle' %}
 
 {#-- Parameters --#}
-{% set param_entity='entity.media'|transchoice(1) %}
-{% set param_entities='entity.media'|transchoice(2) %}
+{% set entity_trans_key='entity.media' %}
 {% block menuActive_parameter %}class="active"{% endblock %}
 
 
 {% block lucca_title %}
     <title> {{ 'meta.company.project'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} |
-        {{ param_entity }} - {{ 'title.index'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} </title>
+        {{ entity_trans_key|trans }} - {{ 'title.index'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} </title>
 {% endblock lucca_title %}
 
 {% block lucca_header %}
-    {{ 'title.manage'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} : <b>{{ param_entities }}</b>
+    {{ 'title.manage'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} : <b>{{ entity_trans_key|trans }}</b>
 {% endblock lucca_header %}
 
 {% block lucca_page %}
