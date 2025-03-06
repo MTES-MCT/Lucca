@@ -10,23 +10,20 @@
 
 namespace Lucca\Bundle\CoreBundle\Entity;
 
-use DateTime;
+use DateTime, DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 trait TimestampableTrait
 {
     #[ORM\Column]
-    #[Assert\DateTime(message: 'constraint.datetime')]
-    protected DateTime $createdAt;
+    protected DateTimeImmutable $createdAt;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: 'constraint.datetime')]
     protected ?DateTime $updatedAt;
 
     /********************************************* Trait functions *********************************************/
 
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -36,7 +33,7 @@ trait TimestampableTrait
         return $this->updatedAt;
     }
 
-    public function setCreatedAt(?DateTime $createdAt): self
+    public function setCreatedAt(?DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
 

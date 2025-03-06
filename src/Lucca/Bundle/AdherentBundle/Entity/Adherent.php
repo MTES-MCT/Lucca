@@ -475,6 +475,30 @@ class Adherent implements LoggableInterface, MediaAsyncInterface
         return $this->agents->removeElement($agent);
     }
 
+    public function getUnitAttachment(): ?string
+    {
+        return $this->unitAttachment;
+    }
+
+    public function setUnitAttachment(?string $unitAttachment): self
+    {
+        $this->unitAttachment = $unitAttachment;
+
+        return $this;
+    }
+
+    public function getEmailPublic(): ?string
+    {
+        return $this->emailPublic;
+    }
+
+    public function setEmailPublic(?string $emailPublic): self
+    {
+        $this->emailPublic = $emailPublic;
+
+        return $this;
+    }
+
     public function setLogo(?Media $logo = null): self
     {
         $this->logo = $logo;

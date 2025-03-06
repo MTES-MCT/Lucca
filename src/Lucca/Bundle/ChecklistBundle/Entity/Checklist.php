@@ -134,14 +134,14 @@ class Checklist implements LoggableInterface
         return $this;
     }
 
-    public function getComment(): ?string
+    public function getDescription(): ?string
     {
-        return $this->comment;
+        return $this->description;
     }
 
-    public function setComment(?string $comment): self
+    public function setDescription(?string $description): self
     {
-        $this->comment = $comment;
+        $this->description = $description;
 
         return $this;
     }
