@@ -3,34 +3,32 @@
 
 {#-- Form theming - collection_widget --#}
 {% block collection_widget %}
-    {% apply spaceless %}
-        {% if prototype is defined %}
-            {% set attr = attr|merge({'data-prototype': form_widget(prototype)}) %}
-            {% set attr = attr|merge({'data-prototype-name': prototype.vars.name}) %}
-        {% endif %}
-        {% set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) %}
-        {% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}
-        {% set attr = attr|merge({'data-name-prefix': full_name}) %}
+    {% if prototype is defined %}
+        {% set attr = attr|merge({'data-prototype': form_widget(prototype)}) %}
+        {% set attr = attr|merge({'data-prototype-name': prototype.vars.name}) %}
+    {% endif %}
+    {% set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) %}
+    {% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}
+    {% set attr = attr|merge({'data-name-prefix': full_name}) %}
 
-        {{ form_errors(form) }}
+    {{ form_errors(form) }}
 
-        <table {{ block('widget_attributes') }}>
-            <thead>
-            <tr>
-                <th>{{ 'label.name'|trans }}</th>
-                <th>{{ 'label.keyword'|trans }}</th>
-                <th>{{ 'label.value'|trans }}</th>
-                <th></th>
-            </tr>
-            </thead>
+    <table {{ block('widget_attributes') }}>
+        <thead>
+        <tr>
+            <th>{{ 'label.name'|trans }}</th>
+            <th>{{ 'label.keyword'|trans }}</th>
+            <th>{{ 'label.value'|trans }}</th>
+            <th></th>
+        </tr>
+        </thead>
 
-            <tbody>
-            {% for item in form %}
-                {{ form_widget(item) }}
-            {% endfor %}
-            </tbody>
-        </table>
-    {% endapply %}
+        <tbody>
+        {% for item in form %}
+            {{ form_widget(item) }}
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
 
 

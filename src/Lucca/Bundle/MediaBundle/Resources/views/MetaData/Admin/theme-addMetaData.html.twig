@@ -2,25 +2,23 @@
 {% trans_default_domain 'LuccaMediaBundle' %}
 
 {% block collection_widget %}
-    {% apply spaceless %}
-        {% if prototype is defined %}
-            {% set attr = attr|merge({'data-prototype': form_widget(prototype)}) %}
-            {% set attr = attr|merge({'data-prototype-name': prototype.vars.name}) %}
-        {% endif %}
-        {% set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) %}
-        {% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}
-        {% set attr = attr|merge({'data-name-prefix': full_name}) %}
+    {% if prototype is defined %}
+        {% set attr = attr|merge({'data-prototype': form_widget(prototype)}) %}
+        {% set attr = attr|merge({'data-prototype-name': prototype.vars.name}) %}
+    {% endif %}
+    {% set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) %}
+    {% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}
+    {% set attr = attr|merge({'data-name-prefix': full_name}) %}
 
-        {{ form_errors(form) }}
+    {{ form_errors(form) }}
 
-        <div class="form-group">
-            <div {{ block('widget_attributes') }}>
-                {% for item in form %}
-                    {{ form_widget(item) }}
-                {% endfor %}
-            </div>
+    <div class="form-group">
+        <div {{ block('widget_attributes') }}>
+            {% for item in form %}
+                {{ form_widget(item) }}
+            {% endfor %}
         </div>
-    {% endapply %}
+    </div>
 {% endblock %}
 
 {% block lucca_mediaBundle_metaData_widget %}

@@ -1,35 +1,33 @@
 {% trans_default_domain 'DecisionBundle' %}
 
 {% block collection_widget %}
-    {% spaceless %}
-        {% if prototype is defined %}
-            {% set attr = attr|merge({'data-prototype': form_widget(prototype)}) %}
-            {% set attr = attr|merge({'data-prototype-name': prototype.vars.name}) %}
-        {% endif %}
-        {% set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) %}
-        {% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}
-        {% set attr = attr|merge({'data-name-prefix': full_name}) %}
+    {% if prototype is defined %}
+        {% set attr = attr|merge({'data-prototype': form_widget(prototype)}) %}
+        {% set attr = attr|merge({'data-prototype-name': prototype.vars.name}) %}
+    {% endif %}
+    {% set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) %}
+    {% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}
+    {% set attr = attr|merge({'data-name-prefix': full_name}) %}
 
-        {{ form_errors(form) }}
+    {{ form_errors(form) }}
 
-        <table {{ block('widget_attributes') }}>
-            <thead>
-            <tr>
-                <th>{{ 'label.juridiction'|trans }}</th>
-                <th>{{ 'label.dateDecision'|trans }}</th>
-                <th>{{ 'label.kindDecision'|trans }}</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
+    <table {{ block('widget_attributes') }}>
+        <thead>
+        <tr>
+            <th>{{ 'label.juridiction'|trans }}</th>
+            <th>{{ 'label.dateDecision'|trans }}</th>
+            <th>{{ 'label.kindDecision'|trans }}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
 
-            {% for item in form %}
-                {{ form_widget(item) }}
-            {% endfor %}
+        {% for item in form %}
+            {{ form_widget(item) }}
+        {% endfor %}
 
-            </tbody>
-        </table>
-    {% endspaceless %}
+        </tbody>
+    </table>
 {% endblock %}
 
 {% block lucca_decisionBundle_penalty_appeal_widget %}

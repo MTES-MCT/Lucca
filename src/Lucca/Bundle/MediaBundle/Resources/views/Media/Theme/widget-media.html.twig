@@ -16,17 +16,24 @@
 
     {#-- Display Media widget to upload file --#}
     <div {{ block('widget_attributes') }}>
-        {% apply spaceless %}
-            <div class="media-form-container" {{ block('widget_container_attributes') }}>
-                {% for child in form %}
-                    {% if child.vars.name == 'file' %}
-                        {% if child.parent.vars.value and child.parent.vars.value != "" %}
-                            <div class="row js-media-parent" id='media-remove-btn-{{child.parent.vars.value.id}}'>
-                                {% if child.parent.parent.vars.data|canAsyncRemove %}
-                                    <div class='col-md-1 col-xs-2'>
-                                        <button
-                                            type='button'
-                                            class='media-remove-btn btn btn-danger btn-xs'
+        <div class="media-form-container" {{ block('widget_container_attributes') }}>
+            {% for child in form %}
+                {% if child.vars.name == 'file' %}
+                    {% if child.parent.vars.value and child.parent.vars.value != "" %}
+                        <div class="row js-media-parent" id='media-remove-btn-{{child.parent.vars.value.id}}'>
+                            {% if child.parent.parent.vars.data|canAsyncRemove %}
+                                <div class='col-md-1 col-xs-2'>
+                                    <button
+                                        type='button'
+                                        class='media-remove-btn btn btn-danger btn-xs'
+                                        data-media-id="{{data.id}}"
+                                        {% if child.parent.parent %}
+                                            data-entity-parent="{{child.parent.parent.vars.data|classEntity}}"
+                                            data-entity-parent-id="{{child.parent.parent.vars.data.id}}"
+                                            data-media-vars="{{child.parent.vars.name}}"
+                                        {% endif %}
+                                        >
+                                            <i class='fa fa-trash-alt' aria-hidden='true'
                                             data-media-id="{{data.id}}"
                                             {% if child.parent.parent %}
                                                 data-entity-parent="{{child.parent.parent.vars.data|classEntity}}"
@@ -34,36 +41,27 @@
                                                 data-media-vars="{{child.parent.vars.name}}"
                                             {% endif %}
                                             >
-                                                <i class='fa fa-trash-alt' aria-hidden='true'
-                                                data-media-id="{{data.id}}"
-                                                {% if child.parent.parent %}
-                                                    data-entity-parent="{{child.parent.parent.vars.data|classEntity}}"
-                                                    data-entity-parent-id="{{child.parent.parent.vars.data.id}}"
-                                                    data-media-vars="{{child.parent.vars.name}}"
-                                                {% endif %}
-                                                >
-                                                </i>
-                                        </button>
-                                    </div>
-                                {% endif %}
-                                <div class='col-md-11 col-xs-10'>{{ child.parent.vars.value|mediaTag(200) }}</div>
-                            </div>
-                            <h5 class="mt-4">{{ 'help.media.replace'|trans }}</h5>
-                        {% endif %}
-                        <div class="file-input text-center" id="file-input-{{child.vars.id}}">
-                            <i class="far fa-file-upload"></i>
-                            {{ form_label(child) }}
-                            {{ form_widget(child) }}
+                                            </i>
+                                    </button>
+                                </div>
+                            {% endif %}
+                            <div class='col-md-11 col-xs-10'>{{ child.parent.vars.value|mediaTag(200) }}</div>
                         </div>
-                        <i class='btn btn-danger btn-sm file-remove-btn fas fa-times' style="vertical-align: top" aria-hidden='true' hidden id="file-remove-{{child.vars.id}}">
-                        </i>
-                    {% else %}
+                        <h5 class="mt-4">{{ 'help.media.replace'|trans }}</h5>
+                    {% endif %}
+                    <div class="file-input text-center" id="file-input-{{child.vars.id}}">
+                        <i class="far fa-file-upload"></i>
                         {{ form_label(child) }}
                         {{ form_widget(child) }}
-                    {% endif %}
-                {% endfor %}
-            </div>
-        {% endapply %}
+                    </div>
+                    <i class='btn btn-danger btn-sm file-remove-btn fas fa-times' style="vertical-align: top" aria-hidden='true' hidden id="file-remove-{{child.vars.id}}">
+                    </i>
+                {% else %}
+                    {{ form_label(child) }}
+                    {{ form_widget(child) }}
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
 
     {#-- Add script per line to manage input and label --> TODO make a global script to all input --#}

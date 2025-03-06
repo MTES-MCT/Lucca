@@ -5,51 +5,49 @@
 {% block lucca_mediaBundle_dropzone_widget %}
     {#- - Display Media widget to upload file - -#}
     <div {{ block('widget_attributes') }}>
-        {% apply spaceless %}
-            <div class="media-form-container" {{ block('widget_container_attributes') }}>
-                <div class='row'>
-                    {% for child in form %}
+        <div class="media-form-container" {{ block('widget_container_attributes') }}>
+            <div class='row'>
+                {% for child in form %}
                     {% if child.vars.name == 'file' %}
-                    {% for data in child.vars.data %}
-                        <div class='col-md-4 col-xs-12 js-media-parent' id='media-remove-btn-{{ data.id }}'>
+                        {% for data in child.vars.data %}
+                            <div class='col-md-4 col-xs-12 js-media-parent' id='media-remove-btn-{{ data.id }}'>
 
-                            <div class="row">
-                                {% if child.parent.parent.vars.data|canAsyncRemove %}
-                                    <div class='col-md-2 col-xs-2'>
-                                        <button
-                                                type='button'
-                                                class='media-remove-btn btn btn-danger btn-xs'
-                                                data-media-id="{{ data.id }}"
-                                                {% if child.parent.parent %}
-                                                    data-entity-parent="{{ child.parent.parent.vars.data|classEntity }}"
-                                                    data-entity-parent-id="{{ child.parent.parent.vars.data.id }}"
-                                                    data-media-vars="{{ child.parent.vars.name }}"
-                                                {% endif %}
-                                        >
-                                            <i class='fa fa-trash-alt' aria-hidden='true'
-                                               data-media-id="{{ data.id }}"
+                                <div class="row">
+                                    {% if child.parent.parent.vars.data|canAsyncRemove %}
+                                        <div class='col-md-2 col-xs-2'>
+                                            <button
+                                                    type='button'
+                                                    class='media-remove-btn btn btn-danger btn-xs'
+                                                    data-media-id="{{ data.id }}"
                                                     {% if child.parent.parent %}
                                                         data-entity-parent="{{ child.parent.parent.vars.data|classEntity }}"
                                                         data-entity-parent-id="{{ child.parent.parent.vars.data.id }}"
                                                         data-media-vars="{{ child.parent.vars.name }}"
                                                     {% endif %}
                                             >
-                                            </i>
-                                        </button>
-                                    </div>
-                                {% endif %}
-                                <div class='col-md-10 col-xs-10'>{{ data|mediaTag(200) }}</div>
+                                                <i class='fa fa-trash-alt' aria-hidden='true'
+                                                   data-media-id="{{ data.id }}"
+                                                        {% if child.parent.parent %}
+                                                            data-entity-parent="{{ child.parent.parent.vars.data|classEntity }}"
+                                                            data-entity-parent-id="{{ child.parent.parent.vars.data.id }}"
+                                                            data-media-vars="{{ child.parent.vars.name }}"
+                                                        {% endif %}
+                                                >
+                                                </i>
+                                            </button>
+                                        </div>
+                                    {% endif %}
+                                    <div class='col-md-10 col-xs-10'>{{ data|mediaTag(200) }}</div>
+                                </div>
                             </div>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div id="{{ child.vars.id }}_dropzone" class="dropzone dropzoneMedia mt-3"
-                     data-count-file="{{ child.vars.data|length }}">
-                    {{ form_widget(child) }}
-                </div>
+                        {% endfor %}
+                    </div>
+                    <div id="{{ child.vars.id }}_dropzone" class="dropzone dropzoneMedia mt-3"
+                         data-count-file="{{ child.vars.data|length }}">
+                        {{ form_widget(child) }}
+                    </div>
                 {% endif %}
-                {% endfor %}
-            </div>
-        {% endapply %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
