@@ -35,7 +35,7 @@ class NatinfController extends AbstractController
      * List of Natinf
      */
     #[IsGranted('ROLE_USER')]
-    #[Route(path: '/natinf', name: 'lucca_natinf_index', methods: ['GET'])]
+    #[Route(path: '/', name: 'lucca_natinf_index', methods: ['GET'])]
     public function indexAction(): Response
     {
         $natinfs = $this->em->getRepository(Natinf::class)->findAll();
