@@ -18,8 +18,8 @@ LuccaCoreBundle:
     resource: "@LuccaCoreBundle/Resources/config/routing.yaml"
     prefix:   /
 
-DecisionBundle:
-    resource: "@DecisionBundle/Resources/config/routing.yaml"
+LuccaDecisionBundle:
+    resource: "@LuccaDecisionBundle/Resources/config/routing.yaml"
     prefix:   /
 
 LuccaDepartmentBundle:
@@ -52,10 +52,6 @@ LuccaParameterBundle:
 
 LuccaSecurityBundle:
     resource: "@LuccaSecurityBundle/Resources/config/routing.yaml"
-    prefix:   /
-
-SecurityBundle:
-    resource: "@SecurityBundle/Resources/config/routing.yaml"
     prefix:   /
 
 LuccaUserBundle:

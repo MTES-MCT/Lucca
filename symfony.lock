@@ -62,9 +62,6 @@
             "config/routes/fos_js_routing.yaml"
         ]
     },
-    "friendsofsymfony/user-bundle": {
-        "version": "v4.0.0"
-    },
     "knplabs/knp-snappy-bundle": {
         "version": "1.10",
         "recipe": {

@@ -20,7 +20,7 @@ use Lucca\Bundle\CoreBundle\DependencyInjection\Configuration;
 
 use Exception;
 
-class LuccaMinuteExtension extends Extension implements PrependExtensionInterface
+class LuccaDecisionExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * Load configuration of this Bundle
