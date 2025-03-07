@@ -41,7 +41,7 @@ class DashboardController extends AbstractController
      *
      * @throws \Exception
      */
-    #[Route(path: 'dashboard', name: 'lucca_admin_dashboard', methods: ['GET', 'POST'])]
+    #[Route(path: '/dashboard', name: 'lucca_admin_dashboard', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
     public function dashboardAction(Request $request): ?Response
     {
