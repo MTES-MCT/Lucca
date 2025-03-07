@@ -310,7 +310,7 @@
 
                             {% if decisions %}
                                 {% for decision in decisions %}
-                                    {% include "@LuccaMinute/Decision/frame.html.twig" with { 'decision': decision } %}
+                                    {% include "@LuccaDecision/Decision/frame.html.twig" with { 'decision': decision } %}
                                 {% endfor %}
                             {% endif %}
 
@@ -350,14 +350,7 @@
 
 {% endblock lucca_panels %}
 
-
-{% block lucca_css %}
-    {{ parent() }}
-    <link href="{{ asset('bundles/luccacore/css/lucca_map.css') }}" rel="stylesheet">
-{% endblock lucca_css %}
-
-
-{% block lucca_js %}
+{% block lucca_modal %}
     {{ parent() }}
 
     {#Modal - Minute delete#}
@@ -433,7 +426,15 @@
         {% endfor %}
 
     {% endfor %}
+{% endblock lucca_modal %}
 
+{% block lucca_css %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/luccacore/css/lucca_map.css') }}" rel="stylesheet">
+{% endblock lucca_css %}
+
+{% block lucca_js %}
+    {{ parent() }}
     <script>
         {#Custom JS#}
         {#-- A link for collapse Control --#}

@@ -35,6 +35,9 @@
     {% include "@LuccaThemeStreamDashboardUiKit/Plugins/summernote.css.html.twig" %}
 {% endblock lucca_css %}
 
+{% block lucca_modal %}
+    {{ parent() }}
+{% endblock lucca_modal %}
 
 {% block lucca_js %}
     {{ parent() }}

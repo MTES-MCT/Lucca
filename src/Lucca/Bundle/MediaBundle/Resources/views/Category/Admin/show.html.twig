@@ -34,7 +34,6 @@
                    title="{{ 'link.category.delete'|trans }}">
                     <i class="fas fa-trash-alt"></i>
                 </a>
-                {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'name': category.id,'id': category.id, 'delForm': delete_form} %}
             </span>
             {% endif %}
         {% endblock %}
@@ -42,3 +41,8 @@
     {% endembed %} {#-- End Embed --#}
 
 {% endblock lucca_panels %}
+
+{% block lucca_modal %}
+    {{ parent() }}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'name': category.id,'id': category.id, 'delForm': delete_form} %}
+{% endblock lucca_modal %}

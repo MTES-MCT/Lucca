@@ -146,18 +146,19 @@
 
 {% endblock lucca_panels %}
 
+{% block lucca_modal %}
+    {{ parent() }}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': subArea.name, 'name': subArea.name, 'delForm': delete_form} %}
+{% endblock lucca_modal %}
 
 {% block lucca_css %}
     {{ parent() }}
-
     <link href="{{ asset('plugins/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css') }}"
           rel="stylesheet">
 {% endblock lucca_css %}
 
 
 {% block lucca_js %}
-    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': subArea.name, 'name': subArea.name, 'delForm': delete_form} %}
     {{ parent() }}
-
     <script src="{{ asset('plugins/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js') }}"></script>
 {% endblock lucca_js %}

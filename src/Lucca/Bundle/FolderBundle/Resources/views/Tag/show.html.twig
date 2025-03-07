@@ -17,7 +17,7 @@
 
             <div class="card card-default">
                 <div class="card-header">
-                    {{ 'title.show'|trans({}, 'ThemeAngleBundle') }} - <b>{{ tag.name }}</b>
+                    {{ 'title.show'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ tag.name }}</b>
                 </div>
 
                 <div class="card-wrapper">
@@ -76,7 +76,7 @@
 
             <div class="card card-default">
                 <div class="card-header">
-                    {{ 'title.manage'|trans({}, 'ThemeAngleBundle') }} - <b>{{ 'label.proposals'|trans }}</b>
+                    {{ 'title.manage'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ 'label.proposals'|trans }}</b>
                 </div>
 
                 <div class="card-wrapper">
@@ -114,13 +114,15 @@
 
 {% endblock lucca_panels %}
 
+{% block lucca_modal %}
+    {{ parent() }}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': tag.name, 'name': tag.name, 'delForm': delete_form} %}
+{% endblock lucca_modal %}
 
 {% block lucca_css %}
     {{ parent() }}
 {% endblock lucca_css %}
 
-
 {% block lucca_js %}
-    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': tag.name, 'name': tag.name, 'delForm': delete_form} %}
     {{ parent() }}
 {% endblock lucca_js %}

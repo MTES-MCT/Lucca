@@ -39,7 +39,7 @@ class PartnerController extends AbstractController
     {
         $partners = $this->em->getRepository(Partner::class)->findAll();
 
-        return $this->render('@LuccaParameter/Partner:/index.html.twig', [
+        return $this->render('@LuccaParameter/Partner/index.html.twig', [
             'partners' => $partners
         ]);
     }
@@ -105,7 +105,7 @@ class PartnerController extends AbstractController
             return $this->redirectToRoute('lucca_partner_show', ['id' => $partner->getId()]);
         }
 
-        return $this->render('LuccaParameter/Partner/edit.html.twig', [
+        return $this->render('@LuccaParameter/Partner/edit.html.twig', [
             'partner' => $partner,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

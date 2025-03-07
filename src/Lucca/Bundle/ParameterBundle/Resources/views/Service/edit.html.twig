@@ -54,6 +54,10 @@
 
 {% endblock lucca_panels %}
 
+{% block lucca_modal %}
+    {{ parent() }}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': service.name, 'name': service.name, 'delForm': delete_form} %}
+{% endblock lucca_modal %}
 
 {% block lucca_css %}
     {{ parent() }}
@@ -61,7 +65,5 @@
 
 
 {% block lucca_js %}
-    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': service.name, 'name': service.name, 'delForm': delete_form} %}
-
-    {{ parent() }}
+   {{ parent() }}
 {% endblock lucca_js %}

@@ -50,8 +50,10 @@ class GroupController extends AbstractController
     #[Route(path: '/{id}', name: 'lucca_user_group_show', methods: ['GET'])]
     public function showAction(Group $group): Response
     {
+        $deleteForm = $this->createDeleteForm($group);
         return $this->render('@LuccaUser/Group/show.html.twig', [
             'group' => $group,
+            'delete_form' => $deleteForm->createView(),
         ]);
     }
 
@@ -68,6 +70,9 @@ class GroupController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->addFlash('success', 'flashes.created_successfully');
+
+            $this->em->persist($group);
+            $this->em->flush();
 
             return $this->redirectToRoute('lucca_user_group_show', ['id' => $group->getId()]);
         }

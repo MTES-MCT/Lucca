@@ -73,13 +73,15 @@
     {#-- End Panel - main --#}
 {% endblock lucca_panels %}
 
+{% block lucca_modal %}
+    {{ parent() }}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': town.name, 'name': town.name, 'delForm': delete_form} %}
+{% endblock lucca_modal %}
 
 {% block lucca_css %}
     {{ parent() }}
 {% endblock lucca_css %}
 
-
 {% block lucca_js %}
-    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': town.name, 'name': town.name, 'delForm': delete_form} %}
     {{ parent() }}
 {% endblock lucca_js %}

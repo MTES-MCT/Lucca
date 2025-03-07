@@ -150,7 +150,11 @@
 
 {% endblock lucca_panels %}
 
-{% block lucca_js %}
-    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': loginAttempt.requestIp, 'name': loginAttempt.requestIp, 'delForm': delete_form} %}
+{% block lucca_modal %}
     {{ parent() }}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': loginAttempt.requestIp, 'name': loginAttempt.requestIp, 'delForm': delete_form} %}
+{% endblock lucca_modal %}
+
+{% block lucca_js %}
+   {{ parent() }}
 {% endblock lucca_js %}

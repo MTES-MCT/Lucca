@@ -19,7 +19,7 @@
 
         <div class="card card-default">
             <div class="card-header">
-                {{ 'title.edit'|trans({}, 'ThemeAngleBundle') }} - <b>{{ natinf.num }}</b>
+                {{ 'title.edit'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ natinf.num }}</b>
             </div>
 
             <div class="card-wrapper">
@@ -57,15 +57,16 @@
 
 {% endblock lucca_panels %}
 
+{% block lucca_modal %}
+    {{ parent() }}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': natinf.num, 'name': natinf.num, 'delForm': delete_form} %}
+{% endblock lucca_modal %}
 
 {% block lucca_css %}
     {{ parent() }}
-
 {% endblock lucca_css %}
 
 
 {% block lucca_js %}
-    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': natinf.num, 'name': natinf.num, 'delForm': delete_form} %}
-
     {{ parent() }}
 {% endblock lucca_js %}

@@ -25,7 +25,7 @@
 
             <div class="card card-default">
                 <div class="card-header">
-                    {{ 'title.edit'|trans({}, 'ThemeAngleBundle') }} - <b>{{ tag.name }}</b>
+                    {{ 'title.edit'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ tag.name }}</b>
                 </div>
 
                 <div class="card-wrapper">
@@ -61,7 +61,7 @@
 
             <div class="card card-default">
                 <div class="card-header">
-                    {{ 'title.manage'|trans({}, 'ThemeAngleBundle') }} - <b>{{ 'label.proposals'|trans }}</b>
+                    {{ 'title.manage'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ 'label.proposals'|trans }}</b>
                 </div>
 
                 <div class="card-wrapper">
@@ -81,6 +81,10 @@
 
 {% endblock lucca_panels %}
 
+{% block lucca_modal %}
+    {{ parent() }}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': tag.name, 'name': tag.name, 'delForm': delete_form} %}
+{% endblock lucca_modal %}
 
 {% block lucca_css %}
     {{ parent() }}
@@ -88,10 +92,8 @@
     <link href="{{ asset('plugins/summernote/summernote-bs4.css') }}" rel="stylesheet">
 {% endblock lucca_css %}
 
-
 {% block lucca_js %}
-    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': tag.name, 'name': tag.name, 'delForm': delete_form} %}
-    {{ parent() }}
+   {{ parent() }}
 
     <script src="{{ asset('plugins/summernote/summernote-bs4.js') }}"></script>
     <script src="{{ asset('plugins/summernote/lang/summernote-fr-FR.min.js') }}"></script>

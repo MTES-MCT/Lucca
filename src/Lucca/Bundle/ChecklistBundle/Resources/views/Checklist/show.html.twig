@@ -127,9 +127,12 @@
 
 {% endblock lucca_css %}
 
+{% block lucca_modal %}
+    {{ parent() }}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': checklist.name, 'name': checklist.name, 'delForm': delete_form} %}
+{% endblock lucca_modal %}
 
 {% block lucca_js %}
-    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': checklist.name, 'name': checklist.name, 'delForm': delete_form} %}
     {{ parent() }}
 
     {#-- Data Tables --#}

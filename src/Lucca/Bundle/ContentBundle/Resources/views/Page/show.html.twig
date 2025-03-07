@@ -3,8 +3,6 @@
 
 {% set entity_trans='entity.page'|trans %}
 
-
-
 {% block menuActive_page %}active{% endblock menuActive_page %}
 
 {% block lucca_panels %}
@@ -114,6 +112,10 @@
 
 {% endblock lucca_panels %}
 
+{% block lucca_modal %}
+    {{ parent() }}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': page.name, 'name': page.name, 'delForm': delete_form} %}
+{% endblock lucca_modal %}
 
 {% block lucca_css %}
     {{ parent() }}
@@ -121,6 +123,5 @@
 
 
 {% block lucca_js %}
-    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': page.name, 'name': page.name, 'delForm': delete_form} %}
     {{ parent() }}
 {% endblock lucca_js %}

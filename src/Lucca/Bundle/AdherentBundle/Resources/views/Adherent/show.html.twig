@@ -195,7 +195,7 @@
 {% endblock lucca_css %}
 
 
-{% block lucca_js %}
-    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': adherent.name, 'name': adherent.name, 'delForm': delete_form} %}
+{% block lucca_modal %}
     {{ parent() }}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': adherent.name, 'name': adherent.name, 'delForm': delete_form} %}
 {% endblock lucca_js %}

@@ -26,7 +26,7 @@ class GroupFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, ['label' => 'label.name'])
-            ->add('displayed', CheckboxType::class, ['label' => 'label.displayed'])
+            ->add('displayed', CheckboxType::class, ['label' => 'label.displayed', 'required' => false])
             ->add('roles', ChoiceType::class, array(
                 'choices' => array(
                     'choice.roles.superAdmin' => 'ROLE_SUPER_ADMIN',

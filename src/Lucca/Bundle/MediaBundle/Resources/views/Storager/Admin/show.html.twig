@@ -46,7 +46,6 @@
                            data-target=".delWin" title="{{ 'link.storager.delete'|trans }}">
                             <i class="fas fa-trash-alt"></i>
                         </a>
-                        {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'name': storager.name, 'id': storager.id, 'delForm': delete_form} %}
 
                         <a href="{{ path('lucca_media_storager_enable', { 'id': storager.id }) }}"
                            class="btn btn-danger btn-lg float-right mr-1"
@@ -62,3 +61,8 @@
         {#-- End Panel - main --#}
     </div>
 {% endblock lucca_panels %}
+
+{% block lucca_modal %}
+    {{ parent() }}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'name': storager.name, 'id': storager.id, 'delForm': delete_form} %}
+{% endblock lucca_modal %}
