@@ -29,7 +29,7 @@ class GeoLocator
     /**
      * Search geometry coordinates with an AddressableTrait entity
      */
-    public function addGeocodeFromAddress($entity): bool|object|null
+    public function addGeocodeFromAddress($entity, ?string $rawAddress = null): bool|object|null
     {
         if (!$this->google_api_is_active) {
             return $entity;
@@ -57,7 +57,7 @@ class GeoLocator
             $fullAddress .= '+' . $this->canonalizer->slugify($entity->getCity()->getName());
         }
 
-        if (method_exists($entity, 'getDepartment') && $entity->getDepartment()) {
+        if (method_exists($entity, 'getDepartment') && $entity->getId() && $entity->getDepartment()) {
             $fullAddress .= '+' . $this->canonalizer->slugify($entity->getDepartment()->getName());
         }
 
@@ -117,6 +117,51 @@ class GeoLocator
         }
 
         return $entity;
+    }
+
+    /**
+     * Search geometry coordinates with an AddressableTrait entity
+     */
+    public function getGeocodeFromAddress(string $rawAddress): ?array
+    {
+        if (!$this->google_api_is_active || !$rawAddress) {
+            return null;
+        }
+
+        $slugAddress = $this->canonalizer->slugify($rawAddress);
+
+        /**
+         * Address Google maps : https://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&key={{ 'setting.map.mapKey.name'|setting  }}
+         *
+         * ref Google : https://developers.google.com/maps/documentation/geocoding/start
+         * ref : https://numa-bord.com/miniblog/php-google-map-api-recuperer-coordonees-gps-depuis-adresse-format-humain/
+         *
+         *  the address is send with the format : "avenue-de-la-liberte+montpellier"
+         */
+
+        /** Create Geocode link to find geometry and others data */
+        $googleGeoLink = 'https://maps.google.com/maps/api/geocode/json';
+        $googleGeoLink .= '?key=' . $this->google_api_geocode_key . '&address=' . $slugAddress . '&sensor=false&region=fr';
+
+        /** Ask to Google Maps API and get result returned */
+        $googleResultsFounded = file_get_contents($googleGeoLink);
+
+        /** Decode Json returned by Google API */
+        $googleResultsDecoded = json_decode($googleResultsFounded);
+
+        if ($googleResultsDecoded->status !== 'OK') {
+            echo('Results returned by Google API has been rejected - ' . $googleResultsDecoded->status);
+
+            return null;
+        }
+
+        /** Take the first result - TODO clean or purpose all results founded */
+        [$googleFirstResult] = $googleResultsDecoded->results;
+
+        return [
+            'latitude' => $googleFirstResult->geometry->location->lat,
+            'longitude' => $googleFirstResult->geometry->location->lng,
+        ];
     }
 
     /**
