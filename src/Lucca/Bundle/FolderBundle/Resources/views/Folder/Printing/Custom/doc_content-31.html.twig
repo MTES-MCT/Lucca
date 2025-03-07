@@ -1,5 +1,5 @@
 {% extends '@LuccaFolder/Folder/Printing/Basic/doc_content.html.twig' %}
-{% trans_default_domain 'LuccaFolderBundle' %}
+{% trans_default_domain 'FolderBundle' %}
 
 {% import "@LuccaMinute/Human/human-macro.html.twig" as humanMacro %}
 {% import "@LuccaMinute/Agent/agent-attendant-macro.html.twig" as agentAttendantMacro %}
@@ -38,7 +38,7 @@
                 constant('FUNCTION_MAYOR', agent),
                 constant('FUNCTION_DEPUTY', agent)
             ] %}
-                Je soussigné, {{ agent.officialName }}, agissant en tant que {{ agent.function|trans({}, 'LuccaFolderBundle') }}
+                Je soussigné, {{ agent.officialName }}, agissant en tant que {{ agent.function|trans({}, 'FolderBundle') }}
                 de la commune de {{ structureName }} rapporte et certifie que :
             {% else %}
                 {% if adherent.service %}
@@ -47,9 +47,9 @@
                         constant('FUNCTION_COUNTRY_AGENT', agent),
                         constant('FUNCTION_ADMIN_AGENT', agent)
                     ]%}
-                        {{ agent.function|trans({}, 'LuccaFolderBundle') | lower }}
+                        {{ agent.function|trans({}, 'FolderBundle') | lower }}
                     {% else %}
-                        {{ agent.function|trans({}, 'LuccaFolderBundle') }}
+                        {{ agent.function|trans({}, 'FolderBundle') }}
                     {% endif %}
                     de la {{ structureName }}
                     en poste à {{ structureOffice }} ayant prêté serment devant le tribunal judiciaire de
@@ -60,9 +60,9 @@
                         constant('FUNCTION_COUNTRY_AGENT', agent),
                         constant('FUNCTION_ADMIN_AGENT', agent)
                     ]%}
-                        {{ agent.function|trans({}, 'LuccaFolderBundle') | lower }}
+                        {{ agent.function|trans({}, 'FolderBundle') | lower }}
                     {% else %}
-                        {{ agent.function|trans({}, 'LuccaFolderBundle') }}
+                        {{ agent.function|trans({}, 'FolderBundle') }}
                     {% endif %}
                     en poste à {{ structureOffice }}
                     ayant prêté serment devant le tribunal judiciaire de {{ minute.tribunal.office.name }} et porteur de la commission

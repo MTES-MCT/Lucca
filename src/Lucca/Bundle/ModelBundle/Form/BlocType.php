@@ -57,7 +57,7 @@ class BlocType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Bloc::class,
-            'translation_domain' => 'LuccaModelBundle',
+            'translation_domain' => 'ModelBundle',
             'required' => true,
         ]);
     }

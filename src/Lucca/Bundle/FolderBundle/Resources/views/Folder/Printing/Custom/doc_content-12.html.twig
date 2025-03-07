@@ -1,5 +1,5 @@
 {% extends '@LuccaFolder/Folder/Printing/Basic/doc_content.html.twig' %}
-{% trans_default_domain 'LuccaFolderBundle' %}
+{% trans_default_domain 'FolderBundle' %}
 
 {% import "@LuccaMinute/Human/human-macro.html.twig" as humanMacro %}
 {% import "@LuccaMinute/Agent/agent-attendant-macro.html.twig" as agentAttendantMacro %}
@@ -46,10 +46,10 @@
                 constant('FUNCTION_MAYOR', agent),
                 constant('FUNCTION_DEPUTY', agent)
             ] %}
-                Je soussigné, {{ agent.officialName }}, agissant en tant que {{ agent.function|trans({}, 'LuccaFolderBundle') }}
+                Je soussigné, {{ agent.officialName }}, agissant en tant que {{ agent.function|trans({}, 'FolderBundle') }}
                 de la commune de {{ structureName }} rapporte et certifie que :
             {% else %}
-                Je soussigné {{ agent.officialName }}, {{ agent.function|trans({}, 'LuccaFolderBundle') }} ayant prêté
+                Je soussigné {{ agent.officialName }}, {{ agent.function|trans({}, 'FolderBundle') }} ayant prêté
                 serment devant le Tribunal de Grande Instance de
                 {{ minute.tribunal.office.name }} et porteur de la commission n° {{ agent.commission }}, certifie avoir
                 procédé personnellement aux opérations et constatations suivantes(pièce annexe: copie de la carte de commissionnement).
@@ -140,7 +140,7 @@
     {% if update is defined and update %}
         <div class="row mb25 mb15 pt15">
             <div class="col-12 letter-content">
-                {{ update.nature|trans({}, 'LuccaFolderBundle') }}
+                {{ update.nature|trans({}, 'FolderBundle') }}
                 {% if update.description %}
                     {% if 'print' in app.request.pathinfo %}
                         {{ update.description|localPath|raw }}

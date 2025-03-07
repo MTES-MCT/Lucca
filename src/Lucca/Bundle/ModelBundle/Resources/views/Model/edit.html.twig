@@ -1,5 +1,5 @@
 {% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig" %}
-{% trans_default_domain 'LuccaModelBundle' %}
+{% trans_default_domain 'ModelBundle' %}
 
 {% set entity_trans='entity.model'|trans %}
 
@@ -12,7 +12,7 @@
     <div class="row">
 
         {% embed "@LuccaModel/Model/Embed/_form-model.html.twig" with { 'form': edit_form } %}
-            {% trans_default_domain 'LuccaModelBundle' %}
+            {% trans_default_domain 'ModelBundle' %}
 
             {% block lucca_embed_buttons_model %}
                 <a class="btn btn-secondary btn-lg" href="{{ path('lucca_model_show', { 'id': model.id }) }}"
@@ -31,7 +31,7 @@
             {#-- Embed view - params and block --#}
             {% embed "@LuccaModel/Page/Embed/page.html.twig" with {'page': verso} %}
                 {#-- Translation domain embed --#}
-                {% trans_default_domain 'LuccaModelBundle' %}
+                {% trans_default_domain 'ModelBundle' %}
 
                 {% block lucca_embed_buttons_page %}
                     <a class="btn btn-warning btn-xs"
@@ -50,7 +50,7 @@
         {#-- Embed view - params and block --#}
         {% embed "@LuccaModel/Page/Embed/page.html.twig" with {'page': recto} %}
             {#-- Translation domain embed --#}
-            {% trans_default_domain 'LuccaModelBundle' %}
+            {% trans_default_domain 'ModelBundle' %}
 
             {% block lucca_embed_buttons_page %}
                 <a class="btn btn-warning btn-xs"

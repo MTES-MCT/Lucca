@@ -2,7 +2,7 @@
 {% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig' %}
 
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaFolderBundle' %}
+{% trans_default_domain 'FolderBundle' %}
 
 {#-- Parameters --#}
 {% set entity_trans='entity.tag'|trans %}
@@ -25,7 +25,7 @@
 
             <div class="card card-default">
                 <div class="card-header">
-                    {{ 'title.edit'|trans({}, 'LuccaThemeAngleBundle') }} - <b>{{ tag.name }}</b>
+                    {{ 'title.edit'|trans({}, 'ThemeAngleBundle') }} - <b>{{ tag.name }}</b>
                 </div>
 
                 <div class="card-wrapper">
@@ -61,7 +61,7 @@
 
             <div class="card card-default">
                 <div class="card-header">
-                    {{ 'title.manage'|trans({}, 'LuccaThemeAngleBundle') }} - <b>{{ 'label.proposals'|trans }}</b>
+                    {{ 'title.manage'|trans({}, 'ThemeAngleBundle') }} - <b>{{ 'label.proposals'|trans }}</b>
                 </div>
 
                 <div class="card-wrapper">

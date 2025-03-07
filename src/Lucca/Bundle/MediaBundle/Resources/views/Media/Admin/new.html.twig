@@ -2,7 +2,7 @@
 {% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
 
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaMediaBundle' %}
+{% trans_default_domain 'MediaBundle' %}
 
 {#-- Parameters --#}
 {% set entity_trans='entity.media'|trans %}
@@ -16,7 +16,7 @@
         'form': form,
     } %}
         {#-- Translation domain embed --#}
-        {% trans_default_domain 'LuccaMediaBundle' %}
+        {% trans_default_domain 'MediaBundle' %}
 
         {% block lucca_embed_buttons_media %}
             <a href="{{ path('lucca_media_index') }}" class="btn btn-secondary btn-lg"

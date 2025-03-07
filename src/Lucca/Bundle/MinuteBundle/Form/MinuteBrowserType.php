@@ -163,7 +163,7 @@ class MinuteBrowserType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => null,
             'mapped' => false,
-            'translation_domain' => 'LuccaMinuteBundle',
+            'translation_domain' => 'MinuteBundle',
             'adherent_towns' => null,
             'adherent_intercommunals' => null,
             'allFiltersAvailable' => false

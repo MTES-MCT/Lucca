@@ -1,4 +1,4 @@
-{% trans_default_domain 'LuccaMinuteBundle' %}
+{% trans_default_domain 'MinuteBundle' %}
 
 const historicCtx = document.getElementById('historicChart').getContext('2d');
 const historicChart = new Chart(historicCtx, {
@@ -51,7 +51,7 @@ const historicChart = new Chart(historicCtx, {
             },
             {################################# Ascertainment ##################################################}
             {
-                label: "{{ 'label.ascertainment'| trans({}, 'LuccaCoreBundle') }}",
+                label: "{{ 'label.ascertainment'| trans({}, 'CoreBundle') }}",
                 backgroundColor:
                     "#87c6f1"
                 ,

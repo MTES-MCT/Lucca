@@ -120,7 +120,7 @@ class FolderBrowserType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => null,
-            'translation_domain' => 'LuccaFolderBundle',
+            'translation_domain' => 'FolderBundle',
         ));
     }
 

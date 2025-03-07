@@ -1,5 +1,5 @@
 {% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
-{% trans_default_domain 'LuccaModelBundle' %}
+{% trans_default_domain 'ModelBundle' %}
 
 {% set entity_trans='entity.model'|trans %}
 
@@ -9,7 +9,7 @@
 
 {% block lucca_panels %}
     {% embed "@LuccaModel/Model/Embed/_form-model.html.twig" with { 'form': form } %}
-        {% trans_default_domain 'LuccaModelBundle' %}
+        {% trans_default_domain 'ModelBundle' %}
 
         {% block lucca_embed_buttons_model %}
             <a class="btn btn-secondary btn-lg" href="{{ path('lucca_model_index') }}"

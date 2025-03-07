@@ -44,7 +44,7 @@ class FolderStep2Type extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Folder::class,
-            'translation_domain' => 'LuccaFolderBundle',
+            'translation_domain' => 'FolderBundle',
         ));
     }
 

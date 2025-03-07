@@ -2,7 +2,7 @@
 {% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
 
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaMediaBundle' %}
+{% trans_default_domain 'MediaBundle' %}
 
 {#-- Parameters --#}
 {% set entity_trans='entity.category'|trans %}
@@ -14,7 +14,7 @@
     {#-- Embed view - params and block --#}
     {% embed "@LuccaMedia/Category/Embed/_panel-category.html.twig" with { 'category': category } %}
         {#-- Translation domain embed --#}
-        {% trans_default_domain 'LuccaMediaBundle' %}
+        {% trans_default_domain 'MediaBundle' %}
 
         {% block lucca_embed_buttons_category %}
             <a class="btn btn-secondary btn-lg" href="{{ path('lucca_media_category_index') }}"
@@ -28,7 +28,7 @@
 
             {% if is_granted("ROLE_SUPER_ADMIN") %}
                 <span class="float-right">
-                <span class="label label-danger label-sa">{{ 'badge.sa'|trans({}, 'LuccaCoreBundle') }}</span>
+                <span class="label label-danger label-sa">{{ 'badge.sa'|trans({}, 'CoreBundle') }}</span>
 
                 <a class="btn btn-danger btn-lg" data-toggle="modal" data-target=".delWin"
                    title="{{ 'link.category.delete'|trans }}">

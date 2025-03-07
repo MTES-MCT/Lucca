@@ -2,7 +2,7 @@
 {% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig' %}
 
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaAdherentBundle' %}
+{% trans_default_domain 'AdherentBundle' %}
 
 {#-- Parameters --#}
 {% set entity_trans='entity.adherent'|trans %}
@@ -20,7 +20,7 @@
 
             <div class="card card-default">
                 <div class="card-header">
-                    {{ 'title.edit'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ adherent.officialName }}</b>
+                    {{ 'title.edit'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ adherent.officialName }}</b>
                 </div>
 
                 <div class="card-wrapper">

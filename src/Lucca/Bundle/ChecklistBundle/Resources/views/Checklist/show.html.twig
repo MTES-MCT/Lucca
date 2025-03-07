@@ -1,5 +1,5 @@
 {% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
-{% trans_default_domain 'LuccaChecklistBundle' %}
+{% trans_default_domain 'ChecklistBundle' %}
 
 {% set entity_trans='entity.checklist'|trans %}
 
@@ -17,7 +17,7 @@
 
             <div class="card card-default">
                 <div class="card-header">
-                    {{ 'title.show'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ checklist.name }}</b>
+                    {{ 'title.show'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ checklist.name }}</b>
                 </div>
 
                 <div class="card-wrapper">
@@ -74,7 +74,7 @@
 
             <div class="card card-default">
                 <div class="card-header">
-                    {{ 'title.manage'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ 'label.elements'|trans }}</b>
+                    {{ 'title.manage'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ 'label.elements'|trans }}</b>
                 </div>
 
                 <div class="card-wrapper">

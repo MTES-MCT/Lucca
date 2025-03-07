@@ -43,7 +43,7 @@ class UpdatingType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Updating::class,
-            'translation_domain' => 'LuccaMinuteBundle',
+            'translation_domain' => 'MinuteBundle',
             'human' => '',
         ));
     }

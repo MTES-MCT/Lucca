@@ -46,7 +46,7 @@ class TagType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Tag::class,
-            'translation_domain' => 'LuccaFolderBundle',
+            'translation_domain' => 'FolderBundle',
             'required' => false
         ));
     }

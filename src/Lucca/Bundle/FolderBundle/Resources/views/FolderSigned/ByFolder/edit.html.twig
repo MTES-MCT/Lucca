@@ -2,7 +2,7 @@
 {% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig" %}
 
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaFolderBundle' %}
+{% trans_default_domain 'FolderBundle' %}
 
 {#-- Parameters --#}
 {% set entity_trans='entity.folder'|trans %}
@@ -17,7 +17,7 @@
         {% embed "@LuccaFolder/FolderSigned/Embed/_form-folderSigned.html.twig" with {
             'form': edit_form
         } %}
-            {% trans_default_domain 'LuccaFolderBundle' %}
+            {% trans_default_domain 'FolderBundle' %}
             {% block lucca_embed_buttons_folderSigned %}
                 <a class="btn btn-secondary btn-lg"
                    href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"

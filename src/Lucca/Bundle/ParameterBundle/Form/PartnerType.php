@@ -30,7 +30,7 @@ class PartnerType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Partner::class,
-            'translation_domain' => 'LuccaParameterBundle',
+            'translation_domain' => 'ParameterBundle',
             'required' => true
         ]);
     }

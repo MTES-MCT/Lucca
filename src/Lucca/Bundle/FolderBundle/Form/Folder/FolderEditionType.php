@@ -32,7 +32,7 @@ class FolderEditionType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => FolderEdition::class,
-            'translation_domain' => 'LuccaFolderBundle',
+            'translation_domain' => 'FolderBundle',
         ));
     }
 

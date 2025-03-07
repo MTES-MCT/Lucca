@@ -105,7 +105,7 @@ class FolderType extends AbstractType
         $resolver->setRequired('minute');
         $resolver->setDefaults(array(
             'data_class' => Folder::class,
-            'translation_domain' => 'LuccaFolderBundle',
+            'translation_domain' => 'FolderBundle',
         ));
     }
 

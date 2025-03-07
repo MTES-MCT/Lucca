@@ -1,5 +1,5 @@
 {% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/page.html.twig" %}
-{% trans_default_domain 'LuccaContentBundle' %}
+{% trans_default_domain 'ContentBundle' %}
 {% block menuActive_tools %}active{% endblock %}
 
 {% block lucca_title %}
@@ -55,7 +55,7 @@
 
                         {% if app.user and is_granted("ROLE_ADMIN") %}
                             <aside class="div-admin">
-                                <div class="badge badge-warning label-admin">{{ 'badge.admin'|trans({}, 'LuccaCoreBundle') }}</div>
+                                <div class="badge badge-warning label-admin">{{ 'badge.admin'|trans({}, 'CoreBundle') }}</div>
 
                                 <a class="btn btn-warning btn-lg pull-right" title="{{ 'link.edit'|trans }}"
                                    href="{{ path('lucca_page_edit', { 'id': page.id }) }}">

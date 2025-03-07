@@ -29,7 +29,7 @@ class UserType extends AbstractType
             ->add('email', EmailType::class, array('label' => 'label.email'))
             ->add('plainPassword', RepeatedType::class, array(
                 'type' => PasswordType::class,
-                'options' => array('translation_domain' => 'LuccaUserBundle'),
+                'options' => array('translation_domain' => 'UserBundle'),
                 'first_options' => array('label' => 'label.password'),
                 'second_options' => array('label' => 'label.password_confirmation'),
                 'invalid_message' => 'user.password.mismatch',
@@ -51,7 +51,7 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => User::class,
-            'translation_domain' => 'LuccaUserBundle',
+            'translation_domain' => 'UserBundle',
             'required' => true
         ));
     }

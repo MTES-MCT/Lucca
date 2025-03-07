@@ -52,7 +52,7 @@ class StoragerType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Storager::class,
-            'translation_domain' => 'LuccaMediaBundle',
+            'translation_domain' => 'MediaBundle',
             'required' => true
         ]);
     }

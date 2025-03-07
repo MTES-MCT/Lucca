@@ -67,7 +67,7 @@ class ClosureType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Closure::class,
-            'translation_domain' => 'LuccaMinuteBundle',
+            'translation_domain' => 'MinuteBundle',
             'required' => true
         ));
     }

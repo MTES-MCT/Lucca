@@ -69,7 +69,7 @@ class StatisticsAdherentType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => null,
             'mapped' => false,
-            'translation_domain' => 'LuccaAdherentBundle'
+            'translation_domain' => 'AdherentBundle'
         ));
     }
 

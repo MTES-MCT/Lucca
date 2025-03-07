@@ -64,7 +64,7 @@ class AdherentEditType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Adherent::class,
-            'translation_domain' => 'LuccaAdherentBundle',
+            'translation_domain' => 'AdherentBundle',
             'required' => true
         ));
     }

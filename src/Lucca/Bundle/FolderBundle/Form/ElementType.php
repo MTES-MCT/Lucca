@@ -48,7 +48,7 @@ class ElementType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => ElementChecked::class,
-            'translation_domain' => 'LuccaFolderBundle',
+            'translation_domain' => 'FolderBundle',
         ));
     }
 

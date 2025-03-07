@@ -2,7 +2,7 @@
 {% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig" %}
 
 {#- - Translation domain - -#}
-{% trans_default_domain 'LuccaFolderBundle' %}
+{% trans_default_domain 'FolderBundle' %}
 
 {#- - Parameters - -#}
 {% set entity_trans='entity.folder'|trans %}
@@ -16,7 +16,7 @@
         {% embed "@LuccaFolder/Annexes/Embed/_form-annexes.html.twig" with {
             'form': edit_form
         } %}
-            {% trans_default_domain 'LuccaFolderBundle' %}
+            {% trans_default_domain 'FolderBundle' %}
             {% block lucca_embed_buttons_annexes %}
                 <div class="pt-3">
                     <a class="btn btn-secondary btn-lg"

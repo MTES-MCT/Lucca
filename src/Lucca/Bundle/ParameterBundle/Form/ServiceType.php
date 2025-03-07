@@ -35,7 +35,7 @@ class ServiceType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Service::class,
-            'translation_domain' => 'LuccaParameterBundle',
+            'translation_domain' => 'ParameterBundle',
             'required' => false
         ]);
     }

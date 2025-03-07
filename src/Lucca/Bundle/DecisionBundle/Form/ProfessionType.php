@@ -41,7 +41,7 @@ class ProfessionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Profession::class,
-            'translation_domain' => 'LuccaDecisionBundle',
+            'translation_domain' => 'DecisionBundle',
             'required' => true
         ]);
     }

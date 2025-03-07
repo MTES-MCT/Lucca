@@ -1,5 +1,5 @@
 {% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig' %}
-{% trans_default_domain 'LuccaSettingBundle' %}
+{% trans_default_domain 'SettingBundle' %}
 
 {% set entity_trans='entity.setting'|trans %}
 
@@ -9,14 +9,14 @@
     <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
         <div class="card card-default">
             <div class="card-header">
-                {{ 'title.new'|trans({}, 'LuccaThemeAngleBundle') }} - <b>{{ entity_trans }}</b>
+                {{ 'title.new'|trans({}, 'ThemeAngleBundle') }} - <b>{{ entity_trans }}</b>
             </div>
 
             <div class="card-wrapper">
                 <div class="card-body">
                     {% embed "@LuccaSetting/Setting/Embed/form-settingToImport.html.twig" with { 'form': form } %}
                         {#-- Translation domain embed --#}
-                        {% trans_default_domain 'LuccaSettingBundle' %}
+                        {% trans_default_domain 'SettingBundle' %}
 
                         {% block lucca_embed_buttons_setting %}
                             <div class="mt-2">

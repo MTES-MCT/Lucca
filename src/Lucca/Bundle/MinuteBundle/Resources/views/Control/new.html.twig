@@ -2,7 +2,7 @@
 {% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
 
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaMinuteBundle' %}
+{% trans_default_domain 'MinuteBundle' %}
 
 {#-- Macros --#}
 {% import "@LuccaMinute/Human/human-macro.html.twig" as humanMacro %}
@@ -234,7 +234,7 @@
                 {% if plot.isRiskZone %}
                     <tr>
                         <th>{{ 'label.isRiskZone'|trans }}</th>
-                        <td>{{ plot.isRiskZone|trans({}, 'LuccaControlBundle') }}</td>
+                        <td>{{ plot.isRiskZone|trans({}, 'ControlBundle') }}</td>
                     </tr>
                 {% endif %}
                 </tbody>

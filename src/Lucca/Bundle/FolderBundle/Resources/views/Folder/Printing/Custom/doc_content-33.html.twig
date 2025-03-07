@@ -1,4 +1,4 @@
-{% trans_default_domain 'LuccaFolderBundle' %}
+{% trans_default_domain 'FolderBundle' %}
 
 {% set control = folder.control %}
 {% set minute = folder.minute %}
@@ -80,17 +80,17 @@
                 constant('FUNCTION_MAYOR', agent),
                 constant('FUNCTION_DEPUTY', agent)
             ] %}
-                Je soussigné, {{ agent.officialName }}, agissant en tant que {{ agent.function|trans({}, 'LuccaFolderBundle') }}
+                Je soussigné, {{ agent.officialName }}, agissant en tant que {{ agent.function|trans({}, 'FolderBundle') }}
                 de la commune de {{ structureName }} rapporte et certifie que :
 
             {% elseif agent.function in [
                 constant('FUNCTION_COUNTRY_AGENT', agent)
             ] %}
-                Je soussigné {{ agent.officialName }}, {{ agent.function|trans({}, 'LuccaFolderBundle') }} en poste à la DDTM de la Gironde
+                Je soussigné {{ agent.officialName }}, {{ agent.function|trans({}, 'FolderBundle') }} en poste à la DDTM de la Gironde
                 ayant prêté serment devant le Tribunal de Grande Instance de
                 {{ minute.tribunal.office.name }} et porteur de la commission n° {{ agent.commission }}, rapporte ce qui suit :
             {% else %}
-                Je soussigné {{ agent.officialName }}, {{ agent.function|trans({}, 'LuccaFolderBundle') }} en poste à la commune de
+                Je soussigné {{ agent.officialName }}, {{ agent.function|trans({}, 'FolderBundle') }} en poste à la commune de
                 {{ structureOffice }} ayant prêté serment devant le Tribunal de Grande Instance de
                 {{ minute.tribunal.office.name }} et porteur de la commission n° {{ agent.commission }}, rapporte ce qui suit :
             {% endif %}
@@ -152,7 +152,7 @@
         <div class="row mb25 mb15 pt15">
             <div class="col-12 letter-content">
                 {#Affichage de la nature de l'infraction et de la description si il y en a une#}
-                J’ai constaté ce qui suit : {{ update.nature|trans({}, 'LuccaFolderBundle') }}
+                J’ai constaté ce qui suit : {{ update.nature|trans({}, 'FolderBundle') }}
                 {% if update.description %}
                     {% if 'print' in app.request.attributes.get('_route') %}
                         {{ update.description|localPath|raw }}

@@ -1,5 +1,5 @@
 {% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
-{% trans_default_domain 'LuccaContentBundle' %}
+{% trans_default_domain 'ContentBundle' %}
 
 {% set entity_trans='entity.page'|trans %}
 {% block menuActive_page %}active{% endblock %}
@@ -21,7 +21,7 @@
         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
             <div class="card card-default">
                 <div class="card-header">
-                    {{ 'title.new'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ entity_trans }}</b>
+                    {{ 'title.new'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ entity_trans }}</b>
                 </div>
 
                 <div class="card-wrapper">
@@ -101,7 +101,7 @@
         {# Collection form - media #}
         $('.media-collection').collection({
             allow_duplicate: false, allow_up: true, allow_down: true, allow_remove: false, add_at_the_end: true,
-            add: '<a href="#" class="btn btn-primary" title="{{ 'link.media.new'|trans({}, 'LuccaMediaBundle') }}"><span class="fas fa-plus"></span></a>',
+            add: '<a href="#" class="btn btn-primary" title="{{ 'link.media.new'|trans({}, 'MediaBundle') }}"><span class="fas fa-plus"></span></a>',
 
             {# Table display#}
             elements_selector: 'tr.media',

@@ -37,7 +37,7 @@ readonly class MayorLetterManager
         if ( $mayorLetter == null && (
             !$data->gender || !$data->nameMayor || !$data->addressMayor || !$data->town || count($data->folders) == 0 )
         ) {
-            $message = $this->translator->trans("text.mayorLetter.badField", [], 'LuccaMinuteBundle');
+            $message = $this->translator->trans("text.mayorLetter.badField", [], 'MinuteBundle');
         }
 
         return $message;

@@ -39,7 +39,7 @@ class ImportSettingType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => null,
-            'translation_domain' => 'LuccaSettingBundle',
+            'translation_domain' => 'SettingBundle',
             'required' => true
         ));
     }

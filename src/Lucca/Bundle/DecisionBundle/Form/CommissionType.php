@@ -74,7 +74,7 @@ class CommissionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Commission::class,
-            'translation_domain' => 'LuccaDecisionBundle',
+            'translation_domain' => 'DecisionBundle',
             'required' => true
         ]);
     }

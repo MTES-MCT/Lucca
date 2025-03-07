@@ -343,7 +343,7 @@ class DashboardController extends AbstractController
         $_SESSION['addrCity'] = $address['addrCity'];
         $_SESSION['addrCode'] = $address['addrCode'];
         $data['url'] = $this->generateUrl('lucca_minute_new');
-        $data['text'] = $this->translator->trans('text.createFolderGeolocalized', [], 'LuccaCoreBundle');
+        $data['text'] = $this->translator->trans('text.createFolderGeolocalized', [], 'CoreBundle');
         $data['addr'] = $address['addrRoute'] . ' ' . $address['addrCity'] . ' ' . $address['addrCode'];
         return new Response(json_encode($data), 200);
     }
@@ -472,7 +472,7 @@ class DashboardController extends AbstractController
             $dataDecision['minuteNum'] = $decision->getMinute()->getNum();
             $dataDecision['appeal'] = $decision->getAppeal();
             if ($decision->getTribunalCommission()) {
-                $dataDecision['TCstatusDecision'] = $this->translator->trans($decision->getTribunalCommission()->getStatusDecision(), [], 'LuccaMinuteBundle');
+                $dataDecision['TCstatusDecision'] = $this->translator->trans($decision->getTribunalCommission()->getStatusDecision(), [], 'MinuteBundle');
             }
             if ($decision->getTribunalCommission() and $decision->getTribunalCommission()->getDateHearing())
                 $dataDecision['TCdateHearing'] = $decision->getTribunalCommission()->getDateHearing()->format('d/m/Y');
@@ -491,7 +491,7 @@ class DashboardController extends AbstractController
                 foreach ($decision->getPenalties() as $index => $penalty) {
                     if ($index == 0 or $date > $penalty->getDateFolder()) {
                         $date = $penalty->getDateFolder();
-                        $dataDecision['state'] = $this->translator->trans($penalty->getNature(), [], 'LuccaMinuteBundle');
+                        $dataDecision['state'] = $this->translator->trans($penalty->getNature(), [], 'MinuteBundle');
                     }
                 }
                 $dataDecision['date'] = $date->format('d/m/Y');
@@ -554,7 +554,7 @@ class DashboardController extends AbstractController
             $dataFolder['lat'] = floatval($folder->getMinute()->getPlot()->getLatitude());
             $dataFolder['lon'] = floatval($folder->getMinute()->getPlot()->getLongitude());
             $dataFolder['parcel'] = $folder->getMinute()->getPlot()->getParcel();
-            $dataFolder['nature'] = $this->translator->trans($folder->getNature(), [], 'LuccaMinuteBundle');
+            $dataFolder['nature'] = $this->translator->trans($folder->getNature(), [], 'MinuteBundle');
             if ($folder->getControl() && $folder->getControl()->getDateControl())
                 $dataFolder['dateControl'] = $folder->getControl()->getDateControl()->format('d/m/Y');
             else

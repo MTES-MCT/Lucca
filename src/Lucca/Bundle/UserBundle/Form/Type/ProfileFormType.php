@@ -53,7 +53,7 @@ class ProfileFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'translation_domain' => 'LuccaUserBundle',
+            'translation_domain' => 'UserBundle',
             'required' => true
         ]);
     }

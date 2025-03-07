@@ -35,7 +35,7 @@ class FolderStep3Type extends AbstractType
         $resolver->setRequired('natinfsFiltered');
         $resolver->setDefaults(array(
             'data_class' => Folder::class,
-            'translation_domain' => 'LuccaFolderBundle',
+            'translation_domain' => 'FolderBundle',
         ));
     }
 

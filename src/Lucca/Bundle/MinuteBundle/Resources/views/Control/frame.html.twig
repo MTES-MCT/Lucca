@@ -1,5 +1,5 @@
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaMinuteBundle' %}
+{% trans_default_domain 'MinuteBundle' %}
 
 {#-- Macros --#}
 {% import "@LuccaMinute/Human/human-macro.html.twig" as humanMacro %}
@@ -41,7 +41,7 @@
                 {% endif %}
 
                 <span class="badge badge-info float-right mr15">
-                    {{ control.stateControl|trans({}, 'LuccaControlBundle') }}
+                    {{ control.stateControl|trans({}, 'ControlBundle') }}
                 </span>
             </h4>
         </a>

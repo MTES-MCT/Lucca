@@ -49,7 +49,7 @@ class DropzoneType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ArrayCollection::class,
-            'translation_domain' => 'LuccaMediaBundle',
+            'translation_domain' => 'MediaBundle',
             'required' => false,
             'maxSize' => false,
         ]);

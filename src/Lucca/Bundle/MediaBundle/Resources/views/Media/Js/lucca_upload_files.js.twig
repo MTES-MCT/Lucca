@@ -1,5 +1,5 @@
 {#- - Translation domain - -#}
-{% trans_default_domain 'LuccaMediaBundle' %}
+{% trans_default_domain 'MediaBundle' %}
 
 Dropzone.autoDiscover = false;
 
@@ -216,15 +216,15 @@ let media_form = {
           // Code -1 is id null given so event.target.dataset['mediaId'] is null
           if(response === -1){
             toastr.warning("{{ 'message.media.mediaNotFound'|trans|e('js') }}");
-          
+
             // Code 2 is media not found
           }else if (response === 2){
             toastr.warning("{{ 'message.media.mediaNotFound'|trans|e('js') }}");
-          
+
           // Code 3 is media empty
           }else if (response === 3){
             toastr.warning("{{ 'message.media.mediaNotFound'|trans|e('js') }}");
-            
+
           }else {
             // Add modal html code next to the target
             $(self.sModalTag).remove();

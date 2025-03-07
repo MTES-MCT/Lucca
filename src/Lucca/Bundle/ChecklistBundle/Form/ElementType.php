@@ -36,7 +36,7 @@ class ElementType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Element::class,
-            'translation_domain' => 'LuccaChecklistBundle',
+            'translation_domain' => 'ChecklistBundle',
         ]);
     }
 

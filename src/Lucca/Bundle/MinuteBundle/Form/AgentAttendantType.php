@@ -36,7 +36,7 @@ class AgentAttendantType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => AgentAttendant::class,
-            'translation_domain' => 'LuccaMinuteBundle',
+            'translation_domain' => 'MinuteBundle',
             'required' => true
         ));
     }

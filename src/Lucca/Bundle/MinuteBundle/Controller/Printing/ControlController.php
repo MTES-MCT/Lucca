@@ -303,7 +303,7 @@ class ControlController extends AbstractController
                 $human = $edition->getHuman();
 
                 $var['placeControl'] = $edition->getControl()->getMinute()->getPlot()->getTown()->getName();
-                $var['humanGender'] = $this->translator->trans($human->getGender(), [], 'LuccaMinuteBundle');
+                $var['humanGender'] = $this->translator->trans($human->getGender(), [], 'MinuteBundle');
                 $var['humanName'] = $human->getOfficialName();
                 $var['humanAddress'] = $human->getAddress();
                 $var['humanCompany'] = "";
@@ -337,7 +337,7 @@ class ControlController extends AbstractController
             foreach ($humans as $human) {
 
                 $var['placeControl'] = $p_control->getMinute()->getPlot()->getTown()->getName();
-                $var['humanGender'] = $this->translator->trans($human->getGender(), [], 'LuccaMinuteBundle');
+                $var['humanGender'] = $this->translator->trans($human->getGender(), [], 'MinuteBundle');
                 $var['humanName'] = $human->getOfficialName();
                 $var['humanAddress'] = $human->getAddress();
                 $var['humanCompany'] = "";

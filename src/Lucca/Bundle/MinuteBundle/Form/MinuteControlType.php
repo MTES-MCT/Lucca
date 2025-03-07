@@ -139,7 +139,7 @@ class MinuteControlType extends AbstractType
         $resolver->setRequired('minute');
         $resolver->setDefaults(array(
             'data_class' => Control::class,
-            'translation_domain' => 'LuccaMinuteBundle',
+            'translation_domain' => 'MinuteBundle',
             'human' => '',
         ));
     }

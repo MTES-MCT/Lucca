@@ -41,7 +41,7 @@ class CourierType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Courier::class,
-            'translation_domain' => 'LuccaFolderBundle',
+            'translation_domain' => 'FolderBundle',
             'required' => false
         ));
     }

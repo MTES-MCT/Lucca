@@ -1,5 +1,5 @@
 {% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig" %}
-{% trans_default_domain 'LuccaModelBundle' %}
+{% trans_default_domain 'ModelBundle' %}
 
 {% set entity_trans='entity.model'|trans %}
 
@@ -21,7 +21,7 @@
                 {% endif %}
 
                 <div class="card-header">
-                    {{ 'title.show'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ model.name }}</b>
+                    {{ 'title.show'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ model.name }}</b>
                 </div>
 
                 <div class="card-wrapper">
@@ -142,7 +142,7 @@
             <div class="card card-default">
 
                 <div class="card-header">
-                    {{ 'title.show'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ model.name }}</b>
+                    {{ 'title.show'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ model.name }}</b>
                 </div>
 
                 <div class="card-wrapper">
@@ -162,7 +162,7 @@
             {#-- Embed view - params and block --#}
             {% embed "@LuccaModel/Page/Embed/page.html.twig" with {'page': verso} %}
                 {#-- Translation domain embed --#}
-                {% trans_default_domain 'LuccaModelBundle' %}
+                {% trans_default_domain 'ModelBundle' %}
 
                 {% block lucca_embed_title_page %}
                     <b>{{ 'label.firstPage'|trans }}</b>
@@ -183,7 +183,7 @@
         {#-- Embed view - params and block --#}
         {% embed "@LuccaModel/Page/Embed/page.html.twig" with {'page': recto} %}
             {#-- Translation domain embed --#}
-            {% trans_default_domain 'LuccaModelBundle' %}
+            {% trans_default_domain 'ModelBundle' %}
 
             {% block lucca_embed_title_page %}
                 {% if verso is not null and model.layout is same as constant('LAYOUT_COVER', model) %}

@@ -80,7 +80,7 @@ class MayorLetterType extends AbstractType
         $resolver->setRequired('adherent');
         $resolver->setDefaults(array(
             'data_class' => MayorLetter::class,
-            'translation_domain' => 'LuccaFolderBundle',
+            'translation_domain' => 'FolderBundle',
             'required' => true
         ));
     }

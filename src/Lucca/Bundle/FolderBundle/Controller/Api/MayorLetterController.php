@@ -152,12 +152,12 @@ class MayorLetterController extends AbstractController
                 if ($decision->getDateStartRecovery()) {
                     $row .= $decision->getDateStartRecovery()->format('d/m/Y');
                     $row .= "<br><span class='badge badge-info'>"
-                        . $this->translator->trans("text.decision.yes", [], 'LuccaFolderBundle')
+                        . $this->translator->trans("text.decision.yes", [], 'FolderBundle')
                         ."</span><br>";
                 }
                 else
                     $row .= "<span class='badge badge-warning'>"
-                        . $this->translator->trans("text.decision.no", [], 'LuccaFolderBundle')
+                        . $this->translator->trans("text.decision.no", [], 'FolderBundle')
                         ."</span>";
             }
             $row .= "</td>";
@@ -169,12 +169,12 @@ class MayorLetterController extends AbstractController
                 if($decision->getExpulsion() && $decision->getExpulsion()->getDateJudicialDesision()) {
                     $row .= $decision->getExpulsion()->getDateJudicialDesision()->format('d/m/Y');
                     $row .= "<br><span class='badge badge-info'>"
-                        . $this->translator->trans("text.decision.yes", [], 'LuccaFolderBundle')
+                        . $this->translator->trans("text.decision.yes", [], 'FolderBundle')
                         ."</span><br>";
                 }
                 else
                     $row .= "<span class='badge badge-warning'>"
-                        . $this->translator->trans("text.decision.no", [], 'LuccaFolderBundle')
+                        . $this->translator->trans("text.decision.no", [], 'FolderBundle')
                         ."</span>";
             }
             $row .= "</td>";
@@ -186,12 +186,12 @@ class MayorLetterController extends AbstractController
                 if ($decision->getDemolition() && $decision->getDemolition()->getDateDemolition()) {
                     $row .= $decision->getDemolition()->getDateDemolition()->format('d/m/Y');
                     $row .= "<br><span class='badge badge-info'>"
-                        . $this->translator->trans("text.decision.yes", [], 'LuccaFolderBundle')
+                        . $this->translator->trans("text.decision.yes", [], 'FolderBundle')
                         ."</span><br>";
                 }
                 else
                     $row .= "<span class='badge badge-warning'>"
-                        . $this->translator->trans("text.decision.no", [], 'LuccaFolderBundle')
+                        . $this->translator->trans("text.decision.no", [], 'FolderBundle')
                         ."</span>";
             }
             $row .= "</td>";
@@ -207,7 +207,7 @@ class MayorLetterController extends AbstractController
             $row .= "<td>";
             $row .= "<a href='". $this->generateUrl('lucca_minute_show', array('id' => $minute->getId())) ."'";
             $row .= "class='btn btn-sm btn-primary'";
-            $row .= "title='" . $this->translator->trans("link.minute.show", [], 'LuccaFolderBundle') . "'>";
+            $row .= "title='" . $this->translator->trans("link.minute.show", [], 'FolderBundle') . "'>";
             $row .= "<i class='fa fa-eye'></i></a>";
             $row .= "</td>";
 

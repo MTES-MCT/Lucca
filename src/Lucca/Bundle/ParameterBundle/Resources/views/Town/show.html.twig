@@ -2,7 +2,7 @@
 {% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
 
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaParameterBundle' %}
+{% trans_default_domain 'ParameterBundle' %}
 
 {#-- Parameters --#}
 {% set entity_trans='entity.town'|trans %}
@@ -15,7 +15,7 @@
 
         <div class="card card-default">
             <div class="card-header">
-                {{ 'title.show'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ town.name }}</b>
+                {{ 'title.show'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ town.name }}</b>
             </div>
 
             <div class="card-wrapper">

@@ -47,13 +47,13 @@ class EntityHumanExtension extends AbstractExtension
 
         if ($human->getPerson() === Human::PERSON_CORPORATION) {
             $inlineDescription .= $human->getCompany() . ' ';
-            $inlineDescription .= '(' . $this->translator->trans($human->getStatusCompany(), [], 'LuccaMinuteBundle') . ') <br>';
+            $inlineDescription .= '(' . $this->translator->trans($human->getStatusCompany(), [], 'MinuteBundle') . ') <br>';
             $inlineDescription .= $human->getAddressCompany() . ' <br>';
         }
 
-        $inlineDescription .= $this->translator->trans($human->getGender(), [], 'LuccaMinuteBundle') . ' ';
+        $inlineDescription .= $this->translator->trans($human->getGender(), [], 'MinuteBundle') . ' ';
         $inlineDescription .= $human->getOfficialName();
-        $inlineDescription .= '(' . $this->translator->trans($human->getStatus(), [], 'LuccaMinuteBundle') . ')  <br>';
+        $inlineDescription .= '(' . $this->translator->trans($human->getStatus(), [], 'MinuteBundle') . ')  <br>';
         $inlineDescription .= $human->getAddress();
 
         return $inlineDescription;
@@ -67,11 +67,11 @@ class EntityHumanExtension extends AbstractExtension
         $inlineDescription = '';
 
         if ($human->getPerson() === Human::PERSON_CORPORATION) {
-            $inlineDescription .= $this->translator->trans('label.company', [], 'LuccaMinuteBundle') . ' ';
+            $inlineDescription .= $this->translator->trans('label.company', [], 'MinuteBundle') . ' ';
             $inlineDescription .= $human->getCompany() . ' représenté par ';
         }
 
-        $inlineDescription .= $this->translator->trans($human->getGender(), [], 'LuccaMinuteBundle') . ' ';
+        $inlineDescription .= $this->translator->trans($human->getGender(), [], 'MinuteBundle') . ' ';
         $inlineDescription .= $human->getOfficialName();
 
         return $inlineDescription;
@@ -85,10 +85,10 @@ class EntityHumanExtension extends AbstractExtension
         $inlineDescription = '';
 
         if ($human->getPerson() === Human::PERSON_CORPORATION && $flagRepresentant) {
-            $inlineDescription .= $this->translator->trans('label.company', [], 'LuccaMinuteBundle') . ' ';
+            $inlineDescription .= $this->translator->trans('label.company', [], 'MinuteBundle') . ' ';
             $inlineDescription .= $human->getCompany();
         } else {
-            $inlineDescription .= $this->translator->trans($human->getGender(), [], 'LuccaMinuteBundle') . ' ';
+            $inlineDescription .= $this->translator->trans($human->getGender(), [], 'MinuteBundle') . ' ';
             $inlineDescription .= $human->getOfficialName();
         }
 

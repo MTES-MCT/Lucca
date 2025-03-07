@@ -1,5 +1,5 @@
 {% extends '@LuccaMinute/Control/Printing/Basic/convocation_content.html.twig' %}
-{% trans_default_domain 'LuccaControlBundle' %}
+{% trans_default_domain 'ControlBundle' %}
 
 {% import "@LuccaMinute/Human/human-macro.html.twig" as humanMacro %}
 
@@ -83,7 +83,7 @@
                         {% if human.person is constant('PERSON_CORPORATION', human) %}
                             Société {{ human.company }},<br>
                         {% endif %}
-                        {{ human.gender|trans({}, 'LuccaMinuteBundle') }} {{ human.officialName }},<br>
+                        {{ human.gender|trans({}, 'MinuteBundle') }} {{ human.officialName }},<br>
                         {{ human.address|nl2br }}<br>
                         Copie
                     </b></div>

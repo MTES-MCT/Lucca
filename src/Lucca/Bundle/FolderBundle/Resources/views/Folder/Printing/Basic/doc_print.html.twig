@@ -2,7 +2,7 @@
 {% extends "@LuccaModel/Printing/base.html.twig" %}
 
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaFolderBundle' %}
+{% trans_default_domain 'FolderBundle' %}
 
 {% if 'setting.folder.useRefreshAgentForRefreshSignature.name'|setting and update.controls is defined and update.controls|length == 1 %}
     {% set agent = update.controls[0].agent %}

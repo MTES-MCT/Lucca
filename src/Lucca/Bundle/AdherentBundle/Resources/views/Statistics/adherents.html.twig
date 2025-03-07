@@ -1,5 +1,5 @@
 {% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/page.html.twig' %}
-{% trans_default_domain 'LuccaAdherentBundle' %}
+{% trans_default_domain 'AdherentBundle' %}
 
 {#Macro to display tooltip help messages#}
 {% import "@LuccaThemeStreamDashboardUiKit/Macro/buttonHelp.html.twig" as macroButtonHelp %}
@@ -93,7 +93,7 @@
                         <i class="fa fa-5x fa-layer-group mb-lg"></i>
                         <h2 class="timer counter alt-font appear"
                             data-speed="{{ counterSpeed }}">{{ finalArray['countMinutes'] }}</h2>
-                        <div>{{ 'label.minutes' | trans({}, 'LuccaMinuteBundle') }}</div>
+                        <div>{{ 'label.minutes' | trans({}, 'MinuteBundle') }}</div>
                     </div>
                 </div>
 

@@ -44,7 +44,7 @@ class SubAreaType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => SubArea::class,
-            'translation_domain' => 'LuccaContentBundle',
+            'translation_domain' => 'ContentBundle',
             'required' => false
         ]);
     }

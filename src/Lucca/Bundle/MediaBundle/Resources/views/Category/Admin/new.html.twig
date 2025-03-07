@@ -2,7 +2,7 @@
 {% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
 
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaMediaBundle' %}
+{% trans_default_domain 'MediaBundle' %}
 
 {#-- Parameters --#}
 {% set entity_trans='entity.category'|trans %}
@@ -14,7 +14,7 @@
     {#-- Embed view - params and block --#}
     {% embed "@LuccaMedia/Category/Embed/_form-category.html.twig" with { 'form': form } %}
         {#-- Translation domain embed --#}
-        {% trans_default_domain 'LuccaMediaBundle' %}
+        {% trans_default_domain 'MediaBundle' %}
 
         {% block lucca_embed_buttons_category %}
             <a href="{{ path('lucca_media_category_index') }}" class="btn btn-secondary btn-lg"

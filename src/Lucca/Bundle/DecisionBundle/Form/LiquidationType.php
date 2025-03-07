@@ -48,7 +48,7 @@ class LiquidationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Liquidation::class,
-            'translation_domain' => 'LuccaDecisionBundle',
+            'translation_domain' => 'DecisionBundle',
             'required' => true
         ]);
     }

@@ -58,7 +58,7 @@ class AgentType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Agent::class,
-            'translation_domain' => 'LuccaAdherentBundle',
+            'translation_domain' => 'AdherentBundle',
             'required' => true
         ));
     }

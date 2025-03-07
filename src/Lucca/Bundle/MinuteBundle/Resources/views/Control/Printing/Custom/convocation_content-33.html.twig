@@ -1,5 +1,5 @@
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaControlBundle' %}
+{% trans_default_domain 'ControlBundle' %}
 
 {#-- Parameters --#}
 {% set adherent = minute.adherent %}
@@ -70,7 +70,7 @@
                     {% if human.person is constant('PERSON_CORPORATION', human) %}
                         Société {{ human.company }},<br>
                     {% endif %}
-                    {{ human.gender|trans({}, 'LuccaMinuteBundle') }} {{ human.officialName }},<br>
+                    {{ human.gender|trans({}, 'MinuteBundle') }} {{ human.officialName }},<br>
                     {{ human.address|nl2br }}<br>
                 </b>
             </div>

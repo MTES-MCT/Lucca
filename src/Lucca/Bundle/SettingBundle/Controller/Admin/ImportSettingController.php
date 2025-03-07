@@ -138,7 +138,7 @@ class ImportSettingController extends AbstractController
                 $this->em->persist($setting);
             } else {
                 $nbFail++;
-                $this->addFlash('warning', $this->translator->trans("text.importFailed", [], 'LuccaSettingBundle') . $row[0]);
+                $this->addFlash('warning', $this->translator->trans("text.importFailed", [], 'SettingBundle') . $row[0]);
             }
         }
 

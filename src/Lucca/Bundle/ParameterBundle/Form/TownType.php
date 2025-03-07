@@ -36,7 +36,7 @@ class TownType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Town::class,
-            'translation_domain' => 'LuccaParameterBundle',
+            'translation_domain' => 'ParameterBundle',
             'required' => true
         ));
     }

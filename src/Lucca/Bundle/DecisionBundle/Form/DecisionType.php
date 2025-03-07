@@ -139,7 +139,7 @@ class DecisionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Decision::class,
-            'translation_domain' => 'LuccaDecisionBundle',
+            'translation_domain' => 'DecisionBundle',
             'required' => true
         ]);
     }

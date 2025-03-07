@@ -30,7 +30,7 @@ class ProposalType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Proposal::class,
-            'translation_domain' => 'LuccaFolderBundle',
+            'translation_domain' => 'FolderBundle',
         ));
     }
 

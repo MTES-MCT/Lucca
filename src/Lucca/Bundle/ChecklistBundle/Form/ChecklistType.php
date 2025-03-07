@@ -51,7 +51,7 @@ class ChecklistType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Checklist::class,
-            'translation_domain' => 'LuccaChecklistBundle',
+            'translation_domain' => 'ChecklistBundle',
         ]);
     }
 

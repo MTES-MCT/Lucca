@@ -153,7 +153,7 @@ class CourierController extends AbstractController
 
                 $human = $edition->getHuman();
 
-                $var['humanGender'] = $this->translator->trans($human->getGender(), [], 'LuccaFolderBundle');
+                $var['humanGender'] = $this->translator->trans($human->getGender(), [], 'FolderBundle');
                 $var['humanName'] = $human->getOfficialName();
                 $var['humanAddress'] = $human->getAddress();
                 $var['humanCompany'] = "";
@@ -190,7 +190,7 @@ class CourierController extends AbstractController
             /** Create a temp pdf for each human */
             foreach ($humans as $human) {
 
-                $var['humanGender'] = $this->translator->trans($human->getGender(), [], 'LuccaFolderBundle');
+                $var['humanGender'] = $this->translator->trans($human->getGender(), [], 'FolderBundle');
                 $var['humanName'] = $human->getOfficialName();
                 $var['humanAddress'] = $human->getAddress();
                 $var['humanCompany'] = "";

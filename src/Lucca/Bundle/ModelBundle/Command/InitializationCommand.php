@@ -94,7 +94,7 @@ class InitializationCommand extends Command
             if (!$model) {
                 $model = new Model();
 
-                $model->setName($model->getLogName() . ' ' . $this->translator->trans($document, [], 'LuccaModelBundle'));
+                $model->setName($model->getLogName() . ' ' . $this->translator->trans($document, [], 'ModelBundle'));
                 $model->setType(Model::TYPE_ORIGIN);
                 $model->setLayout(Model::LAYOUT_SIMPLE);
                 $model->setDocuments([$document]);

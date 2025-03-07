@@ -48,7 +48,7 @@ class GroupFormType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Group::class,
-            'translation_domain' => 'LuccaUserBundle',
+            'translation_domain' => 'UserBundle',
             'required' => true
         ));
     }

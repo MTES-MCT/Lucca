@@ -41,7 +41,7 @@ class BrowserDashboardType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => null,
             'mapped' => false,
-            'translation_domain' => 'LuccaCoreBundle'
+            'translation_domain' => 'CoreBundle'
         ));
     }
 

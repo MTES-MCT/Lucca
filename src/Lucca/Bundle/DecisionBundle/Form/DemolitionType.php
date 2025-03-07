@@ -69,7 +69,7 @@ class DemolitionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Demolition::class,
-            'translation_domain' => 'LuccaDecisionBundle',
+            'translation_domain' => 'DecisionBundle',
             'required' => true
         ]);
     }

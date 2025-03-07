@@ -149,7 +149,7 @@ class BrowserMinuteType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => null,
             'mapped' => false,
-            'translation_domain' => 'LuccaMinuteBundle'
+            'translation_domain' => 'MinuteBundle'
         ));
     }
 

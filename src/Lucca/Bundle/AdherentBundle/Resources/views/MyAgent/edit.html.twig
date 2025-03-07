@@ -2,7 +2,7 @@
 {% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig' %}
 
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaAdherentBundle' %}
+{% trans_default_domain 'AdherentBundle' %}
 
 {#-- Parameters --#}
 {% set entity_trans='entity.agent'|trans %}
@@ -19,7 +19,7 @@
 
         <div class="card card-default">
             <div class="card-header">
-                {{ 'title.edit'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} - <b>{{ agent.name }}</b>
+                {{ 'title.edit'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ agent.name }}</b>
             </div>
 
             <div class="card-wrapper">

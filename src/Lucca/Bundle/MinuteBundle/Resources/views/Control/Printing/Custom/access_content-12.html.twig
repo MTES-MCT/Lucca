@@ -1,5 +1,5 @@
 {% extends '@LuccaMinute/Control/Printing/Basic/access_content.html.twig' %}
-{% trans_default_domain 'LuccaControlBundle' %}
+{% trans_default_domain 'ControlBundle' %}
 
 {#-- Macros --#}
 {% import "@LuccaMinute/Human/human-macro.html.twig" as humanMacro %}
@@ -42,13 +42,13 @@
 
             <div class="clearfix">
                 {{ 'access.visit'|trans }} {{ minute.agent.officialName }},
-                {{ minute.agent.function|trans({}, 'LuccaMinuteBundle') }},
+                {{ minute.agent.function|trans({}, 'MinuteBundle') }},
                 {{ 'access.sworn'|trans }}
 
                 {% if control.agentAttendants %}
                     {% for agentAttendant in control.agentAttendants %}
                         , {{ 'access.accompanied'|trans }} {{ agentAttendant.officialName }}
-                        {{ 'access.accompanied_function'|trans }} {{ agentAttendant.function|trans({}, 'LuccaMinuteBundle')|lower }}.
+                        {{ 'access.accompanied_function'|trans }} {{ agentAttendant.function|trans({}, 'MinuteBundle')|lower }}.
                         {% if not loop.last %}<br>{% endif %}
                     {% endfor %}
                 {% endif %}
@@ -62,10 +62,10 @@
                     {{ 'access.deny'|trans }} :<br>
                 {% endif %}
                 <ul>
-                    <li>{{ 'label.parcel'|trans({}, 'LuccaMinuteBundle') }} : {{ plot.parcel }}</li>
-                    <li>{{ 'label.address'|trans({}, 'LuccaMinuteBundle') }} : {{ plot.address }}</li>
-                    <li>{{ 'label.place'|trans({}, 'LuccaMinuteBundle') }} : {{ plot.place }}</li>
-                    <li>{{ 'label.town'|trans({}, 'LuccaMinuteBundle') }}
+                    <li>{{ 'label.parcel'|trans({}, 'MinuteBundle') }} : {{ plot.parcel }}</li>
+                    <li>{{ 'label.address'|trans({}, 'MinuteBundle') }} : {{ plot.address }}</li>
+                    <li>{{ 'label.place'|trans({}, 'MinuteBundle') }} : {{ plot.place }}</li>
+                    <li>{{ 'label.town'|trans({}, 'MinuteBundle') }}
                         : {{ plot.town.name }} {{ plot.town.zipcode }}</li>
                 </ul>
 

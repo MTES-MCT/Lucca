@@ -36,7 +36,7 @@ class ExtensionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Extension::class,
-            'translation_domain' => 'LuccaMediaBundle',
+            'translation_domain' => 'MediaBundle',
             'required' => true
         ]);
     }

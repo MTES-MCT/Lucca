@@ -40,7 +40,7 @@ class ControlConvocationType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Control::class,
-            'translation_domain' => 'LuccaMinuteBundle',
+            'translation_domain' => 'MinuteBundle',
         ));
     }
 

@@ -99,9 +99,9 @@
                                 height: response[index].size
                             })
                             $(editor).summernote("insertNode", imageHtml[0]);
-                            toastr.success("{{ 'message.media.successUpload'|trans({}, 'LuccaMediaBundle')|e('js') }}", "{{ 'message.media.titleUpload'|trans({}, 'LuccaMediaBundle')|e('js') }}");
+                            toastr.success("{{ 'message.media.successUpload'|trans({}, 'MediaBundle')|e('js') }}", "{{ 'message.media.titleUpload'|trans({}, 'MediaBundle')|e('js') }}");
                         } else
-                            toastr.error("{{ 'message.media.failedUpload'|trans({}, 'LuccaMediaBundle')|e('js') }}", "{{ 'message.media.titleUpload'|trans({}, 'LuccaMediaBundle')|e('js') }}");
+                            toastr.error("{{ 'message.media.failedUpload'|trans({}, 'MediaBundle')|e('js') }}", "{{ 'message.media.titleUpload'|trans({}, 'MediaBundle')|e('js') }}");
                     }
                 }
             });

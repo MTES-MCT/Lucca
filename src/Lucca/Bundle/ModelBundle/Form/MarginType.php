@@ -45,7 +45,7 @@ class MarginType extends AbstractType
 
         $resolver->setDefaults([
             'data_class' => Margin::class,
-            'translation_domain' => 'LuccaModelBundle',
+            'translation_domain' => 'ModelBundle',
             'required' => false
         ]);
     }

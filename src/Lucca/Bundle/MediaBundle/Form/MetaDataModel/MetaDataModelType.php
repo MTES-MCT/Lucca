@@ -36,7 +36,7 @@ class MetaDataModelType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => MetaDataModel::class,
-            'translation_domain' => 'LuccaMediaBundle',
+            'translation_domain' => 'MediaBundle',
             'required' => true
         ]);
     }

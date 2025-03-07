@@ -32,7 +32,7 @@ class CourierEditionJudicialType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => CourierEdition::class,
-            'translation_domain' => 'LuccaFolderBundle',
+            'translation_domain' => 'FolderBundle',
         ));
     }
 

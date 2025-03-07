@@ -1,4 +1,4 @@
-{% trans_default_domain 'LuccaMinuteBundle' %}
+{% trans_default_domain 'MinuteBundle' %}
 
 {# If control is not accepeted - then hide updating line #}
 {% set flagControlisAccepted = true %}
@@ -38,15 +38,15 @@
 
                 {% if updating.nature is constant('NATURE_AGGRAVATED', updating) %}
                     <span class="badge badge-danger float-right mr15">
-                        {{ updating.nature|trans({}, 'LuccaUpdateBundle') }}
+                        {{ updating.nature|trans({}, 'UpdateBundle') }}
                     </span>
                 {% elseif updating.nature is constant('NATURE_UNCHANGED', updating) %}
                     <span class="badge badge-info float-right mr15">
-                        {{ updating.nature|trans({}, 'LuccaUpdateBundle') }}
+                        {{ updating.nature|trans({}, 'UpdateBundle') }}
                     </span>
                 {% elseif updating.nature is constant('NATURE_REGULARIZED', updating) %}
                     <span class="badge badge-success float-right mr15">
-                        {{ updating.nature|trans({}, 'LuccaUpdateBundle') }}
+                        {{ updating.nature|trans({}, 'UpdateBundle') }}
                     </span>
                 {% endif %}
             </h4>
@@ -82,15 +82,15 @@
                             {{ 'label.nature_updating'|trans }}<br>
                             {% if updating.nature is constant('NATURE_AGGRAVATED', updating) %}
                                 <span class="badge badge-danger mr15">
-                                    {{ updating.nature|trans({}, 'LuccaUpdateBundle') }}
+                                    {{ updating.nature|trans({}, 'UpdateBundle') }}
                                 </span>
                             {% elseif updating.nature is constant('NATURE_UNCHANGED', updating) %}
                                 <span class="badge badge-info mr15">
-                                    {{ updating.nature|trans({}, 'LuccaUpdateBundle') }}
+                                    {{ updating.nature|trans({}, 'UpdateBundle') }}
                                 </span>
                             {% elseif updating.nature is constant('NATURE_REGULARIZED', updating) %}
                                 <span class="badge badge-success mr15">
-                                    {{ updating.nature|trans({}, 'LuccaUpdateBundle') }}
+                                    {{ updating.nature|trans({}, 'UpdateBundle') }}
                                 </span>
                             {% endif %}
                         </th>

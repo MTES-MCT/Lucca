@@ -2,7 +2,7 @@
 {% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig' %}
 
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaContentBundle' %}
+{% trans_default_domain 'ContentBundle' %}
 
 {#-- Parameters --#}
 {% set entity_trans='entity.page'|trans %}
@@ -101,7 +101,7 @@
         {#Collection form - media#}
         $('.media-collection').collection({
             allow_duplicate: false, allow_up: true, allow_down: true, allow_remove: false, add_at_the_end: true,
-            add: '<a href="#" class="btn btn-primary" title="{{ 'link.media.new'|trans({}, 'LuccaMediaBundle') }}"><span class="fas fa-plus"></span></a>',
+            add: '<a href="#" class="btn btn-primary" title="{{ 'link.media.new'|trans({}, 'MediaBundle') }}"><span class="fas fa-plus"></span></a>',
 
             {#Table display#}
             elements_selector: 'tr.media',

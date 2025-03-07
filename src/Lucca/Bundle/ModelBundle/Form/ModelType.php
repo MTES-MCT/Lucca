@@ -132,7 +132,7 @@ class ModelType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Model::class,
-            'translation_domain' => 'LuccaModelBundle',
+            'translation_domain' => 'ModelBundle',
             'required' => false,
             'simpleActionNeeded' => true
         ]);

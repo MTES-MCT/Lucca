@@ -32,7 +32,7 @@ class CourierOffenderEditionType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => CourierHumanEdition::class,
-            'translation_domain' => 'LuccaFolderBundle',
+            'translation_domain' => 'FolderBundle',
         ));
     }
 

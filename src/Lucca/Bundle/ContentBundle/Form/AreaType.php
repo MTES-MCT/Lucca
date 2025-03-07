@@ -37,7 +37,7 @@ class AreaType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Area::class,
-            'translation_domain' => 'LuccaContentBundle',
+            'translation_domain' => 'ContentBundle',
             'required' => false
         ]);
     }

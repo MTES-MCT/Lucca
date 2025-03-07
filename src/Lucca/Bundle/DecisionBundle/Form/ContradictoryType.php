@@ -49,7 +49,7 @@ class ContradictoryType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Contradictory::class,
-            'translation_domain' => 'LuccaDecisionBundle',
+            'translation_domain' => 'DecisionBundle',
             'required' => false
         ]);
     }

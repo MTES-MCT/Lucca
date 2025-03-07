@@ -2,7 +2,7 @@
 {% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/page.html.twig' %}
 
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaMediaBundle' %}
+{% trans_default_domain 'MediaBundle' %}
 
 {#-- Parameters --#}
 {% set entity_trans='entity.media'|trans %}
@@ -10,12 +10,12 @@
 
 
 {% block lucca_title %}
-    <title> {{ 'meta.company.project'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} |
-        {{ entity_trans }} - {{ 'title.index'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} </title>
+    <title> {{ 'meta.company.project'|trans({}, 'ThemeStreamDashboardUiKit') }} |
+        {{ entity_trans }} - {{ 'title.index'|trans({}, 'ThemeStreamDashboardUiKit') }} </title>
 {% endblock lucca_title %}
 
 {% block lucca_header %}
-    {{ 'title.manage'|trans({}, 'LuccaThemeStreamDashboardUiKit') }} : <b>{{ entity_trans }}</b>
+    {{ 'title.manage'|trans({}, 'ThemeStreamDashboardUiKit') }} : <b>{{ entity_trans }}</b>
 {% endblock lucca_header %}
 
 {% block lucca_page %}

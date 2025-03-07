@@ -2,7 +2,7 @@
 {% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
 
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaMediaBundle' %}
+{% trans_default_domain 'MediaBundle' %}
 
 {#-- Parameters --#}
 {% set entity_trans='entity.storager'|trans %}
@@ -10,7 +10,7 @@
 
 
 {% block lucca_header %}
-    {{ 'title.show'|trans({}, 'LuccaThemeStreamDashboardUiKit') }}
+    {{ 'title.show'|trans({}, 'ThemeStreamDashboardUiKit') }}
 {% endblock lucca_header %}
 
 {% block lucca_panels %}
@@ -22,7 +22,7 @@
         {#-- Embed view - params and block --#}
         {% embed "@LuccaMedia/Storager/Embed/_panel-storager.html.twig" with {'storager': storager } %}
             {#-- Translation domain embed --#}
-            {% trans_default_domain 'LuccaMediaBundle' %}
+            {% trans_default_domain 'MediaBundle' %}
 
             {% block lucca_embed_buttons_storager %}
                 <a class="btn btn-secondary btn-lg" href="{{ path('lucca_media_storager_index') }}"

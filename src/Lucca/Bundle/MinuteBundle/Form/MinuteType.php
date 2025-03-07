@@ -89,7 +89,7 @@ class MinuteType extends AbstractType
         $resolver->setRequired('adherent');
         $resolver->setDefaults(array(
             'data_class' => Minute::class,
-            'translation_domain' => 'LuccaMinuteBundle',
+            'translation_domain' => 'MinuteBundle',
         ));
     }
 

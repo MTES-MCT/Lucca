@@ -35,7 +35,7 @@ class IntercommunalType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Intercommunal::class,
-            'translation_domain' => 'LuccaParameterBundle',
+            'translation_domain' => 'ParameterBundle',
             'required' => true
         ]);
     }

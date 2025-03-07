@@ -2,7 +2,7 @@
 {% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig" %}
 
 {#-- Translation domain --#}
-{% trans_default_domain 'LuccaMediaBundle' %}
+{% trans_default_domain 'MediaBundle' %}
 
 {#-- Parameters --#}
 {% set entity_trans='entity.storager'|trans %}
@@ -14,7 +14,7 @@
     {#-- Embed view - params and block --#}
     {% embed "@LuccaMedia/Storager/Embed/_form-storager.html.twig" with { 'form': edit_form, 'storager': storager } %}
         {#-- Translation domain embed --#}
-        {% trans_default_domain 'LuccaMediaBundle' %}
+        {% trans_default_domain 'MediaBundle' %}
 
         {% block lucca_embed_buttons_storager %}
             <a class="btn btn-secondary btn-lg" href="{{ path('lucca_media_storager_index') }}"

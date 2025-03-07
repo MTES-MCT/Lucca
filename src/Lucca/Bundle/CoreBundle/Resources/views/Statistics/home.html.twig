@@ -1,5 +1,5 @@
 {% extends "@LuccaThemeStreamDashboardUiKit/Layout/layout.html.twig" %}
-{% trans_default_domain 'LuccaCoreBundle' %}
+{% trans_default_domain 'CoreBundle' %}
 {% block menuActive_statistics %}active{% endblock %}
 
 {% block lucca_title %}
@@ -19,7 +19,7 @@
 
             <div class="row">
                 <div class="col-12">
-                    <h2>{{ 'title.statistics'|trans({}, 'LuccaMinuteBundle') }}</h2>
+                    <h2>{{ 'title.statistics'|trans({}, 'MinuteBundle') }}</h2>
                 </div>
 
                 {#-- Param - Overall --#}
@@ -63,7 +63,7 @@
 
             <div class="row">
                 <div class="col-12">
-                    <h2>{{ 'title.statistics'|trans({}, 'LuccaAdherentBundle') }}</h2>
+                    <h2>{{ 'title.statistics'|trans({}, 'AdherentBundle') }}</h2>
                 </div>
 
                 {#-- Param - Adherent --#}
@@ -75,7 +75,7 @@
                                    class="link-unstyled text-primary">
                                     <em class="fas fa-5x far fa-user mb-lg"></em>
                                     <br>
-                                    <span class="h4">{{ 'label.adherents'|trans({}, 'LuccaAdherentBundle') }}</span>
+                                    <span class="h4">{{ 'label.adherents'|trans({}, 'AdherentBundle') }}</span>
                                     <br>
                                     <small class="text-muted">{{ 'label.seeDetails'|trans }} →</small>
                                 </a>

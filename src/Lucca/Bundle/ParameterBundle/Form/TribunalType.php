@@ -44,7 +44,7 @@ class TribunalType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Tribunal::class,
-            'translation_domain' => 'LuccaParameterBundle',
+            'translation_domain' => 'ParameterBundle',
             'required' => true
         ]);
     }
