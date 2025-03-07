@@ -125,11 +125,11 @@
                 <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
                     <li class="nav-item ml-lg-6 mb-2 mb-lg-0">
                         {% if true or app.user and is_granted('IS_AUTHENTICATED_FULLY') %}
-                            <a href="{{ path('lucca_core_dashboard') }}" class="btn btn-outline-primary mb-2 mr-2">
+                            <a href="{{ path('lucca_core_dashboard') }}" class="btn btn-lucca mb-2 mr-2">
                                 <i class="fa fa-user"></i> {{ 'header.mySpace'|trans }}
                             </a>
                         {% else %}
-                            <a href="{{ path('lucca_user_security_login') }}" class="btn btn-outline-primary mb-2 mr-2" >
+                            <a href="{{ path('lucca_user_security_login') }}" class="btn btn-lucca mb-2 mr-2" >
                                 <i class="fa fa-user"></i>{{ 'header.login'|trans }}
                             </a>
                         {% endif %}
@@ -140,8 +140,8 @@
     </nav>
 
     <div class="container">
-        <div class="d-flex justify-content-center position-relative mh-20rem py-11">
-            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+        <div class="row justify-content-center position-relative mh-20rem py-11">
+            <div class="col-lg-3 col-xs-4 col-12">
                 <div class="animated fadeInLeft">
                     <a href={{ 'setting.general.urlGouv.name'|setting }}>
                         <img src="{{ asset('assets/' ~ 'setting.general.departement.name'|setting ~ '/prefecture.jpg') }}"
@@ -150,9 +150,9 @@
                 </div>
             </div>
 
-            <div class="col-lg-6 col-md-3 col-sm-4 col-xs-12">
+            <div class="col-lg-6 col-12">
                 <div class="text-center animated fadeInLeft">
-                    <h1 class="main-title">
+                    <h1 class="main-title my-3">
                         {{ 'setting.general.app.name'| setting }}<br>
                         <span>{{ 'setting.general.catchphrase1.name'|setting }}</span><br>
                         <span>{{ 'setting.general.catchphrase2.name'|setting }}</span>
@@ -160,7 +160,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+            <div class="col-lg-3 col-xs-4 col-12">
                 <div class="animated fadeInRight">
                     {% if 'setting.general.app.name'| setting != '-' %}
                         <a href="{{ path('lucca_content_dashboard') }}">
@@ -233,7 +233,7 @@
 </main>
 
 <!-- Footer -->
-<footer class="bg-dark font-weight-light text-white-55 pt-11 pb-5">
+<footer class="bg-dark font-weight-light text-white-55 py-4">
     <div id="footerLogo"></div>
     <div class="container footer-v1">
         <div class="row margin-bottom-15 footer-light">
@@ -247,7 +247,7 @@
             {{ render(controller("Lucca\\Bundle\\ContentBundle\\Controller\\RenderController::footerAction")) }}
         </div>
         <hr class="my-5 opacity-10">
-        <div class="row">
+        <div class="row justify-content-between">
             <div class="col-md-7">
                 <p class="small font-weight-light mb-0">
                     <span>&copy; 2017 - {{ 'now'|date('Y') }} | {{ 'meta.lucca_long'|trans }}</span>

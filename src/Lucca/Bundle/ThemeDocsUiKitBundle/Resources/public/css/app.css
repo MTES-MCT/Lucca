@@ -16,14 +16,21 @@ header {
     border-bottom: 2px solid #F6BF49;
 }
 
-.main-title {
-    color: #555;
-    font-size: 2.5rem;
-    line-height: 35px;
+.headline {
+    display: block;
+    margin: 10px 0 25px 0;
+    border-bottom: 1px dotted #e4e9f0;
 }
-.main-title > span {
-    color: #777;
-    font-size: 2rem;
+
+.column:hover, .headline h2, .headline h3, .headline h4 {
+    border-color: #2B7D7C;
+}
+.headline h2, .headline h3, .headline h4 {
+    margin: 0 0 -2px 0;
+    padding-bottom: 5px;
+    display: inline-block;
+    border-bottom: 2px solid #72c02c;
+    border-bottom-color: rgb(114, 192, 44);
 }
 
 #footerLogo {
@@ -33,4 +40,27 @@ header {
     background-size: 20em;
     position: absolute;
     opacity: 0.5;
+}
+
+/**
+ * Lucca button
+ */
+.btn-lucca {
+    border: 0;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 400;
+    background-color: #2B7D7C;
+    position: relative;
+    white-space: nowrap;
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 0;
+}
+
+.btn-lucca:hover, .btn-lucca:focus, .btn-lucca:active {
+    color: #fff;
+    background-color: #F6BF49;
+    transition: all 0.3s ease-in-out;
 }

@@ -30,14 +30,14 @@ services:
     ## Manager
     #################################################################
 
-    ## Manager file to create Media
-    lucca.manager.file:
-        class: Lucca\Bundle\MediaBundle\Manager\FileManager
-        arguments:
-            - "@service_container"
-            - "@doctrine.orm.entity_manager"
-            - "@security.token_storage"
-            - "@lucca.namer.media"
+#    ## Manager file to create Media
+#    lucca.manager.file:
+#        class: Lucca\Bundle\MediaBundle\Manager\FileManager
+#        arguments:
+#            - "@service_container"
+#            - "@doctrine.orm.entity_manager"
+#            - "@security.token_storage"
+#            - "@lucca.namer.media"
 
     ## Decision maker - choose format file
     lucca.decision_maker.format:
@@ -75,17 +75,17 @@ services:
     ## Doctrine event listener
     lucca.event_listener.media.doctrine:
         class: Lucca\Bundle\MediaBundle\EventListener\DoctrineEventListener
-        arguments:
-            - "@lucca.manager.file"
         tags:
             - { name: doctrine.event_listener, event: preRemove }
+        arguments:
+          [ '@Lucca\Bundle\MediaBundle\Manager\FileManager' ]
 
     ## Manage Media passed in Form
     lucca.listener.form.media:
         class: Lucca\Bundle\MediaBundle\EventListener\MediaFormListener
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@lucca.manager.file'
+            - '@Lucca\Bundle\MediaBundle\Manager\FileManager'
             - '%env(resolve:LUCCA_UPLOAD_DIR)%'
         tags:
             - { name: kernel.event_listener, event: form.bind, method: onSubmit }
@@ -95,7 +95,7 @@ services:
         class: Lucca\Bundle\MediaBundle\EventListener\GalleryFormListener
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@lucca.manager.file'
+            - '@Lucca\Bundle\MediaBundle\Manager\FileManager'
             - '%env(resolve:LUCCA_UPLOAD_DIR)%'
         tags:
             - { name: kernel.event_listener, event: form.bind, method: onSubmit }
@@ -104,7 +104,7 @@ services:
     lucca.listener.form.dropzone:
         class: Lucca\Bundle\MediaBundle\EventListener\DropzoneFormListener
         arguments:
-            - '@lucca.manager.file'
+            - '@Lucca\Bundle\MediaBundle\Manager\FileManager'
             - '@doctrine.orm.entity_manager'
             - '%env(resolve:LUCCA_UPLOAD_DIR)%'
         tags:
