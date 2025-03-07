@@ -12,7 +12,6 @@ namespace Lucca\Bundle\DepartmentBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder,
     Symfony\Component\DependencyInjection\Loader,
-    Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface,
     Symfony\Component\Config\FileLocator,
     Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
@@ -20,7 +19,7 @@ use Lucca\Bundle\CoreBundle\DependencyInjection\Configuration;
 
 use Exception;
 
-class LuccaDepartmentExtension extends Extension implements PrependExtensionInterface
+class LuccaDepartmentExtension extends Extension
 {
     /**
      * Load configuration of this Bundle
@@ -28,33 +27,12 @@ class LuccaDepartmentExtension extends Extension implements PrependExtensionInte
      *
      * @throws Exception
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
-    }
-
-    /**
-     * Load Role Hierarchy in security applications
-     */
-    public function prepend(ContainerBuilder $container)
-    {
-        $container->prependExtensionConfig('security', array(
-            'role_hierarchy' => array(
-                'ROLE_ADHERENT' => 'ROLE_USER',
-
-                'ROLE_ADHERENT_READ' => 'ROLE_USER',
-                'ROLE_ADHERENT_WRITE' => 'ROLE_ADHERENT_READ',
-                'ROLE_ADHERENT_TOTAL' => 'ROLE_ADHERENT_WRITE',
-
-                'ROLE_DEPARTMENT_READ' => 'ROLE_USER',
-                'ROLE_DEPARTMENT_WRITE' => 'ROLE_DEPARTMENT_READ',
-                'ROLE_DEPARTMENT_TOTAL' => 'ROLE_DEPARTMENT_WRITE',
-
-            ),
-        ));
     }
 }

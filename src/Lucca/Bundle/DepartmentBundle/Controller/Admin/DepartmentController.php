@@ -45,7 +45,7 @@ class DepartmentController extends AbstractController
      * List of Department
      */
     #[Route(path: '/', name: 'lucca_department_admin_index', methods: ['GET'])]
-    #[IsGranted("ROLE_DEPARTMENT_READ")]
+    #[IsGranted("ROLE_SUPER_ADMIN")]
     public function indexAction(ManagerRegistry $doctrine): Response
     {
         $em = $doctrine->getManager();
@@ -63,7 +63,7 @@ class DepartmentController extends AbstractController
      * @return Response
      */
     #[Route(path: '/new', name: 'lucca_department_admin_new', defaults: ['_locale' => 'fr'], methods: ['GET', 'POST'])]
-    #[IsGranted("ROLE_DEPARTMENT_WRITE")]
+    #[IsGranted("ROLE_SUPER_ADMIN")]
     public function newAction(Request $request, ManagerRegistry $doctrine): Response
     {
         $department = new Department();
@@ -87,7 +87,7 @@ class DepartmentController extends AbstractController
      * Finds and displays a Department entity.
      */
     #[Route(path: '-{id}', name: 'lucca_department_admin_show', defaults: ['_locale' => 'fr'], methods: ['GET', 'POST'])]
-    #[IsGranted("ROLE_DEPARTMENT_READ")]
+    #[IsGranted("ROLE_SUPER_ADMIN")]
     public function showAction(Department $department): Response
     {
         $deleteForm = $this->createDeleteForm($department);
@@ -101,7 +101,7 @@ class DepartmentController extends AbstractController
      * Edits an existing Department entity.
      */
     #[Route(path: '-{id}/edit', name: 'lucca_department_admin_edit', defaults: ['_locale' => 'fr'], methods: ['GET', 'POST'])]
-    #[IsGranted("ROLE_DEPARTMENT_WRITE")]
+    #[IsGranted("ROLE_SUPER_ADMIN")]
     public function editAction(Request $request, Department $department, ManagerRegistry $doctrine): Response
     {
         $em = $doctrine->getManager();

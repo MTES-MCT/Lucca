@@ -16,14 +16,14 @@
         <a class="btn btn-default btn-lg" href="{{ path('lucca_department_admin_index') }}"
            title="{{ 'link.department.backList'|trans }}"><i class="fas fa-reply"></i></a>
 
-        {% if app.user and is_granted("ROLE_DEPARTMENT_WRITE") %}
+        {% if app.user and is_granted("ROLE_SUPER_ADMIN") %}
             <a class="btn btn-warning btn-lg"
                href="{{ path('lucca_department_admin_edit', { 'id': department.id }) }}"
                title="{{ 'link.department.edit'|trans }}"><i class="fas fa-pencil-alt"></i></a>
 
         {% endif %}
 
-        {% if app.user and (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_DEPARTMENT_TOTAL")) %}
+        {% if app.user and (is_granted("ROLE_SUPER_ADMIN")) %}
             {% if department.enable %}
                 <a href="{{ path('lucca_department_admin_disable', { 'id': department.id }) }}"
                    class="btn btn-primary btn-lg float-right" title="{{ 'link.department.disable'|trans }}">
