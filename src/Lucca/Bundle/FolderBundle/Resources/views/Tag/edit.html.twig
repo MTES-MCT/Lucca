@@ -90,7 +90,7 @@
 
 
 {% block lucca_js %}
-    {% include 'LuccaThemeAngleBundle:Modal:delete.html.twig' with {'id': tag.name, 'name': tag.name, 'delForm': delete_form} %}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': tag.name, 'name': tag.name, 'delForm': delete_form} %}
     {{ parent() }}
 
     <script src="{{ asset('plugins/summernote/summernote-bs4.js') }}"></script>

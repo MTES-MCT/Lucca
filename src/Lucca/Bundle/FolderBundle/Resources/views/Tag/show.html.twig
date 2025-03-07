@@ -121,6 +121,6 @@
 
 
 {% block lucca_js %}
-    {% include 'LuccaThemeAngleBundle:Modal:delete.html.twig' with {'id': tag.name, 'name': tag.name, 'delForm': delete_form} %}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': tag.name, 'name': tag.name, 'delForm': delete_form} %}
     {{ parent() }}
 {% endblock lucca_js %}

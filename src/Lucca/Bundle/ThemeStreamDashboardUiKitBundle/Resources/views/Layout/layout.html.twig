@@ -469,6 +469,10 @@
     <!-- Initialization  -->
     <script src="{{ asset('bundles/luccathemestreamdashboarduikit/js/sidebar-nav.js') }}"></script>
     <script src="{{ asset('bundles/luccathemestreamdashboarduikit/js/dashboard-page-scripts.js') }}"></script>
+
+    {#-- JS Routing --#}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 {% endblock lucca_js %}
 
 <script src="{{ asset('bundles/luccathemestreamdashboarduikit/js/main.js') }}"></script>
