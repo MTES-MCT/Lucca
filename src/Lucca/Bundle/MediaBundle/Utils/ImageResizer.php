@@ -34,7 +34,7 @@ readonly class ImageResizer
             return false;
         }
 
-        $filePath = $this->params->get('upload_directory') . $media->getFilePath();
+        $filePath = $this->params->get('lucca_media.upload_directory') . $media->getFilePath();
         $imageSize = getimagesize($filePath);
 
         $originalWidth = $imageSize[0];

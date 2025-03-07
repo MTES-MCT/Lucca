@@ -52,7 +52,6 @@ class Page implements LoggableInterface, MediaListAsyncInterface
     private string $slug;
 
     #[ORM\Column(length: 40, nullable: true)]
-    #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 40, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private ?string $icon = null;

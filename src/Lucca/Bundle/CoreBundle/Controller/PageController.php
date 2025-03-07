@@ -46,8 +46,8 @@ class PageController extends AbstractController
         $area = $this->em->getRepository(Area::class)->findDashboard(Area::POSI_ADMIN);
 
         return $this->render('@LuccaCore/Page/tools.html.twig', [
-            $user => 'user',
-            $area => 'area',
+            'user' => $user,
+            'area' => $area,
         ]);
     }
 

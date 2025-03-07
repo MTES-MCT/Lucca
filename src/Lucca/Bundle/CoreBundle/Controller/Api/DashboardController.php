@@ -235,15 +235,13 @@ class DashboardController extends AbstractController
     {
         $addr = $request->get('address');
         $displayResults = $request->get('displayResults');
-        $plot = new Plot();
-        $plot->setAddress($addr);
 
         /** Who is connected ;) */
         $adherent = $this->adherentFinder->whoAmI();
 
-        $this->geoLocator->addGeocodeFromAddress($plot);
+        $result = $this->geoLocator->getGeocodeFromAddress($addr);
 
-        if ($plot->getLatitude() === NULL || $plot->getLongitude() === NULL) {
+        if (!$result || $result['latitude'] === null || $result['longitude'] === null) {
             return new JsonResponse([
                 'success' => false,
                 'code' => 400,
@@ -251,8 +249,8 @@ class DashboardController extends AbstractController
             ], 400);
         }
 
-        $data['geoCode']['lat'] = $plot->getLatitude();
-        $data['geoCode']['lon'] = $plot->getLongitude();
+        $data['geoCode']['lat'] = $result['latitude'];
+        $data['geoCode']['lon'] = $result['longitude'];
 
         $radius = 0.02;
         $latMin = $data['geoCode']['lat'] - $radius;

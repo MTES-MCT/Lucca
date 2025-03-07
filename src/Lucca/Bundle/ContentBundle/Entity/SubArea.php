@@ -51,7 +51,6 @@ class SubArea implements LoggableInterface
     private Department $department;
 
     #[ORM\Column(length: 60, unique: true, nullable: true)]
-    #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 60, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private ?string $code = null;

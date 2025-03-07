@@ -187,7 +187,7 @@ readonly class FolderManager
      */
     public function replaceCustomTags($data): array|string
     {
-        $avoidBreakPageTags = explode(',', $this->params->get('avoid_break_page'));
+        $avoidBreakPageTags = explode(',', $this->params->get('lucca_folder.avoid_break_page'));
 
         /** Search if there is custom tag in the html */
         $startOffset = strpos($data, $avoidBreakPageTags[0]);

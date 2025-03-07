@@ -10,14 +10,15 @@
 
 namespace Lucca\Bundle\UserBundle\Repository;
 
-use Doctrine\ORM\{EntityRepository, NonUniqueResultException, QueryBuilder};
+use Doctrine\ORM\{NonUniqueResultException, QueryBuilder};
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\{PasswordUpgraderInterface, PasswordAuthenticatedUserInterface};
 
+use Lucca\Bundle\CoreBundle\Repository\LuccaRepository;
 use Lucca\Bundle\UserBundle\Entity\User;
 
-class UserRepository extends EntityRepository implements PasswordUpgraderInterface, UserLoaderInterface
+class UserRepository extends LuccaRepository implements PasswordUpgraderInterface, UserLoaderInterface
 {
     /**
      * Find User who can authenticated
@@ -109,8 +110,8 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
         }
 
         $user->setPassword($newHashedPassword);
-        $this->_em->persist($user);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
     }
 
     /*******************************************************************************************/
