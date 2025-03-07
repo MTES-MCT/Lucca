@@ -24,11 +24,11 @@ class BrowserDashboardType extends AbstractType
     {
         $builder
             ->add('dateStart', DateTimeType::class, options: array(
-                'label' => 'label.dateStart', 'widget' => 'single_text', 'format' => 'dd/MM/yyyy',
+                'label' => 'label.dateStart', 'widget' => 'single_text',
                 'input' => 'datetime', 'attr' => ['class' => 'date-picker']
             ))
             ->add('dateEnd', DateTimeType::class, [
-                'label' => 'label.dateEnd', 'widget' => 'single_text', 'format' => 'dd/MM/yyyy',
+                'label' => 'label.dateEnd', 'widget' => 'single_text',
                 'input' => 'datetime', 'attr' => ['class' => 'date-picker']
             ]);
     }

@@ -34,7 +34,7 @@ class DemolitionType extends AbstractType
             ->add('amountCompany', MoneyType::class, ['label' => 'label.amountCompany'])
             ->add('dateDemolition', DateType::class, [
                 'label' => 'label.dateDemolition', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
             ])
             ->add('bailif', TextType::class, ['label' => 'label.bailif'])
             ->add('amountBailif', MoneyType::class, ['label' => 'label.amountBailif'])

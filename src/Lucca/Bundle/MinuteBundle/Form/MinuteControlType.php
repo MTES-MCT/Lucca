@@ -43,7 +43,7 @@ class MinuteControlType extends AbstractType
             ))
             ->add('dateControl', DateType::class, array(
                 'label' => 'label.dateControl', 'attr' => array('class' => 'date-picker'),
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
             ))
             ->add('hourControl', TimeType::class, array(
                 'label' => 'label.hourControl',
@@ -51,19 +51,19 @@ class MinuteControlType extends AbstractType
             ))
             ->add('datePostal', DateType::class, array(
                 'label' => 'label.datePostal', 'attr' => array('class' => 'date-picker'),
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
             ))
             ->add('dateSended', DateType::class, array(
                 'label' => 'label.dateSended', 'attr' => array('class' => 'date-picker'),
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
             ))
             ->add('dateNotified', DateType::class, array(
                 'label' => 'label.dateNotified', 'attr' => array('class' => 'date-picker'),
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
             ))
             ->add('dateReturned', DateType::class, array(
                 'label' => 'label.dateReturned', 'attr' => array('class' => 'date-picker'),
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
             ))
             ->add('reason', ChoiceType::class, array(
                 'choices' => array(
@@ -76,7 +76,7 @@ class MinuteControlType extends AbstractType
             ))
             ->add('dateContact', DateType::class, array(
                 'label' => 'label.dateContact', 'attr' => array('class' => 'date-picker'),
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
             ))
             ->add('accepted', ChoiceType::class, array(
                 'choices' => array(

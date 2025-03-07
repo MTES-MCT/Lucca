@@ -30,20 +30,20 @@ class CommissionType extends AbstractType
         $builder
             ->add('dateHearing', DateType::class, [
                 'label' => 'label.dateHearing', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
             ])
             ->add('dateAdjournment', DateType::class, [
                 'label' => 'label.dateAdjournment', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
             ])
             ->add('dateDeliberation', DateType::class, [
                 'label' => 'label.dateDeliberation', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
             ])
             ->add('amountFine', MoneyType::class, ['label' => 'label.amountFine'])
             ->add('dateJudicialDesision', DateType::class, [
                 'label' => 'label.dateJudicialDesision', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
             ])
             ->add('statusDecision', ChoiceType::class, [
                 'choices' => [
@@ -57,7 +57,7 @@ class CommissionType extends AbstractType
             ->add('amountPenalty', MoneyType::class, ['label' => 'label.amountPenalty'])
             ->add('dateExecution', DateType::class, [
                 'label' => 'label.dateExecution', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
             ])
             ->add('restitution', TextareaType::class, ['label' => 'label.restitution',
                 'attr' => ['class' => 'summernote']]);

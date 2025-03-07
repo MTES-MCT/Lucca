@@ -35,7 +35,7 @@ class ClosureType extends AbstractType
             ))
             ->add('dateClosing', DateType::class, array(
                 'label' => 'label.dateClosing', 'attr' => array('class' => 'date-picker'),
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
             ))
             ->add('natureRegularized', ChoiceType::class, array(
                 'choices' => array(

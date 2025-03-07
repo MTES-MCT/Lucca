@@ -183,8 +183,10 @@
 
                     <div class="card-wrapper">
                         <div class="card-body">
-                            {% for control in minute.controls if control.type is constant('TYPE_FOLDER', control) %}
-                                {% include "@LuccaMinute/Control/frame.html.twig" with { 'control': control, 'frame_update': false } %}
+                            {% for control in minute.controls %}
+                                {% if control.type is constant('TYPE_FOLDER', control) %}
+                                    {% include "@LuccaMinute/Control/frame.html.twig" with { 'control': control, 'frame_update': false } %}
+                                {% endif %}
                             {% endfor %}
 
 
@@ -207,8 +209,10 @@
 
                     <div class="card-wrapper">
                         <div class="card-body">
-                            {% for folder in foldersF3 if folder.type is constant('TYPE_FOLDER', folder) %}
-                                {% include "@LuccaMinute/Folder/frame.html.twig" with { 'folder': folder } %}
+                            {% for folder in foldersF3 %}
+                                {% if folder.type is constant('TYPE_FOLDER', folder) %}
+                                    {% include "@LuccaMinute/Folder/frame.html.twig" with { 'folder': folder } %}
+                                {% endif %}
                             {% endfor %}
 
                             {% if app.user and is_granted("ROLE_LUCCA") and not closure %}
@@ -230,8 +234,8 @@
 
                     <div class="card-wrapper">
                         <div class="card-body">
-                            {% for folder in foldersF3 if folder.type is constant('TYPE_FOLDER', folder) %}
-                                {% if folder.courier %}
+                            {% for folder in foldersF3 %}
+                                {% if folder.type is constant('TYPE_FOLDER', folder) and folder.courier %}
                                     {% include "@LuccaMinute/Courier/frame.html.twig" with { 'courier': folder.courier, 'frame_update': false } %}
                                 {% endif %}
                             {% endfor %}

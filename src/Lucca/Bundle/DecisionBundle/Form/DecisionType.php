@@ -57,11 +57,11 @@ class DecisionType extends AbstractType
             ])
             ->add('dateAskCassation', DateType::class, [
                 'label' => 'label.dateAskCassation', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
             ])
             ->add('dateAnswerCassation', DateType::class, [
                 'label' => 'label.dateAnswerCassation', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
             ])
             ->add('statusCassation', ChoiceType::class, [
                 'label' => 'label.statusCassation', 'choices' => [
@@ -75,11 +75,11 @@ class DecisionType extends AbstractType
             /** Europe */
             ->add('dateReferralEurope', DateType::class, [
                 'label' => 'label.dateReferralEurope', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
             ])
             ->add('answerEurope', DateType::class, [
                 'label' => 'label.answerEurope', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
             ])
             ->add('dataEurope', TextareaType::class, ['label' => 'label.dataEurope', 'required' => false,
                 'attr' => ['class' => 'summernote']])
@@ -87,11 +87,11 @@ class DecisionType extends AbstractType
             ->add('amountPenaltyDaily', MoneyType::class, ['label' => 'label.amountPenaltyDaily', 'required' => false])
             ->add('dateStartRecovery', DateType::class, [
                 'label' => 'label.dateStartRecovery', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
             ])
             ->add('dateNoticeDdtm', DateType::class, [
                 'label' => 'label.dateNoticeDdtm', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
             ])
             ->add('penalties', CollectionType::class, [
                 'label' => false, 'entry_type' => PenaltyType::class, 'prototype' => true,

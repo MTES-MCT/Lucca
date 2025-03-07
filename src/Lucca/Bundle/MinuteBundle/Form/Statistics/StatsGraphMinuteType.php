@@ -29,11 +29,11 @@ class StatsGraphMinuteType extends AbstractType
     {
         $builder
             ->add('dateStart', DateTimeType::class, array(
-                'label' => 'label.dateStartOpening', 'widget' => 'single_text', 'format' => 'dd/MM/yyyy',
+                'label' => 'label.dateStartOpening', 'widget' => 'single_text',
                 'input' => 'datetime', 'attr' => array('class' => 'date-picker')
             ))
             ->add('dateEnd', DateTimeType::class, array(
-                'label' => 'label.dateEndOpening', 'widget' => 'single_text', 'format' => 'dd/MM/yyyy',
+                'label' => 'label.dateEndOpening', 'widget' => 'single_text',
                 'input' => 'datetime', 'attr' => array('class' => 'date-picker')
             ))
             ->add('adherent', EntityType::class, array(

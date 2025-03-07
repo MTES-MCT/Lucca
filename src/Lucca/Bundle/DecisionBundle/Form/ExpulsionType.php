@@ -32,19 +32,19 @@ class ExpulsionType extends AbstractType
             ->add('amountDelivrery', MoneyType::class, ['label' => 'label.amountDelivrery'])
             ->add('dateHearing', DateType::class, [
                 'label' => 'label.dateHearing', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
             ])
             ->add('dateAdjournment', DateType::class, [
                 'label' => 'label.dateAdjournment', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
             ])
             ->add('dateDeliberation', DateType::class, [
                 'label' => 'label.dateDeliberation', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
             ])
             ->add('dateJudicialDesision', DateType::class, [
                 'label' => 'label.dateJudicialDesision', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
             ])
             ->add('statusDecision', TextType::class, ['label' => 'label.statusDecision'])
             ->add('comment', TextareaType::class, ['label' => 'label.comment',

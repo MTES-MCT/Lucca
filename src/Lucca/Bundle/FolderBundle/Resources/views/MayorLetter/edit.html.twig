@@ -113,11 +113,11 @@
     {{ parent() }}
 
     {#-- Plugin - DataTables --#}
-    {% include "@LuccaThemeAngle/Plugins/datatables.css.html.twig" %}
+    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/datatables.css.html.twig" %}
     <link rel="stylesheet" href="{{ asset('plugins/dataTables/Select-1.3.3/select.dataTables.min.css') }}"/>
 
     {# Datepicker #}
-    <link href="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
+    <link href="{{ asset('plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
           rel="stylesheet">
     <link href="{{ asset('plugins/material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}"
           rel="stylesheet">
@@ -129,7 +129,7 @@
     {{ parent() }}
 
     {#-- Plugin - DataTables --#}
-    {% include "LuccaThemeAngleBundle:Plugins:datatables.js.html.twig" with { 'params' :
+    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/datatables.js.html.twig" with { 'params' :
         { 'id_datatable': '.dataTables', 'pageLength': 10, 'hasSelector': true }
     } %}
     <script src="{{ asset('plugins/dataTables/Select-1.3.3/dataTables.select.min.js') }}"></script>

@@ -27,15 +27,15 @@ class ContradictoryType extends AbstractType
         $builder
             ->add('dateNoticeDdtm', DateType::class, [
                 'label' => 'label.dateNoticeDdtm', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
             ])
             ->add('dateExecution', DateType::class, [
                 'label' => 'label.dateExecution', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
             ])
             ->add('dateAnswer', DateType::class, [
                 'label' => 'label.dateAnswer', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
             ])
             ->add('answer', TextareaType::class, ['label' => 'label.answer',
                 'attr' => ['class' => 'summernote'], 'required' => false
