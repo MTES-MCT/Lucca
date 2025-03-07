@@ -43,7 +43,6 @@ class MinuteBrowserType extends AbstractType
             ->add('dateStart', DateTimeType::class, array(
                 'label' => 'label.dateStart',
                 'widget' => 'single_text',
-                'format' => 'dd/MM/yyyy',
                 'input' => 'datetime',
                 'required' => false,
                 'attr' => array(
@@ -53,7 +52,6 @@ class MinuteBrowserType extends AbstractType
             ->add('dateEnd', DateTimeType::class, array(
                 'label' => 'label.dateEnd',
                 'widget' => 'single_text',
-                'format' => 'dd/MM/yyyy',
                 'input' => 'datetime',
                 'required' => false,
                 'attr' => array(

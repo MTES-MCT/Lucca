@@ -4,12 +4,12 @@
 {% set entity_trans='entity.user'|trans %}
 
 
-{% block menuActive_user %}class="active"{% endblock menuActive_user %}
+{% block menuActive_user %}active{% endblock menuActive_user %}
 
 
 {% block lucca_list %}
 
-    <table class="table table-striped table-hover dataTables responsive">
+    <table class="table table-hover w-100 responsive">
         <thead>
         <tr>
             <th><i class="fa fa-user"></i> {{ 'label.username'|trans }}</th>

@@ -44,7 +44,7 @@ class MinuteType extends AbstractType
             ])
             ->add('dateComplaint', DateType::class, array(
                 'label' => 'label.dateComplaint', 'attr' => array('class' => 'date-picker'),
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => false,
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => false,
             ))
             ->add('nameComplaint', TextType::class, array('label' => 'label.nameComplaint', 'required' => false))
             ->add('agent', EntityType::class, array(

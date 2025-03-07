@@ -30,11 +30,11 @@ class LiquidationType extends AbstractType
             ->add('amountPenalty', MoneyType::class, ['label' => 'label.amountPenalty'])
             ->add('dateStart', DateType::class, [
                 'label' => 'label.dateStart', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
             ])
             ->add('dateEnd', DateType::class, [
                 'label' => 'label.dateEnd', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
             ]);
 
         /** Data Transformer */

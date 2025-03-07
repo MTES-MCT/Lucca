@@ -4,7 +4,7 @@
 {% set entity_trans='entity.mayorLetter'|trans %}
 
 
-{% block menuActive_mayorLetter %}class="active"{% endblock %}
+{% block menuActive_mayorLetter %}active{% endblock %}
 
 
 {% block lucca_page %}
@@ -70,7 +70,7 @@
 
                         </div>
 
-                        <table class="table table-striped table-hover dataTables responsive">
+                        <table class="table table-hover w-100 responsive">
                             <thead>
                             <tr>
                                 <th></th>
@@ -113,11 +113,11 @@
     {{ parent() }}
 
     {#-- Plugin - DataTables --#}
-    {% include "@LuccaThemeAngle/Plugins/datatables.css.html.twig" %}
+    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/datatables.css.html.twig" %}
     <link rel="stylesheet" href="{{ asset('plugins/dataTables/Select-1.3.3/select.dataTables.min.css') }}"/>
 
     {# Datepicker #}
-    <link href="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
+    <link href="{{ asset('plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
           rel="stylesheet">
     <link href="{{ asset('plugins/material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}"
           rel="stylesheet">

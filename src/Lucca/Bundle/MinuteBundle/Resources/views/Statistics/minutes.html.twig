@@ -1,6 +1,6 @@
 {% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/page.html.twig' %}
 {% trans_default_domain 'LuccaMinuteBundle' %}
-{% block menuActive_statistics %}class="active"{% endblock %}
+{% block menuActive_statistics %}active{% endblock %}
 
 {% block lucca_title %}
     <title>{{ 'setting.general.app.name'| setting({}, 'LuccaCoreBundle') }}
@@ -92,7 +92,7 @@
 
             <div class="card-wrapper">
                 <div class="card-body">
-                    <table class="table table-striped table-hover dataTables responsive">
+                    <table class="table table-hover w-100 responsive">
                         <thead>
                         <tr>
                             <th>{{ 'label.num'|trans }}</th>

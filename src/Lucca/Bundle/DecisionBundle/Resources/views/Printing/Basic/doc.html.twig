@@ -2,7 +2,7 @@
 {% trans_default_domain 'DecisionBundle' %}
 
 {% set entity_trans='entity.folder'|trans %}
-{% block menuActive_minute %} class="active"{% endblock %}
+{% block menuActive_minute %}active{% endblock %}
 
 {% if 'setting.folder.useRefreshAgentForRefreshSignature.name'|setting and update.controls is defined and update.controls|length == 1 %}
     {% set agent = update.controls[0].agent %}

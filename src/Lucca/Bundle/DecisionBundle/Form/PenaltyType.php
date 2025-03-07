@@ -28,7 +28,7 @@ class PenaltyType extends AbstractType
         $builder
             ->add('dateFolder', DateType::class, [
                 'label' => 'label.dateFolder6', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'input' => 'datetime', 'required' => true
+                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
             ])
             ->add('preparedBy', TextType::class, ['label' => 'label.preparedBy'])
             ->add('nature', ChoiceType::class, [

@@ -46,7 +46,7 @@ class MayorLetterType extends AbstractType
             ->add('address', TextareaType::class, array('label' => 'label.addressMayor',
                 'attr' => array('class' => 'js-addressMayor')))
             ->add('dateSended', DateType::class, array(
-                'label' => 'label.dateSended', 'widget' => 'single_text', 'format' => 'dd/MM/yyyy',
+                'label' => 'label.dateSended', 'widget' => 'single_text',
                 'input' => 'datetime', 'required' => false,
                 'attr' => array('class' => 'date-picker js-dateSended')
             ))

@@ -32,11 +32,11 @@ class BrowserMinuteType extends AbstractType
     {
         $builder
             ->add('dateStart', DateTimeType::class, array(
-                'label' => 'label.dateStartOpening', 'widget' => 'single_text', 'format' => 'dd/MM/yyyy',
+                'label' => 'label.dateStartOpening', 'widget' => 'single_text',
                 'input' => 'datetime', 'attr' => array('class' => 'date-picker'), 'required' => false
             ))
             ->add('dateEnd', DateTimeType::class, array(
-                'label' => 'label.dateEndOpening', 'widget' => 'single_text', 'format' => 'dd/MM/yyyy',
+                'label' => 'label.dateEndOpening', 'widget' => 'single_text',
                 'input' => 'datetime', 'attr' => array('class' => 'date-picker'), 'required' => false
             ))
             ->add('adherent', EntityType::class, array(
@@ -132,11 +132,11 @@ class BrowserMinuteType extends AbstractType
                 }
             ))
             ->add('dateStartClosure', DateTimeType::class, array(
-                'label' => 'label.dateStartClosure', 'widget' => 'single_text', 'format' => 'dd/MM/yyyy',
+                'label' => 'label.dateStartClosure', 'widget' => 'single_text',
                 'input' => 'datetime', 'attr' => array('class' => 'date-picker'), 'required' => false
             ))
             ->add('dateEndClosure', DateTimeType::class, array(
-                'label' => 'label.dateEndClosure', 'widget' => 'single_text', 'format' => 'dd/MM/yyyy',
+                'label' => 'label.dateEndClosure', 'widget' => 'single_text',
                 'input' => 'datetime', 'attr' => array('class' => 'date-picker'), 'required' => false
             ));
     }
