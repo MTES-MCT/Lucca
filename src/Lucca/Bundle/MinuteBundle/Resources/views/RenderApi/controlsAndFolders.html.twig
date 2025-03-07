@@ -17,7 +17,7 @@
         <strong>{{ 'title.folder_historic'|trans }}</strong>
 
         {% for folder in loopFolders %}
-            {% include "@LuccaMinute/Folder/frameNoAction.html.twig" with { 'folder': folder } %}
+            {% include "@LuccaFolder/Folder/frameNoAction.html.twig" with { 'folder': folder } %}
         {% endfor %}
     {% endif %}
 </div> {#-- End Panel - Folders --#}

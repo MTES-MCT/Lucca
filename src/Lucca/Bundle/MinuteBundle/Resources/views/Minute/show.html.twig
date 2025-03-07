@@ -211,7 +211,7 @@
                         <div class="card-body">
                             {% for folder in foldersF3 %}
                                 {% if folder.type is constant('TYPE_FOLDER', folder) %}
-                                    {% include "@LuccaMinute/Folder/frame.html.twig" with { 'folder': folder } %}
+                                    {% include "@LuccaFolder/Folder/frame.html.twig" with { 'folder': folder } %}
                                 {% endif %}
                             {% endfor %}
 
@@ -236,7 +236,7 @@
                         <div class="card-body">
                             {% for folder in foldersF3 %}
                                 {% if folder.type is constant('TYPE_FOLDER', folder) and folder.courier %}
-                                    {% include "@LuccaMinute/Courier/frame.html.twig" with { 'courier': folder.courier, 'frame_update': false } %}
+                                    {% include "@LuccaFolder/Courier/frame.html.twig" with { 'courier': folder.courier, 'frame_update': false } %}
                                 {% endif %}
                             {% endfor %}
                         </div>

@@ -56,7 +56,7 @@ class FolderSignedController extends AbstractController
             ]);
         }
 
-        return $this->render('@LuccaMinute/FolderSigned/ByFolder/new.html.twig', [
+        return $this->render('@LuccaFolder/FolderSigned/ByFolder/new.html.twig', [
             'minute' => $minute,
             'folder' => $folder,
             'form' => $form->createView(),
@@ -88,7 +88,7 @@ class FolderSignedController extends AbstractController
             ]);
         }
 
-        return $this->render('@LuccaMinute/FolderSigned/ByFolder/edit.html.twig', [
+        return $this->render('@LuccaFolder/FolderSigned/ByFolder/edit.html.twig', [
             'minute' => $minute,
             'folder' => $folder,
             'edit_form' => $editForm->createView(),

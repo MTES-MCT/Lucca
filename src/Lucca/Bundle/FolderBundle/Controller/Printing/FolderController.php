@@ -75,7 +75,7 @@ class FolderController extends AbstractController
 
         /** Step 3 : Create html */
         try {
-            $html = $this->renderView('@LuccaMinute/Folder/Printing/Basic/doc_print.html.twig', [
+            $html = $this->renderView('@LuccaFolder/Folder/Printing/Basic/doc_print.html.twig', [
                 'model' => $model, 'minute' => $minute, 'adherent' => $minute->getAdherent(), 'folder' => $folder, 'update' => $update, 'isPreprint' => $isPrePrint
             ]);
         } catch (Error $twig_Error) {

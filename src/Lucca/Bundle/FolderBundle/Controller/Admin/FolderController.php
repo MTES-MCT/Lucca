@@ -309,7 +309,7 @@ class FolderController extends AbstractController
             ]);
         }
 
-        return $this->render('@LuccaMinute/Folder/edit.html.twig', [
+        return $this->render('@LuccaFolder/Folder/edit.html.twig', [
             'folder' => $folder,
             'minute' => $minute,
             'adherent' => $minute->getAdherent(),
