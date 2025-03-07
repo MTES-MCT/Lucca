@@ -263,7 +263,12 @@ a:hover,
  * Title
  ********************/
 .main-title {
-    font-size: 3em;
+    line-height: 35px;
+    font-size: 2.5em;
+}
+.main-title > span {
+    color: #777;
+    font-size: 2rem;
 }
 
 /********************
