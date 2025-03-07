@@ -12,7 +12,7 @@ namespace Lucca\Bundle\MinuteBundle\Form;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
-use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, DateTimeType, TextType};
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, DateType, TextType};
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -40,23 +40,17 @@ class MinuteBrowserType extends AbstractType
         $adherentIntercommunals = $options['adherent_intercommunals'];
 
         $builder
-            ->add('dateStart', DateTimeType::class, array(
+            ->add('dateStart', DateType::class, array(
                 'label' => 'label.dateStart',
                 'widget' => 'single_text',
                 'input' => 'datetime',
-                'required' => false,
-                'attr' => array(
-                    'class' => 'date-picker'
-                )
+                'required' => false
             ))
-            ->add('dateEnd', DateTimeType::class, array(
+            ->add('dateEnd', DateType::class, array(
                 'label' => 'label.dateEnd',
                 'widget' => 'single_text',
                 'input' => 'datetime',
-                'required' => false,
-                'attr' => array(
-                    'class' => 'date-picker'
-                )
+                'required' => false
             ))
             ->add('num', TextType::class, array(
                     'label' => 'label.num',

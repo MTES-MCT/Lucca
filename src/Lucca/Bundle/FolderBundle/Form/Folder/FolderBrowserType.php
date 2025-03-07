@@ -49,19 +49,13 @@ class FolderBrowserType extends AbstractType
                 'label' => 'label.dateStart',
                 'widget' => 'single_text',
                 'input' => 'datetime',
-                'required' => false,
-                'attr' => array(
-                    'class' => 'date-picker'
-                )
+                'required' => false
             ))
             ->add('dateEnd', DateTimeType::class, array(
                 'label' => 'label.dateEnd',
                 'widget' => 'single_text',
                 'input' => 'datetime',
-                'required' => false,
-                'attr' => array(
-                    'class' => 'date-picker'
-                )
+                'required' => false
             ))
             ->add('num', TextType::class, array(
                     'label' => 'label.num',
