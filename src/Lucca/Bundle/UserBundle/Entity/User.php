@@ -83,7 +83,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Plain password. Used for model validation. Must not be persisted.
      */
-    private ?string $plainPassword;
+    private ?string $plainPassword = null;
 
     #[ORM\Column(name: 'last_login', nullable: true)]
     private ?DateTime $lastLogin = null;

@@ -71,7 +71,6 @@ class Agent implements LoggableInterface
     private ?Tribunal $tribunal = null;
 
     #[ORM\Column(length: 25, nullable: true)]
-    #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 25, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private ?string $commission = null;
