@@ -199,7 +199,7 @@ class MediaExtension extends AbstractExtension
          * Example:
          * http://lucca.code/app_dev.php/media/show/61af755035d80_le-plan-local-durbanisme-1248x703-jpg -> /var/www/html/lucca.numeric-wave.io/../lucca.numeric-wave.doc/Media/2021/49/61af755035d80_le-plan-local-durbanisme-1248x703-jpg
          */
-        return $this->params->get('upload_directory') . $media->getFilePath();
+        return $this->params->get('lucca_media.upload_directory') . $media->getFilePath();
     }
 
     /**
@@ -262,7 +262,7 @@ class MediaExtension extends AbstractExtension
      */
     public function getImagePdf(Media $media, $width = null, $class = null): string
     {
-        $url = $this->params->get('upload_directory') . '/' . $media->getFilePath();
+        $url = $this->params->get('lucca_media.upload_directory') . '/' . $media->getFilePath();
 
         if ($width !== null) {
             $url .= '?width=' . $width;
@@ -288,7 +288,7 @@ class MediaExtension extends AbstractExtension
      */
     public function localPathFormatter(string $p_text): string
     {
-        return $this->pathFormatter->formatText($p_text, "PDF", $this->params->get('upload_directory'));
+        return $this->pathFormatter->formatText($p_text, "PDF", $this->params->get('lucca_media.upload_directory'));
     }
 
     public function getName(): string
