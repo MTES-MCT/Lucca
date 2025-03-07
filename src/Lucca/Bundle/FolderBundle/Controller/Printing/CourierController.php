@@ -50,6 +50,7 @@ class CourierController extends AbstractController
      *
      * @throws Exception
      */
+    #[Route(path: '-{id}/offender-print', name: 'lucca_courier_offender_print', methods: ['GET', 'POST'])]
     #[Route(path: '-{id}/offender-preprint', name: 'lucca_courier_offender_preprint', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_LUCCA')]
     public function offenderPrintAction(
@@ -163,7 +164,7 @@ class CourierController extends AbstractController
                 /** Create the model option in loop in order to be able to interact with header */
                 $options = $this->pagePrinter->createModelOption($model, $var, $adherent);
 
-                $html = $this->renderView('@LuccaMinute/Courier/Printing/Basic/offender_edition_print.html.twig', [
+                $html = $this->renderView('@LuccaFolder/Courier/Printing/Basic/offender_edition_print.html.twig', [
                     'model' => $model, 'minute' => $minute, 'adherent' => $minute->getAdherent(),
                     'courier' => $courier, 'edition' => $edition, 'isPreprint' => $isPrePrint,
                 ]);
@@ -201,7 +202,7 @@ class CourierController extends AbstractController
                 $options = $this->pagePrinter->createModelOption($model, $var, $adherent);
 
                 /** Create html for current human */
-                $html = $this->renderView('@LuccaMinute/Courier/Printing/Basic/offender_basic_print.html.twig', [
+                $html = $this->renderView('@LuccaFolder/Courier/Printing/Basic/offender_basic_print.html.twig', [
                     'model' => $model, 'minute' => $minute, 'adherent' => $minute->getAdherent(),
                     'courier' => $courier, 'human' => $human, 'isPreprint' => $isPrePrint,
                 ]);
@@ -282,7 +283,7 @@ class CourierController extends AbstractController
         }
 
         /** Step 3 : Create html */
-        $html = $this->renderView('@LuccaMinute/Courier/Printing/Basic/judicial_print.html.twig', [
+        $html = $this->renderView('@LuccaFolder/Courier/Printing/Basic/judicial_print.html.twig', [
             'model' => $model, 'minute' => $minute, 'adherent' => $minute->getAdherent(), 'courier' => $courier, 'isPreprint' => $isPrePrint
         ]);
 
@@ -377,7 +378,7 @@ class CourierController extends AbstractController
             return $this->redirectToRoute('lucca_minute_show', ['id' => $minute->getId()]);
         }
 
-        $html = $this->renderView('@LuccaMinute/Courier/Printing/Basic/ddtm_print.html.twig', [
+        $html = $this->renderView('@LuccaFolder/Courier/Printing/Basic/ddtm_print.html.twig', [
             'model' => $model, 'minute' => $minute, 'adherent' => $minute->getAdherent(), 'courier' => $courier, 'isPreprint' => $isPrePrint
         ]);
 

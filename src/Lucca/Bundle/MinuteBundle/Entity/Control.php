@@ -458,7 +458,7 @@ class Control implements LoggableInterface
         $this->humansByMinute->removeElement($humansByMinute);
     }
 
-    public function getHumansByMinute(): ArrayCollection
+    public function getHumansByMinute(): Collection
     {
         return $this->humansByMinute;
     }
@@ -475,7 +475,7 @@ class Control implements LoggableInterface
         $this->humansByControl->removeElement($humansByControl);
     }
 
-    public function getHumansByControl(): ArrayCollection
+    public function getHumansByControl(): Collection
     {
         return $this->humansByControl;
     }
@@ -504,7 +504,7 @@ class Control implements LoggableInterface
         $this->agentAttendants->removeElement($agentAttendant);
     }
 
-    public function getAgentAttendants(): ArrayCollection
+    public function getAgentAttendants(): Collection
     {
         return $this->agentAttendants;
     }
@@ -514,7 +514,7 @@ class Control implements LoggableInterface
         $this->editions->removeElement($edition);
     }
 
-    public function getEditions(): ArrayCollection
+    public function getEditions(): Collection
     {
         return $this->editions;
     }

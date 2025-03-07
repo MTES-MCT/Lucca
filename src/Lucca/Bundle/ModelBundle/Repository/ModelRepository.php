@@ -62,7 +62,7 @@ class ModelRepository extends LuccaRepository
      * @throws NonUniqueResultException
      */
     public function findByDocument(string $document, Adherent $p_adherent = null, Service $p_service = null,
-                                   Intercommunal $p_intercommunal = null, Town $p_town = null): Model
+                                   Intercommunal $p_intercommunal = null, Town $p_town = null): ?Model
     {
         $qb = $this->queryModel();
 
