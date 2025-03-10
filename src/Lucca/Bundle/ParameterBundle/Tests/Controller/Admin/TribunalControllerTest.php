@@ -35,8 +35,8 @@ class TribunalControllerTest extends BasicLuccaTestCase
             new UrlTest($router->generate('lucca_tribunal_new')),
             new UrlTest($router->generate('lucca_tribunal_show', ['id' => $tribunal->getId()])),
             new UrlTest($router->generate('lucca_tribunal_edit', ['id' => $tribunal->getId()])),
-            new UrlTest($router->generate('lucca_tribunal_enable', ['id' => $tribunal->getId()])), // disable
-            new UrlTest($router->generate('lucca_tribunal_enable', ['id' => $tribunal->getId()])),
+            new UrlTest($router->generate('lucca_tribunal_enable', ['id' => $tribunal->getId()]), 302, 302), // disable
+            new UrlTest($router->generate('lucca_tribunal_enable', ['id' => $tribunal->getId()]), 302, 302),
         ];
     }
 }

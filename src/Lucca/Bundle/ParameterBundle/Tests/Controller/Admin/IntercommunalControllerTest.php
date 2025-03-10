@@ -35,8 +35,8 @@ class IntercommunalControllerTest extends BasicLuccaTestCase
             new UrlTest($router->generate('lucca_intercommunal_new')),
             new UrlTest($router->generate('lucca_intercommunal_show', ['id' => $intercommunal->getId()])),
             new UrlTest($router->generate('lucca_intercommunal_edit', ['id' => $intercommunal->getId()])),
-            new UrlTest($router->generate('lucca_intercommunal_enable', ['id' => $intercommunal->getId()])), // disable
-            new UrlTest($router->generate('lucca_intercommunal_enable', ['id' => $intercommunal->getId()])),
+            new UrlTest($router->generate('lucca_intercommunal_enable', ['id' => $intercommunal->getId()]), 302, 302), // disable
+            new UrlTest($router->generate('lucca_intercommunal_enable', ['id' => $intercommunal->getId()]), 302, 302),
         ];
     }
 }

@@ -35,8 +35,8 @@ class ChecklistControllerTest extends BasicLuccaTestCase
             new UrlTest($router->generate('lucca_checklist_new')),
             new UrlTest($router->generate('lucca_checklist_show', ['id' => $checklist->getId()])),
             new UrlTest($router->generate('lucca_checklist_edit', ['id' => $checklist->getId()])),
-            new UrlTest($router->generate('lucca_checklist_enable', ['id' => $checklist->getId()])), // disable
-            new UrlTest($router->generate('lucca_checklist_enable', ['id' => $checklist->getId()])),
+            new UrlTest($router->generate('lucca_checklist_enable', ['id' => $checklist->getId()]), 302, 302), // disable
+            new UrlTest($router->generate('lucca_checklist_enable', ['id' => $checklist->getId()]), 302, 302),
         ];
     }
 }

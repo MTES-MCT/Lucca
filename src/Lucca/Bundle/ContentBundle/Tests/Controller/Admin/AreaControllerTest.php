@@ -35,8 +35,8 @@ class AreaControllerTest extends BasicLuccaTestCase
             new UrlTest($router->generate('lucca_area_new')),
             new UrlTest($router->generate('lucca_area_show', ['id' => $area->getId()])),
             new UrlTest($router->generate('lucca_area_edit', ['id' => $area->getId()])),
-            new UrlTest($router->generate('lucca_area_enable', ['id' => $area->getId()])), // disable
-            new UrlTest($router->generate('lucca_area_enable', ['id' => $area->getId()])),
+            new UrlTest($router->generate('lucca_area_enable', ['id' => $area->getId()]), 302, 302), // disable
+            new UrlTest($router->generate('lucca_area_enable', ['id' => $area->getId()]), 302, 302),
         ];
     }
 }

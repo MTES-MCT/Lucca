@@ -33,9 +33,10 @@ class AnnexesControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
+            // see setting.module.annexes.name
             new UrlTest($router->generate('lucca_annexes_edit', [
                 'minute_id' => $folder->getMinute()->getId(), 'folder_id' => $folder->getId(),
-            ])),
+            ]), 302, 302),
         ];
     }
 }

@@ -35,8 +35,8 @@ class ServiceControllerTest extends BasicLuccaTestCase
             new UrlTest($router->generate('lucca_service_new')),
             new UrlTest($router->generate('lucca_service_show', ['id' => $service->getId()])),
             new UrlTest($router->generate('lucca_service_edit', ['id' => $service->getId()])),
-            new UrlTest($router->generate('lucca_service_enable', ['id' => $service->getId()])), // disable
-            new UrlTest($router->generate('lucca_service_enable', ['id' => $service->getId()])),
+            new UrlTest($router->generate('lucca_service_enable', ['id' => $service->getId()]), 302, 302), // disable
+            new UrlTest($router->generate('lucca_service_enable', ['id' => $service->getId()]), 302, 302),
         ];
     }
 }

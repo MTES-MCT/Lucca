@@ -35,8 +35,8 @@ class ModelControllerTest extends BasicLuccaTestCase
             new UrlTest($router->generate('lucca_model_new')),
             new UrlTest($router->generate('lucca_model_show', ['id' => $model->getId()])),
             new UrlTest($router->generate('lucca_model_edit', ['id' => $model->getId()])),
-            new UrlTest($router->generate('lucca_model_enable', ['id' => $model->getId()])), // disable
-            new UrlTest($router->generate('lucca_model_enable', ['id' => $model->getId()])),
+            new UrlTest($router->generate('lucca_model_enable', ['id' => $model->getId()]), 302, 302), // disable
+            new UrlTest($router->generate('lucca_model_enable', ['id' => $model->getId()]), 302, 302),
         ];
     }
 }

@@ -35,8 +35,8 @@ class PartnerControllerTest extends BasicLuccaTestCase
             new UrlTest($router->generate('lucca_partner_new')),
             new UrlTest($router->generate('lucca_partner_show', ['id' => $partner->getId()])),
             new UrlTest($router->generate('lucca_partner_edit', ['id' => $partner->getId()])),
-            new UrlTest($router->generate('lucca_partner_enable', ['id' => $partner->getId()])), // disable
-            new UrlTest($router->generate('lucca_partner_enable', ['id' => $partner->getId()])),
+            new UrlTest($router->generate('lucca_partner_enable', ['id' => $partner->getId()]), 302, 302), // disable
+            new UrlTest($router->generate('lucca_partner_enable', ['id' => $partner->getId()]), 302, 302),
         ];
     }
 }

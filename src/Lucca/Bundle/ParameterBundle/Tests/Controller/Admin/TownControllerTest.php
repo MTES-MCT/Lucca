@@ -35,8 +35,8 @@ class TownControllerTest extends BasicLuccaTestCase
             new UrlTest($router->generate('lucca_town_new')),
             new UrlTest($router->generate('lucca_town_show', ['id' => $town->getId()])),
             new UrlTest($router->generate('lucca_town_edit', ['id' => $town->getId()])),
-            new UrlTest($router->generate('lucca_town_enable', ['id' => $town->getId()])), // disable
-            new UrlTest($router->generate('lucca_town_enable', ['id' => $town->getId()])),
+            new UrlTest($router->generate('lucca_town_enable', ['id' => $town->getId()]), 302, 302), // disable
+            new UrlTest($router->generate('lucca_town_enable', ['id' => $town->getId()]), 302, 302),
         ];
     }
 }

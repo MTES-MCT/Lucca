@@ -43,10 +43,10 @@ class MyAgentControllerTest extends BasicLuccaTestCase
             ])),
             new UrlTest($router->generate('lucca_myagent_enable', [ // disable
                 'id' => $agent->getId(), 'adh_id'=> $adherent->getId()
-            ])),
+            ]), 302, 302),
             new UrlTest($router->generate('lucca_myagent_enable', [
                 'id' => $agent->getId(), 'adh_id'=> $adherent->getId()
-            ])),
+            ]), 302, 302),
         ];
     }
 }

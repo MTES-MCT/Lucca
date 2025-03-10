@@ -35,8 +35,8 @@ class PageControllerTest extends BasicLuccaTestCase
             new UrlTest($router->generate('lucca_page_new')),
             new UrlTest($router->generate('lucca_page_show', ['id' => $page->getId()])),
             new UrlTest($router->generate('lucca_page_edit', ['id' => $page->getId()])),
-            new UrlTest($router->generate('lucca_page_enable', ['id' => $page->getId()])), // disable
-            new UrlTest($router->generate('lucca_page_enable', ['id' => $page->getId()])),
+            new UrlTest($router->generate('lucca_page_enable', ['id' => $page->getId()]), 302, 302), // disable
+            new UrlTest($router->generate('lucca_page_enable', ['id' => $page->getId()]), 302, 302),
         ];
     }
 }

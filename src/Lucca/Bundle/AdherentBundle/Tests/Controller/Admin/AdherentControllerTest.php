@@ -35,8 +35,8 @@ class AdherentControllerTest extends BasicLuccaTestCase
             new UrlTest($router->generate('lucca_adherent_new')),
             new UrlTest($router->generate('lucca_adherent_show', ['id' => $adherent->getId()])),
             new UrlTest($router->generate('lucca_adherent_edit', ['id' => $adherent->getId()])),
-            new UrlTest($router->generate('lucca_adherent_disable', ['id' => $adherent->getId()])),
-            new UrlTest($router->generate('lucca_adherent_enable', ['id' => $adherent->getId()])),
+            new UrlTest($router->generate('lucca_adherent_disable', ['id' => $adherent->getId()]), 302, 302),
+            new UrlTest($router->generate('lucca_adherent_enable', ['id' => $adherent->getId()]), 302, 302),
         ];
     }
 }

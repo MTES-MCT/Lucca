@@ -35,8 +35,8 @@ class SubAreaControllerTest extends BasicLuccaTestCase
             new UrlTest($router->generate('lucca_subarea_new')),
             new UrlTest($router->generate('lucca_subarea_show', ['id' => $subArea->getId()])),
             new UrlTest($router->generate('lucca_subarea_edit', ['id' => $subArea->getId()])),
-            new UrlTest($router->generate('lucca_subarea_enable', ['id' => $subArea->getId()])), // disable
-            new UrlTest($router->generate('lucca_subarea_enable', ['id' => $subArea->getId()])),
+            new UrlTest($router->generate('lucca_subarea_enable', ['id' => $subArea->getId()]), 302, 302), // disable
+            new UrlTest($router->generate('lucca_subarea_enable', ['id' => $subArea->getId()]), 302, 302),
         ];
     }
 }
