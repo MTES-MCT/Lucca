@@ -110,7 +110,7 @@ class UpdatingControlController extends AbstractController
     }
 
     #[Route('-{id}/edit', name: 'lucca_updating_control_edit', options: ['utf8' => true], methods: ['GET', 'POST'])]
-    public function editAction(Request $request, #[MapEntity(id: 'updating_id')] Updating $updating, #[MapEntity(id: 'id')] Control $control): RedirectResponse|Response
+    public function editAction(Request $request, #[MapEntity(id: 'updating_id')] Updating $updating, Control $control): RedirectResponse|Response
     {
         $em = $this->entityManager;;
         $editForm = $this->createForm(UpdatingControlType::class, $control, array(
@@ -176,7 +176,7 @@ class UpdatingControlController extends AbstractController
     }
 
     #[Route('-{id}/delete', name: 'lucca_updating_control_delete', methods: ['GET', 'DELETE'])]
-    public function deleteAction(Request $request, #[MapEntity(id: 'updating_id')] Updating $updating, #[MapEntity(id: 'id')] Control $control): RedirectResponse
+    public function deleteAction(Request $request, #[MapEntity(id: 'updating_id')] Updating $updating, Control $control): RedirectResponse
     {
         $em = $this->entityManager;;
         $updating->removeControl($control);

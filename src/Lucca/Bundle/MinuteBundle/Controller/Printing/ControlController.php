@@ -53,7 +53,7 @@ class ControlController extends AbstractController
 
     #[Route('{id}/letter-access/print', name: 'lucca_control_access_print', methods: ['GET'])]
     #[IsGranted('ROLE_LUCCA')]
-    public function accessLetterPrintAction(#[MapEntity(id: 'minute_id')] Minute $minute, #[MapEntity(id: 'id')] Control $control): Response
+    public function accessLetterPrintAction(#[MapEntity(id: 'minute_id')] Minute $minute, Control $control): Response
     {
         $filename = sprintf('Access - %s', $minute->getNum());
 
@@ -211,7 +211,7 @@ class ControlController extends AbstractController
 
     #[Route('{id}/letter-convocation/print', name: 'lucca_control_letter_print', methods: ['GET'])]
     #[IsGranted('ROLE_LUCCA')]
-    public function convocationLetterPrintAction(#[MapEntity(id: 'minute_id')] Minute $minute, #[MapEntity(id: 'id')] Control $control): Response
+    public function convocationLetterPrintAction(#[MapEntity(id: 'minute_id')] Minute $minute, Control $control): Response
     {
         /** Get adherent and model corresponding*/
         $adherent = $minute->getAdherent();

@@ -58,7 +58,7 @@ class UpdatingController extends AbstractController
     }
 
     #[Route('-{id}/step-1', name: 'lucca_updating_step1', methods: ['GET', 'POST'])]
-    public function step1Action(Request $request, #[MapEntity(id: 'minute_id')] Minute $minute, #[MapEntity(id: 'id')] Updating $updating): RedirectResponse|Response
+    public function step1Action(Request $request, #[MapEntity(id: 'minute_id')] Minute $minute, Updating $updating): RedirectResponse|Response
     {
         $em = $this->entityManager;;
         $form = $this->createForm(UpdatingType::class, $updating, array());
@@ -90,7 +90,7 @@ class UpdatingController extends AbstractController
     }
 
     #[Route('-{id}/delete', name: 'lucca_updating_delete', methods: ['DELETE'])]
-    public function deleteAction(Request $request, #[MapEntity(id: 'minute_id')] Minute $minute, #[MapEntity(id: 'id')] Updating $updating): RedirectResponse
+    public function deleteAction(Request $request, #[MapEntity(id: 'minute_id')] Minute $minute, Updating $updating): RedirectResponse
     {
         $em = $this->entityManager;;
 

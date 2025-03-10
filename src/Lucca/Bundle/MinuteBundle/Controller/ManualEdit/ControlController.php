@@ -20,6 +20,7 @@ use Lucca\Bundle\MinuteBundle\Form\Control\ControlConvocationType;
 use Lucca\Bundle\MinuteBundle\Printer\ControlPrinter;
 use Lucca\Bundle\MinuteBundle\Utils\HtmlCleaner;
 use Lucca\Bundle\SettingBundle\Manager\SettingManager;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +47,11 @@ class ControlController extends AbstractController
 
     #[Route('"{id}/letter-access/edit-manually', name: 'lucca_control_access_manual', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_LUCCA')]
-    public function accessLetterAction(Request $request, Minute $minute, Control $control): RedirectResponse|Response
+    public function accessLetterAction(
+        Request $request,
+        #[MapEntity(id: 'minute_id')] Minute $minute,
+        Control $control
+    ): RedirectResponse|Response
     {
         $em = $this->entityManager;;
 
@@ -133,7 +138,11 @@ class ControlController extends AbstractController
 
     #[Route('{id}/letter-convocation/edit-manually', name: 'lucca_control_convocation_manual', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_LUCCA')]
-    public function convocationLetterAction(Request $request, Minute $minute, Control $control): RedirectResponse|Response
+    public function convocationLetterAction(
+        Request $request,
+        #[MapEntity(id: 'minute_id')] Minute $minute,
+        Control $control
+    ): RedirectResponse|Response
     {
         $em = $this->entityManager;;
 

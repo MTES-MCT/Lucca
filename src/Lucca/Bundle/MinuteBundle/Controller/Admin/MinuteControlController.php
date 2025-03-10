@@ -10,6 +10,7 @@
 namespace Lucca\Bundle\MinuteBundle\Controller\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\{RedirectResponse, Request, Response};
@@ -38,7 +39,10 @@ class MinuteControlController extends AbstractController
 
     #[Route('/new', name: 'lucca_minute_control_new', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_LUCCA')]
-    public function newAction(Minute $minute, Request $request): RedirectResponse|Response
+    public function newAction(
+        #[MapEntity(id: 'minute_id')] Minute $minute,
+        Request $request
+    ): RedirectResponse|Response
     {
         $control = new Control(Control::TYPE_FOLDER);
 
@@ -94,7 +98,11 @@ class MinuteControlController extends AbstractController
 
     #[Route('-{id}/edit', name: 'lucca_minute_control_edit', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_LUCCA')]
-    public function editAction(Request $request, Minute $minute, Control $control): RedirectResponse|Response
+    public function editAction(
+        Request $request,
+        #[MapEntity(id: 'minute_id')] Minute $minute,
+        Control $control
+    ): RedirectResponse|Response
     {
         $deleteForm = $this->createDeleteForm($minute, $control);
 
@@ -144,7 +152,10 @@ class MinuteControlController extends AbstractController
 
     #[Route('-{id}/delete', name: 'lucca_minute_control_delete', methods: ['GET', 'DELETE'])]
     #[IsGranted('ROLE_LUCCA')]
-    public function deleteAction(Request $request, Minute $minute, Control $control): RedirectResponse
+    public function deleteAction(
+        #[MapEntity(id: 'minute_id')] Minute $minute,
+        Control $control
+    ): RedirectResponse
     {
         $em = $this->entityManager;;
         $minute->removeControl($control);

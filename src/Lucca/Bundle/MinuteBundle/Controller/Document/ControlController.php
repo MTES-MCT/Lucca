@@ -42,7 +42,7 @@ class ControlController extends AbstractController
 
     #[Route('{id}/letter-access', name: 'lucca_control_access', methods: ['GET'])]
     #[IsGranted('ROLE_LUCCA')]
-    public function accessLetterAction(#[MapEntity(id: 'minute_id')] Minute $minute, #[MapEntity(id: 'id')] Control $control): Response
+    public function accessLetterAction(#[MapEntity(id: 'minute_id')] Minute $minute, Control $control): Response
     {
         $em = $this->entityManager;;
 
@@ -69,7 +69,7 @@ class ControlController extends AbstractController
 
     #[Route('{id}/letter-convocation', name: 'lucca_control_letter', methods: ['GET'])]
     #[IsGranted('ROLE_LUCCA')]
-    public function convocationLetterAction(#[MapEntity(id: 'minute_id')] Minute $minute, #[MapEntity(id: 'id')] Control $control): Response
+    public function convocationLetterAction(#[MapEntity(id: 'minute_id')] Minute $minute, Control $control): Response
     {
         $em = $this->entityManager;;
 
