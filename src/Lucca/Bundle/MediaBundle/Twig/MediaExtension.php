@@ -105,7 +105,7 @@ class MediaExtension extends AbstractExtension
                 break;
 
             case 'media-file-container':
-                $icon = "far fa-image-alt";
+                $icon = "fas fa-image-alt";
                 break;
 
             default :
@@ -146,11 +146,11 @@ class MediaExtension extends AbstractExtension
                 break;
 
             case 'audio':
-                $icon = "far fa-image-audio";
+                $icon = "fas fa-image-audio";
                 break;
 
             case 'video':
-                $icon = "far fa-image-video";
+                $icon = "fas fa-image-video";
                 break;
 
             case 'font':
@@ -158,7 +158,7 @@ class MediaExtension extends AbstractExtension
                 break;
 
             case 'text_document':
-                $icon = "far fa-image-word";
+                $icon = "fas fa-image-word";
                 break;
 
             case 'sheet_document':
@@ -166,19 +166,19 @@ class MediaExtension extends AbstractExtension
                 break;
 
             case 'presentation_document':
-                $icon = "far fa-image-powerpoint";
+                $icon = "fas fa-image-powerpoint";
                 break;
 
             case 'archive':
-                $icon = "far fa-image-archive";
+                $icon = "fas fa-image-archive";
                 break;
 
             case 'media-file-container':
-                $icon = "far fa-image-alt";
+                $icon = "fas fa-image-alt";
                 break;
 
             default :
-                $icon = "far fa-image";
+                $icon = "fas fa-image";
                 break;
         }
 

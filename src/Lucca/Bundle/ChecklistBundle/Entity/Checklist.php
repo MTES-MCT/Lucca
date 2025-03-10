@@ -97,11 +97,11 @@ class Checklist implements LoggableInterface
 
     public function addElement(Element $element): self
     {
-        if (!$this->elements->contains($element)) {
+        // I commented this line because it doesn't seem necessary as the element is already added to the collection at this point
+//        if (!$this->elements->contains($element)) {
             $this->elements[] = $element;
-            $element->setChecklist($this);
-        }
-
+//        }
+        $element->setChecklist($this);
         return $this;
     }
 

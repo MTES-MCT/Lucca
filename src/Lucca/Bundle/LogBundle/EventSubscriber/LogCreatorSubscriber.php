@@ -136,7 +136,7 @@ readonly class LogCreatorSubscriber implements EventSubscriberInterface
             /** Check if Entity implements LoggableInterface and can be log */
             if (in_array(LoggableInterface::class, class_implements($entity), true)) {
 
-                $className = $this->managerRegistry->getManager()->getClassMetadata($entity);
+                $className = $this->managerRegistry->getManager()->getClassMetadata(get_class($entity));
 
                 /** Create and init a Log entity */
                 $log = new Log();

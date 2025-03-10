@@ -37,7 +37,7 @@ class Element implements LoggableInterface
 
     #[ORM\ManyToOne(targetEntity: Checklist::class, inversedBy: 'elements')]
     #[ORM\JoinColumn(nullable: false)]
-    private Checklist $checklist;
+    private ?Checklist $checklist = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
     #[Assert\NotNull(message: 'constraint.not_null')]
