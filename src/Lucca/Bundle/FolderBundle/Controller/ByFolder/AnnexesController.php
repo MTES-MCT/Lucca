@@ -65,7 +65,7 @@ class AnnexesController extends AbstractController
             ]);
         }
 
-        return $this->render('@LuccaMinute/Annexes/ByFolder/edit.html.twig', [
+        return $this->render('@LuccaFolder/Annexes/ByFolder/edit.html.twig', [
             'minute' => $minute,
             'folder' => $object,
             'maxFilesize' => SettingManager::get('setting.folder.annexesMaxSize.name'),

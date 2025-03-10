@@ -80,7 +80,7 @@ class FolderController extends AbstractController
                 }
             } else {
                 if (SettingManager::get('setting.folder.docContent.name')) {
-                    $docName = '@LuccaFolder/Folder/Printing/Custom:doc_content-' .
+                    $docName = '@LuccaFolder/Folder/Printing/Custom/doc_content-' .
                         SettingManager::get('setting.general.departement.name') . '.html.twig';
                 } else {
                     $docName = '@LuccaFolder/Folder/Printing/Basic/doc_content.html.twig';

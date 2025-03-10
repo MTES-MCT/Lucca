@@ -34,7 +34,7 @@
                             {% if folder.nature is constant('NATURE_OBSTACLE', folder) %}
                                 {#SETTING#}
                                 {% if 'setting.folder.docContentObstacle.name'|setting == true %}
-                                    {% set filename = 'LuccaMinuteBundle:Folder/Printing/Basic:doc_obstacle_content-'~ 'setting.general.departement.name'|setting ~'.html.twig' %}
+                                    {% set filename = '@LuccaFolder/Folder/Printing/Basic/doc_obstacle_content-'~ 'setting.general.departement.name'|setting ~'.html.twig' %}
                                     {% include filename with {'agent' : agent} %}
                                 {% else %}
                                     {% include '@LuccaFolder/Folder/Printing/Basic/doc_obstacle_content.html.twig'  with {'agent' : agent} %}
@@ -43,7 +43,7 @@
                             {% else %}
                                 {#SETTING#}
                                 {% if 'setting.folder.docContent.name'|setting == true %}
-                                    {% set filename = 'LuccaMinuteBundle:Folder/Printing/Custom:doc_content-'~ 'setting.general.departement.name'|setting ~'.html.twig' %}
+                                    {% set filename = '@LuccaMinuteFolder/Printing/Custom/doc_content-'~ 'setting.general.departement.name'|setting ~'.html.twig' %}
                                     {% include filename with {'agent' : agent} %}
                                 {% else %}
                                     {% include '@LuccaFolder/Folder/Printing/Basic/doc_content.html.twig'  with {'agent' : agent} %}

@@ -10,7 +10,7 @@
 {% block lucca_print %}
 
     {% if 'setting.courier.mayorContent.name'|setting == true %}
-        {% set filename = 'LuccaFolderBundle:MayorLetter/Printing/Custom:mayorLetter_content-' ~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+        {% set filename = '@LuccaFolder/MayorLetter/Printing/Custom/mayorLetter_content-' ~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
         {#Logo in header#}
         {% if 'setting.pdf.logoInHeader.name'|setting == false %}
             {% include filename with {'officialLogo': officialLogo} %}

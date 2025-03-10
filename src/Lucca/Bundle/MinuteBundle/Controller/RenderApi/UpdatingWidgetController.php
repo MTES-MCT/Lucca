@@ -21,7 +21,6 @@ use Lucca\Bundle\FolderBundle\Entity\Folder;
 use Lucca\Bundle\MinuteBundle\Entity\Control;
 use Lucca\Bundle\MinuteBundle\Entity\Updating;
 
-#[Route('/updating-{updating_id}/widget-')]
 #[IsGranted('ROLE_LUCCA')]
 class UpdatingWidgetController extends AbstractController
 {
@@ -31,7 +30,6 @@ class UpdatingWidgetController extends AbstractController
     {
     }
 
-    #[Route('display-controls-folders', name: 'lucca_updating_display_controls_folders', methods: ['GET'])]
     #[IsGranted('ROLE_LUCCA')]
     public function displayControlsAndFoldersAction(
         #[MapEntity(id: 'updating_id')] Updating $updating,

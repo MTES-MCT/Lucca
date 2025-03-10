@@ -278,7 +278,7 @@
             {# Widget - Display all controls and folders #}
             {% if updating is defined %}
                 {{ render(controller(
-                    'Lucca\\Bundle\\MinuteBundle\\RenderApi\\UpdatingWidgetController::displayControlsAndFolders',
+                    'Lucca\\Bundle\\MinuteBundle\\Controller\\RenderApi\\UpdatingWidgetController::displayControlsAndFoldersAction',
                     { 'updating_id': updating.id }
                 )) }}
             {% endif %} {# End widget #}
