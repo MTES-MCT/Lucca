@@ -186,11 +186,11 @@
     {{ parent() }}
 
     {#-- Data Tables --#}
-    <link href="{{ asset('bundles/luccathemeangle/plugins/datatables.net-bs4/css/dataTables.bootstrap4.css') }}"
+    <link href="{{ asset('plugins/datatables.net-bs4/css/dataTables.bootstrap4.css') }}"
           rel="stylesheet">
-    <link href="{{ asset('bundles/luccathemeangle/plugins/datatables.net-keytable-bs/css/keyTable.bootstrap.css') }}"
+    <link href="{{ asset('plugins/datatables.net-keytable-bs/css/keyTable.bootstrap.css') }}"
           rel="stylesheet">
-    <link href="{{ asset('bundles/luccathemeangle/plugins/datatables.net-responsive-bs/css/responsive.bootstrap.css') }}"
+    <link href="{{ asset('plugins/datatables.net-responsive-bs/css/responsive.bootstrap.css') }}"
           rel="stylesheet">
 
 {% endblock lucca_css %}
@@ -200,24 +200,24 @@
     {{ parent() }}
 
     {#-- Data Tables --#}
-    <script src="{{ asset('bundles/luccathemeangle/plugins/datatables.net/js/jquery.dataTables.js') }}"></script>
+    <script src="{{ asset('plugins/dataTables/datatables.js') }}"></script>
 
-    <script src="{{ asset('bundles/luccathemeangle/plugins/datatables.net-bs4/js/dataTables.bootstrap4.js') }}"></script>
-    <script src="{{ asset('bundles/luccathemeangle/plugins/datatables.net-buttons/js/dataTables.buttons.js') }}"></script>
-    <script src="{{ asset('bundles/luccathemeangle/plugins/datatables.net-buttons-bs/js/buttons.bootstrap.js') }}"></script>
+    <script src="{{ asset('plugins/datatables.net-bs4/js/dataTables.bootstrap4.js') }}"></script>
+{#    <script src="{{ asset('plugins/datatables.net-buttons/js/dataTables.buttons.js') }}"></script>#}
+{#    <script src="{{ asset('plugins/datatables.net-buttons-bs/js/buttons.bootstrap.js') }}"></script>#}
 
-    <script src="{{ asset('bundles/luccathemeangle/plugins/datatables.net-keytable/js/dataTables.keyTable.js') }}"></script>
-    <script src="{{ asset('bundles/luccathemeangle/plugins/datatables.net-responsive/js/dataTables.responsive.js') }}"></script>
-    <script src="{{ asset('bundles/luccathemeangle/plugins/datatables.net-responsive-bs/js/responsive.bootstrap.js') }}"></script>
+    <script src="{{ asset('plugins/datatables.net-keytable/js/dataTables.keyTable.js') }}"></script>
+    <script src="{{ asset('plugins/datatables.net-responsive/js/dataTables.responsive.js') }}"></script>
+    <script src="{{ asset('plugins/datatables.net-responsive-bs/js/responsive.bootstrap.js') }}"></script>
 
     <script>
         $(document).ready(function () {
             $('.dataTables').DataTable({
                 pageLength: 10,
                 responsive: true,
-                "language": {
-                    "url": "{{ asset('bundles/luccathemeangle/plugins/datatables.net/lang/dataTables.fr.json') }}"
-                },
+                {#"language": {#}
+                {#    "url": "{{ asset('bundles/luccathemeangle/plugins/datatables.net/lang/dataTables.fr.json') }}"#}
+                {#},#}
             });
         });
     </script>

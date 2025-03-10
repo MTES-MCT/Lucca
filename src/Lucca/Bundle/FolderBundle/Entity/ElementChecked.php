@@ -14,6 +14,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Lucca\Bundle\ChecklistBundle\Entity\Element;
 use Lucca\Bundle\CoreBundle\Entity\TimestampableTrait;
 use Lucca\Bundle\FolderBundle\Repository\ElementCheckedRepository;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;

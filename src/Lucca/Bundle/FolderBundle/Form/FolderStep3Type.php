@@ -10,11 +10,12 @@
 
 namespace Lucca\Bundle\FolderBundle\Form;
 
-use Lucca\Bundle\FolderBundle\Entity\Folder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
+use Lucca\Bundle\FolderBundle\Entity\{Folder, Natinf};
 
 class FolderStep3Type extends AbstractType
 {
