@@ -166,6 +166,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
     /**
      * @inheritdoc
      */
@@ -278,12 +283,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isEnabled(): bool
+    public function getEnabled(): bool
     {
         return $this->enabled;
     }
 
-    public function setIsEnabled(bool $enabled): self
+    public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
 

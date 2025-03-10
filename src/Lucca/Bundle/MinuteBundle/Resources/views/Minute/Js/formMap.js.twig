@@ -15,7 +15,7 @@ var selectLocationFrom = "#lucca_minuteBundle_minute_plot_locationFrom";
 /****************************** General *****************************************************************************/
 {#Custom JS#}
 $(document).ready(function () {
-    {% if minute.plot and minute.plot.isRiskZone %}
+    {% if minute.plot is defined and minute.plot.isRiskZone %}
     $(".risk-zone").show('slow');
     {% endif %}
 
@@ -46,7 +46,7 @@ function initMap() {
         mapTypeControl: true,
     });
 
-    {% if minute.plot and minute.plot.latitude and minute.plot.longitude %}
+    {% if minute.plot is defined and minute.plot.latitude and minute.plot.longitude %}
     var latLng = new google.maps.LatLng({{ minute.plot.latitude }}, {{ minute.plot.longitude }});
     marker = createMarker("", '{{ asset('assets/img/Pins/png/spoting.png') }}', latLng);
     marker.setMap(map);

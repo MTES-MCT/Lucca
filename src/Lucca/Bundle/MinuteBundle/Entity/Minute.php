@@ -169,6 +169,10 @@ class Minute implements LoggableInterface
     public function __construct()
     {
         $this->historic = new ArrayCollection();
+        $this->humans = new ArrayCollection();
+        $this->controls = new ArrayCollection();
+        $this->updatings = new ArrayCollection();
+        $this->decisions = new ArrayCollection();
 
         $this->dateOpening = new \DateTime('now');
         $this->origin = self::ORIGIN_AGENT;
