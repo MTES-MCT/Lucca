@@ -53,8 +53,8 @@ class PagePrinter
             $renderParameters = array('page' => $page, 'var' => $var, 'coverPage' => $model->getVerso(), 'cover' => true, 'adherent' => $adherent);
         }
 
-        $this->options['page-size'] = $this->translator->trans($model->getSize(), array(), 'LuccaModelBundle');
-        $this->options['orientation'] = $this->translator->trans('pdf.' . $model->getOrientation(), array(), 'LuccaModelBundle');
+        $this->options['page-size'] = $this->translator->trans($model->getSize(), array(), 'ModelBundle');
+        $this->options['orientation'] = $this->translator->trans('pdf.' . $model->getOrientation(), array(), 'ModelBundle');
 
         /* Margins */
         if ($page->getMarginTop() === null) {

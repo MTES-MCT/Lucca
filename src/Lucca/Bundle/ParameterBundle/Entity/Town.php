@@ -33,7 +33,7 @@ class Town implements LoggableInterface
     #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 1, max: 20, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
-    private string $code;
+    private string $code = '';
 
     #[ORM\Column(length: 50)]
     #[Assert\NotNull(message: 'constraint.not_null')]

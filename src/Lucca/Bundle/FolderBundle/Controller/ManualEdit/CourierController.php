@@ -22,7 +22,7 @@ use Lucca\Bundle\FolderBundle\Form\Courier\{CourierEditionDdtmType, CourierEditi
 use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Lucca\Bundle\MinuteBundle\Printer\ControlPrinter;
 use Lucca\Bundle\MinuteBundle\Utils\HtmlCleaner;
-use Lucca\Bundle\SettingBundle\Utils\SettingManager;
+use Lucca\Bundle\SettingBundle\Manager\SettingManager;
 
 #[Route(path: '/minute-{minute_id}/courier-')]
 #[IsGranted('ROLE_LUCCA')]
@@ -172,7 +172,7 @@ class CourierController extends AbstractController
             }
             else {
                 /** Clean html from useless font and empty span */
-                $edition->setLetterDdtm($this-$this->htmlCleaner->removeAllFonts($edition->getLetterDdtm()));
+                $edition->setLetterDdtm($this->htmlCleaner->removeAllFonts($edition->getLetterDdtm()));
             }
 
             $this->em->persist($courier);

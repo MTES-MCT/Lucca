@@ -415,7 +415,7 @@
         {#-- sameAgent - Agent --#}
         {#--------------------------------------------------------------------#}
         $(document).ready(function () {
-            {% if control.agent is null or control.agent == minute.agent %}
+            {% if control.id and (control.agent is null or control.agent == minute.agent) %}
             $("#lucca_minutebundle_updating_control_sameAgent_0").prop("checked", true);
             $(".agent-same").show('slow');
             $(".agent-new").hide('slow');

@@ -10,15 +10,15 @@
 
 namespace Lucca\Bundle\CoreBundle\Entity;
 
-use DateTime;
+use DateTime, DateTimeImmutable;
 
 interface TimestampableInterface
 {
-    public function getCreatedAt(): DateTime;
+    public function getCreatedAt(): DateTimeImmutable;
+
+    public function setCreatedAt(DateTimeImmutable $createdAt);
 
     public function getUpdatedAt(): DateTime;
-
-    public function setCreatedAt(DateTime $createdAt);
 
     public function setUpdatedAt(DateTime $updatedAt);
 }

@@ -10,7 +10,7 @@
 
 namespace Lucca\Bundle\LogBundle\Entity;
 
-use DateTime;
+use DateTime, DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -45,7 +45,7 @@ class Log
     private string $status;
 
     #[ORM\Column]
-    protected DateTime $createdAt;
+    protected DateTimeImmutable $createdAt;
 
     #[ORM\Column]
     private string $shortMessage;
@@ -58,7 +58,7 @@ class Log
     public function __construct()
     {
         /** Store immediate date */
-        $this->setCreatedAt(new DateTime('now'));
+        $this->setCreatedAt(new DateTimeImmutable('now'));
     }
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
@@ -116,12 +116,12 @@ class Log
         return $this;
     }
 
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTime $createdAt): self
+    public function setCreatedAt(DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
 

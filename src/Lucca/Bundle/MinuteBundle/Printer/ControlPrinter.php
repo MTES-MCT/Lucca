@@ -137,7 +137,7 @@ class ControlPrinter
      * Define specific logo who was used
      * Increase Margin top if a logo is used
      */
-    public function defineLogo(Adherent $adherent): ?Media
+    public function defineLogo(Adherent $adherent): null|string|Media
     {
         $logo = $this->logoFinder->findLogo($adherent);
 

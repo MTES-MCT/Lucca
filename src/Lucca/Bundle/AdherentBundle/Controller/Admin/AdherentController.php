@@ -164,7 +164,7 @@ class AdherentController extends AbstractController
      * Finds and enable / disable a Adherent entity.
      */
     #[Route(path: '/{id}/disable', name: 'lucca_adherent_disable', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    #[Route(path: '/{id}/enable', name: 'lucca_adherent_enable', methods: ['DELETE'])]
+    #[Route(path: '/{id}/enable', name: 'lucca_adherent_enable', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
     public function enableAction(Adherent $adherent): Response
     {

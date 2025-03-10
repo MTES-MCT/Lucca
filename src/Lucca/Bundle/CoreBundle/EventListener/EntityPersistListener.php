@@ -25,7 +25,7 @@ class EntityPersistListener
         $entity = $args->getObject();
 
         if (method_exists($entity, 'getCreatedAt')) {
-            $entity->setCreatedAt(new \DateTime('now'));
+            $entity->setCreatedAt(new \DateTimeImmutable('now'));
         }
     }
 
