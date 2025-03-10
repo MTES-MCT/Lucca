@@ -124,7 +124,7 @@ class ControlController extends AbstractController
         $filename = sprintf('Lettre de Convocation - %s', $p_minute->getNum());
 
         /** Path where the temp pdf are stored */
-        $path = $this->getParameter('env(LUCCA_UPLOAD_TEMP_DIR)') . 'pdfToPrint/';
+        $path = $this->getParameter('lucca_media.upload_tmp_directory') . 'pdfToPrint/';
 
         /** If the temp directory doesn't exist create it */
         if (!$filesystem->exists($path))
@@ -275,7 +275,7 @@ class ControlController extends AbstractController
         $filename = sprintf('Lettre de Convocation - %s', $p_minute->getNum());
 
         /** Path where the temp pdf are stored */
-        $path = $this->getParameter('env(LUCCA_UPLOAD_TEMP_DIR)') . 'pdfToPrint/';
+        $path = $this->getParameter('lucca_media.upload_tmp_directory') . 'pdfToPrint/';
 
         /** If the temp directory doesn't exist create it */
         if (!$filesystem->exists($path))
