@@ -11,6 +11,7 @@ link:
     department:
         show: 'Voir le département'
         disable: 'Désactiver le département'
+        delete: 'Supprimer le département'
         enable: 'Activer le département'
         edit: 'Modifier le département'
         editHomeText: "Modifier le texte d'accueil"

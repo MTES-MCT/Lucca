@@ -11,43 +11,88 @@
 
 {% block lucca_panels %}
 
-    {% include "@LuccaDepartment/Embed/Department/_panel-department.html.twig" with {'department': department} %}
-    <div class="col-12 pb-3">
-        <a class="btn btn-default btn-lg" href="{{ path('lucca_department_admin_index') }}"
-           title="{{ 'link.department.backList'|trans }}"><i class="fas fa-reply"></i></a>
+    <div class="row">
+        {#-- Panel - main --#}
+        <div class="col-12 col-xl-6">
 
-        {% if app.user and is_granted("ROLE_SUPER_ADMIN") %}
-            <a class="btn btn-warning btn-lg"
-               href="{{ path('lucca_department_admin_edit', { 'id': department.id }) }}"
-               title="{{ 'link.department.edit'|trans }}"><i class="fas fa-pencil-alt"></i></a>
+            <div class="card card-default">
+                <div class="card-header">
+                    {{ 'title.show'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ department.name }}</b>
+                </div>
 
-        {% endif %}
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <div class="col-12">
+                            <table class="table table-striped table-hover">
+                                <tbody>
+                                <tr>
+                                    <th>{{ 'label.code'|trans }}</th>
+                                    <td>{{ department.code }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.name'|trans }}</th>
+                                    <td>{{ department.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.comment'|trans }}</th>
+                                    <td>
+                                        <div>{{ department.comment | raw }}</div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-        {% if app.user and (is_granted("ROLE_SUPER_ADMIN")) %}
-            {% if department.enable %}
-                <a href="{{ path('lucca_department_admin_disable', { 'id': department.id }) }}"
-                   class="btn btn-primary btn-lg float-right" title="{{ 'link.department.disable'|trans }}">
-                    <i class="fas fa-toggle-on" aria-hidden="true"></i>
-                </a>
-            {% else %}
-                <a class="btn btn-danger btn-lg float-right" data-bs-toggle="modal"
-                   data-bs-target=".delWin" title="{{ 'link.user.delete'|trans }}">
-                    <i class="fas fa-trash-alt"></i>
-                </a>
+                        <div class="col-12">
+                            <a class="btn btn-default btn-lg" href="{{ path('lucca_department_admin_index') }}"
+                               title="{{ 'link.department.backList'|trans }}"><i class="fas fa-reply"></i></a>
 
-                {% include '@NwThemeColor/Modal/formDelete.html.twig' with {
-                    'name': department.name,
-                    'delForm': delete_form
-                } %}
+                            {% if app.user and is_granted("ROLE_SUPER_ADMIN") %}
+                                <a class="btn btn-warning btn-lg"
+                                   href="{{ path('lucca_department_admin_edit', { 'id': department.id }) }}"
+                                   title="{{ 'link.department.edit'|trans }}"><i class="fas fa-pencil-alt"></i></a>
 
-                <a href="{{ path('lucca_department_admin_enable', { 'id': department.id }) }}"
-                   class="btn btn-danger btn-lg float-right mr-1" title="{{ 'link.user.enable'|trans }}">
-                    <i class="fas fa-toggle-off" aria-hidden="true"></i>
-                </a>
-            {% endif %}
-        {% endif %}
+                            {% endif %}
+
+                            {% if app.user and (is_granted("ROLE_SUPER_ADMIN")) %}
+                                {% if department.enable %}
+                                    <a href="{{ path('lucca_department_admin_disable', { 'id': department.id }) }}"
+                                       class="btn btn-primary btn-lg float-right" title="{{ 'link.department.disable'|trans }}">
+                                        <i class="fas fa-toggle-on" aria-hidden="true"></i>
+                                    </a>
+                                {% else %}
+                                    <a class="btn btn-danger btn-lg float-right" data-bs-toggle="modal"
+                                       data-bs-target=".delWin" title="{{ 'link.department.delete'|trans }}">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+
+                                    <a href="{{ path('lucca_department_admin_enable', { 'id': department.id }) }}"
+                                       class="btn btn-danger btn-lg float-right mr-1" title="{{ 'link.department.enable'|trans }}">
+                                        <i class="fas fa-toggle-off" aria-hidden="true"></i>
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
     </div>
+
 {% endblock lucca_panels %}
+
+
+{% block lucca_modal %}
+    {{ parent() }}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {
+        'id': department.id,
+        'name': department.name,
+        'delForm': delete_form
+    } %}
+{% endblock lucca_modal %}
+
 
 {% block lucca_css %}
 {{ parent() }}
