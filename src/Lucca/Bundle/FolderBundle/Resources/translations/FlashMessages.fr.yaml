@@ -4,6 +4,11 @@
 ####################################
 
 flash:
+    tag:
+        createdSuccessfully: "Le mot clé a bien été créé."
+        updatedSuccessfully: "Le mot clé a bien été modifié."
+        deletedSuccessfully: "Le mot clé a bien été supprimé."
+
     control:
         needed: "Avant de créer un PV, veuillez créer un contrôle."
 

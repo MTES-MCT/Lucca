@@ -385,7 +385,7 @@
                         </li>
 
                         {#-- Menu - Permission --#}
-                        <li class="u-sidebar-nav-menu__item {% if block("menuActive_user") is defined or block("menuActive_group") is defined %}u-sidebar-nav--opened{% endif %}">
+                        <li class="u-sidebar-nav-menu__item {% if block("menuActive_user") or block("menuActive_group") %}u-sidebar-nav--opened{% endif %}">
                             <a class="u-sidebar-nav-menu__link" href="#subMenuPermission"
                                data-target="#subMenuPermission" title="{{ 'menu.permissions'|trans }}">
                                 <i class="fas fa-shield-alt u-sidebar-nav-menu__item-icon"></i>
@@ -394,7 +394,7 @@
                             </a>
 
                             <ul id="subMenuPermission" class="u-sidebar-nav-menu u-sidebar-nav-menu--second-level"
-                                style="display: {% if block("menuActive_user") is defined or block("menuActive_group") is defined %}block{% else %}none{% endif %};">
+                                style="display: {% if block("menuActive_user") or block("menuActive_group") %}block{% else %}none{% endif %};">
                                 <!-- Components -->
                                 <li class="u-sidebar-nav-menu__item">
                                     <a class="u-sidebar-nav-menu__link {% block menuActive_user %}{% endblock %}"

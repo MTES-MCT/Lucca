@@ -62,6 +62,7 @@ class ChecklistController extends AbstractController
             }
 
             $this->em->persist($checklist);
+//            dd($checklist);
             $this->em->flush();
 
             $this->addFlash('success', 'flashes.created_successfully');
