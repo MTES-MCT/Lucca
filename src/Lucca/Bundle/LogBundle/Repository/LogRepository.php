@@ -72,20 +72,26 @@ class LogRepository extends EntityRepository
     public function getDatatableData(string $orderColumn, string $orderDirection, ?string $start = '0', ?string $length = '10',
                                         ?string $status = null): array
     {
+        $recordsQB = $this->createQueryBuilder('log')
+            ->select('COUNT(log)');
+
         $qb = $this->queryLog();
 
+
         $qb->select([
-            'partial log.{id, name, code, availableDelivery}',
-            'partial company.{id, name}',
-            'partial account.{id, name}',
-            'partial family.{id, name}',
-            'partial category.{id, name}',
+            'partial log.{id, status, shortMessage, classname, objectId, createdAt}',
+            'partial user.{id, username}',
         ]);
 
         if ($status) {
             $qb->andWhere($qb->expr()->eq('log.status', ':q_status'))
                 ->setParameter('q_status', $status);
+
+            $recordsQB->andWhere($recordsQB->expr()->eq('log.status', ':q_status'))
+                ->setParameter('q_status', $status);
         }
+
+        $recordsQB = $recordsQB->getQuery()->getSingleScalarResult();
 
         $start = intval($start);
         $length = intval($length);
@@ -96,12 +102,13 @@ class LogRepository extends EntityRepository
 
         $data = $qb->getQuery()->getArrayResult();
 
+
         $qb = $this->createQueryBuilder('log')
             ->select("COUNT(log)");
 
         $count = $qb->getQuery()->getSingleScalarResult();
 
-        return ['count' => $count, 'data' => $data];
+        return ['count' => $count, 'data' => $data, 'recordsFiltered' => $recordsQB];
     }
 
     /*******************************************************************************************/

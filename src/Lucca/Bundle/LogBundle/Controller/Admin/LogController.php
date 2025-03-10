@@ -16,6 +16,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+use Lucca\Bundle\LogBundle\Form\LogFilterType;
+
 use Lucca\Bundle\LogBundle\Entity\Log;
 
 #[Route(path: '/log')]
@@ -31,7 +33,11 @@ class LogController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function indexAction(): Response
     {
-        return $this->render('@LuccaLog/Log/Admin/index.html.twig');
+        $form = $this->createForm(LogFilterType::class);
+
+        return $this->render('@LuccaLog/Log/Admin/index.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**

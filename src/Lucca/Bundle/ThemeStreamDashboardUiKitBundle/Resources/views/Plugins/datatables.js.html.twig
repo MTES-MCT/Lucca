@@ -48,21 +48,19 @@
 
     /** Add input field on each colum to filters row */
     $('{{ datatable }} .filters th.filter').each(function () {
-        var title = $(this).text();
+        const title = $(this).text();
         $(this).html('<input type="text" class="form-control" placeholder="' + title + '" />');
     });
 
-    /** Setup and config table */
-    let $table = $('{{ datatable }}');
-    let table = $table.DataTable({
+    if (window.datatableParams === undefined)
+        window.datatableParams = {};
+
+    window.datatableParams = {
         responsive: true,
         autoWidth: true,
         pageLength: {% if params['pageLength'] is defined %}{{ params['pageLength'] }}{% else %}10{% endif %},
         ordering: true,
         orderCellsTop: true,
-        initComplete: function () {
-            $table.removeClass('css-js-optimizeLoadingTime');
-        },
         columnDefs: [
             {
                 orderable: false,
@@ -120,16 +118,16 @@
                 extend: 'pdf',
                 exportOptions: {columns: $columns},
                 customize: function (doc, config) {
-                    var tableNode;
-                    for (i = 0; i < doc.content.length; ++i) {
+                    let tableNode;
+                    for (let i = 0; i < doc.content.length; ++i) {
                         if (doc.content[i].table !== undefined) {
                             tableNode = doc.content[i];
                             break;
                         }
                     }
 
-                    var rowIndex = 0;
-                    var tableColumnCount = tableNode.table.body[rowIndex].length;
+                    const rowIndex = 0;
+                    const tableColumnCount = tableNode.table.body[rowIndex].length;
 
                     if (tableColumnCount > 8) {
                         doc.pageOrientation = 'landscape';
@@ -147,17 +145,22 @@
                         .css('font-size', 'inherit');
                 }
             }
-        ]
+        ],
         {% else %}
         dom: 'fgtp',
         {% endif %}
-    });
+        ...window.datatableParams,
+    }
+
+    /** Setup and config table */
+    let $table = $('{{ datatable }}');
+    let table = $table.DataTable(window.datatableParams);
 
     /** Add search functions */
     let $filters = $('{{ datatable }} .filters > .filter');
 
     table.columns().every(function () {
-        var that = this;
+        const that = this;
 
         if ($filters[that.index()]) {
             $('input', $filters[that.index()]).on('keyup change', function () {

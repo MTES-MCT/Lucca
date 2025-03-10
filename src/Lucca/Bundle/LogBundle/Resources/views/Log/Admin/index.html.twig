@@ -10,7 +10,7 @@
 {% block lucca_list %}
 
     <div class="col-12 table-responsive">
-        {% include "@NwLog/Log/Embed/_table-logs.html.twig" %}
+        {% include "@LuccaLog/Log/Embed/_table-logs.html.twig" %}
     </div>
 
 
@@ -19,9 +19,9 @@
 
 {% endblock lucca_list %}
 
-{% block lucca_js %}
+{% block lucca_js_head %}
     {{ parent() }}
 
     {#-- Datatable script --#}
     {% include '@LuccaLog/Log/Js/log_browser.js.html.twig' %}
-{% endblock theme_js %}
+{% endblock lucca_js_head %}

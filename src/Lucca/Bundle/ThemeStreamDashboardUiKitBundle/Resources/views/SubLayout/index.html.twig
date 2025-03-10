@@ -55,12 +55,9 @@
 {% endblock lucca_css %}
 
 
-{% block lucca_js %}
-    {{ parent() }}
-
+{% block lucca_datatables_js %}
     {#-- Plugin - DataTables --#}
     {% include "@LuccaThemeStreamDashboardUiKit/Plugins/datatables.js.html.twig" with { 'params' :
         { 'id_datatable': '.dataTables', 'pageLength': 10 }
     } %}
-
-{% endblock lucca_js %}
+{% endblock lucca_datatables_js %}

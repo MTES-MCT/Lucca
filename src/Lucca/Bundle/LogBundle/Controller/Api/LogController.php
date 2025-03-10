@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\{Request, JsonResponse};
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 use Lucca\Bundle\LogBundle\Entity\Log;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route(path: '/log')]
 #[IsGranted('ROLE_ADMIN')]
@@ -24,6 +25,7 @@ class LogController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
+        private readonly TranslatorInterface $translator,
     )
     {
     }
@@ -42,13 +44,17 @@ class LogController extends AbstractController
 
         unset($payload['draw'], $payload['columns'], $payload['order'], $payload['search']);
 
-        ['count' => $count, 'data' => $data] = $this->em->getRepository(Log::class)
+        ['count' => $count, 'data' => $data, 'recordsFiltered' => $recordsFiltered] = $this->em->getRepository(Log::class)
             ->getDatatableData($orderColumn, $orderDirection, ...$payload);
+
+        foreach ($data as $key => $d) {
+            $data[$key]['status'] = $this->translator->trans($d['status'], [], 'LogBundle');
+        }
 
         return new JsonResponse(array(
             'data' => $data,
             'recordsTotal' => $count,
-            'recordsFiltered' => $count,
+            'recordsFiltered' => $recordsFiltered,
         ));
     }
 }
