@@ -45,7 +45,7 @@ class LuccaInitStatusCommand extends Command
      * Configure command parameters
      * Option : path of csv file
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('lucca:init:status')
@@ -114,7 +114,7 @@ class LuccaInitStatusCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      */
-    protected function initStatus(InputInterface $input, OutputInterface $output)
+    protected function initStatus(InputInterface $input, OutputInterface $output): void
     {
         $em = $this->em;
 

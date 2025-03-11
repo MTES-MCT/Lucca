@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\MinuteBundle\Manager;
 
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -183,7 +184,7 @@ readonly class MinuteManager
         if ($date !== '') {
             $minute->setDateLastUpdate($date);
         } else {
-            $minute->setDateLastUpdate($minute->getCreatedAt());
+            $minute->setDateLastUpdate(DateTime::createFromImmutable($minute->getCreatedAt()));
         }
     }
 

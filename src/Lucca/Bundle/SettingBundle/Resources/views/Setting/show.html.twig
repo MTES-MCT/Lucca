@@ -11,10 +11,10 @@
 {% block lucca_panels %}
 
     {% embed "@LuccaSetting/Setting/Embed/panel-setting.html.twig" with { 'setting': setting, 'isShow': true } %}
+        {#-- Translation domain embed --#}
+        {% trans_default_domain 'SettingBundle' %}
 
         {% block lucca_embed_buttons_setting %}
-            {#-- Translation domain embed --#}
-            {% trans_default_domain 'SettingBundle' %}
             <div class="col-12 mt-4">
                 <a class="btn btn-secondary btn-lg" href="{{ path('lucca_setting_index') }}"
                    title="{{ 'link.setting.backList'|trans }}"><i class="fa fa-reply"></i></a>

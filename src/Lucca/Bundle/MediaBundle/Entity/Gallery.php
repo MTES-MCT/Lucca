@@ -154,4 +154,16 @@ class Gallery implements LoggableInterface , MediaAsyncInterface, MediaListAsync
     {
         return $this->medias->removeElement($media);
     }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
 }

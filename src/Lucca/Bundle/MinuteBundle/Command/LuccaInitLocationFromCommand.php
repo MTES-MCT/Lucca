@@ -36,7 +36,7 @@ class LuccaInitLocationFromCommand extends Command
     /**
      * Configure command parameters
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('lucca:init:locationFrom')

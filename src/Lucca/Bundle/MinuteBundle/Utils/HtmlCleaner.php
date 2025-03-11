@@ -171,7 +171,7 @@ class HtmlCleaner
      * appealCommission -> restitution
      * cassationComission -> restitution
      */
-    public function cleanHtmlDecision($p_decision)
+    public function cleanHtmlDecision($p_decision): void
     {
         // Clean Decision
         $p_decision->setDataEurope($this->removeAllFonts($p_decision->getDataEurope()));

@@ -278,7 +278,7 @@ class MinuteRepository extends EntityRepository
     public function findMinutesBrowser(
         Adherent $adherent = null, $dateStart = null, $dateEnd = null, $num = null, $status = null,
                  $p_adherent = null, $town = null, $interco = null, $service = null, $towns = null, $intercos = null
-    )
+    ): mixed
     {
         $qb = $this->queryMinuteBrowser();
 

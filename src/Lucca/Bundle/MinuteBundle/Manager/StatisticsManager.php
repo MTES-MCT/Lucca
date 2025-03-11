@@ -71,6 +71,7 @@ class StatisticsManager
         foreach ($decisions as $decision) {
             $month = $decision->getMinute()->getDateOpening()->format('Y-m');
             if (array_key_exists($month, $result)) {
+                $result[$month]['decision'] += 1;
             }
         }
 

@@ -171,7 +171,7 @@ class Updating implements LoggableInterface
         return $this->controls->removeElement($control);
     }
 
-    public function getControls()
+    public function getControls(): Collection
     {
         return $this->controls;
     }

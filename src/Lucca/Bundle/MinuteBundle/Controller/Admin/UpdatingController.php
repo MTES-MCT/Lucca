@@ -19,6 +19,7 @@ use Lucca\Bundle\MinuteBundle\Generator\NumUpdatingGenerator;
 use Lucca\Bundle\MinuteBundle\Utils\HtmlCleaner;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -106,12 +107,8 @@ class UpdatingController extends AbstractController
 
     /**
      * Creates a form to delete a Folder entity.
-     *
-     * @param Minute $minute
-     * @param Folder $folder
-     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
      */
-    private function createDeleteForm(Minute $minute, Folder $folder)
+    private function createDeleteForm(Minute $minute, Folder $folder): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('lucca_updating_delete', array('minute_id' => $minute->getId(), 'id' => $folder->getId())))

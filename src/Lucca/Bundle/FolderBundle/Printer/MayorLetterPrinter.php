@@ -57,7 +57,7 @@ class MayorLetterPrinter
             /** Define Logo and set margin */
             $logo = $this->defineLogo($adherent);
             try {
-                $header = $this->twig->render('@LuccaAdherentBundle/Adherent/Printing/header-pdf.html.twig', array(
+                $header = $this->twig->render('@LuccaAdherent/Adherent/Printing/header-pdf.html.twig', array(
                     'adherent' => $adherent, 'officialLogo' => $logo
                 ));
             } catch (Error $twig_Error) {
@@ -68,7 +68,7 @@ class MayorLetterPrinter
         }
 
         try {
-            $footer = $this->twig->render('@LuccaThemeAngle/Print/footer.html.twig');
+            $footer = $this->twig->render('@LuccaThemeStreamDashboardUiKit/Print/footer.html.twig');
         } catch (Error $twig_Error) {
             echo 'Twig_Error has been thrown - Footer Folder ' . $twig_Error->getMessage();
         }
