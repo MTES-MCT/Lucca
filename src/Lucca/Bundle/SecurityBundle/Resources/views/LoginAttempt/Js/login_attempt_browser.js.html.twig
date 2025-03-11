@@ -1,16 +1,10 @@
-<script>
-    function delay(fn, ms) {
-        let timer = 0
-        return function (...args) {
-            clearTimeout(timer)
-            timer = setTimeout(fn.bind(this, ...args), ms || 0)
-        }
-    }
+{% trans_default_domain 'SecurityBundle' %}
 
+<script src="{{ asset('assets/js/lazy_datatable.js') }}"></script>
+
+<script>
     window.datatableParams = {
-        serverSide: true,
-        searching: false,
-        scrollX: true,
+        ...window.datatableParams,
         ajax: {
             url: "{{ path('lucca_security_api_loginAttempt_datatable_search') }}",
             type: "POST",
@@ -23,7 +17,6 @@
                 d.addressRemote = $('#{{ form.addressRemote.vars.id }}').val();
             },
         },
-        pageLength: 10,
         "columns": [
             {data: "requestedAt", name: "requestedAt", "render": function(data, type, row) {
                     const formatter = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'short', timeStyle: 'medium'});
@@ -50,7 +43,7 @@
                 </a>`
 
                     if( !row.isCleared) {
-                        links += `<a href="${row.approuveIpRoute}" class="ms-2 btn btn-primary btn-sm" title="{{ 'link.loginAttempt.approveIp'|trans }}">
+                        links += `<a href="${row.approuveIpRoute}" class="ml-2 btn btn-primary btn-sm" title="{{ 'link.loginAttempt.approveIp'|trans }}">
                         <i class="fas fa-broom"></i>
                     </a>`;
                     }
@@ -58,21 +51,8 @@
                     return links;
                 }},
         ],
-        initComplete: function (settings) {
-            const table = new DataTable(settings.nTable)
-            $('form.form-filters').find('input')
-                .off()
-                .on('keyup change', delay(function () {
-                        table.search(this.value.trim(), false, false).draw();
-                    }, 500)
-                );
-
-            $('form.form-filters').find('select')
-                .off()
-                .on('change', function () {
-                    table.search(this.value.trim(), false, false).draw();
-                });
-        },
+        overflow: 'hidden',
+        order: [[1, 'desc']],
     };
 </script>
 

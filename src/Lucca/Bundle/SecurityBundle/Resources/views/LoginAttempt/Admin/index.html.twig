@@ -12,55 +12,40 @@
 
 {% block lucca_list %}
 
-    <table class="table table-hover w-100 responsive dataTables">
-        <thead>
+    <table class="table table-striped table-hover table-bordered w-100 dataTables">
+        <thead class="form-filters">
         <tr>
-            <th><i class="fas fa-book-dead"></i> {{ 'label.requestIp'|trans }}</th>
-            <th>{{ 'label.requestUri'|trans }}</th>
             <th>{{ 'label.requestedAt'|trans }}</th>
+            <th>{{ 'label.requestIp'|trans }}</th>
+            <th>{{ 'label.requestUri'|trans }}</th>
             <th>{{ 'label.username'|trans }}</th>
             <th>{{ 'label.address'|trans }}</th>
             <th>{{ 'label.addressRemote'|trans }}</th>
             <th>{{ 'label.isCleared'|trans }}</th>
-            <th><i class="fa fa-cogs"></i> {{ 'label.actions'|trans }}</th>
+            <th><i class="fas fa-cogs"></i> {{ 'label.actions'|trans }}</th>
+        </tr>
+        <tr>
+            <td>{{ form_widget(form.requestedAt) }}</td>
+            <td>{{ form_widget(form.requestIp) }}</td>
+            <td>{{ form_widget(form.requestUri) }}</td>
+            <td>{{ form_widget(form.username) }}</td>
+            <td>{{ form_widget(form.address) }}</td>
+            <td>{{ form_widget(form.addressRemote) }}</td>
+            <td></td>
+            <td></td>
         </tr>
         </thead>
-
-        <tbody>
-        {% for loginAttempt in loginAttempts %}
-            <tr>
-                <td>{{ loginAttempt.requestIp }}</td>
-                <td>{{ loginAttempt.requestUri }}</td>
-                <td>{{ loginAttempt.requestedAt|date('d/m/Y H:i:s') }}</td>
-                <td>{{ loginAttempt.username }}</td>
-                <td>
-                    <b>{{ loginAttempt.address }}</b><br>
-                    <i class="fas fa-spider"></i> {{ loginAttempt.port }}
-                </td>
-                <td>
-                    <b>{{ loginAttempt.addressRemote }}</b><br>
-                    <i class="fas fa-spider"></i> {{ loginAttempt.portRemote }}
-                </td>
-                <td>{{ loginAttempt.isCleared|boolean }}</td>
-                <td>
-                    <a href="{{ path('lucca_security_login_attempt_show', { 'id': loginAttempt.id }) }}"
-                       class="btn btn-info btn-sm" title="{{ 'link.loginAttempt.show'|trans }}">
-                        <i class="fa fa-eye"></i>
-                    </a>
-
-                    {% if not loginAttempt.isCleared %}
-                        <a href="{{ path('lucca_security_login_attempt_approve_ip', { 'id': loginAttempt.id }) }}"
-                           class="btn btn-primary btn-sm" title="{{ 'link.loginAttempt.approveIp'|trans }}">
-                            <i class="fas fa-broom"></i> </a>
-                    {% endif %}
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
     </table>
 
     <a class="btn btn-secondary btn-lg" href="{{ path('lucca_core_parameter') }}"
        title="{{ 'link.parameter'|trans }}"><i class="fa fa-cogs"></i></a>
 
 {% endblock lucca_list %}
+
+{% block lucca_js_head %}
+    {{ parent() }}
+
+    {#-- Datatable scripts --#}
+    {% include '@LuccaSecurity/LoginAttempt/Js/login_attempt_browser.js.html.twig' %}
+{% endblock lucca_js_head %}
 
