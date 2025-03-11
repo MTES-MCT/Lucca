@@ -75,7 +75,7 @@ class UserController extends AbstractController
     /**
      * Finds and displays a User entity.
      */
-    #[Route(path: '/{id}', name: 'lucca_user_show', methods: ['GET'])]
+    #[Route(path: '/{id}', name: 'lucca_user_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
     public function showAction(User $user): Response
     {

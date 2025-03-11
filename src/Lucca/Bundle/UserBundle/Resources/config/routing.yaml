@@ -4,7 +4,7 @@ lucca_user_bundle:
     type:     attribute
     prefix:   /back-office
 
-lucca_user_bundle_myProfile:
-    resource: "@LuccaUserBundle/Controller/MyProfile"
+lucca_user_bundle_profile:
+    resource: "@LuccaUserBundle/Controller/Profile"
     type:     attribute
     prefix:   /back-office

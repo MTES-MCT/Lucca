@@ -14,7 +14,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
@@ -28,7 +27,6 @@ class ProfileController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly TokenStorageInterface  $tokenStorage,
         private readonly UserManager            $userManager
     )
     {
@@ -42,7 +40,7 @@ class ProfileController extends AbstractController
     public function showProfileAction(): Response
     {
         /** Find Adherent by connected User */
-        $user = $this->tokenStorage->getToken()->getUser();
+        $user = $this->getUser();
         $adherent = $this->em->getRepository(Adherent::class)->findOneBy([
             'user' => $user
         ]);
@@ -60,7 +58,7 @@ class ProfileController extends AbstractController
     public function editAction(Request $request): Response
     {
         /** Find Adherent by connected User */
-        $user = $this->tokenStorage->getToken()->getUser();
+        $user = $this->getUser();
         $adherent = $this->em->getRepository(Adherent::class)->findOneBy([
             'user' => $user
         ]);

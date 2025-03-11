@@ -8,7 +8,7 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\Bundle\UserBundle\Form\MyProfile;
+namespace Lucca\Bundle\UserBundle\Form\Profile;
 
 use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
 use Symfony\Component\Form\Extension\Core\Type\{PasswordType, RepeatedType};
