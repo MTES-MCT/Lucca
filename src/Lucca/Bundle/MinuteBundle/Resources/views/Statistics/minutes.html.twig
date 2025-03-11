@@ -187,8 +187,6 @@
 {% block lucca_css %}
     {{ parent() }}
 
-    <link href="{{ asset('plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
-          rel="stylesheet">
     <link href="{{ asset('plugins/chosen-js/chosen.css') }}" rel="stylesheet">
 
     <link href="{{ asset('plugins/select2/dist/css/select2.css') }}" rel="stylesheet">
@@ -216,13 +214,6 @@
         $('.chosen-select').chosen({
             placeholder_text_single: " ",
             no_results_text: "Aucun résultat!"
-        });
-
-        {#Datepicker#}
-        $('.date-picker').datepicker({
-            calendarWeeks: true,
-            language: 'fr',
-            orientation: 'bottom',
         });
     </script>
 

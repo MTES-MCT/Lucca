@@ -293,33 +293,14 @@
 {% endblock lucca_panels %}
 
 
-{% block lucca_css %}
-    {{ parent() }}
-
-    <link href="{{ asset('plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
-          rel="stylesheet">
-
-    <link href="{{ asset('plugins/material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}"
-          rel="stylesheet">
-{% endblock lucca_css %}
-
-
-
 {% block lucca_js %}
     {{ parent() }}
 
 
     <script src="{{ asset('assets/js/jquery.collection.js') }}"></script>
     <script src="{{ asset('plugins/momentjs/moment.js') }}"></script>
-    <script src="{{ asset('plugins/material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}"></script>
 
     <script>
-        {# Datepicker #}
-        $('.date-picker').datepicker({
-            calendarWeeks: true,
-            language: 'fr'
-        });
-
         {# Collection form #}
         $('.human-collection').collection({
             allow_duplicate: false, allow_up: false, allow_down: false,

@@ -116,12 +116,6 @@
     {% include "@LuccaThemeStreamDashboardUiKit/Plugins/datatables.css.html.twig" %}
     <link rel="stylesheet" href="{{ asset('plugins/dataTables/Select-1.3.3/select.dataTables.min.css') }}"/>
 
-    {# Datepicker #}
-    <link href="{{ asset('plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
-          rel="stylesheet">
-    <link href="{{ asset('plugins/material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}"
-          rel="stylesheet">
-
 {% endblock lucca_css %}
 
 
@@ -134,19 +128,7 @@
     } %}
     <script src="{{ asset('plugins/dataTables/Select-1.3.3/dataTables.select.min.js') }}"></script>
 
-    {# Datepicker #}
-    <script src="{{ asset('/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js') }}"></script>
-    <script src="{{ asset('/plugins/bootstrap-datepicker/lang/bootstrap-datepicker.fr.js') }}"></script>
-    <script src="{{ asset('plugins/material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}"></script>
-
     <script>
-
-        {# Datepicker #}
-        $('.date-picker').datepicker({
-            calendarWeeks: true,
-            language: 'fr'
-        });
-
         let $checkPrint = $('.js-check-print-letter');
         let $print = $('.js-print');
         let $folders = $('.js-folders');

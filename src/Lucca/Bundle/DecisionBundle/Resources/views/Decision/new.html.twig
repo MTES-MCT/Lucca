@@ -409,9 +409,6 @@
 {% block lucca_css %}
     {{ parent() }}
 
-    <link href="{{ asset('plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
-          rel="stylesheet">
-
     <link href="{{ asset('plugins/summernote/summernote-bs4.css') }}" rel="stylesheet">
 {% endblock lucca_css %}
 
@@ -419,21 +416,12 @@
 {% block lucca_js %}
     {{ parent() }}
 
-    <script src="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js') }}"></script>
-    <script src="{{ asset('bundles/luccathemeangle/plugins/bootstrap-datepicker/lang/bootstrap-datepicker.fr.js') }}"></script>
-
     <script src="{{ asset('plugins/summernote/summernote-bs4.js') }}"></script>
     <script src="{{ asset('plugins/summernote/lang/summernote-fr-FR.min.js') }}"></script>
 
     <script src="{{ asset('assets/js/jquery.collection.js') }}"></script>
 
     <script>
-        {# Datepicker #}
-        $('.date-picker').datepicker({
-            calendarWeeks: true,
-            language: 'fr'
-        });
-
         {# Summernote #}
         $('.summernote').summernote({
             height: 100,
@@ -460,13 +448,6 @@
             // here is the magic!
             elements_selector: 'tr.penalty',
             elements_parent_selector: '%id% tbody',
-            after_add: function (collection, element) {
-                {# Datepicker #}
-                $('.date-picker').datepicker({
-                    calendarWeeks: true,
-                    language: 'fr'
-                });
-            }
         });
         {# End - Collection form - penalty #}
 
@@ -479,13 +460,6 @@
             // here is the magic!
             elements_selector: 'tr.liquidation',
             elements_parent_selector: '%id% tbody',
-            after_add: function (collection, element) {
-                {# Datepicker #}
-                $('.date-picker').datepicker({
-                    calendarWeeks: true,
-                    language: 'fr'
-                });
-            }
         });
         {# End - Collection form - liquidations #}
 
@@ -498,13 +472,6 @@
             // here is the magic!
             elements_selector: 'tr.appeal-penalty',
             elements_parent_selector: '%id% tbody',
-            after_add: function (collection, element) {
-                {# Datepicker #}
-                $('.date-picker').datepicker({
-                    calendarWeeks: true,
-                    language: 'fr'
-                });
-            }
         });
         {# End - Collection form - Appeal penalty #}
 
@@ -518,11 +485,6 @@
             elements_selector: 'tr.contradictory',
             elements_parent_selector: '%id% tbody',
             after_add: function (collection, element) {
-                {# Datepicker #}
-                $('.date-picker').datepicker({
-                    calendarWeeks: true,
-                    language: 'fr'
-                });
                 $('.summernote').summernote({
                     height: 80,
                     lang: 'fr-FR',

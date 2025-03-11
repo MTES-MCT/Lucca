@@ -163,8 +163,6 @@
 {% block lucca_css %}
     {{ parent() }}
 
-    <link href="{{ asset('plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}"
-          rel="stylesheet">
     <link href="{{ asset('bundles/luccacore/css/lucca_map.css') }}" rel="stylesheet">
     {#-- Plugin sweet alert 2 --#}
     <link href="{{ asset('plugins/sweetalert2/sweetalert2.css') }}" rel="stylesheet">
@@ -197,12 +195,6 @@
 
         {#-- Contain all js needed for the modal map --#}
         {% include('@LuccaMinute/Minute/Js/formMap.js.twig') with { 'minute': minute } %}
-
-        {#Datepicker#}
-        $('.date-picker').datepicker({
-            calendarWeeks: true,
-            language: 'fr'
-        });
 
         {#Collection form#}
         $('.human-collection').collection({

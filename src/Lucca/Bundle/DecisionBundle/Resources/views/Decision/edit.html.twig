@@ -449,13 +449,6 @@
             // here is the magic!
             elements_selector: 'tr.penalty',
             elements_parent_selector: '%id% tbody',
-            after_add: function (collection, element) {
-                {# Datepicker #}
-                $('.date-picker').datepicker({
-                    calendarWeeks: true,
-                    language: 'fr'
-                });
-            }
         });
         {# End - Collection form - penalty #}
 
@@ -468,13 +461,6 @@
             // here is the magic!
             elements_selector: 'tr.liquidation',
             elements_parent_selector: '%id% tbody',
-            after_add: function (collection, element) {
-                {# Datepicker #}
-                $('.date-picker').datepicker({
-                    calendarWeeks: true,
-                    language: 'fr'
-                });
-            }
         });
         {# End - Collection form - liquidations #}
 
@@ -487,13 +473,6 @@
             // here is the magic!
             elements_selector: 'tr.appeal-penalty',
             elements_parent_selector: '%id% tbody',
-            after_add: function (collection, element) {
-                {# Datepicker #}
-                $('.date-picker').datepicker({
-                    calendarWeeks: true,
-                    language: 'fr'
-                });
-            }
         });
         {# End - Collection form - Appeal penalty #}
 
@@ -507,11 +486,6 @@
             elements_selector: 'tr.contradictory',
             elements_parent_selector: '%id% tbody',
             after_add: function (collection, element) {
-                {# Datepicker #}
-                $('.date-picker').datepicker({
-                    calendarWeeks: true,
-                    language: 'fr'
-                });
                 $('.summernote').summernote({
                     height: 80,
                     lang: 'fr-FR',
