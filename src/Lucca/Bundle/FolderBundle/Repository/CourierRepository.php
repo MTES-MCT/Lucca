@@ -38,6 +38,7 @@ class CourierRepository extends EntityRepository
             ->leftJoin('courier.edition', 'edition')->addSelect('edition');
 
         $qb->andWhere($qb->expr()->isNull('courier.dateJudicial'));
+        $qb->andWhere($qb->expr()->isNotNull('courier.edition'));
         $qb->setMaxResults(1);
 
         try {
@@ -58,6 +59,7 @@ class CourierRepository extends EntityRepository
             ->leftJoin('courier.edition', 'edition')->addSelect('edition');
 
         $qb->andWhere($qb->expr()->isNull('courier.dateDdtm'));
+        $qb->andWhere($qb->expr()->isNotNull('courier.edition'));
         $qb->setMaxResults(1);
 
         try {

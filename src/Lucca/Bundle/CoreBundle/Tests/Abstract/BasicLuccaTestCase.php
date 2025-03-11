@@ -31,7 +31,7 @@ abstract class BasicLuccaTestCase extends WebTestCase
     /**
      * Default username used to find the User entity
      */
-    static string $usernameForTest = 'numericwave';
+    static string $usernameForTest = 'lucca-nw-01';
 
     /**
      * Provides URLs to test.

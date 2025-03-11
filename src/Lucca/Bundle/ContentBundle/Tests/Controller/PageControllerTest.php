@@ -15,7 +15,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
 use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
-use Lucca\Bundle\ModelBundle\Entity\Page;
+use Lucca\Bundle\ContentBundle\Entity\Page;
 
 class PageControllerTest extends BasicLuccaTestCase
 {

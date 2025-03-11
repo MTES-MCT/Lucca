@@ -17,8 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Lucca\Bundle\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Control;
-use Lucca\Bundle\MinuteBundle\Entity\MinuteBundle\Entity\Human;
+use Lucca\Bundle\MinuteBundle\Entity\{Control, Human};
 use Lucca\Bundle\MinuteBundle\Form\HumanType;
 
 class UpdatingFolderType extends AbstractType

@@ -206,7 +206,7 @@ class Courier implements LoggableInterface
         return $this->humansEditions;
     }
 
-    public function addHumanEdition(CourierHumanEdition $humanEdition): self
+    public function addHumansEdition(CourierHumanEdition $humanEdition): self
     {
         if (!$this->humansEditions->contains($humanEdition)) {
             $this->humansEditions[] = $humanEdition;
@@ -216,7 +216,7 @@ class Courier implements LoggableInterface
         return $this;
     }
 
-    public function removeHumanEdition(CourierHumanEdition $humanEdition): void
+    public function removeHumansEdition(CourierHumanEdition $humanEdition): void
     {
         $this->humansEditions->removeElement($humanEdition);
     }

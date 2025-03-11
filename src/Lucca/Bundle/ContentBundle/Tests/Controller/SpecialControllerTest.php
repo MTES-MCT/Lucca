@@ -25,8 +25,8 @@ class SpecialControllerTest extends BasicLuccaTestCase
     {
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_content_privacy_policy')),
-            new UrlTest($router->generate('lucca_content_terms_service')),
+            new UrlTest($router->generate('lucca_content_privacy_policy'), 200),
+            new UrlTest($router->generate('lucca_content_terms_service'), 200),
         ];
     }
 }

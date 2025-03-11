@@ -136,7 +136,7 @@ readonly class FolderManager
         }
 
         /** If the folder is edited manually we need to replace the custom tag in the edited version */
-        if($folder->getEdition()->getFolderEdited()){
+        if($folder->getEdition()?->getFolderEdited()){
             $folder->getEdition()->setFolderVersion($this->replaceCustomTags($folder->getEdition()->getFolderVersion()));
         }
 

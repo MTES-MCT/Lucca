@@ -179,6 +179,33 @@ class Minute implements LoggableInterface
         $this->status = self::STATUS_OPEN;
     }
 
+    /**
+     * Get Control with date and hour set for create a new folder
+     */
+    public function getControlsForFolder(): array
+    {
+        $result = array();
+
+        foreach ($this->getControls() as $control) {
+            /** Available to Frame 3 */
+            if ($control->getType() === Control::TYPE_FOLDER) {
+                /** Condition - Control have a date and hour + control is accepted + control is not already used */
+                if (($control instanceof Control && $control->getDateControl() && $control->getHourControl())
+                    && ($control->getAccepted() !== null && $control->getAccepted() === Control::ACCEPTED_NONE)
+                    or $control->getIsFenced() === false && $control->getFolder() === null) {
+                    $result[] = $control;
+                }
+            }
+        }
+
+        // Sort by createdAt method
+        usort($result, function ($a, $b) {
+            return $a->getCreatedAt() < $b->getCreatedAt();
+        });
+
+        return $result;
+    }
+
     #[Assert\Callback]
     public function humanConstraint(ExecutionContextInterface $context): void
     {

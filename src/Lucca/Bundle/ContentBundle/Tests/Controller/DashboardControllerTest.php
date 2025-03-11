@@ -25,7 +25,7 @@ class DashboardControllerTest extends BasicLuccaTestCase
     {
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_content_dashboard')),
+            new UrlTest($router->generate('lucca_content_dashboard'), 200),
         ];
     }
 }

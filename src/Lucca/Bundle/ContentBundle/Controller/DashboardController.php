@@ -31,7 +31,6 @@ class DashboardController extends AbstractController
      * Show main dashboard
      */
     #[Route(path: '/', name: 'lucca_content_dashboard', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN')]
     public function homeAction(): Response
     {
         $area = $this->em->getRepository(Area::class)->findDashboard(Area::POSI_CONTENT);

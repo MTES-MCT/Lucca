@@ -25,7 +25,6 @@ class PageController extends AbstractController
      * Show Page page
      */
     #[Route(path: '/{slug}', name: 'lucca_content_page', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN')]
     public function pageAction(
         #[MapEntity(mapping: ['slug' => 'slug'])] Page $page,
     ): Response

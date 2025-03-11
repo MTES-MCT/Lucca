@@ -27,12 +27,8 @@
 
     <testsuites>
         <testsuite name="Lucca">
-            <directory>src/Lucca/*/Tests</directory>
+            <directory>src/Lucca/Bundle/*/Tests</directory>
             <exclude>
-                <directory>src/Lucca/Bundle/MediaBundle</directory>
-                <directory>src/Lucca/Bundle/ThemeDocsUiKitBundle</directory>
-                <directory>src/Lucca/Bundle/ThemeStreamDashboardUiKitBundle</directory>
-
                 <directory>src/*Bundle/Resources</directory>
                 <directory>src/*/*Bundle/Resources</directory>
                 <directory>src/*/Bundle/*Bundle/Resources</directory>

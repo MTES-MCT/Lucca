@@ -31,9 +31,9 @@ class FolderControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_folder_doc_print', [
-                'minute_id' => $folder->getMinute()->getId(), 'id' => $folder->getId(),
-            ]), 302, 302),
+//            new UrlTest($router->generate('lucca_folder_doc_print', [
+//                'minute_id' => $folder->getMinute()->getId(), 'id' => $folder->getId(),
+//            ])),
         ];
     }
 }

@@ -24,6 +24,7 @@ class CourierHumanEditionRepository extends EntityRepository
             ->leftJoin('courierHumanEdition.courier', 'courier')->addSelect('courier');
 
         $qb->andWhere($qb->expr()->isNull('courier.dateOffender'));
+        $qb->andWhere($qb->expr()->isNotNull('courier.edition'));
         $qb->setMaxResults(1);
 
         try {
