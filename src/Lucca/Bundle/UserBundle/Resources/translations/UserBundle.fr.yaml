@@ -22,7 +22,8 @@ entity:
 label:
     username: "Nom d'utilisateur"
     password: "Mot de passe"
-    password_confirmation: "Confirmation"
+    passwordConfirmation: "Confirmation"
+    currentPassword: "Mot de passe actuel"
     email: "Email"
     roles: "Rôles"
     name: "Nom"

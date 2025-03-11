@@ -28,7 +28,7 @@ class ProfileFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->remove('current_password');
+            ->remove('currentPassword');
 
         $builder
             ->add('username', TextType::class, ['label' => 'label.username', 'attr' => [
@@ -37,8 +37,8 @@ class ProfileFormType extends AbstractType
             ->add('email', EmailType::class, ['label' => 'label.email'])
             ->add('name', TextType::class, ['label' => 'label.name']);
 
-        $builder->add('current_password', PasswordType::class, options: array(
-            'label' => 'form.current_password',
+        $builder->add('currentPassword', PasswordType::class, options: array(
+            'label' => 'form.currentPassword',
             'translation_domain' => 'FOSUserBundle',
             'mapped' => false,
             'constraints' => new UserPassword(),

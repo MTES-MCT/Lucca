@@ -21,9 +21,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Lucca\Bundle\UserBundle\Repository\UserRepository;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email_canonical'], message: 'constraint.unique.user.email', errorPath: 'email')]
-#[UniqueEntity(fields: ['username_canonical'], message: 'constraint.unique.user.username', errorPath: 'username')]
-#[UniqueEntity(fields: ['confirmation_token'])]
+#[UniqueEntity(fields: ['emailCanonical'], message: 'constraint.unique.user.email', errorPath: 'email')]
+#[UniqueEntity(fields: ['usernameCanonical'], message: 'constraint.unique.user.username', errorPath: 'username')]
+#[UniqueEntity(fields: ['confirmationToken'])]
 #[ORM\Table(name: 'lucca_user')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {

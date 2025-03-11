@@ -21,7 +21,7 @@ use Lucca\Bundle\UserBundle\Form\MyProfile\{ProfileType, ProfilePasswordType};
 use Lucca\Bundle\UserBundle\Manager\UserManager;
 
 
-#[Route(path: '/user/my-profile')]
+#[Route(path: '/my-profile')]
 #[IsGranted('ROLE_USER')]
 class ProfileController extends AbstractController
 {

@@ -25,22 +25,17 @@ class ProfilePasswordType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $constraintsOptions = array(
-            'constraint.user.current_password.invalid' => 'message',
-        );
-
-        $builder->add('current_password', PasswordType::class, [
-            'label' => 'text.current_password', 'mapped' => false,
+        $builder->add('currentPassword', PasswordType::class, [
+            'label' => 'label.currentPassword', 'mapped' => false,
             'constraints' => [
                 new NotBlank(),
-                new UserPassword($constraintsOptions),
+                new UserPassword(),
             ]
         ]);
 
         $builder
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class, 'required' => true,
-                'options' => ['translation_domain' => 'UserBundle'],
                 'first_options' => ['label' => 'label.password', 'attr' => ['class' => 'plainPassword_first']],
                 'second_options' => ['label' => 'label.passwordConfirmation', 'attr' => ['class' => 'plainPassword_second']],
                 'invalid_message' => 'constraint.user.password.mismatch',
