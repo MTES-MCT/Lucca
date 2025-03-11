@@ -95,7 +95,7 @@ class FolderType extends AbstractType
                     return array('data-stateControl' =>$control->getStateControl());
                 },
                 'choice_label' => function (Control $control) {
-                    return $control->getFormLabel() . ' (' . $this->translator->trans($control->getStateControl(), array(), 'LuccaControlBundle') . ')';
+                    return $control->getFormLabel() . ' (' . $this->translator->trans($control->getStateControl(), array(), 'MinuteBundle') . ')';
                 },
             ));
     }

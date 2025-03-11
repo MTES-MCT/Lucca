@@ -246,6 +246,10 @@ title:
     control_historic: "Historique des contrôles"
     folder_historic: "Historique des procès verbaux"
     page_tools: "Fiche outils"
+    letter: "Lettre de convocation"
+    access: "Lettre d'accès"
+    access_authorized: "Autorisation d'accès sur une propriété privée"
+    access_denied: "Refus d'autorisation d'accès sur une propriété privée"
 
     control:
         letterAccess: "Modification manuelle de la lettre d'accès"
@@ -262,6 +266,31 @@ title:
     folderSigned: "PV signé"
     statistics: 'Dossiers'
     annexes: 'Annexes liées au PV'
+
+
+########################
+# Access letter
+########################
+access:
+    the: "Le"
+    at: "à"
+    at_hour: "A l'heure"
+    male: "Monsieur"
+    female: "Madame"
+    undersigned: "Je soussigné(e)"
+    quality: "En qualité de"
+    resident: "Demeurant à"
+    visit: "Reconnaît avoir reçu ce jour la visite de"
+    function: "en sa qualité de"
+    sworn: "assermenté et porteur de sa commission"
+    accompanied: "Accompagné(e) de"
+    accompanied_function: "en qualité de"
+    authorization: "Et avoir autorisé à pénétrer sur la propriété cadastrée"
+    deny: "Et lui avoir refusé l'accès à la propriété cadastrée"
+    consent: "«Sachant que je puis m’opposer à la visite de mon domicile, je consens expressément à ce que vous y opériez
+    les constatations que vous jugerez utiles à l’enquête en cours»."
+    copy: "Cette formule doit être reprise par écrit : "
+
 
 ########################
 # Text
@@ -722,6 +751,10 @@ choice:
         police: "Policier municipal"
         administrative: "Agent administratif territorial"
         country: "Agent de l'Etat"
+        
+## isRiskZone
+0: "Non"
+1: "Oui"
 
 ########################
 # Badge
