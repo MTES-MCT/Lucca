@@ -41,12 +41,22 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 ## Copy projet files
 COPY . ./
 
+# https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
+ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV PATH="${PATH}:/root/.composer/vendor/bin"
+
+RUN set -eux; \
+    mkdir -p var/cache var/log; \
+    composer install --prefer-dist --no-progress --no-scripts --no-interaction; \
+    chmod +x bin/console; \
+    bin/console fos:js-routing:dump --format=json --target=assets/routes.json; \
+    bin/console assets:install; \
+    chown -R www-data:www-data /srv/app/var/cache /srv/app/var/log;
+
 EXPOSE 9000
 
 # Caddy
 FROM caddy:2-alpine AS caddy
-
-ENV SERVER_NAME=http://
 
 WORKDIR /srv/app
 
