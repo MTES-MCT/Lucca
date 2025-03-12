@@ -61,3 +61,5 @@ FROM caddy:2-alpine AS caddy
 WORKDIR /srv/app
 
 COPY ./docker/Caddyfile /etc/caddy/Caddyfile
+COPY --from=php-fpm /srv/app/public public/
+
