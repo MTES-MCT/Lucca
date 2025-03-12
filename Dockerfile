@@ -41,6 +41,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 ## Copy projet files
 COPY . ./
 
+# https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
+ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV PATH="${PATH}:/root/.composer/vendor/bin"
+
 RUN set -eux; \
     mkdir -p var/cache var/log; \
     composer install --prefer-dist --no-progress --no-scripts --no-interaction; \
