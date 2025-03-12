@@ -117,10 +117,10 @@ class UpdatingControlType extends AbstractType
             'multiple' => true, 'expanded' => false, 'choices' => $choicesHuman,
             'attr' => array(
                 'class' => 'select2',
-                'data-placeholder' => $this->translator->trans('help.data.select', array(), 'LuccaMinuteBundle')
+                'data-placeholder' => $this->translator->trans('help.data.select', array(), 'MinuteBundle')
             ),
             'choice_label' => function (Human $human) {
-                return $human->getOfficialName() . ' (' . $this->translator->trans($human->getStatus(), array(), 'LuccaMinuteBundle') . ')';
+                return $human->getOfficialName() . ' (' . $this->translator->trans($human->getStatus(), array(), 'MinuteBundle') . ')';
             },
         ));
 

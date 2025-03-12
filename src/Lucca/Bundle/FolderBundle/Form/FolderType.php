@@ -65,10 +65,10 @@ class FolderType extends AbstractType
                 'multiple' => true, 'expanded' => false, 'choices' => $choicesHuman,
                 'attr' => array(
                     'class' => 'chosen-select',
-                    'data-placeholder' => $this->translator->trans('help.data.select', array(), 'LuccaFolderBundle')
+                    'data-placeholder' => $this->translator->trans('help.data.select', array(), 'FolderBundle')
                 ),
                 'choice_label' => function (Human $human) {
-                    return $human->getOfficialName() . ' (' . $this->translator->trans($human->getStatus(), array(), 'LuccaFolderBundle') . ')';
+                    return $human->getOfficialName() . ' (' . $this->translator->trans($human->getStatus(), array(), 'FolderBundle') . ')';
                 },
             ));
 
@@ -89,7 +89,7 @@ class FolderType extends AbstractType
                 'multiple' => false, 'expanded' => false, 'choices' => $choicesControl,
                 'attr' => array(
                     'class' => 'chosen-select js-control',
-                    'data-placeholder' => $this->translator->trans('help.data.select', array(), 'LuccaFolderBundle'),
+                    'data-placeholder' => $this->translator->trans('help.data.select', array(), 'FolderBundle'),
                 ),
                 'choice_attr' => function (Control $control) {
                     return array('data-stateControl' =>$control->getStateControl());

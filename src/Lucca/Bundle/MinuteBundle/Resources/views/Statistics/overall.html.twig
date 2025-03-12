@@ -5,7 +5,7 @@
 {% import "@LuccaThemeStreamDashboardUiKit/Macro/buttonHelp.html.twig" as macroButtonHelp %}
 
 {% block lucca_title %}
-    <title>{{ 'setting.general.app.name'| setting({}, 'LuccaCoreBundle') }}
+    <title>{{ 'setting.general.app.name'| setting({}, 'CoreBundle') }}
         | {{ 'statistics.overall.title'|trans }}</title>
 {% endblock lucca_title %}
 
@@ -86,7 +86,7 @@
 
             <div class="col-6 mb-3">
 
-                {% embed "@LuccaCore/_panel-filters.html.twig" with { 'filters': filters, 'transDomain': 'LuccaMinuteBundle' } %}
+                {% embed "@LuccaCore/_panel-filters.html.twig" with { 'filters': filters, 'transDomain': 'MinuteBundle' } %}
                 {% endembed %}
 
                 {% embed "@LuccaMinute/Minute/Embed/_panel-closedUnclosedMinutes.html.twig" with { 'nbOpen': nbOpen,'nbClosed': nbClosed, 'dateStart': filters['dateStart'], 'dateEnd': filters['dateEnd'] } %}

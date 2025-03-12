@@ -103,9 +103,9 @@ class EntityHumanExtension extends AbstractExtension
         $inlineDescription = '';
 
         if ($human->getGender() === Human::GENDER_MALE) {
-            $inlineDescription .= $this->translator->trans('choice.gender.male', array(), 'LuccaMinuteBundle');
+            $inlineDescription .= $this->translator->trans('choice.gender.male', array(), 'MinuteBundle');
         } else {
-            $inlineDescription .= $this->translator->trans('choice.gender.female', array(), 'LuccaMinuteBundle');
+            $inlineDescription .= $this->translator->trans('choice.gender.female', array(), 'MinuteBundle');
         }
 
         return $inlineDescription;

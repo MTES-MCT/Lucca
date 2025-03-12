@@ -69,10 +69,10 @@ class UpdatingFolderType extends AbstractType
                 'multiple' => true, 'expanded' => false, 'choices' => $choicesHuman,
                 'attr' => array(
                     'class' => 'chosen-select',
-                    'data-placeholder' => $this->translator->trans('help.data.select', array(), 'LuccaFolderBundle')
+                    'data-placeholder' => $this->translator->trans('help.data.select', array(), 'FolderBundle')
                 ),
                 'choice_label' => function (Human $human) {
-                    return '(' . $this->translator->trans($human->getStatus(), array(), 'LuccaFolderBundle') . ') ' . $human->getOfficialName();
+                    return '(' . $this->translator->trans($human->getStatus(), array(), 'FolderBundle') . ') ' . $human->getOfficialName();
                 },
             ));
 
@@ -93,7 +93,7 @@ class UpdatingFolderType extends AbstractType
                 'multiple' => false, 'expanded' => false, 'choices' => $choicesControl,
                 'attr' => array(
                     'class' => 'chosen-select',
-                    'data-placeholder' => $this->translator->trans('help.data.select', array(), 'LuccaFolderBundle')
+                    'data-placeholder' => $this->translator->trans('help.data.select', array(), 'FolderBundle')
                 ),
                 'choice_label' => 'formLabel'
             ));

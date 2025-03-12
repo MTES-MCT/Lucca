@@ -6,7 +6,7 @@
 {% block menuActive_statistics %}active{% endblock %}
 
 {% block lucca_title %}
-    <title>{{ 'setting.general.app.name'| setting({}, 'LuccaCoreBundle') }}
+    <title>{{ 'setting.general.app.name'| setting({}, 'CoreBundle') }}
         | {{ 'statistics.adherent.title'|trans }}</title>
 {% endblock lucca_title %}
 
@@ -71,7 +71,7 @@
         <div class="row">
             <div class="col-6 mb-3">
 
-                {% embed "@LuccaCore/_panel-filters.html.twig" with { 'filters': filters, 'transDomain': 'LuccaAdherentBundle' } %}
+                {% embed "@LuccaCore/_panel-filters.html.twig" with { 'filters': filters, 'transDomain': 'AdherentBundle' } %}
                 {% endembed %}
 
                 {% set counterSpeed = 10000 %}
