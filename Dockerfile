@@ -1,14 +1,37 @@
 # PHP
 FROM php:8.2-fpm AS php-fpm
 
-WORKDIR /srv/app
+# Workdir during installation
+WORKDIR /tmp
 
 RUN apt-get update && apt-get install -y \
-    unzip libpq-dev libonig-dev libzip-dev libicu-dev libpng-dev \
-    xvfb libfontconfig wkhtmltopdf \
+    libzip-dev libicu-dev libpng-dev \
+    # Install minimal dependencies for wkhtmltopdf
+    libxrender1 \
+    libxext6 \
+	libfontconfig1 \
+	libx11-6 \
+	fontconfig \
+	fonts-crosextra-carlito \
+	xfonts-100dpi \
+	xfonts-75dpi \
+	xfonts-base \
+	libjpeg62-turbo \
+	libpng16-16 \
+	# Configure PHP extensions
     && docker-php-ext-configure intl \
     && docker-php-ext-install pdo_mysql zip intl gd \
-    && apt-get clean
+    # Clean up
+    && apt-get clean -y \
+	apt-get autoclean -y \
+	apt-get autoremove -y
+
+RUN curl -L https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.bookworm_amd64.deb \
+		-o wkhtmltox_0.12.6.1-3.bookworm_amd64.deb; \
+        dpkg -i wkhtmltox_0.12.6.1-3.bookworm_amd64.deb;
+
+# Workdir after installation
+WORKDIR /srv/app
 
 ENV WKHTMLTOPDF_PATH=/usr/bin/wkhtmltopdf
 
