@@ -1,0 +1,179 @@
+{% trans_default_domain 'MinuteBundle' %}
+
+const historicCtx = document.getElementById('historicChart').getContext('2d');
+const historicChart = new Chart(historicCtx, {
+    type: 'bar',
+    data: {
+        labels: [
+            {% for month in stories['month'] %}
+            {#Convert the date in order to get the month in letters#}
+            {% set dateTime = date(month) | dateToLetterMonth %}
+            "{{ dateTime }}"
+            {% if not loop.last %}
+            ,
+            {% endif %}
+            {% endfor %}
+        ],
+        datasets: [
+            {#-Don't use a loop for in oreder to mange dataset case by case
+            #-and in order to display data in specifc order wothout adding complexity in manager-#}
+            {################################# STATUS_OPEN ##################################################}
+            {% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_OPEN') in stories['stories']|keys %}
+            {
+                label: "{{ 'label.complaint' | trans }}",
+                backgroundColor:
+                    "#f9902c"
+                ,
+                data: [
+                    {% for data in stories['stories'][constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_OPEN')] %}
+                    "{{ data }}"
+                    {% if not loop.last %}
+                    ,
+                    {% endif %}
+                    {% endfor %}
+                ]
+            },
+            {% endif %}
+            {################################# STATUS_CONTROL ##################################################}
+            {% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_CONTROL') in stories['stories']|keys %}
+            {
+                label: "{{ constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_CONTROL') | trans }}",
+                backgroundColor:
+                    "#5b2500"
+                ,
+                data: [
+                    {% for data in stories['stories'][constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_CONTROL')] %}
+                    "{{ data }}"
+                    {% if not loop.last %}
+                    ,
+                    {% endif %}
+                    {% endfor %}
+                ]
+            },
+            {% endif %}
+            {################################# STATUS_FOLDER ##################################################}
+            {% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_FOLDER') in stories['stories']|keys %}
+            {
+                label: "{{ constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_FOLDER') | trans }}",
+                backgroundColor:
+                    "#e34c4a"
+                ,
+                data: [
+                    {% for data in stories['stories'][constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_FOLDER')] %}
+                    "{{ data }}"
+                    {% if not loop.last %}
+                    ,
+                    {% endif %}
+                    {% endfor %}
+                ]
+            },
+            {% endif %}
+            {################################# STATUS_COURIER ##################################################}
+            {#Todo uncomment if needed#}
+            {#{% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_COURIER') in stories['stories']|keys %}#}
+            {#{#}
+            {#label: "{{ constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_COURIER') | trans }}",#}
+            {#backgroundColor:#}
+            {#"#afafaf"#}
+            {#,#}
+            {#data: [#}
+            {#{% for data in stories['stories'][constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_COURIER')] %}#}
+            {#"{{ data }}"#}
+            {#{% if not loop.last %}#}
+            {#,#}
+            {#{% endif %}#}
+            {#{% endfor %}#}
+            {#]#}
+            {#},#}
+            {#{% endif %}#}
+            {################################# STATUS_AIT ##################################################}
+            {#Todo uncomment if needed#}
+            {#{% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_AIT') in stories['stories']|keys %}#}
+            {#{#}
+            {#label: "{{ constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_AIT') | trans }}",#}
+            {#backgroundColor:#}
+            {#"#caf270"#}
+            {#,#}
+            {#data: [#}
+            {#{% for data in stories['stories'][constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_AIT')] %}#}
+            {#"{{ data }}"#}
+            {#{% if not loop.last %}#}
+            {#,#}
+            {#{% endif %}#}
+            {#{% endfor %}#}
+            {#]#}
+            {#},#}
+            {#{% endif %}#}
+            {################################# STATUS_UPDATING ##################################################}
+            {#Todo uncomment if needed#}
+            {#{% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_UPDATING') in stories['stories']|keys %}#}
+            {#{#}
+            {#label: "{{ constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_UPDATING') | trans }}",#}
+            {#backgroundColor:#}
+            {#"#00a585"#}
+            {#,#}
+            {#data: [#}
+            {#{% for data in stories['stories'][constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_UPDATING')] %}#}
+            {#"{{ data }}"#}
+            {#{% if not loop.last %}#}
+            {#,#}
+            {#{% endif %}#}
+            {#{% endfor %}#}
+            {#]#}
+            {#},#}
+            {#{% endif %}#}
+            {################################# STATUS_DECISION ##################################################}
+            {% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_DECISION') in stories['stories']|keys %}
+            {
+                label: "{{ constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_DECISION') | trans }}",
+                backgroundColor:
+                    "#3a81a0"
+                ,
+                data: [
+                    {% for data in stories['stories'][constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_DECISION')] %}
+                    "{{ data }}"
+                    {% if not loop.last %}
+                    ,
+                    {% endif %}
+                    {% endfor %}
+                ]
+            },
+            {% endif %}
+            {################################# STATUS_CLOSURE ##################################################}
+            {#Todo uncomment if needed#}
+            {#{% if constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_CLOSURE') in stories['stories']|keys %}#}
+            {#{#}
+            {#label: "{{ constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_CLOSURE') | trans }}",#}
+            {#backgroundColor:#}
+            {#"#49c14a"#}
+            {#,#}
+            {#data: [#}
+            {#{% for data in stories['stories'][constant('Lucca\\Bundle\\MinuteBundle\\Entity\\MinuteStory::STATUS_CLOSURE')] %}#}
+            {#"{{ data }}"#}
+            {#{% if not loop.last %}#}
+            {#,#}
+            {#{% endif %}#}
+            {#{% endfor %}#}
+            {#]#}
+            {#},#}
+            {#{% endif %}#}
+        ]
+    },
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: '{{ 'statistics.historicChart.title' | trans }}'
+            }
+        },
+        responsive: true,
+        scales: {
+            x: {
+                stacked: true,
+            },
+            y: {
+                stacked: true
+            }
+        }
+    }
+});

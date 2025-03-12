@@ -1,0 +1,78 @@
+#####################################################
+## Lucca User Bundle
+## Locale: fr
+#####################################################
+
+########################
+# Meta
+########################
+meta:
+    lucca: "Lucca"
+
+title:
+    dashboard: "Accueil"
+
+    privacyPolicy: "Politique de confidentialité"
+    termsService: "Mentions légales"
+
+########################
+# Entity
+########################
+entity:
+    area: "Zone|Zones"
+    subarea: "Sous zone|Sous zones"
+    page: "Page|Pages"
+
+
+########################
+# Label
+########################
+label:
+    name: "Nom"
+    position: "Position"
+    enabled: "Actif ?"
+    width: "Largeur"
+    color: "Couleur"
+    title: "Titre"
+    area: "Zone"
+    icon: "Icône"
+    link: "Lien"
+    content: "Contenu"
+    author: "Auteur"
+    subarea: "Sous zone"
+    slug: "Raccourci"
+    medias: "Medias joints"
+    page: "Page"
+    actions: "Actions"
+    mediasLinked: "Médias liés"
+
+########################
+# Choice
+########################
+choice:
+    position:
+        content: "Contenu"
+        footer: "Pied de page"
+        admin: "Administration"
+
+########################
+# Help
+########################
+help:
+    icon: "Vous pourrez trouver la liste des icônes sur le site :"
+
+########################
+# Link
+########################
+link:
+    new: "Nouveau"
+    back: "Retour"
+    edit: "Modifier"
+    changePassword: "Changer votre mot de passe"
+    show: "Visualiser"
+    delete: "Supprimer"
+    print: "Imprimer"
+    enable: "Activer"
+    disable: "Désactiver"
+    tools: "Fiches outils"
+    public: "Vue publique"

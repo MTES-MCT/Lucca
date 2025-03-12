@@ -1,0 +1,49 @@
+services:
+    #################################################################
+    ## Twig
+    #################################################################
+    
+    ## Override Twig -- Assets function with a specific lucca version
+    Lucca\Bundle\CoreBundle\Asset\VersionStrategy\NumberVersionStrategy:
+        public: false
+        arguments:
+            - "%env(LUCCA_STRATEGY_ASSET_VERSION)%"
+            - "%env(LUCCA_STRATEGY_ASSET_FORCE_REFRESH)%"
+
+    #################################################################
+    ## Listener
+    #################################################################
+
+    ## Listener for create entity
+    lucca.listener.entity_persist:
+        class: Lucca\Bundle\CoreBundle\EventListener\EntityPersistListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    ## Listener for update entity
+    lucca.listener.entity_update:
+        class: Lucca\Bundle\CoreBundle\EventListener\EntityUpdateListener
+        tags:
+            - { name: doctrine.event_listener, event: preUpdate }
+
+    #################################################################
+    ## Utils
+    #################################################################
+
+    ## Utils for canonalize and slugify string
+    lucca.utils.canonalizer:
+        class: Lucca\Bundle\CoreBundle\Utils\Canonalizer
+
+    ## Utils for convert csv file to array
+    lucca.converter.csv_array:
+        class: Lucca\Bundle\CoreBundle\Utils\ConverterCsvArray
+
+    ## Utils for convert int to string
+    lucca.utils.converter_int_str:
+        class: Lucca\Bundle\CoreBundle\Utils\ConverterIntStr
+
+    ## Utils for GeoLocator
+    lucca.utils.geo_locator:
+        class: Lucca\Bundle\CoreBundle\Service\GeoLocator
+        arguments:
+            - "@lucca.utils.canonalizer"

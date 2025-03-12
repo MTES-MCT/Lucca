@@ -1,0 +1,50 @@
+{% trans_default_domain 'DecisionBundle' %}
+
+{% block collection_widget %}
+    {% if prototype is defined %}
+        {% set attr = attr|merge({'data-prototype': form_widget(prototype)}) %}
+        {% set attr = attr|merge({'data-prototype-name': prototype.vars.name}) %}
+    {% endif %}
+    {% set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) %}
+    {% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}
+    {% set attr = attr|merge({'data-name-prefix': full_name}) %}
+
+    {{ form_errors(form) }}
+
+    <table {{ block('widget_attributes') }}>
+        <thead>
+        <tr>
+            <th>{{ 'label.name'|trans }}</th>
+            <th>{{ 'label.company'|trans }}</th>
+            <th>{{ 'label.amountActivity'|trans }}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for item in form %}
+            {{ form_widget(item) }}
+        {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block lucca_decisionBundle_profession_widget %}
+
+    <tr {{ block('widget_attributes') }}>
+        <td>{{ form_widget(form.name) }}</td>
+        <td>{{ form_widget(form.company) }}</td>
+        <td>{{ form_widget(form.amountActivity) }}</td>
+
+        <td class="text-center">
+            <a href="#" class="collection-duplicate btn btn-info" title="{{ 'link.profession.duplicate'|trans }}">
+                <span class="fa fa-th-large"></span></a>
+            <a href="#" class="collection-remove btn btn-danger" title="{{ 'link.profession.delete'|trans }}">
+                <span class="fa fa-trash"></span></a>
+        </td>
+    </tr>
+
+{% endblock %}
+
+{% block lucca_decisionBundle_profession_label %}{% endblock %}

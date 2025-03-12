@@ -1,0 +1,204 @@
+{% trans_default_domain 'MinuteBundle' %}
+
+
+{% block lucca_minuteBundle_human_row %}
+    <div class="col-12">
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
+
+{% block lucca_minuteBundle_human_widget %}
+
+    {% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+    {# Split attributes - result like array(0 => "id="lucca_minuteBundle_minute_humans_0") #}
+    {% set widget_attributes = block('widget_attributes')|split('" ') %}
+
+    {# Split value - result like "lucca_minuteBundle_minute_humans_0" #}
+    {% set idWidget = widget_attributes[0]|split('"')[1] %}
+    {% set nameWidget = widget_attributes[1]|split('"')[1] %}
+
+    <div {{ block('widget_attributes') }}>
+
+        <div class="row">
+            <div class="col-2">
+                {{ form_widget(form.person) }}
+            </div>
+
+            <div id="{{ idWidget }}-fields-professional" class="col-4"
+                 {% if form.person.vars.value != 'choice.person.corporation' %}style="display: none;"{% endif %}
+            >
+                {{ form_row(form.company) }}
+                {{ form_row(form.addressCompany) }}
+                {{ form_row(form.statusCompany) }}
+
+            </div>
+
+            <div class="col-5">
+                {{ form_row(form.gender) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.firstname) }}
+                {{ form_row(form.status) }}
+
+                <div class="text-right text-warning help-neighbour" style="display: none;">
+                    <small>{{ 'help.human.adress_neighbour'|trans }}</small>
+                </div>
+                {{ form_row(form.address) }}
+            </div>
+
+            <div class="col-1">
+                <p class="text-center">
+                    <a href="#" class="collection-remove btn btn-danger" title="{{ 'link.human.delete'|trans }}">
+                        <span class="fa fa-trash"></span></a>
+                </p>
+            </div>
+
+            <div class="col-12">
+                <hr>
+            </div>
+        </div>
+
+        <script>
+            {#--------------------------------------------------------------------#}
+            {# Force choice.person.physical to be selected if human have not id #}
+            {#--------------------------------------------------------------------#}
+            {% if form.vars.value is null %}
+            $("#{{ idWidget|e('js') }}_person_0").prop("checked", true);
+            {% endif %}
+
+            {#--------------------------------------------------------------------#}
+            {# Force to select Company Gender and show Company field #}
+            {#--------------------------------------------------------------------#}
+            $('input[name*="{{ nameWidget|e('js') }}[person]"]').click(function () {
+                $("#{{ idWidget }}-fields-professional").hide('slow');
+
+                if ($(this).val() === 'choice.person.corporation') {
+                    $("#{{ idWidget }}-fields-professional").show('slow');
+                    {#$('#{{ idWidget }}_gender option[value="choice.gender.company"]').prop('selected', true);#}
+                }
+            });
+
+            {#--------------------------------------------------------------------#}
+            {# Force fields if control status is form neighboor #}
+            {# $('input[id*="_stateControl_2') ==> option for choice.state.neighbour #}
+            {#--------------------------------------------------------------------#}
+            if ($('input[id*="_stateControl_2').prop("checked") === true) {
+                $("#{{ idWidget|e('js') }}_status")
+                    .val('choice.status.neighbour')
+                    .attr("readonly", "readonly");
+
+                $(".help-neighbour").show('slow');
+            }
+
+            $(document).ready(function () {
+
+                {#--------------------------------------------------------------------#}
+                {# Hide options on professional or person select according to option selected #}
+                {#--------------------------------------------------------------------#}
+
+                {# Initialize options categories and form elements container #}
+                const professionalStatus = ["choice.status.director", "choice.status.leader", "choice.status.manager", "choice.status.president"];
+                const personalStatus = ["choice.status.owner", "choice.status.undivided", "choice.status.usufruct", "choice.status.occupant"];
+                const humanRowInputs = $({{ idWidget|e('js') }});
+
+                function hideUselessOptions() {
+
+                    var selectedInUselessOptions = false;
+
+                    {# Find radios element #}
+                    $({{ idWidget|e('js') }}).find(".form-check input").each(function (index) {
+
+                        {# Check radio value #}
+                        if ($(this).val() == "choice.person.physical") {
+
+                            {# If it's a person, it hides professional options #}
+                            if ($(this).prop("checked")) {
+                                humanRowInputs.find("[id$=_status]").children("option").each(function () {
+                                    var isInArray = jQuery.inArray($(this).val(), professionalStatus);
+
+                                    {# If a professional value is selected, remove it.
+                                    Then, hide professional options #}
+                                    if (isInArray >= 0 && $(this).prop("selected")) {
+                                        $(this).prop("selected", null);
+                                        $(this).hide(0);
+                                        selectedInUselessOptions = true;
+                                    } else if (isInArray >= 0) {
+                                        $(this).hide(0);
+                                    } else {
+                                        $(this).show(0);
+                                    }
+                                });
+
+                                {# If a professional option was selected change it to the first person option available #}
+                                if (selectedInUselessOptions) {
+                                    humanRowInputs.find("[id$=_status]").find("option[value='" + personalStatus[0] + "']").prop("selected", "selected");
+                                }
+                            }
+                        } else {
+
+                            {# If it's a professional, it hides person options #}
+                            if ($(this).prop("checked")) {
+                                humanRowInputs.find("[id$=_status]").children("option").each(function () {
+                                    var isInArray = jQuery.inArray($(this).val(), personalStatus);
+
+                                    {# If a personal value is selected, remove it.
+                                    Then, hide personal options #}
+                                    if (isInArray >= 0 && $(this).prop("selected")) {
+                                        $(this).hide(0);
+                                        $(this).prop("selected", null);
+                                        selectedInUselessOptions = true;
+                                    } else if (isInArray >= 0) {
+                                        $(this).hide(0);
+                                    } else {
+                                        $(this).show(0);
+                                    }
+                                });
+
+                                {# If a personal option was selected change it to the first professional option available #}
+                                if (selectedInUselessOptions) {
+                                    humanRowInputs.find("[id$=_status]").find("option[value='" + professionalStatus[0] + "']").prop("selected", "selected");
+                                }
+                            }
+                        }
+                    });
+                }
+
+                {# Call method on the DOM ready #}
+                hideUselessOptions();
+
+
+                {# Call method on the radio change #}
+                $({{ idWidget|e('js') }}).find(".form-check input").on("change", function () {
+
+                    $({{ idWidget|e('js') }}).find(".form-check input").prop("checked", false);
+                    $(this).prop("checked", true);
+
+                    hideUselessOptions();
+                });
+
+                humanRowInputs.find("[id$=_statusCompany]").find("option").each(function () {
+                    var isInArray = jQuery.inArray($(this).val(), professionalStatus);
+
+                    if (isInArray >= 0 && $(this).prop("selected")) {
+                        $(this).hide(0);
+                        $(this).prop("selected", null);
+                    } else if (isInArray >= 0) {
+                        $(this).hide(0);
+                    } else {
+                        $(this).show(0);
+                    }
+
+                    humanRowInputs.find("[id$=_statusCompany]").find("option[value='" + personalStatus[0] + "']").prop("selected", "selected");
+                })
+            })
+
+        </script>
+    </div>
+
+{% endblock %}
+
+{% block lucca_minuteBundle_minute_humans_widget %}
+    {{ form_widget(form.humans) }}
+{% endblock %}
+

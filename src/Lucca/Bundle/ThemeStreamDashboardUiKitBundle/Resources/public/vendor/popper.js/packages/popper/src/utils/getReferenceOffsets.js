@@ -1,0 +1,26 @@
+/*
+ * Copyright (c) 2025. Numeric Wave
+ *
+ * Afero General Public License (AGPL) v3
+ *
+ * For more information, please refer to the LICENSE file at the root of the project.
+ */
+
+import findCommonOffsetParent from './findCommonOffsetParent';
+import getOffsetRectRelativeToArbitraryNode from './getOffsetRectRelativeToArbitraryNode';
+import getFixedPositionOffsetParent from './getFixedPositionOffsetParent';
+
+/**
+ * Get offsets to the reference element
+ * @method
+ * @memberof Popper.Utils
+ * @param {Object} state
+ * @param {Element} popper - the popper element
+ * @param {Element} reference - the reference element (the popper will be relative to this)
+ * @param {Element} fixedPosition - is in fixed position mode
+ * @returns {Object} An object containing the offsets which will be applied to the popper
+ */
+export default function getReferenceOffsets(state, popper, reference, fixedPosition = null) {
+  const commonOffsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, reference);
+  return getOffsetRectRelativeToArbitraryNode(reference, commonOffsetParent, fixedPosition);
+}

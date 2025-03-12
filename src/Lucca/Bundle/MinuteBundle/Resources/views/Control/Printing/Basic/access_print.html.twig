@@ -1,0 +1,64 @@
+{#-- Extends view --#}
+{% extends "@LuccaModel/Printing/base.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'MinuteBundle' %}
+
+
+{% block lucca_title %}
+    {{ 'title.access'|trans }}
+{% endblock lucca_title %}
+
+
+{% block lucca_model_content %}
+
+    {% if control.editions and control.editions|length > 0 %}
+        {% for edition in control.editions %}
+
+            {% if control.stateControl is constant('STATE_NEIGHBOUR', control) %}
+                {% if 'setting.control.accessEmpty.name'|setting == true %}
+                    {% set filename = '@LuccaMinute/Control/Printing/Custom/access_empty-'~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+                    {% include filename with { 'human': edition.human } %}
+                {% else %}
+                    {% include '@LuccaMinute/Control/Printing/Basic/access_empty.html.twig' with { 'human': edition.human } %}
+                {% endif %}
+            {% else %}
+                {% if 'setting.control.accessContent.name'|setting == true %}
+                    {% set filename = '@LuccaMinute/Control/Printing/Custom/access_content-'~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+                    {% include filename with { 'human': edition.human } %}
+                {% else %}
+                    {% include '@LuccaMinute/Control/Printing/Basic/access_content.html.twig' with { 'human': edition.human } %}
+                {% endif %}
+            {% endif %}
+
+            {% if not loop.last %}
+                <div class="page-break"></div>
+            {% endif %}
+
+        {% endfor %}
+
+    {% else %}
+
+        {% for human in control.humansByMinute|merge(control.humansByControl) %}
+            {% if control.stateControl is constant('STATE_NEIGHBOUR', control) %}
+
+                {% if 'setting.control.accessEmpty.name'|setting == true %}
+                    {% set filename = '@LuccaMinute/Control/Printing/Custom/access_empty-'~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+                    {% include filename with { 'human': human } %}
+                {% else %}
+                    {% include '@LuccaMinute/Control/Printing/Basic/access_empty.html.twig' with { 'human': human } %}
+                {% endif %}
+
+            {% else %}
+                {% if 'setting.control.accessContent.name'|setting == true %}
+                    {% set filename = '@LuccaMinute/Control/Printing/Custom/access_content-'~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+                    {% include filename with { 'human': human } %}
+                {% else %}
+                    {% include '@LuccaMinute/Control/Printing/Basic/access_content.html.twig' with { 'human': human } %}
+                {% endif %}
+
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+{% endblock lucca_model_content %}

@@ -1,0 +1,126 @@
+{% extends '@LuccaThemeStreamDashboardUiKit/Mailer/template.html.twig' %}
+{% trans_default_domain 'AdherentBundle' %}
+
+{% block email_body %}
+    {#-- BODY --#}
+
+    <tr>
+        <td align="center" class="bg-lucca-content">
+            <table width="90%" align="center" cellpadding="0" cellspacing="0" border="0">
+                <tbody>
+                <tr>
+                    <td height="50"></td>
+                </tr>
+                {#-- title --#}
+                <tr>
+                    <td align="center" class="text-lucca-official-name text-color-official-name">
+                        <p label="title">{{ adherent.officialName }}</p>
+                    </td>
+                </tr>
+                {#-- end title --#}
+                <tr>
+                    <td height="30"></td>
+                </tr>
+                {#-- dash --#}
+                <tr>
+                    <td align="center">
+                        <table width="36" cellpadding="0" cellspacing="0" border="0">
+                            <tbody>
+                            <tr>
+                                <td height="2" class="bg-lucca-dash"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                {#-- end dash --#}
+                <tr>
+                    <td height="30"></td>
+                </tr>
+                {#-- welcome --#}
+                <tr>
+                    <td align="center" class="text-lucca-welcome text-color-welcome">
+                        <p label="title">Bienvenue sur {{ 'setting.general.app.name'|setting }} !</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" class="text-lucca-content text-color-content">
+                        <multiline label="content">
+                            L'application de lutte contre la cabanisation de
+                            la <b>{{ 'setting.general.ddtName.name'|setting }}</b>
+                        </multiline>
+                    </td>
+                </tr>
+                {#-- end welcome --#}
+                <tr>
+                    <td height="10"></td>
+                </tr>
+                {#-- content --#}
+                <tr>
+                    <td align="center" class="text-lucca-content text-color-content">
+                        <multiline label="content">
+                            Un compte vient d'être créé avec votre adresse email et vos coordonnées.
+                            Vous pourrez l'utiliser dès à présent.
+                            <br><br>&nbsp;
+                            {{ 'label.username'|trans }} : <b>{{ adherent.user.username }}</b><br>
+                            {{ 'label.email'|trans }} : <b>{{ adherent.user.email }}</b><br>
+                            {{ 'label.password'|trans }} : <b>{{ password }}</b>
+                        </multiline>
+
+                        {#<p style="color: #ff902b;">Les tentatives de connexion aux comptes LUCCA pour les#}
+                        {#communes des Pyrénées-Orientales rencontrent quelques problèmes liés au serveur#}
+                        {#central.#}
+                        {#</p>#}
+
+                        {#<p style="color: #ff902b;">Vous trouverez ci-après vos identifiants (nom d'utilisation#}
+                        {#et mot de passe) qui vous#}
+                        {#permettront de vous connecter à l’application LUCCA.</p>#}
+                        {#<p style="color: #ff902b;">Nous vous prions de bien vouloir nous excuser pour ces#}
+                        {#désagréments.</p>#}
+
+                        {#<p>Vous pouvez supprimer les anciens mails reçus, et garder celui-ci.</p>#}
+
+                    </td>
+                </tr>
+                {#-- end content --#}
+                <tr>
+                    <td height="50" class="selected-element" contenteditable="true"></td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="border-btn-subscription bg-lucca-panel" align="center">
+            <table width="90%" align="center" cellpadding="0" cellspacing="0" border="0">
+                <tbody>
+                <tr>
+                    <td height="40"></td>
+                </tr>
+                {#-- button --#}
+                <tr>
+                    <td align="center">
+                        <table class="textbutton" align="center" cellpadding="0" cellspacing="0" border="0">
+                            <tbody>
+                            <tr>
+                                <td height="55" align="center" class="text-lucca-btn bg-lucca-btn">
+                                    <a class="text-lucca-btn"
+                                       href="{{ 'setting.general.url.name'| setting }}/login">{{ 'link.login'|trans }}</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                {#-- end button --#}
+                <tr>
+                    <td height="40"></td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+
+    {#-- /BODY --#}
+{% endblock email_body %}

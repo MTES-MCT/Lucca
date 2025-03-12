@@ -1,0 +1,16 @@
+{% trans_default_domain 'CoreBundle' %}
+
+<div class="card card-default">
+    <div class="card-header">
+        <h2>{{ title }}</h2>
+    </div>
+    <div class="card-wrapper">
+        <div class="card-body">
+            <p>{{ description | raw }}</p>
+            <div class="text-center" style="max-width: 50%; margin-left: 25%;">
+            {% block plus %}
+            {% endblock plus %}
+            </div>
+        </div>
+    </div>
+</div>

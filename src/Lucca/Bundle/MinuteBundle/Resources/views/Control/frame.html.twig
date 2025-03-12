@@ -1,0 +1,247 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'MinuteBundle' %}
+
+{#-- Macros --#}
+{% import "@LuccaMinute/Human/human-macro.html.twig" as humanMacro %}
+
+
+{#-- Embed view --#}
+<div class="row mb-2">
+
+    <div class="col-12">
+        <a name="control" data-value="control-{{ control.id }}" class="btn btn-secondary btn-sm btn-block btn-collapse">
+            <h4>
+                {{ loop.index }} ) {{ 'entity.control'|trans }}
+                {% if control.dateControl %} - {{ control.dateControl|date('d/m/Y') }}{% endif %}
+
+                {% if control.accepted is constant('ACCEPTED_NOK', control) %}
+                    <span class="badge badge-danger float-right mr15">
+                    {{ 'text.control.refused'|trans }}</span>
+                {% elseif control.accepted is constant('ACCEPTED_OK', control) %}
+                    <span class="badge badge-success float-right mr15">
+                    {{ 'text.control.acceptd'|trans }}</span>
+                {% else %}
+                    {% if control.reason in [
+                        constant('REASON_ERROR_ADRESS', control),
+                        constant('REASON_UNKNOW_ADRESS', control),
+                    ] %}
+                        <span class="badge badge-warning float-right mr15">
+                        {{ 'text.control.not_completed'|trans }}</span>
+                    {% elseif control.reason in [
+                        constant('REASON_REFUSED_LETTER', control),
+                        constant('REASON_UNCLAIMED_LETTER', control),
+                    ] %}
+                        <span class="badge badge-warning float-right mr15">
+                        {{ 'text.control.refused'|trans }}</span>
+
+                    {% elseif control.accepted is constant('ACCEPTED_NONE', control) %}
+                        <span class="badge badge-warning float-right mr15">
+                        {{ 'text.control.not_completed'|trans }}</span>
+                    {% endif %}
+                {% endif %}
+
+                <span class="badge badge-info float-right mr15">
+                    {{ control.stateControl|trans }}
+                </span>
+            </h4>
+        </a>
+    </div>
+
+    <div class="col-12">
+        <div id="control-{{ control.id }}" style="display: none;">
+            <table class="table table-striped table-hover">
+                <tbody>
+                <tr>
+                    <th>{{ 'label.agent'|trans }}</th>
+                    <td>{% if control.agent %}{{ control.agent.officialName }}{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>{{ 'label.stateControl'|trans }}</th>
+                    <td>{{ control.stateControl|trans }}</td>
+                </tr>
+                {% if control.dateControl and control.hourControl %}
+                    <tr>
+                        <th>{{ 'label.dateControl'|trans }}</th>
+                        <td>{{ control.dateControl|date('d/m/Y') }} {{ 'text.control.at'|trans }} {{ control.hourControl|date('H:i') }}</td>
+                    </tr>
+                {% endif %}
+
+                {% if control.humansByMinute|length > 0 or control.humansByControl|length > 0 %}
+                    <tr>
+                        <th>
+                            {% if control.stateControl is constant('STATE_NEIGHBOUR', control) %}
+                                {{ 'text.control.neighbour'|trans }}
+                            {% else %}
+                                {{ 'label.humanConvocated'|trans }}
+                            {% endif %}
+                        </th>
+                        <td>
+                            {{ humanMacro.humansByControlViewDiv(control.humansByMinute|merge(control.humansByControl)) }}
+                        </td>
+                    </tr>
+                {% endif %}
+
+                {% if control.datePostal %}
+                    <tr>
+                        <th>{{ 'label.datePostal'|trans }}</th>
+                        <td>
+                            {{ control.datePostal|date('d/m/Y') }}
+                            {% if control.courierDelivery %}<br>{{ control.courierDelivery }}{% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% if control.dateSended %}
+                    <tr>
+                        <th>{{ 'label.dateSended'|trans }}</th>
+                        <td>{{ control.dateSended|date('d/m/Y') }}</td>
+                    </tr>
+                {% endif %}
+                {% if control.dateNotified %}
+                    <tr>
+                        <th>{{ 'label.dateNotified'|trans }}</th>
+                        <td>{{ control.dateNotified|date('d/m/Y') }}</td>
+                    </tr>
+                {% endif %}
+                {% if control.dateReturned %}
+                    <tr>
+                        <th>{{ 'label.dateReturned'|trans }}</th>
+                        <td>
+                            {{ control.dateReturned|date('d/m/Y') }}
+                            {% if control.reason %}({{ control.reason|trans }}){% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% if control.dateContact %}
+                    <tr>
+                        <th>{{ 'label.dateContact'|trans }}</th>
+                        <td>{{ control.dateContact|date('d/m/Y') }}</td>
+                    </tr>
+                {% endif %}
+
+                {% if control.humansByMinute|length >= 1 and control.stateControl is not constant('STATE_NEIGHBOUR', control) %}
+                    <tr>
+                        <th>{{ 'label.letterConvocation'|trans }}</th>
+                        <td>
+                            <a href="{{ path('lucca_control_letter', {'minute_id': minute.id, 'id': control.id }) }}"
+                               class="btn btn-success btn-sm btn-labeled" title="{{ 'help.control.letter'|trans }}">
+                                <span class="btn-label"><i class="far fa-eye"></i></span>
+                                {{ 'link.visualize'|trans }}
+                            </a>
+
+                            {% if closure is defined and not closure and not control.isFenced %}
+                                <a href="{{ path('lucca_control_convocation_manual', {'minute_id': minute.id, 'id': control.id }) }}"
+                                   class="btn btn-info btn-sm btn-labeled"
+                                   title="{{ 'help.control.manualEditing'|trans }}">
+                                    <span class="btn-label"><i class="fa fa-hand-paper"></i></span>
+                                    {{ 'text.control.manualEditing'|trans }}
+                                </a>
+                            {% endif %}
+
+                            <a href="{{ path('lucca_control_letter_print', {'minute_id': minute.id, 'id': control.id }) }}"
+                               class="btn btn-info btn-sm btn-labeled" title="{{ 'help.control.print'|trans }}">
+                                <span class="btn-label"><i class="fa fa-print"></i></span>
+                                {{ 'text.control.print'|trans }}
+                            </a>
+                        </td>
+                    </tr>
+                {% endif %}
+                {% if control.stateControl is constant('STATE_NEIGHBOUR', control) %}
+                    <tr>
+                        <th>{{ 'label.access'|trans }}</th>
+                        <td>
+                            <a href="{{ path('lucca_control_access', {'minute_id': minute.id, 'id': control.id }) }}"
+                               class="btn btn-info btn-sm btn-labeled" title=" {{ 'text.control.empty'|trans }}">
+                                <span class="btn-label"><i class="far fa-eye"></i></span>
+                                {{ 'link.visualize'|trans }}
+                            </a>
+
+                            {% if is_granted("ROLE_LUCCA") and closure is defined and not closure and not control.isFenced %}
+                                <a href="{{ path('lucca_control_access_manual', {'minute_id': minute.id, 'id': control.id }) }}"
+                                   class="btn btn-info btn-sm btn-labeled"
+                                   title="{{ 'help.control.manualEditing'|trans }}">
+                                    <span class="btn-label"><i class="fa fa-hand-paper"></i></span>
+                                    {{ 'text.control.manualEditing'|trans }}
+                                </a>
+                            {% endif %}
+
+                            <a href="{{ path('lucca_control_access_print', {'minute_id': minute.id, 'id': control.id }) }}"
+                               class="btn btn-info btn-sm btn-labeled" title="{{ 'help.control.print'|trans }}">
+                                <span class="btn-label"><i class="fa fa-print"></i></span>
+                                {{ 'text.control.print'|trans }}
+                            </a>
+                        </td>
+                    </tr>
+                {% elseif control.humansByMinute|length >= 1 %}
+                    <tr>
+                        <th>{{ 'label.access'|trans }}</th>
+                        <td>
+                            {% if control.accepted %}
+                                <a href="{{ path('lucca_control_access', {'minute_id': minute.id, 'id': control.id }) }}"
+                                   class="btn btn-success btn-sm btn-labeled" title="{{ 'help.control.access'|trans }}">
+                                    <span class="btn-label"><i class="far fa-eye"></i></span>
+                                    {{ 'link.visualize'|trans }}
+                                </a>
+                            {% elseif control.accepted == false %}
+                                <a href="{{ path('lucca_control_access', {'minute_id': minute.id, 'id': control.id }) }}"
+                                   class="btn btn-success btn-sm btn-labeled" title="{{ 'help.control.refuse'|trans }}">
+                                    <span class="btn-label"><i class="far fa-eye"></i></span>
+                                    {{ 'link.visualize'|trans }}
+                                </a>
+                            {% endif %}
+
+                            {% if is_granted("ROLE_LUCCA") and closure is defined and not closure and not control.isFenced %}
+                                <a href="{{ path('lucca_control_access_manual', {'minute_id': minute.id, 'id': control.id }) }}"
+                                   class="btn btn-info btn-sm btn-labeled"
+                                   title="{{ 'help.control.manualEditing'|trans }}">
+                                    <span class="btn-label"><i class="fa fa-hand-paper"></i></span>
+                                    {{ 'text.control.manualEditing'|trans }}
+                                </a>
+                            {% endif %}
+
+                            <a href="{{ path('lucca_control_access_print', {'minute_id': minute.id, 'id': control.id }) }}"
+                               class="btn btn-info btn-sm btn-labeled" title="{{ 'help.control.print'|trans }}">
+                                <span class="btn-label"><i class="fa fa-print"></i></span>
+                                {{ 'text.control.print'|trans }}
+                            </a>
+                        </td>
+                    </tr>
+                {% endif %}
+                {% if closure is defined and not closure and not control.isFenced %}
+                    <tr>
+                        <th>{{ 'label.actions'|trans }}</th>
+                        <td>
+                            {% if is_granted("ROLE_LUCCA") and not frame_update %} {# If its a minute situation #}
+                                <a href="{{ path('lucca_minute_control_edit', {'minute_id': minute.id, 'id': control.id }) }}"
+                                   class="btn btn-warning btn-sm btn-labeled" title="{{ 'help.control.edit'|trans }}">
+                                    <span class="btn-label"><i class="fas fa-pencil-alt"></i></span>
+                                    {{ 'link.edit'|trans }}
+                                </a>
+
+                                <a href="{{ path('lucca_minute_control_delete', {'minute_id': minute.id, 'id': control.id }) }}"
+                                   class="btn btn-danger btn-sm btn-labeled" title="{{ 'help.control.delete'|trans }}">
+                                    <span class="btn-label"><i class="fa fa-trash"></i></span>
+                                    {{ 'link.delete'|trans }}
+                                </a>
+                            {% elseif is_granted("ROLE_LUCCA") %} {# If its an update situation #}
+                                <a href="{{ path('lucca_updating_control_edit', {'updating_id': updating.id, 'id': control.id }) }}"
+                                   class="btn btn-warning btn-sm btn-labeled" title="{{ 'help.control.edit'|trans }}">
+                                    <span class="btn-label"><i class="fas fa-pencil-alt"></i></span>
+                                    {{ 'link.edit'|trans }}
+                                </a>
+
+                                <a href="{{ path('lucca_updating_control_delete', {'updating_id': updating.id, 'id': control.id }) }}"
+                                   class="btn btn-danger btn-sm btn-labeled" title="{{ 'help.control.delete'|trans }}">
+                                    <span class="btn-label"><i class="fa fa-trash"></i></span>
+                                    {{ 'link.delete'|trans }}
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{#-- End - Embed view --#}

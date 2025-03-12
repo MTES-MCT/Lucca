@@ -1,0 +1,31 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'MediaBundle' %}
+
+{#
+# -- Variable -- array(Params)
+# -- param - allow_duplicate
+# -- param - allow_up
+# -- param - allow_down
+# -- param - add_at_the_end
+# -- param - add
+# -- param - position_field_selector
+# -- param - init_with_n_elements
+# -- param - max
+#}
+
+{#-- Collection form - Extension --#}
+$('.extension-collection').collection({
+    allow_duplicate:{% if params['allow_duplicate'] is defined %} {{ params['allow_duplicate'] }}{% else %} true{% endif %},
+    allow_up:{% if params['allow_up'] is defined %} {{ params['allow_up'] }}{% else %} true{% endif %},
+    allow_down:{% if params['allow_down'] is defined %} {{ params['allow_down'] }}{% else %} true{% endif %},
+    add_at_the_end:{% if params['add_at_the_end'] is defined %} {{ params['add_at_the_end'] }}{% else %} true{% endif %},
+    add: '<a href="#" class="btn btn-primary" title="{{ 'link.extension.new'|trans }}"><span class="fas fa-plus"></span></a>',
+    init_with_n_elements:{% if params['init_with_n_elements'] is defined %} {{ params['init_with_n_elements'] }}{% else %} 0{% endif %},
+    max:{% if params['max'] is defined %} {{ params['max'] }}{% else %} 10{% endif %},
+    {% if params['position_field_selector'] is defined %}position_field_selector: '{{ params['position_field_selector'] }}'{% endif %},
+
+    {#-- Table display#}
+    elements_selector: 'tr.extension',
+    elements_parent_selector: '%id% tbody'
+});
+{#-- End - Collection form - Extension --#}

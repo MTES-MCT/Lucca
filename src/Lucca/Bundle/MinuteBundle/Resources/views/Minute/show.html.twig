@@ -1,0 +1,514 @@
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
+{% trans_default_domain 'MinuteBundle' %}
+
+{% set entity_trans='entity.minute'|trans %}
+
+
+{% block menuActive_minute %}active{% endblock %}
+
+{#-- Imports twig macros --#}
+{% import '@LuccaMinute/Minute/macro-minute.html.twig' as macroState %}
+
+{% set foldersF3 = [] %}
+{% for control in minute.controls %}
+    {% if control.folder %}{% set foldersF3 = foldersF3|merge([control.folder]) %}{% endif %}
+{% endfor %}
+
+{% block lucca_header_badge %}
+    {{ parent() }}
+
+    {% if not closure %}
+        <span class="badge badge-info mr15">
+            {{ 'text.minute.pending'|trans }}
+        </span>
+    {% else %}
+        <span class="badge badge-success mr15">
+                {{ closure.status|trans }}
+            </span>
+    {% endif %}
+
+{% endblock lucca_header_badge %}
+
+
+{% block lucca_panels %}
+
+    {{ macroState.displayState(minuteStory) }}
+
+    <div class="row">
+        {#-- Panel - frame1 --#}
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card card-default">
+                <div class="card-header">
+                    <strong>{{ 'title.frame1'|trans }}</strong>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <table class="table table-striped table-hover">
+                                    <tbody>
+                                    <tr>
+                                        <th><i class="fa fa-user"></i> {{ 'label.num'|trans }}</th>
+                                        <td>
+                                            {{ minute.num }}<br>
+                                            {{ minute.adherent.formLabel }}<br>
+                                            <b>{{ minute.adherent.officialName }}</b><br>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>{{ 'label.dateOpening'|trans }}</th>
+                                        <td>{{ minute.dateOpening|date('d/m/Y') }}</td>
+                                    </tr>
+                                    {% if minute.nameComplaint or minute.dateComplaint %}
+                                        <tr>
+                                            <th>{{ 'label.complaint'|trans }}</th>
+                                            <td>
+                                                {{ minute.nameComplaint }}<br>
+                                                {{ minute.dateComplaint|date('d/m/Y') }}<br>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if minute.agent %}
+                                        <tr>
+                                            <th>{{ 'label.agent'|trans }}</th>
+                                            <td>
+                                                {{ minute.agent.officialName }}<br>
+                                                {{ minute.agent.function|trans }}<br>
+                                                <b>{{ 'label.commission'|trans }}</b>
+                                                : {{ minute.agent.commission }}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if minute.tribunalCompetent %}
+                                        <tr>
+                                            <th>{{ 'label.tribunalCompetent'|trans }}</th>
+                                            <td>
+                                                {{ minute.tribunalCompetent.name }}<br>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <th>{{ 'label.reporting'|trans }}</th>
+                                        <td>
+                                            <b>{{ minute.origin|trans }} -</b>
+                                            {{ minute.reporting }}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <table class="table table-striped table-hover">
+                                    <tbody>
+                                    {% if minute.plot %}
+                                        <tr>
+                                            <th>{{ 'label.plot'|trans }}</th>
+                                            <td>
+                                                {% if minute.plot.locationFrom == "choice.locationFrom.manual" %}
+                                                    <div class="text-warning">
+                                                        <small>{{ 'help.plot.location_manual'|trans }}</small>
+                                                    </div>
+                                                {% endif %}
+                                                {{ minute.plot.parcel }}<br>
+                                                {% if minute.plot.address %}{{ minute.plot.address|nl2br }}
+                                                    <br>{% endif %}
+                                                {% if minute.plot.place %}{{ minute.plot.place }}
+                                                    <br>{% endif %}
+                                                {{ minute.plot.town.zipcode }} {{ minute.plot.town.name }}<br>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if minute.humans %}
+                                        <tr>
+                                            <th>{{ 'label.humanResponsible'|trans }}</th>
+                                            <td>
+                                                {% for human in minute.humans %}
+                                                    {{ human|human_inlineDescription }}
+                                                    {% if not loop.last %}
+                                                        <hr class="hr-table">{% endif %}
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-3">
+                                <a class="btn btn-secondary btn-lg" href="{{ path('lucca_minute_index') }}"
+                                   title="{{ 'link.minute.backList'|trans }}"><i class="fa fa-reply"></i></a>
+
+                                {% if app.user and is_granted("ROLE_LUCCA") and not closure %}
+                                    <a class="btn btn-warning btn-lg" title="{{ 'link.minute.edit'|trans }}"
+                                       href="{{ path('lucca_minute_edit', { 'id': minute.id }) }}">
+                                        <i class="fas fa-pencil-alt"></i></a>
+
+                                    {% if minute.controls|length == 0 %}
+                                        <a class="btn btn-danger btn-lg float-right" data-toggle="modal"
+                                           data-target="#minute-{{ minute.id }}"
+                                           title="{{ 'link.minute.delete'|trans }}">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if minute.plot.latitude and minute.plot.longitude %}
+                                    <button type="button" name="map"
+                                            class="btn btn-info btn-lg"
+                                            data-toggle="modal"
+                                            data-target=".mapModal"
+                                            title="{{ 'link.map'|trans }}"><i class="fas fa-map"></i>
+                                    </button>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Panel - frame1 --#}
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+            {#-- Panel - frame2 --#}
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card card-default">
+                    <div class="card-header"><strong>{{ 'title.frame2'|trans }}</strong></div>
+
+                    <div class="card-wrapper">
+                        <div class="card-body">
+                            {% for control in minute.controls %}
+                                {% if control.type is constant('TYPE_FOLDER', control) %}
+                                    {% include "@LuccaMinute/Control/frame.html.twig" with { 'control': control, 'frame_update': false } %}
+                                {% endif %}
+                            {% endfor %}
+
+
+                            {% if app.user and is_granted("ROLE_LUCCA") and not closure %}
+                                <a class="btn btn-primary btn-lg" title="{{ 'link.control.new'|trans }}"
+                                   href="{{ path('lucca_minute_control_new', { 'minute_id': minute.id }) }}">
+                                    <i class="fas fa-plus"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#-- End Panel - frame2 --#}
+
+            {#-- Panel - frame3 --#}
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                <div class="card card-default">
+                    <div class="card-header"><strong>{{ 'title.frame3'|trans }}</strong></div>
+
+                    <div class="card-wrapper">
+                        <div class="card-body">
+                            {% for folder in foldersF3 %}
+                                {% if folder.type is constant('TYPE_FOLDER', folder) %}
+                                    {% include "@LuccaFolder/Folder/frame.html.twig" with { 'folder': folder } %}
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if app.user and is_granted("ROLE_LUCCA") and not closure %}
+                                <a class="btn btn-primary btn-lg" title="{{ 'link.folder.new'|trans }}"
+                                   href="{{ path('lucca_folder_new', { 'minute_id': minute.id }) }}">
+                                    <i class="fas fa-plus"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#-- End Panel - frame3 --#}
+
+            {#-- Panel - frame4 --#}
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                <div class="card card-default">
+                    <div class="card-header"><strong>{{ 'title.frame4'|trans }}</strong></div>
+
+                    <div class="card-wrapper">
+                        <div class="card-body">
+                            {% for folder in foldersF3 %}
+                                {% if folder.type is constant('TYPE_FOLDER', folder) and folder.courier %}
+                                    {% include "@LuccaFolder/Courier/frame.html.twig" with { 'courier': folder.courier, 'frame_update': false } %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#-- End Panel - frame4 --#}
+
+            {#-- Panel - frame5 --#}
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                <div class="card card-default">
+                    <div class="card-header"><strong>{{ 'title.frame5'|trans }}</strong></div>
+
+                    <div class="card-wrapper">
+                        <div class="card-body">
+                            <button class="btn btn-secondary btn-sm">
+                                <i class="fa fa-info fa-2x"></i>
+                            </button>
+
+                            {{ 'text.ait.not_available'|trans }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#-- End Panel - frame5 --#}
+        </div>
+
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+            {#-- Panel - frame6 --#}
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                <div class="card card-default">
+                    <div class="card-header"><strong>{{ 'title.frame6'|trans }}</strong></div>
+
+                    <div class="card-wrapper">
+                        <div class="card-body">
+                            {% if minute.updatings|length > 0 %}
+                                {% for updating in minute.updatings %}
+                                    {% include "@LuccaMinute/Updating/frame.html.twig" with { 'updating': updating } %}
+                                {% endfor %}
+                            {% endif %}
+
+                            {% if app.user and is_granted("ROLE_LUCCA") and not closure %}
+                                <a class="btn btn-primary btn-lg"
+                                   href="{{ path('lucca_updating_new', { 'minute_id': minute.id }) }}"
+                                   title="{{ 'link.updating.new'|trans }}"><i class="fas fa-plus"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#-- End Panel - frame6 --#}
+
+            {#-- Panel - frame7 --#}
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                <div class="card card-default">
+                    <div class="card-header"><strong>{{ 'title.frame7'|trans }}</strong></div>
+
+                    <div class="card-wrapper">
+                        <div class="card-body">
+
+                            {#legalDepartment_email is a global twig var#}
+                            <div class="text-justify text-warning">
+                                <small>Ce cadre est réservé à la {{ 'setting.general.ddtAcronym.name'|setting }}. Si vous avez connaissance d'une décision
+                                    spécifique, n'hésitez pas à prendre contact avec la <a
+                                        href="mailto:{{'setting.general.emailLegaleDepartement.name'| setting }}"> {{ 'setting.general.ddtAcronym.name'|setting}} -
+                                        Affaires Juridiques</a></small>
+                            </div>
+
+                            {% if decisions %}
+                                {% for decision in decisions %}
+                                    {% include "@LuccaDecision/Decision/frame.html.twig" with { 'decision': decision } %}
+                                {% endfor %}
+                            {% endif %}
+
+                            {% if app.user and is_granted("ROLE_ADMIN") and not closure %}
+                                <a class="btn btn-primary btn-lg"
+                                   href="{{ path('lucca_decision_new', { 'minute_id': minute.id }) }}"
+                                   title="{{ 'link.decision.new'|trans }}"><i class="fas fa-university"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#-- End Panel - frame7 --#}
+
+            {#-- Panel - frame8 --#}
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                <div class="card card-default">
+                    <div class="card-header"><strong>{{ 'title.frame8'|trans }}</strong></div>
+
+                    <div class="card-wrapper">
+                        <div class="card-body">
+                            {% if closure %}
+                                {% include "@LuccaMinute/Closure/frame.html.twig" with { 'closure': closure } %}
+                            {% elseif app.user and is_granted("ROLE_LUCCA") %}
+                                <a class="btn btn-primary btn-lg"
+                                   href="{{ path('lucca_minute_close', { 'id': minute.id }) }}"
+                                   title="{{ 'link.closure.new'|trans }}"><i class="fa fa-archive"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#-- End Panel - frame8 --#}
+        </div>
+    </div>
+
+{% endblock lucca_panels %}
+
+{% block lucca_modal %}
+    {{ parent() }}
+
+    {#Modal - Minute delete#}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': 'minute-' ~ minute.id, 'name': minute.num, 'delForm': delete_form} %}
+
+    {#Modal - Map#}
+    {% include '@LuccaMinute/Minute/map-modal.html.twig' %}
+
+    {#Modal - Folder fence#}
+    {% for folder in foldersF3 %}
+        {% include '@LuccaThemeStreamDashboardUiKit/Modal/fence.html.twig' with {'name': folder.num, 'id': 'folder3-' ~ folder.id,
+            'link': path('lucca_folder_fence', {'minute_id': minute.id, 'id': folder.id })} %}
+
+        {#Modal - Reopen folder#}
+        {% if is_granted("ROLE_FOLDER_OPEN") and folder.dateClosure is not null %}
+            {% include '@LuccaThemeStreamDashboardUiKit/Modal/open.html.twig' with {'name': folder.num, 'id': 'open-folder3-' ~ folder.id,
+                'link': path('lucca_folder_open', {'minute_id': minute.id, 'id': folder.id })} %}
+        {% endif %}
+
+        {#Modal - Courier date and print#}
+        {% if folder.courier %}
+            {% set courier = folder.courier %}
+
+            {% if courier.dateJudicial is null %}
+                {% include '@LuccaThemeStreamDashboardUiKit/Modal/dateCourier.html.twig' with {'name': 'help.courier.judicial'|trans,
+                    'id': 'courier-judicial-' ~ courier.id, 'link': path('lucca_courier_judicial_print', {'minute_id': minute.id, 'id': courier.id })} %}
+            {% endif %}
+
+            {% if courier.dateDdtm is null %}
+                {% include '@LuccaThemeStreamDashboardUiKit/Modal/dateCourier.html.twig' with {'name': 'help.courier.ddtm'|trans( {'%DDTM%': 'setting.general.ddtAcronym.name'|setting } ),
+                    'id': 'courier-ddtm-' ~ courier.id, 'link': path('lucca_courier_ddtm_print', {'minute_id': minute.id, 'id': courier.id })} %}
+            {% endif %}
+
+            {% if courier.dateOffender is null %}
+                {% include '@LuccaThemeStreamDashboardUiKit/Modal/dateCourier.html.twig' with {'name': 'help.courier.offender'|trans,
+                    'id': 'courier-offender-' ~ courier.id, 'link': path('lucca_courier_offender_print', {'minute_id': minute.id, 'id': courier.id })} %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+
+
+    {#Modal - Update list#}
+    {#TODO  clean this loop and create a function to generate modal#}
+    {% for updating in minute.updatings %}
+
+        {% for control in updating.controls %}
+            {% if control.folder %}
+                {% set folder = control.folder %}
+                {% include '@LuccaThemeStreamDashboardUiKit/Modal/fence.html.twig' with {'name': folder.num, 'id': 'folder6-' ~ folder.id,
+                    'link': path('lucca_folder_fence', {'minute_id': minute.id, 'id': folder.id })} %}
+
+                {#Modal - Courier date and print#}
+                {% if folder.courier %}
+                    {% set courier = folder.courier %}
+
+                    {% if courier.dateJudicial is null %}
+                        {% include '@LuccaThemeStreamDashboardUiKit/Modal/dateCourier.html.twig' with {'name': 'help.courier.judicial'|trans,
+                            'id': 'courier-judicial-' ~ courier.id, 'link': path('lucca_courier_judicial_print', {'minute_id': minute.id, 'id': courier.id })} %}
+                    {% endif %}
+
+                    {% if courier.dateDdtm is null %}
+                        {% include '@LuccaThemeStreamDashboardUiKit/Modal/dateCourier.html.twig' with {'name': 'help.courier.ddtm'|trans( {'%DDTM%': 'setting.general.ddtAcronym.name'|setting } ),
+                            'id': 'courier-ddtm-' ~ courier.id, 'link': path('lucca_courier_ddtm_print', {'minute_id': minute.id, 'id': courier.id })} %}
+                    {% endif %}
+
+                    {% if courier.dateOffender is null %}
+                        {% include '@LuccaThemeStreamDashboardUiKit/Modal/dateCourier.html.twig' with {'name': 'help.courier.offender'|trans,
+                            'id': 'courier-offender-' ~ courier.id, 'link': path('lucca_courier_offender_print', {'minute_id': minute.id, 'id': courier.id })} %}
+                    {% endif %}
+                {% endif %}
+
+            {% endif %}
+        {% endfor %}
+
+    {% endfor %}
+{% endblock lucca_modal %}
+
+{% block lucca_css %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/luccacore/css/lucca_map.css') }}" rel="stylesheet">
+{% endblock lucca_css %}
+
+{% block lucca_js %}
+    {{ parent() }}
+    <script>
+        {#Custom JS#}
+        {#-- A link for collapse Control --#}
+        $('a.btn-collapse').click(function () {
+            $("#" + $(this).attr('data-value')).toggle('slow');
+        });
+        {#-- End - A link for collapse Control --#}
+
+        {#-- Scroll to the anchor and show content --#}
+        $(window).on('load', function () {
+            {#-- Get anchors from URL --#}
+            let anchor = location.hash;
+
+            {#-- Check if there one or two anchors --#}
+            if (anchor && !anchor.substr(1).split("_")[1]) {
+                {#-- Find the element with the data-value which is equal to the first anchor then show it and then scroll to it --#}
+                let AnchorElement = $('body').find("[data-value='" + anchor.substr(1) + "']");
+                $(anchor).show(0);
+                $([document.documentElement, document.body]).animate({
+                    scrollTop: AnchorElement.offset().top
+                }, 1000);
+            } else if (anchor) {
+
+                {#-- Explode anchors which are in the URL --#}
+                let firstAnchor = anchor.split("_")[0];
+                let secondAnchor = '#' + anchor.split("_")[1];
+                {#-- Find the elements with the data-values which are equal to the anchors then show its and then scroll to its --#}
+                let AnchorElement = $('body').find("[data-value='" + firstAnchor.substr(1) + "']");
+                $(firstAnchor).show(0);
+                $(secondAnchor).show(0);
+                $([document.documentElement, document.body]).animate({
+                    scrollTop: AnchorElement.offset().top
+                }, 1000);
+            }
+        });
+    </script>
+
+    {#Modal map#}
+    <script src="{{ asset('bundles/luccacore/js/lucca_map.js') }}"></script>
+    <script src="{{ asset('bundles/luccacore/js/lucca_config_map.js') }}"></script>
+
+    {#-- Plugin - Google maps --#}
+    {% if 'setting.map.mapActive.name'|setting == true and minute.plot.latitude and minute.plot.longitude %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ 'setting.map.mapKey.name'|setting  }}&callback=initMap"
+            async defer></script>
+
+    <script>
+        var map;
+        var displayResults = true;
+
+        function initMap() {
+
+            map = new google.maps.Map(document.getElementById('js-google-map'), {
+                {#Center on France#}
+                center: {lat: {{ minute.plot.latitude }}, lng: {{ minute.plot.longitude }}},
+                zoom: 14,
+                styles: config,
+            });
+
+            {#Create all markers with Google Map API#}
+
+            /*********************************************************************************************************
+             *
+             *                                      Markers for Minutes
+             *
+             * *******************************************************************************************************/
+            let latLng = new google.maps.LatLng({{ minute.plot.latitude }},{{ minute.plot.longitude }});
+            let iconBase = '{{ asset('assets/img/Pins/spoting.svg') }}';
+            let num = "{{ minute.num }}";
+            let markerM = createMarker(num, iconBase, latLng);
+
+        }
+        {% endif %}
+
+    </script>
+    {#End Modal map#}
+{% endblock lucca_js %}

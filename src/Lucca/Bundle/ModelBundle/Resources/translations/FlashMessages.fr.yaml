@@ -1,0 +1,10 @@
+####################################
+## Flash Domain
+####################################
+
+flash:
+    margin:
+        heightMustBeDefined: "La hauteur d'une marge 'en tete' / 'pied de page' doit être définie."
+        widthMustBeDefined: "La largeur d'une marge 'gauche' / 'droite' doit être définie."
+    model:
+        accessDenied: "Vous n'avez pas accès à ce modèle."

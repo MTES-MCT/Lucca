@@ -1,0 +1,55 @@
+{% trans_default_domain 'MinuteBundle' %}
+
+const townMinutesCtx = document.getElementById('townMinutesChart').getContext('2d');
+const townMinutesChart = new Chart(townMinutesCtx, {
+    type: 'bar',
+    data: {
+        labels: [
+            {% for key, data in finalArray %}
+            {% if data['countMinuteOpen'] > 0 or data['countMinuteClosed'] > 0 %}
+            "{{ key }}"
+            {% if not loop.last %}
+            ,
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        ],
+        datasets: [
+            {
+                label: "{{ 'label.countMinuteOpen' | trans }}",
+                backgroundColor:
+                    "#00b4e0"
+                ,
+                data: [
+                    {% for key, data in finalArray %}
+                    {% if data['countMinuteOpen'] > 0 or data['countMinuteClosed'] > 0 %}
+                    "{{ data['countMinuteOpen'] }}"
+                    {% if not loop.last %}
+                    ,
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                ]
+            },
+            {
+                label: "{{ 'label.countMinuteClosed' | trans }}",
+                backgroundColor:
+                    "#00bf5a"
+                ,
+                data: [
+                    {% for key, data in finalArray %}
+                    {% if data['countMinuteOpen'] > 0 or data['countMinuteClosed'] > 0 %}
+                    "{{ data['countMinuteClosed'] }}"
+                    {% if not loop.last %}
+                    ,
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                ]
+            }
+        ]
+    },
+    options: {
+        responsive: true
+    }
+});

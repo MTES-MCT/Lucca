@@ -1,0 +1,27 @@
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/index.html.twig' %}
+{% trans_default_domain 'LogBundle' %}
+
+{% set entity_trans='entity.log'|trans %}
+
+
+{% block menuActive_parameter %}active{% endblock menuActive_parameter %}
+
+
+{% block lucca_list %}
+
+    <div class="col-12 table-responsive">
+        {% include "@LuccaLog/Log/Embed/_table-logs.html.twig" %}
+    </div>
+
+
+    <a class="btn btn-secondary btn-lg" href="{{ path('lucca_core_parameter') }}"
+       title="{{ 'link.parameter'|trans }}"><i class="fas fa-cogs"></i></a>
+
+{% endblock lucca_list %}
+
+{% block lucca_js_head %}
+    {{ parent() }}
+
+    {#-- Datatable script --#}
+    {% include '@LuccaLog/Log/Js/log_browser.js.html.twig' %}
+{% endblock lucca_js_head %}

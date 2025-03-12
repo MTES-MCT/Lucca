@@ -1,0 +1,82 @@
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
+{% trans_default_domain 'MinuteBundle' %}
+
+{% set param_entity='entity.folder'|transchoice(1) %}
+{% set param_entities='entity.folder'|transchoice(2) %}
+{% block menuActive_minute %} class="active"{% endblock %}
+
+{% if 'setting.folder.useRefreshAgentForRefreshSignature.name'|setting and update.controls is defined and update.controls|length == 1 %}
+    {% set agent = update.controls[0].agent %}
+{% else %}
+    {% set agent = minute.agent %}
+{% endif %}
+
+{% block lucca_panels %}
+
+    {#-- Panel - main --#}
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+        <div class="card card-default card-a4">
+            <div class="card-header"></div>
+
+            <div class="card-wrapper">
+                <div class="card-body panel-letter">
+
+                    <div class="col-12">
+
+                        {% if folder.edition and folder.edition.folderEdited %}
+                            {% if 'print' in app.request.pathinfo %}
+                                {{ folder.edition.folderVersion|localPath|raw }}
+                            {% else %}
+                                {{ folder.edition.folderVersion|raw }}
+                            {% endif %}
+                        {% else %}
+                            {% if folder.nature is constant('NATURE_OBSTACLE', folder) %}
+                                {#SETTING#}
+                                {% if 'setting.folder.docContentObstacle.name'|setting == true %}
+                                    {% set filename = '@LuccaFolder/Folder/Printing/Basic/doc_obstacle_content-'~ 'setting.general.departement.name'|setting ~'.html.twig' %}
+                                    {% include filename with {'agent' : agent} %}
+                                {% else %}
+                                    {% include '@LuccaFolder/Folder/Printing/Basic/doc_obstacle_content.html.twig'  with {'agent' : agent} %}
+                                {% endif %}
+
+                            {% else %}
+                                {#SETTING#}
+                                {% if 'setting.folder.docContent.name'|setting == true %}
+                                    {% set filename = '@LuccaMinuteFolder/Printing/Custom/doc_content-'~ 'setting.general.departement.name'|setting ~'.html.twig' %}
+                                    {% include filename with {'agent' : agent} %}
+                                {% else %}
+                                    {% include '@LuccaFolder/Folder/Printing/Basic/doc_content.html.twig'  with {'agent' : agent} %}
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+
+
+                        {% include '@LuccaFolder/Folder/Printing/Basic/doc_footer.html.twig' with {'agent' : agent} %}
+
+                        {% for element in folder.elements %}
+                            {% if element.image %}
+                                <div class="page-break"></div>
+                                {% include '@LuccaFolder/Element/Embed/_print-element.html.twig' with { 'element': element } %}
+                            {% endif %}
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="col-12 mt-3">
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"
+                           title="{{ 'link.backMinute'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        {% if folder.dateClosure is not null %}
+                            <a class="btn btn-info btn-lg"
+                               href="{{ path('lucca_folder_doc_print', { 'minute_id': minute.id, 'id': folder.id }) }}"
+                               title="{{ 'link.folder.print'|trans }}"><i class="fa fa-print"></i></a>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {#-- End Panel - main --#}
+{% endblock lucca_panels %}

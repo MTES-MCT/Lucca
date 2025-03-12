@@ -1,0 +1,23 @@
+####################################
+## Domain : DepartmentBundle
+## Lang : FR
+####################################
+label:
+    department: 'Département'
+    comment: 'Commentaire'
+    name: 'Nom'
+    code: 'Code'
+link:
+    department:
+        show: 'Voir le département'
+        disable: 'Désactiver le département'
+        delete: 'Supprimer le département'
+        enable: 'Activer le département'
+        edit: 'Modifier le département'
+        editHomeText: "Modifier le texte d'accueil"
+        backList: 'Retour à la liste des départements'
+        new: 'Nouveau département'
+        create: 'Créer un département'
+
+title:
+    department: 'Département'

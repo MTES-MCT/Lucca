@@ -1,0 +1,87 @@
+{% trans_default_domain 'MinuteBundle' %}
+
+const decisionCtx = document.getElementById('decisionChart').getContext('2d');
+const decisionChart = new Chart(decisionCtx, {
+    type: 'pie',
+    data: {
+        labels: [
+            {% for key, item in decisions[0] %}
+            /** In order to avoid empty marker display only if there is at least 1 element */
+            {% if item != 0 %}
+            "{{ ('statistics.' ~ key) | trans }}"
+            {% if not loop.last %}
+            ,
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        ],
+        datasets: [
+            {
+                backgroundColor: [
+                    {% for key, item in decisions[0] %}
+                    /** In order to avoid empty marker display only if there is at least 1 element */
+                    {% if item != 0 %}
+                    "{{ key | colorDecision }}"
+                    {% if not loop.last %}
+                    ,
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                ],
+                data: [
+                    {% for item in decisions[0] %}
+                    /** In order to avoid empty marker display only if there is at least 1 element */
+                    {% if item != 0 %}
+                    "{{ item }}"
+                    {% if not loop.last %}
+                    ,
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                ]
+            }
+        ]
+    },
+    plugins: [ChartDataLabels],
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top'
+            },
+            title: {
+                display: true,
+                text: '{{ 'statistics.decisionChart.title' | trans }}'
+            },
+            datalabels: {
+                backgroundColor: function (context) {
+                    return context.dataset.backgroundColor;
+                },
+                color: 'white',
+                anchor: 'center',
+                display: function (context) {
+                    let dataset = context.dataset;
+                    let value = parseInt(dataset.data[context.dataIndex]);
+
+                    let biggest = 0;
+
+                    for (var i = 0; i < dataset['data'].length; i++) {
+                        if (biggest < dataset['data'][i])
+                            biggest = dataset['data'][i];
+                    }
+
+                    let percentage = value / biggest * 100;
+
+                    if (percentage < 10) {
+                        return "";
+                    }
+
+                    return value !== 0;
+                },
+                font: {
+                    weight: 'bold'
+                }
+            }
+        }
+    }
+});

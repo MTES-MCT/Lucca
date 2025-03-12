@@ -1,0 +1,205 @@
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig" %}
+{% trans_default_domain 'ModelBundle' %}
+
+{% set entity_trans='entity.margin'|trans %}
+
+
+{% block menuActive_model %}active{% endblock menuActive_model %}
+
+{% block lucca_panels %}
+
+    {#Form theming - apply to this form#}
+    {% form_theme edit_form '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig' %}
+    {% form_theme edit_form.blocs '@LuccaModel/Bloc/bloc-theme.html.twig' %}
+
+    {{ form_start(edit_form) }}
+    {{ form_errors(edit_form) }}
+
+    <div class="row">
+        {#-- Panel - main --#}
+        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+
+            <div class="card card-default">
+
+                <div class="card-header">
+                    {{ 'title.edit'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ entity_trans }} ({{ margin.position|trans }})</b>
+                </div>
+
+                <span class="jumbotron-warning m-2 p-2">
+                    <span class="text-help">{{ 'help.layout.margeMessage'|trans }}</span>
+                </span>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <div class="col-12">
+                            {{ form_widget(edit_form.blocs) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a class="btn btn-secondary btn-lg" href="{{ path('lucca_model_show', { 'id': model.id }) }}"
+               title="{{ 'link.backlist'|trans }}"><i class="fa fa-reply"></i></a>
+
+            <button type="submit" class="btn btn-success btn-lg"
+                    title="{{ 'link.model.edit'|trans }}"><i class="fa fa-check"></i></button>
+
+        </div>
+        {#-- End Panel - main --#}
+
+        {#-- Panel - Help --#}
+        {#In order to add new entries in help table, add needed translations in src/Lucca/ModelBundle/Resources/translations/LuccaModelBundle.fr.yml#}
+        {#Then add a new entry in the following array with result and code key#}
+        {% set helpData = [
+            {
+                'result': 'help.paginate.result',
+                'code': 'help.paginate.code'
+            },
+            {
+                'result': 'help.breakLine.result',
+                'code': 'help.breakLine.code'
+            },
+            {
+                'result': 'help.line.result',
+                'code': 'help.line.code'
+            },
+            {
+                'result': 'help.textBold.result',
+                'code': 'help.textBold.code'
+            },
+            {
+                'result': 'help.textItalics.result',
+                'code': 'help.textItalics.code'
+            },
+            {
+                'result': 'help.textSize.result',
+                'code': 'help.textSize.code'
+            },
+            {
+                'result': 'help.alignRight.result',
+                'code': 'help.alignRight.code'
+            },
+            {
+                'result': 'help.alignLeft.result',
+                'code': 'help.alignLeft.code'
+            },
+        ] %}
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <div class="card card-default">
+                <div class="card-header">
+                    <strong>{{ 'help.redaction.title'|trans }}</strong><br>
+                    <small>{{ ('help.redaction.explanations'|trans)|raw }}</small>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>{{ 'label.result'|trans }}</th>
+                                <th>{{ 'label.code'|trans }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for data in helpData %}
+                                <tr>
+                                    <td>{{ data['result'] | trans }}</td>
+                                    <td class="popup">
+                                        <span class="popuptext">{{ 'label.copied' | trans }}</span>
+                                        <span class="copy-text">{{ data['code'] | trans }}</span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_rest(edit_form) }}
+    {{ form_end(edit_form) }}
+
+{% endblock lucca_panels %}
+
+{% block lucca_css %}
+    {{ parent() }}
+    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/colorpicker.css.html.twig" %}
+{% endblock lucca_css %}
+
+{% block lucca_js %}
+    {{ parent() }}
+    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/colorpicker.js.html.twig" %}
+
+    <script src="{{ asset('assets/js/jquery.collection.js') }}"></script>
+
+    <script>
+        {#Collection form#}
+        $('.blocs-collection').collection({
+            allow_duplicate: false, allow_up: false, allow_down: false,
+            add_at_the_end: true, allow_delete: true,
+            add: '<a href="#" class="btn btn-primary" title="Add element"><span class="fa fa-plus"></span>  {{ 'label.addBloc' | trans }}</a>',
+            after_add: function (collection, element) {
+                let typeContent = $('.js-typeContent');
+
+                typeContent.on('change', function () {
+                    toggleDisplay(this);
+                });
+
+                toggleDisplay(element.find(".js-typeContent")[0]);
+
+                $(function () {
+                    $('[data-toggle="tooltip"]').tooltip()
+                })
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            let typesContent = $('.js-typeContent');
+
+            {#foreach element of typeContent call toggleDisplay#}
+            typesContent.each((index, element) => toggleDisplay(element));
+        });
+
+        $('.js-typeContent').on('change', function () {
+            toggleDisplay(this);
+        });
+
+        function toggleDisplay(self) {
+            let form = $(self).closest('.js-bloc');
+            if ($(self).val() === "{{ constant('Lucca\\Bundle\\ModelBundle\\Entity\\Bloc::TYPE_CONTENT_HTML') }}") {
+                $(form.find('.js-htmlContent')).show('slow');
+                $(form.find('.js-mediaContent')).hide('slow');
+            } else {
+                $(form.find('.js-htmlContent')).hide('slow');
+                $(form.find('.js-mediaContent')).show('slow');
+            }
+        }
+
+        /** Code used to copy value of code in help array */
+        function CopyText(TextToCopy) {
+            var TempText = document.createElement("input");
+            TempText.value = TextToCopy;
+            document.body.appendChild(TempText);
+            TempText.select();
+
+            document.execCommand("copy");
+            document.body.removeChild(TempText);
+
+        }
+
+        $('.popup').on('click', function () {
+            console.log($(this));
+            console.log($(this).find('.copy-text'));
+            // TODO finish it
+            CopyText($(this).find('.copy-text')[0].innerText);
+            $('.popuptext').show();
+            setTimeout(function () {
+                $('.popuptext').hide();
+            }, 1000);
+        })
+
+    </script>
+{% endblock lucca_js %}

@@ -1,0 +1,56 @@
+{% trans_default_domain 'DecisionBundle' %}
+
+{#<b>{{ 'text.decision.commission'|trans }}</b><br>#}
+
+<div class="col-sm-6 col-xs-12 col-no-padding">
+    <b>{{ 'label.dateHearing'|trans }}</b> :
+    {% if  commission.dateHearing %}{{ commission.dateHearing|date('d/m/Y') }}{% endif %}
+    <br>
+    <b>{{ 'label.dateAdjournment'|trans }}</b> :
+    {% if  commission.dateAdjournment %}{{ commission.dateAdjournment|date('d/m/Y') }}{% endif %}
+    <br>
+</div>
+
+<div class="col-sm-6 col-xs-12 col-no-padding">
+    <b>{{ 'label.dateDeliberation'|trans }}</b> :
+    {% if  commission.dateDeliberation %}{{ commission.dateDeliberation|date('d/m/Y') }}{% endif %}
+    <br>
+    <b>{{ 'label.dateJudicialDesision'|trans }}</b> :
+    {% if  commission.dateJudicialDesision %}{{ commission.dateJudicialDesision|date('d/m/Y') }}{% endif %}
+    <br>
+</div>
+
+<div class="col-sm-12 col-xs-12 col-no-padding">
+    <a name="commission" data-value="commission-{{ commission.id }}"
+       class="btn btn-secondary btn-xs btn-block btn-collapse">
+        <h4>
+            {{ 'text.decision.result'|trans }}
+            <span class="badge badge-info pull-right mr15">{{ commission.statusDecision|trans }}</span>
+        </h4>
+    </a>
+
+    {% if commission.statusDecision is constant('STATUS_GUILTY', commission) %}
+        <div id="commission-{{ commission.id }}" style="display: none;">
+
+            <div class="col-sm-6 col-xs-12 col-no-padding">
+                <b>{{ 'label.amountFine'|trans }}</b> : {{ commission.amountFine|price }}
+                <br>
+                <b>{{ 'label.amountPenalty'|trans }}</b>
+                : {{ commission.amountPenalty|price }}
+            </div>
+
+            <div class="col-sm-6 col-xs-12 col-no-padding">
+                <b>{{ 'label.dateExecution'|trans }}</b> :
+                {% if  commission.dateExecution %}{{ commission.dateExecution|date('d/m/Y') }}{% endif %}<br>
+                <b>{{ 'label.dateStartPenality'|trans }}</b> :
+                {% if  commission.dateStartPenality %}{{ commission.dateStartPenality|date('d/m/Y') }}{% endif %}
+            </div>
+
+            <div class="col-sm-12 col-xs-12 col-no-padding">
+                <b>{{ 'label.restitution'|trans }}</b> :<br>
+                {{ commission.restitution|raw }}
+            </div>
+        </div>
+    {% endif %}
+
+</div>

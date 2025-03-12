@@ -1,0 +1,44 @@
+####################################
+## LuccaLogBundle
+####################################
+
+###############
+## Entity
+###############
+entity:
+    log: "Log|Logs"
+
+###############
+## Label
+###############
+label:
+    id: "Id"
+    status: "Statut"
+    message: "Message"
+    user: "Utilisateur"
+    classname: "Nom de la classe"
+    createdAt: "Crée le"
+    shortMessage: "Message court"
+    objectId: "Id de l'objet"
+    actions: "Actions"
+
+###############
+## Choice
+###############
+status:
+    insert: "Création"
+    update: "Modification"
+    remove: "Suppression"
+    connection: "Connexion"
+
+###############
+## Link
+###############
+link:
+    reducePanel: "Réduire le panneau"
+    closePanel: "Fermer le panneau"
+    parameter: "Retour aux paramètres"
+
+    log:
+        show: "Visualiser le log"
+        backList: "Retour à la liste des logs"

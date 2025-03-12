@@ -1,0 +1,89 @@
+{#-- Extends view --#}
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'AdherentBundle' %}
+
+{#-- Parameters --#}
+{% set entity_trans='entity.agent'|trans %}
+{% block menuActive_myAgent %}active{% endblock %}
+
+
+{% block lucca_panels %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {#-- Panel - main --#}
+    <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+        <div class="card card-default">
+            <div class="card-header">
+                {{ 'title.new'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ entity_trans }}</b>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+                    <div class="col-12">
+                        {{ form_row(form.name) }}
+                        {{ form_row(form.firstname) }}
+                        {{ form_row(form.function) }}
+
+                        <div class="js-commission" style="display: none;">
+                            {{ form_row(form.commission) }}
+                        </div>
+
+                        {{ form_row(form.tribunal) }}
+
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_myagent_index') }}"
+                           title="{{ 'link.agent.back'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <button type="submit" class="btn btn-success btn-lg"
+                                title="{{ 'link.agent.new'|trans }}"><i class="fa fa-check"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#-- End Panel - main --#}
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock lucca_panels %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script>
+        {#--------------------------------------------------------------------#}
+        {#-- Function --#}
+        {#--------------------------------------------------------------------#}
+        var functionsAgentWithCommission = ['choice.function.mayor', 'choice.function.deputy'];
+
+        $(document).ready(function () {
+            $(".js-commission").hide('slow');
+
+            if ($.inArray($('#agent_function').val(), functionsAgentWithCommission) === -1)
+                $(".js-commission").show('slow');
+        });
+
+        $('#agent_function').on('change', function () {
+
+            {# Function #}
+            if ($.inArray($(this).val(), functionsAgentWithCommission) === -1){
+
+                $(".js-commission").show('slow');
+            } else  {
+                $(".js-commission").hide('slow');
+                $(".js-commission").find('input').val('');
+            }
+
+        });
+        {#-- End Function --#}
+    </script>
+{% endblock lucca_js %}

@@ -1,0 +1,611 @@
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
+{% trans_default_domain 'DecisionBundle' %}
+
+{% set entity_trans='entity.decision'|trans %}
+
+
+
+{% block menuActive_minute %}active{% endblock menuActive_minute %}
+
+{% block lucca_panels %}
+
+    {{ form_start(form) }}
+
+    {% form_theme form  '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig' %}
+
+    {# Form theme apply for child only #}
+    {% form_theme form.liquidations '@LuccaDecision/Liquidation/liquidation-theme.html.twig' %}
+    {% form_theme form.penalties '@LuccaDecision/Penalty/penalty-theme.html.twig' %}
+    {% form_theme form.appealPenalties '@LuccaDecision/AppealPenalty/appeal-penalty-theme.html.twig' %}
+    {% form_theme form.contradictories '@LuccaDecision/Contradictory/contradictory-theme.html.twig' %}
+    {% form_theme form.demolition.professions '@LuccaDecision/Profession/profession-theme.html.twig' %}
+
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            {#-- Panel - Tribunal --#}
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card card-default">
+                    <div class="card-header"><strong>{{ 'text.decision.1st_instance'|trans }}</strong></div>
+
+                    <div class="card-wrapper">
+                        <div class="card-body">
+
+                            <div class="col-12">
+                                {{ form_row(form.tribunal) }}
+                                {{ form_row(form.tribunalCommission.dateHearing) }}
+                                {{ form_row(form.tribunalCommission.dateAdjournment) }}
+                                {{ form_row(form.tribunalCommission.dateDeliberation) }}
+                                {{ form_row(form.tribunalCommission.dateJudicialDesision) }}
+
+                                <div class="bool-inline">
+                                    {{ form_row(form.tribunalCommission.statusDecision) }}
+                                </div>
+
+                                <div id="trib-guilty" class="trib-status" style="display: none;">
+                                    {{ form_row(form.tribunalCommission.amountFine) }}
+                                    {{ form_row(form.tribunalCommission.restitution) }}
+                                    {{ form_row(form.tribunalCommission.dateExecution) }}
+                                    {{ form_row(form.tribunalCommission.amountPenalty) }}
+                                </div>
+
+                                <div class="bool-inline">
+                                    {{ form_row(form.appeal) }}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#-- End Panel - Tribunal --#}
+
+            {#-- Panel - appealCommission --#}
+            <div id="appeal-block" class="col-lg-12 col-md-12 col-sm-12 col-12" style="display: none;">
+                <div class="card card-default">
+                    <div class="card-header"><strong>{{ 'text.decision.2nd_instance'|trans }}</strong></div>
+
+                    <div class="card-wrapper">
+                        <div class="card-body">
+
+                            <div class="col-12">
+                                {{ form_row(form.appealCommission.dateHearing) }}
+                                {{ form_row(form.appealCommission.dateAdjournment) }}
+                                {{ form_row(form.appealCommission.dateDeliberation) }}
+                                {{ form_row(form.appealCommission.dateJudicialDesision) }}
+
+                                <div class="bool-inline">
+                                    {{ form_row(form.appealCommission.statusDecision) }}
+                                </div>
+
+                                <div id="appeal-guilty" class="appeal-status" style="display: none;">
+                                    {{ form_row(form.appealCommission.amountFine) }}
+                                    {{ form_row(form.appealCommission.restitution) }}
+                                    {{ form_row(form.appealCommission.dateExecution) }}
+                                    {{ form_row(form.appealCommission.amountPenalty) }}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#-- End Panel - appealCommission --#}
+
+            {#-- Panel - cassationComission --#}
+            <div id="cassation-block" class="col-lg-12 col-md-12 col-sm-12 col-12" style="display: none;">
+                <div class="card card-default">
+                    <div class="card-header"><strong>{{ 'text.decision.3rd_instance'|trans }}</strong></div>
+
+                    <div class="card-wrapper">
+                        <div class="card-body">
+
+                            <div class="col-12">
+                                {{ form_row(form.dateAskCassation) }}
+                                {{ form_row(form.dateAnswerCassation) }}
+
+                                <div class="bool-inline">
+                                    {{ form_row(form.statusCassation) }}
+                                </div>
+
+                                <div id="cassation-content" style="display: none;">
+                                    {{ form_row(form.nameNewCassation) }}
+
+                                    {{ form_row(form.cassationComission.dateHearing) }}
+                                    {{ form_row(form.cassationComission.dateAdjournment) }}
+                                    {{ form_row(form.cassationComission.dateDeliberation) }}
+                                    {{ form_row(form.cassationComission.dateJudicialDesision) }}
+
+                                    <div class="bool-inline">
+                                        {{ form_row(form.cassationComission.statusDecision) }}
+                                    </div>
+
+                                    <div id="cassation-guilty" class="cassation-status" style="display: none;">
+                                        {{ form_row(form.cassationComission.amountFine) }}
+                                        {{ form_row(form.cassationComission.restitution) }}
+                                        {{ form_row(form.cassationComission.dateExecution) }}
+                                        {{ form_row(form.cassationComission.amountPenalty) }}
+                                    </div>
+
+                                    <div class="bool-inline">
+                                        {{ form_row(form.cassationComplaint) }}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#-- End Panel - cassationComission --#}
+
+            {#-- Panel - Europe --#}
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card card-default">
+                    <div class="card-header"><strong>{{ 'text.decision.4th_instance'|trans }}</strong></div>
+
+                    <div class="card-wrapper">
+                        <div class="card-body">
+
+                            <div class="col-12">
+
+                                {# CEDH - Choice#}
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="cedh">
+                                        {{ 'text.decision.cedh'|trans }}
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="cedh" id="cedh" value="yes">
+                                            {{ 'choice.enabled.yes'|trans }}
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="cedh" id="cedh" value="no" checked>
+                                            {{ 'choice.enabled.no'|trans }}
+                                        </label>
+                                    </div>
+                                </div>
+                                {# End - CEDH - Choice#}
+
+                                <div id="europe-block" style="display: none;">
+                                    {{ form_row(form.dateReferralEurope) }}
+                                    {{ form_row(form.answerEurope) }}
+                                    {{ form_row(form.dataEurope) }}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#-- End Panel - Europe --#}
+        </div>
+
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            {#-- Panel - Penalties --#}
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card card-default">
+                    <div class="card-header"><strong>{{ 'text.decision.penalties'|trans }}</strong></div>
+
+                    <div class="card-wrapper">
+                        <div class="card-body">
+
+                            <div class="col-12">
+                                {{ form_row(form.amountPenaltyDaily) }}
+                                {{ form_row(form.dateStartRecovery) }}
+
+                                <label class="col-sm-4 control-label">{{ 'text.decision.report_folder'|trans }}</label>
+                                {{ form_widget(form.penalties) }}
+
+                                <label class="col-sm-4 control-label">{{ 'text.decision.liquidations'|trans }}</label>
+                                {{ form_widget(form.liquidations) }}
+
+                                {{ form_row(form.totalPenaltyRecovery) }}
+                                {{ form_row(form.dateNoticeDdtm) }}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#-- End Panel - Penalties --#}
+
+            {#-- Panel - Appeal Penalties --#}
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card card-default">
+                    <div class="card-header"><strong>{{ 'text.decision.appeal_penalties'|trans }}</strong></div>
+
+                    <div class="card-wrapper">
+                        <div class="card-body">
+
+                            <div class="col-12">
+                                {# Appeal Penalties - Choice #}
+                                <div class="form-group row">
+                                    <label class="col-sm-2 control-label" for="appeal-penalties">
+                                        {{ 'text.decision.appeal_penalties'|trans }}
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="appeal-penalties" id="appeal-penalties-yes"
+                                                   value="yes">
+                                            {{ 'choice.enabled.yes'|trans }}
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="appeal-penalties" id="appeal-penalties-no"
+                                                   value="no"
+                                                   checked>
+                                            {{ 'choice.enabled.no'|trans }}
+                                        </label>
+                                    </div>
+                                </div>
+                                {# End - Appeal Penalties - Choice #}
+
+                                <div id="appeal-penalties-block" style="display: none;">
+                                    {{ form_widget(form.appealPenalties) }}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#-- End Panel - Appeal Penalties --#}
+
+            {#-- Panel - Contradictory --#}
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card card-default">
+                    <div class="card-header"><strong>{{ 'label.contradictory'|trans }}</strong></div>
+
+                    <div class="card-wrapper">
+                        <div class="card-body">
+
+                            <div class="col-12">
+                                {# Contradictory - Choice #}
+                                <div class="form-group row">
+                                    <label class="col-sm-2 control-label" for="contradictory">
+                                        {{ 'label.contradictory'|trans }}
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="contradictory" id="contradictory-yes" value="yes">
+                                            {{ 'choice.enabled.yes'|trans }}
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="contradictory" id="contradictory-no" value="no"
+                                                   checked>
+                                            {{ 'choice.enabled.no'|trans }}
+                                        </label>
+                                    </div>
+                                </div>
+                                {# End - Contradictory - Choice #}
+
+                                <div id="contradictory-block" style="display: none;">
+                                    {{ form_widget(form.contradictories) }}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#-- End Panel - Contradictory --#}
+
+            {#-- Panel - Expulsion --#}
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card card-default">
+                    <div class="card-header"><strong>{{ 'label.expulsion'|trans }}</strong></div>
+
+                    <div class="card-wrapper">
+                        <div class="card-body">
+
+                            <div class="col-12">
+                                {# Expulsion - Choice #}
+                                <div class="form-group row">
+                                    <label class="col-sm-2 control-label" for="expulsion">
+                                        {{ 'label.expulsion'|trans }}
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="expulsion" id="expulsion-yes" value="yes">
+                                            {{ 'choice.enabled.yes'|trans }}
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="expulsion" id="expulsion-no" value="no" checked>
+                                            {{ 'choice.enabled.no'|trans }}
+                                        </label>
+                                    </div>
+                                </div>
+                                {# End - Expulsion - Choice #}
+
+                                <div id="expulsion-block" style="display: none;">
+                                    {{ form_row(form.expulsion.lawFirm) }}
+                                    {{ form_row(form.expulsion.amountDelivrery) }}
+                                    {{ form_row(form.expulsion.dateHearing) }}
+                                    {{ form_row(form.expulsion.dateAdjournment) }}
+                                    {{ form_row(form.expulsion.dateDeliberation) }}
+                                    {{ form_row(form.expulsion.dateJudicialDesision) }}
+                                    {{ form_row(form.expulsion.statusDecision) }}
+                                    {{ form_row(form.expulsion.comment) }}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#-- End Panel - Expulsion --#}
+
+            {#-- Panel - Demolition --#}
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card card-default">
+                    <div class="card-header"><strong>{{ 'label.demolition'|trans }}</strong></div>
+
+                    <div class="card-wrapper">
+                        <div class="card-body">
+
+                            <div class="col-12">
+                                {# Demolition - Choice #}
+                                <div class="form-group row">
+                                    <label class="col-sm-2 control-label" for="demolition">
+                                        {{ 'label.demolition'|trans }}
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="demolition" id="demolition-yes" value="yes">
+                                            {{ 'choice.enabled.yes'|trans }}
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="demolition" id="demolition-no" value="no" checked>
+                                            {{ 'choice.enabled.no'|trans }}
+                                        </label>
+                                    </div>
+                                </div>
+                                {# End - Demolition - Choice #}
+
+                                <div id="demolition-block" style="display: none;">
+                                    {{ form_row(form.demolition.company) }}
+                                    {{ form_row(form.demolition.amountCompany) }}
+                                    {{ form_row(form.demolition.dateDemolition) }}
+                                    {{ form_row(form.demolition.result) }}
+
+                                    {{ form_row(form.demolition.bailif) }}
+                                    {{ form_row(form.demolition.amountBailif) }}
+
+                                    <label class="col-sm-4 control-label">{{ 'text.decision.other_worker'|trans }}</label>
+                                    {{ form_widget(form.demolition.professions) }}
+
+                                    {{ form_row(form.demolition.comment) }}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#-- End Panel - Demolition --#}
+
+            <a class="btn btn-secondary btn-lg"
+               href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"
+               title="{{ 'link.backMinute'|trans }}"><i class="fa fa-reply"></i></a>
+
+            <button type="submit" class="btn btn-success btn-lg"
+                    title="{{ 'link.decision.new'|trans }}"><i class="fa fa-check"></i></button>
+        </div>
+
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+{% endblock lucca_panels %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    <link href="{{ asset('plugins/summernote/summernote-bs4.css') }}" rel="stylesheet">
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script src="{{ asset('plugins/summernote/summernote-bs4.js') }}"></script>
+    <script src="{{ asset('plugins/summernote/lang/summernote-fr-FR.min.js') }}"></script>
+
+    <script src="{{ asset('assets/js/jquery.collection.js') }}"></script>
+
+    <script>
+        {# Summernote #}
+        $('.summernote').summernote({
+            height: 100,
+            lang: 'fr-FR',
+            tabsize: 2,
+            disableDragAndDrop: true,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link']],
+                ['view', ['fullscreen', 'codeview', 'help']],
+            ],
+        });
+
+        {# Collection form - penalty #}
+        $('.penalty-collection').collection({
+            allow_duplicate: true, allow_up: false, allow_down: false,
+            add_at_the_end: true,
+            add: '<a href="#" class="btn btn-primary" title="{{ 'link.penalty.new'|trans }}"><span class="fa fa-plus"></span></a>',
+
+            // here is the magic!
+            elements_selector: 'tr.penalty',
+            elements_parent_selector: '%id% tbody',
+        });
+        {# End - Collection form - penalty #}
+
+        {# Collection form - liquidations #}
+        $('.liquidation-collection').collection({
+            allow_duplicate: true, allow_up: false, allow_down: false,
+            add_at_the_end: true,
+            add: '<a href="#" class="btn btn-primary" title="{{ 'link.liquidation.new'|trans }}"><span class="fa fa-plus"></span></a>',
+
+            // here is the magic!
+            elements_selector: 'tr.liquidation',
+            elements_parent_selector: '%id% tbody',
+        });
+        {# End - Collection form - liquidations #}
+
+        {# Collection form - Appeal penalty #}
+        $('.appeal-penalty-collection').collection({
+            allow_duplicate: true, allow_up: false, allow_down: false,
+            add_at_the_end: true,
+            add: '<a href="#" class="btn btn-primary" title="{{ 'link.appeal-penalty.new'|trans }}"><span class="fa fa-plus"></span></a>',
+
+            // here is the magic!
+            elements_selector: 'tr.appeal-penalty',
+            elements_parent_selector: '%id% tbody',
+        });
+        {# End - Collection form - Appeal penalty #}
+
+        {# Collection form - contradictory #}
+        $('.contradictory-collection').collection({
+            allow_duplicate: true, allow_up: false, allow_down: false,
+            add_at_the_end: true,
+            add: '<a href="#" class="btn btn-primary" title="{{ 'link.contradictory.new'|trans }}"><span class="fa fa-plus"></span></a>',
+
+            // here is the magic!
+            elements_selector: 'tr.contradictory',
+            elements_parent_selector: '%id% tbody',
+            after_add: function (collection, element) {
+                $('.summernote').summernote({
+                    height: 80,
+                    lang: 'fr-FR',
+                    tabsize: 2,
+                    disableDragAndDrop: true,
+                    toolbar: [
+                        ['style', ['style']],
+                        ['font', ['bold', 'underline', 'clear']],
+                        ['color', ['color']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['table', ['table']],
+                        ['insert', ['link']],
+                        ['view', ['fullscreen', 'codeview', 'help']],
+                    ],
+                });
+            }
+        });
+        {# End - Collection form - contradictory #}
+
+        {# Collection form - Profession #}
+        $('.profession-collection').collection({
+            allow_duplicate: true, allow_up: false, allow_down: false,
+            add_at_the_end: true,
+            add: '<a href="#" class="btn btn-primary" title="{{ 'link.profession.new'|trans }}"><span class="fa fa-plus"></span></a>',
+
+            // here is the magic!
+            elements_selector: 'tr.profession',
+            elements_parent_selector: '%id% tbody',
+        });
+        {# End - Collection form - Profession #}
+
+        {# Custom JS #}
+        {#-- JS - Tribunal --#}
+        $('input[name="lucca_decisionBundle_decision[tribunalCommission][statusDecision]"]').click(function () {
+            $(".trib-status").hide('slow');
+
+            if ($(this).val() === 'choice.status_deci.guilty')
+                $("#trib-guilty").show('slow');
+        });
+        {#-- End JS - Tribunal --#}
+
+
+        {#-- JS - Appeal --#}
+        $('input[name="lucca_decisionBundle_decision[appeal]"]').click(function () {
+            $("#appeal-block").toggle('slow');
+        });
+
+        $('input[name="lucca_decisionBundle_decision[appealCommission][statusDecision]"]').click(function () {
+            $(".appeal-status").hide('slow');
+
+            if ($(this).val() === 'choice.status_deci.guilty')
+                $("#appeal-guilty").show('slow');
+        });
+        {#-- End JS - Appeal --#}
+
+
+        {#-- JS - Cassation --#}
+        $('input[name="lucca_decisionBundle_decision[cassationComplaint]"]').click(function () {
+            {# if yes #}
+            if ($(this).val() === '0')
+                $("#cassation-block").show('slow');
+                    {# else no / null #}
+            else
+                $("#cassation-block").hide('slow');
+        });
+
+        $('input[name="lucca_decisionBundle_decision[cassationComission][statusDecision]"]').click(function () {
+            $(".cassation-status").hide('slow');
+
+            if ($(this).val() === 'choice.status_deci.guilty')
+                $("#cassation-guilty").show('slow');
+        });
+
+        $('input[name="lucca_decisionBundle_decision[statusCassation]"]').click(function () {
+            {# if yes #}
+            if ($(this).val() === '0')
+                $("#cassation-content").show('slow');
+                    {# if yes #}
+            else if ($(this).val() === '1')
+                $("#cassation-content").hide('slow');
+            else
+                $("#cassation-content").hide('slow');
+        });
+        {#-- End JS - Cassation --#}
+
+        {#-- JS - CEDH --#}
+        $('input[name="cedh"]').click(function () {
+            if ($(this).val() === 'yes')
+                $("#europe-block").show('slow');
+
+            if ($(this).val() === 'no')
+                $("#europe-block").hide('slow');
+        });
+        {#-- End JS - CEDH --#}
+
+        {#-- JS - Appeal Penalties --#}
+        $('input[name="appeal-penalties"]').click(function () {
+            if ($(this).val() === 'yes')
+                $("#appeal-penalties-block").show('slow');
+
+            if ($(this).val() === 'no')
+                $("#appeal-penalties-block").hide('slow');
+        });
+        {#-- End JS - Appeal Penalties --#}
+
+        {#-- JS - Contradictory --#}
+        $('input[name="contradictory"]').click(function () {
+            $("#contradictory-block").toggle('slow');
+        });
+        {#-- End JS - Contradictory --#}
+
+        {#-- JS - Expulsion --#}
+        $('input[name="expulsion"]').click(function () {
+            $("#expulsion-block").toggle('slow');
+        });
+        {#-- End JS - Expulsion --#}
+
+        {#-- JS - Demolition --#}
+        $('input[name="demolition"]').click(function () {
+            $("#demolition-block").toggle('slow');
+        });
+        {#-- End JS - Demolition --#}
+    </script>
+{% endblock lucca_js %}

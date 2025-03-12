@@ -1,0 +1,47 @@
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig' %}
+{% trans_default_domain 'SettingBundle' %}
+
+{% set entity_trans='entity.setting'|trans %}
+
+
+{% block lucca_panels %}
+    {#-- Panel - main --#}
+    <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+        <div class="card card-default">
+            <div class="card-header">
+                {{ 'title.new'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ entity_trans }}</b>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+                    {% embed "@LuccaSetting/Setting/Embed/form-settingToImport.html.twig" with { 'form': form } %}
+                        {#-- Translation domain embed --#}
+                        {% trans_default_domain 'SettingBundle' %}
+
+                        {% block lucca_embed_buttons_setting %}
+                            <div class="mt-2">
+                                <a class="btn btn-secondary btn-lg" href="{{ path('lucca_setting_index') }}"
+                                   title="{{ 'link.backList'|trans }}"><i class="fas fa-reply"></i></a>
+
+                                <button type="submit" class="btn btn-warning btn-lg"
+                                        title="{{ 'link.import'|trans }}"><i class="fas fa-check"></i></button>
+                            </div>
+                        {% endblock %}
+                    {% endembed %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block lucca_js %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block lucca_css %}
+    {{ parent() }}
+
+{% endblock %}
+

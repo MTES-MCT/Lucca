@@ -1,0 +1,54 @@
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/index.html.twig' %}
+{#-- Translation domain --#}
+{% trans_default_domain 'DepartmentBundle' %}
+
+{#-- Parameters --#}
+{% set entity_trans='label.department'|trans %}
+{% set menuActive = "ma_adm_department" %}
+
+
+{% block lucca_list %}
+
+    {% embed '@LuccaDepartment/Embed/Department/_table-departments.html.twig' with {'departments': departments } %}
+        {#-- Translation domain embed --#}
+        {% trans_default_domain 'DepartmentBundle' %}
+
+        {% block theme_embed_buttons_department %}
+            {% if app.user and (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_USER_TOTAL")) %}
+                {% if department.enable %}
+                    <a href="{{ path('lucca_department_admin_disable', { 'id': department.id }) }}"
+                       class="btn btn-primary btn-sm" title="{{ 'link.department.disable'|trans }}">
+                        <i class="fas fa-toggle-on" aria-hidden="true"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('lucca_department_admin_enable', { 'id': department.id }) }}"
+                       class="btn btn-danger btn-sm" title="{{ 'link.department.enable'|trans }}">
+                        <i class="fas fa-toggle-off" aria-hidden="true"></i>
+                    </a>
+                {% endif %}
+                <a href="{{ path('lucca_department_admin_edit', { 'id': department.id }) }}"
+                   class="btn btn-warning btn-sm"
+                   title="{{ 'link.department.edit'|trans }}"> <i class="fas fa-pencil-alt"></i></a>
+
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
+
+    {% if app.user and (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_USER_WRITE")) %}
+        <a class="btn btn-primary btn-lg" href="{{ path('lucca_department_admin_new') }}"
+           title="{{ 'link.department.new'|trans }}"><i class="fas fa-plus"></i></a>
+    {% endif %}
+
+{% endblock lucca_list %}
+
+{% block lucca_css %}
+    {{ parent() }}
+{% endblock %}
+
+{% block lucca_js %}
+    {{ parent() }}
+{% endblock %}
+
+{% block theme_datatables_js %}
+    {{ parent() }}
+{% endblock %}

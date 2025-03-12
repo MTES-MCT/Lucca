@@ -1,0 +1,50 @@
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/index.html.twig' %}
+{% trans_default_domain 'UserBundle' %}
+
+{% set entity_trans='entity.group'|trans %}
+
+
+{% block menuActive_group %}active{% endblock menuActive_group %}
+
+
+{% block lucca_list %}
+
+    <table class="table table-hover w-100 responsive dataTables">
+        <thead>
+        <tr>
+            <th><i class="fa fa-shield"></i> {{ 'label.name'|trans }}</th>
+            <th>{{ 'label.displayed'|trans }}</th>
+            <th>{{ 'label.roles'|trans }}</th>
+            <th><i class="fa fa-cogs"></i> {{ 'label.actions'|trans }}</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for group in groups %}
+            <tr>
+                <td>{{ group.name }}</td>
+                <td>
+                    {% if group.displayed %}<i class="fa fa-check"></i>
+                    {% else %}<i class="fa fa-close"></i>{% endif %}
+                </td>
+                <td>{% for role in group.roles %}{{ role }}<br> {% endfor %}</td>
+                <td>
+                    <div class="item-actions">
+                        <a href="{{ path('lucca_user_group_show', { 'id': group.id }) }}"
+                           class="btn btn-primary btn-sm" title="{{ 'link.show'|trans }}"> <i class="fa fa-eye"></i>
+                        </a>
+
+                        <a href="{{ path('lucca_user_group_edit', { 'id': group.id }) }}"
+                           class="btn btn-warning btn-sm"
+                           title="{{ 'link.edit'|trans }}"> <i class="fas fa-pencil-alt"></i> </a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary btn-lg" href="{{ path('lucca_user_group_new') }}"
+       title="{{ 'link.new'|trans }}"><i class="fa fa-plus"></i></a>
+{% endblock lucca_list %}
+

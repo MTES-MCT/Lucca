@@ -1,0 +1,34 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'MediaBundle' %}
+
+{#
+# -- Variable -- array(Params)
+# -- param - allow_duplicate
+# -- param - allow_up
+# -- param - allow_down
+# -- param - add_at_the_end
+# -- param - add
+# -- param - position_field_selector
+# -- param - init_with_n_elements
+# -- param - max
+#}
+
+{#-- Collection form - Media --#}
+$('.media-collection').collection({
+    allow_duplicate:{% if params['allow_duplicate'] is defined %} {{ params['allow_duplicate'] }}{% else %} true{% endif %},
+    allow_up:{% if params['allow_up'] is defined %} {{ params['allow_up'] }}{% else %} true{% endif %},
+    allow_down:{% if params['allow_down'] is defined %} {{ params['allow_down'] }}{% else %} true{% endif %},
+    add_at_the_end:{% if params['add_at_the_end'] is defined %} {{ params['add_at_the_end'] }}{% else %} true{% endif %},
+
+    add: '<a href="#" class="btn btn-primary" title="{{ 'link.media.new'|trans }}"><span class="fas fa-plus"></span></a>',
+    remove: '<a href="#" class="btn btn-danger btn-sm" title="{{ 'link.media.delete'|trans }}"><span class="fas fa-trash"></span></a>',
+    duplicate: '<a href="#" class="btn btn-info btn-sm" title="{{ 'link.media.duplicate'|trans }}"><span class="fas fa-th-large"></span></a>',
+    up: '<a href="#" class="btn btn-secondary btn-sm" title="{{ 'link.media.up'|trans }}"><span class="fas fa-arrow-up"></span></a>',
+    down: '<a href="#" class="btn btn-secondary btn-sm" title="{{ 'link.media.down'|trans }}"><span class="fas fa-arrow-down"></span></a>',
+
+    init_with_n_elements:{% if params['init_with_n_elements'] is defined %} {{ params['init_with_n_elements'] }}{% else %} 0{% endif %},
+    max:{% if params['max'] is defined %} {{ params['max'] }}{% else %} 20{% endif %},
+
+    {% if params['position_field_selector'] is defined %}position_field_selector: '{{ params['position_field_selector'] }}',{% endif %}
+});
+{#-- End - Collection form - Media --#}

@@ -1,0 +1,14 @@
+#####################################################
+## Lucca Update Bundle
+## Locale: fr
+#####################################################
+
+########################
+# Choice
+########################
+choice:
+    #### Folder / Updating
+    nature:
+        regularized: "Régularisée"
+        aggravated: "Aggravée"
+        unchanged: "Inchangée"

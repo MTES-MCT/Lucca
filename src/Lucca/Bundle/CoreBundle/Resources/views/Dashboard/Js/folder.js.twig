@@ -1,0 +1,91 @@
+{% trans_default_domain 'MinuteBundle' %}
+
+function createMarkersFolder() {
+
+    /** Get coords of the border of the map */
+    var bds = map.getBounds();
+
+    var request = $.ajax({
+        url: Routing.generate('lucca_get_folders'),
+        data: {
+            displayResults: displayResults,
+            adherent: {% if adherentId %}{{ adherentId }}{% else %}null{% endif %},
+            minLat: bds.getSouthWest().lat(),
+            minLon: bds.getSouthWest().lng(),
+            maxLat: bds.getNorthEast().lat(),
+            maxLon: bds.getNorthEast().lng()
+            {% if dateStart is defined %}
+            ,
+            dateStart: "{{ dateStart | date('d/m/Y') }}",
+            dateEnd: "{{ dateEnd | date('d/m/Y') }}"
+            {% endif %}
+        },
+        success: function (response) {
+            let res = JSON.parse(response);
+            let typeMarker = "controls";
+
+            for (let i = 0; i < res.length; i++) {
+
+                latLng = new google.maps.LatLng(res[i]['lat'], res[i]['lon']);
+                iconBase = '{{ asset('assets/img/Pins/png/folder.png') }}';
+                num = res[i]['id'].toString();
+                var markerF = createMarker(num, iconBase, latLng);
+
+                var base = [
+                    "Parcelle : " + res[i]['parcel'],
+                    "Nature : " + res[i]['nature'],
+                    "Date controle : " + res[i]['dateControl']
+                ];
+
+                /** If Folder is validated - add pdf link */
+                if (res[i]['dateClosure'] && displayResults) {
+                    var url = '{{ path('lucca_minute_show', { 'id': 'minute.id', '_fragment' : 'folder-folder.id'}) }}'
+                        .replace('minute.id', res[i]['minuteId']).replace('folder.id', res[i]['id']);
+                    var linkHtml = " <a href=\"" + url + "\" title=\"Voir le rapport\"> Voir le rapport</a>";
+
+                    base = base.concat([
+                        "Lien PDF : " + linkHtml
+                    ]);
+                }
+
+                /** Create infos popup */
+                console.log(displayResults);
+                htmlInfos = generateHtmlInfos(
+                    res[i]['minuteNum'],
+                    "{{ path('lucca_minute_show', { 'id': 'minute.id', '_fragment' : 'folder-folder.id'}) }}"
+                        .replace('minute.id', res[i]['minuteId']).replace('folder.id', res[i]['id']),
+                    base
+                );
+
+                if (displayResults) {
+
+                    htmlInfos2 = generateHtmlInfos(
+                        res[i]['minuteNum'],
+                        "{{ path('lucca_minute_show', { 'id': 'minute.id', '_fragment' : 'folder-folder.id'}) }}"
+                            .replace('minute.id', res[i]['minuteId']).replace('folder.id', res[i]['id']),
+                        base.concat([
+                            "Infraction : " + res[i]['tagsNature'],
+                            "Urbanisme : " + res[i]['tagsTown'],
+                            "Natinfs : " + res[i]['natinfs']
+                        ])
+                    );
+                    createInfoWindow(res[i]['id'], markerF, htmlInfos, htmlInfos2);
+                } else {
+                    createInfoWindow(res[i]['id'], markerF, htmlInfos);
+                }
+                /** End popup */
+
+                datas['folders'].push(markerF);
+            }
+
+
+            clusters['folders'] = new MarkerClusterer(map, datas['folders'], {
+                imagePath: "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
+                maxZoom: maxZoomCluster,
+                ignoreHidden: true,
+            });
+        },
+        error: function (response) {
+        }
+    });
+}

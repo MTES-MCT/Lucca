@@ -1,0 +1,67 @@
+#####################################################
+## Lucca User Bundle
+#####################################################
+
+########################
+# Meta
+########################
+meta:
+    lucca: "Lucca"
+    login: "Connexion"
+
+########################
+# Entity
+########################
+entity:
+    user: "Utilisateur|Utilisateurs"
+    group: "Groupe|Groupes"
+
+########################
+# Label
+########################
+label:
+    username: "Nom d'utilisateur"
+    password: "Mot de passe"
+    passwordConfirmation: "Confirmation"
+    currentPassword: "Mot de passe actuel"
+    email: "Email"
+    roles: "Rôles"
+    name: "Nom"
+    groups: "Groupes"
+    lastLogin: "Dernière connexion"
+    enabled: "Actif ?"
+    displayed: "Affichage dans les listes ?"
+    actions: "Actions"
+
+    connection: "Connectez vous pour continuer"
+    login: "Connexion"
+    rememberMe: "Se souvenir de moi"
+    forgotPassword: "Mot de passe oublié ?"
+    legalMention: "Tous droits réservés à Numeric Wave"
+    legalMention66: "Titulaire en l’espèce DDTM66"
+
+########################
+# Choice
+########################
+choice:
+    roles:
+        superAdmin: "Super Admin"
+        admin: "Admin"
+        lucca: "Lucca"
+        visu: "Visu"
+        openFolder: "Réouvrir les dossiers"
+        deleteFolder: "Supprimer les PV"
+
+########################
+# Link
+########################
+link:
+    new: "Nouveau"
+    back: "Retour"
+    edit: "Modifier le profil"
+    changePassword: "Changer votre mot de passe"
+    show: "Visualiser"
+    delete: "Supprimer"
+    print: "Imprimer"
+    enable: "Activer"
+    disable: "Désactiver"

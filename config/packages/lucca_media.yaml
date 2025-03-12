@@ -1,0 +1,4 @@
+## LuccaMediaBundle Configuration
+lucca_media:
+    upload_directory: "%env(resolve:LUCCA_UPLOAD_DIR)%"
+    upload_tmp_directory: "%env(resolve:LUCCA_UPLOAD_TEMP_DIR)%"

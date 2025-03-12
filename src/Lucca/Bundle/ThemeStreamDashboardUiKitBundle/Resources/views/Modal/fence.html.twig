@@ -1,0 +1,37 @@
+{% trans_default_domain 'ThemeStreamDashboardUiKit' %}
+
+
+<div id="{{ id }}" class="modal inmodal fade fenceWin" tabindex="-1" role="dialog" aria-labelledby="modal-fence"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content animated flipInX">
+
+            <div class="modal-header">
+                <h5 class="modal-title"><b>{{ 'modal.fence.confirm'|trans }}</b></h5>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p>{{ 'modal.fence.message'|trans }}</p>
+                <p><strong>{{ 'modal.fence.element'|trans }}</strong> - {{ name }}</p>
+
+                <div class="text-success">
+                    {{ 'modal.fence.folder_print_after'|trans }}<br>
+                    {{ 'modal.fence.folder_not_updated_after'|trans }}
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-success btn-sm btn-labeled" href="{{ link }}" title="{{ 'link.fence'|trans }}">
+                    <span class="btn-label"><i class="fas fa-check-double"></i> </span> {{ 'link.fence'|trans }}
+                </a>
+
+                <a class="btn btn-sm btn-secondary" data-dismiss="modal"> {{ 'link.close'|trans }} </a>
+            </div>
+        </div>
+    </div>
+</div>
+

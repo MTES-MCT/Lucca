@@ -1,0 +1,96 @@
+{#-- Extends view --#}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/page.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'MediaBundle' %}
+
+{#-- Parameters --#}
+{% set entity_trans='entity.media'|trans %}
+{% block menuActive_parameter %}active{% endblock %}
+
+
+{% block lucca_title %}
+    <title> {{ 'meta.company.project'|trans({}, 'ThemeStreamDashboardUiKit') }} |
+        {{ entity_trans }} - {{ 'title.index'|trans({}, 'ThemeStreamDashboardUiKit') }} </title>
+{% endblock lucca_title %}
+
+{% block lucca_header %}
+    {{ 'title.manage'|trans({}, 'ThemeStreamDashboardUiKit') }} : <b>{{ entity_trans }}</b>
+{% endblock lucca_header %}
+
+{% block lucca_page %}
+
+    <a href="{{ path('lucca_media_new') }}" title="{{ 'link.media.new'|trans }}" class="btn btn-sm btn-success mb-3">
+        <i class="fas fa-plus"></i> {{ 'link.media.new'|trans }}
+    </a>
+
+    {% include '@LuccaThemeStreamDashboardUiKit/Flash/flashes.html.twig' %}
+
+    {#-- .wrapper --#}
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-12">
+
+                <div id="media-content-index" class="media-grid">
+                    {% include '@LuccaMedia/Media/Embed/_list-media.html.twig' %}
+                </div>
+
+                {#-- Init basic modal --#}
+                {% include '@LuccaMedia/Modal/_modal-form.html.twig' %}
+
+            </div>
+        </div>
+    </div> {#-- End .wrapper --#}
+
+{% endblock lucca_page %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script src="{{ asset('bundles/luccamedia/plugins/masonry/masonry.pkgd.min.js') }}"></script>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+
+    <script>
+        {#-- On media click print a modal with the edit form --#}
+        $(document).on('click', 'a.media-trigger-btn', function (e) {
+            e.preventDefault();
+            let routeParams = {
+                id: $(this).attr('data-id')
+            };
+            $.ajax({
+                url: Routing.generate('lucca_media_modal_edit', routeParams),
+                success: function (html) {
+                    $('#modalForm .modal-content').html(html);
+                    $('#modalForm').modal();
+                }
+            })
+        });
+
+        {#-- Initialize page number for infinite scroll --#}
+        var pageNbr = {{ pagination.page }};
+        var isLoading = false;
+
+        {#-- When user scroll to the bottom get the next page print it and add 1 to the page number --#}
+        $(window).scroll(function () {
+            if (($(window).scrollTop() + $(window).height()) == $(document).height() && isLoading == false) {
+                isLoading = true;
+                let routeParams = {
+                    page: pageNbr + 1
+                };
+                $.ajax({
+                    url: Routing.generate('lucca_media_index', routeParams),
+                    success: function (html) {
+                        if(html) {
+                            $("#media-content-index > .media-content-row").append(html);
+                            pageNbr = pageNbr + 1;
+                            isLoading = false;
+                        }
+                    }
+                })
+            }
+        });
+    </script>
+
+{% endblock lucca_js %}

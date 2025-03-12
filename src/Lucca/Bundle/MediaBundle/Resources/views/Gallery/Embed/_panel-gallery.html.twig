@@ -1,0 +1,45 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'MediaBundle' %}
+
+
+{#-- View embed --#}
+<div class="card card-default">
+    <div class="card-header">
+        <a class="collapse-link" title="{{ 'link.reducePanel'|trans }}">
+            <h5><i class="fas fa-photo-video"></i> {{ 'entity.gallery'|trans }} </h5>
+        </a>
+    </div>
+
+    <div class="card-wrapper">
+        <div class="card-body">
+            <table class="table table-striped table-hover">
+                <tbody>
+                <tr>
+                    <th><i class="fas fa-photo-video"></i> {{ 'label.name'|trans }}</th>
+                    <td>{{ gallery.name }}</td>
+                </tr>
+                <tr>
+                    <th>{{ 'label.enabled'|trans }}</th>
+                    <td>{{ gallery.enabled|boolean }}</td>
+                </tr>
+                <tr>
+                    <th><i class="fas fa-image"></i> {{ 'label.defaultMedia'|trans }}</th>
+                    <td>{{ gallery.defaultMedia|mediaTag }}</td>
+                </tr>
+                <tr>
+                    <th>{{ 'label.description'|trans }}</th>
+                    <td>{{ gallery.description }}</td>
+                </tr>
+                </tbody>
+            </table>
+
+            {#-- Buttons --#}
+            <div class="col-12">
+                {% block lucca_embed_buttons_gallery %}
+
+                {% endblock %}
+            </div> {#-- End - Buttons --#}
+        </div>
+    </div>
+</div>
+{#-- End - View embed --#}

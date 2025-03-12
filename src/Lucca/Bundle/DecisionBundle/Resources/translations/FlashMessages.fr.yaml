@@ -1,0 +1,10 @@
+####################################
+## Flash Domain
+## Locale: fr
+####################################
+
+flash:
+    decision:
+        createdSuccessfully: "La décision a bien été créée."
+        updatedSuccessfully: "La décision a bien été modifiée."
+        deletedSuccessfully: "La décision a bien été supprimée."

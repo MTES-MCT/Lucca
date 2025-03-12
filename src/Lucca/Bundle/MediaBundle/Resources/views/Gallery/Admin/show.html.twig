@@ -1,0 +1,79 @@
+{#-- Extends view --#}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'MediaBundle' %}
+
+{#-- Parameters --#}
+{% set entity_trans='entity.gallery'|trans %}
+{% block menuActive_parameter %}active{% endblock %}
+
+
+{% block lucca_panels %}
+    <div class="col-12">
+        <div class="max-2-columns-responsive">
+            {#-Embed view - params and block-#}
+            {% embed "@LuccaMedia/Gallery/Embed/_panel-gallery.html.twig" with { 'gallery': gallery } %}
+            {% endembed %} {#-End Embed-#}
+
+            {#-Embed view - params and block-#}
+            {% embed "@LuccaMedia/Media/Embed/_panel-medias.html.twig" with { 'medias': gallery.medias } %}
+            {% endembed %} {#-End Embed-#}
+        </div>
+    </div>
+
+    <div class="col-12 pb-3 pt-3">
+        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_media_gallery_index') }}"
+           title="{{ 'link.gallery.backList'|trans }}"><i class="fas fa-reply"></i></a>
+
+        {% if is_granted("ROLE_MEDIA_WRITE") %}
+            <a class="btn btn-warning btn-lg"
+               href="{{ path('lucca_media_gallery_edit', { 'id': gallery.id }) }}"
+               title="{{ 'link.gallery.edit'|trans }}"><i class="fas fa-pencil-alt"></i></a>
+        {% endif %}
+
+        {% include "@LuccaMedia/Modal/_modal-form.html.twig" %}
+
+        {% if is_granted("ROLE_MEDIA_TOTAL") %}
+            <a class="btn btn-danger btn-lg float-right" data-toggle="modal"
+               data-target="#{{ 'gallery-' ~ gallery.id }}"
+               title="{{ 'link.gallery.delete'|trans }}">
+                <i class="fas fa-trash-alt"></i>
+            </a>
+
+            {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {
+                'id': 'gallery-' ~ gallery.id,
+                'name': gallery.name,
+                'delForm': delete_form
+            } %}
+        {% endif %}
+    </div>
+
+{% endblock lucca_panels %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+
+    <script>
+        $(function () {
+            $('.lazy').Lazy();
+        });
+
+        $(document).on('click', 'a.media-trigger-btn', function (e) {
+            e.preventDefault();
+            let routeParams = {
+                id: $(this).attr('data-id')
+            };
+            $.ajax({
+                url: Routing.generate('lucca_media_modal_edit', routeParams),
+                success: function (html) {
+                    $('#modalForm .modal-content').html(html);
+                    $('#modalForm').modal();
+                }
+            })
+        });
+    </script>
+{% endblock %}

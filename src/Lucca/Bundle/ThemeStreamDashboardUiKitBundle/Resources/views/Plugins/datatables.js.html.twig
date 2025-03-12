@@ -1,0 +1,174 @@
+{#-- --
+-- Plugin - Datatables
+--
+-- param :
+--      id_datatable : (default : .dataTables)
+--      pageLength : (default : 10)
+-- --#}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'ThemeStreamDashboardUiKit' %}
+
+{#-- Plugin - Momment --#}
+<script src="{{ asset('plugins/fullcalendar/lib/moment.min.js') }}"></script>
+{#-- Plugin - DataTables --#}
+<script src="{{ asset('plugins/dataTables/datatables.min.js') }}"></script>
+<script src="{{ asset('plugins/dataTables/datatable.date.js') }}"></script>
+
+<script>
+
+    {% set datatable = '' %}
+
+    {#-- param - id_datatable --#}
+    {% if params['id_datatable'] is defined %} {% set datatable = params['id_datatable'] %}
+    {% else %} {% set datatable = '.dataTables' %} {% endif %}
+
+    {#-- param - showButtons --#}
+    {% if params['showButtons'] is defined %} {% set showButtons = params['showButtons'] %}
+    {% else %} {% set showButtons = true %} {% endif %}
+
+    {#-- param - groupColumn --#}
+    {% if params['groupColumn'] is defined %} {% set groupColumn = params['groupColumn'] %}
+    {% else %} {% set groupColumn = 0 %} {% endif %}
+
+    {#-- param - sortColumn --#}
+    {% if params['sortColumn'] is defined %} {% set sortColumn = params['sortColumn'] %}
+    {% else %} {% set sortColumn = 'asc' %} {% endif %}
+
+    {#-- Plugin - Moment --#}
+    {% if params['format'] is defined %}
+    $.fn.dataTable.moment('{{ params['format'] }}');
+    {% else %}
+    $.fn.dataTable.moment('DD/MM/YYYY');
+    {% endif %}
+
+    let groupColumn = {{ groupColumn }};
+    let sortColumn = '{{ sortColumn }}';
+    let $columns = $('thead th:not(.noExport, .hidden)');
+
+    /** Add input field on each colum to filters row */
+    $('{{ datatable }} .filters th.filter').each(function () {
+        const title = $(this).text();
+        $(this).html('<input type="text" class="form-control" placeholder="' + title + '" />');
+    });
+
+    if (window.datatableParams === undefined)
+        window.datatableParams = {};
+
+    window.datatableParams = {
+        responsive: true,
+        autoWidth: true,
+        pageLength: {% if params['pageLength'] is defined %}{{ params['pageLength'] }}{% else %}10{% endif %},
+        ordering: true,
+        orderCellsTop: true,
+        columnDefs: [
+            {
+                orderable: false,
+                {% if params['hasSelector'] is defined and params['hasSelector'] == true %}
+                targets: 0,
+                data: null,
+                defaultContent: '',
+                className: 'select-checkbox'
+                {% else %}
+                targets: 'noSort',
+                {% endif %}
+            },
+            {responsivePriority: 3, targets: 'alwaysVisible'},
+            {responsivePriority: 2, targets: -1}
+        ],
+        {% if params['hasSelector'] is defined and params['hasSelector'] == true %}
+        select: {
+            style: 'os',
+            selector: 'td:first-child'
+        },
+        {% endif %}
+        order: [[groupColumn, sortColumn]],
+        paging: true,
+        language: {
+            url: "{{ asset('plugins/dataTables/lang/dataTables.fr.json') }}"
+        },
+        {% if showButtons == true %}
+        dom: '<"html5buttons"B>lfrtip',
+        buttons: [
+            {extend: 'copy'},
+            {extend: 'excel', exportOptions: {columns: $columns}},
+            {
+                extend: 'csvHtml5',
+                exportOptions: {columns: $columns,  format: {
+                    body: function ( data, row, column, node ) {
+                        /** This function enable to make a basic clean on data push in csv in order to remove html tag and useless space */
+                        /** First remove all html tags */
+                        while(data.includes('<')){
+                            data = data.replace(/<.*>/, '');
+                        }
+                        /** Remove all break lines */
+                        while(data.includes('\n')){
+                            data = data.replace('\n', ' ');
+                        }
+                        /** Replace double space by one space */
+                        while(data.includes('  ')){
+                            data = data.replace('  ', ' ');
+                        }
+                        /** Return formatted data */
+                        return data;
+                    }
+                } }
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {columns: $columns},
+                customize: function (doc, config) {
+                    let tableNode;
+                    for (let i = 0; i < doc.content.length; ++i) {
+                        if (doc.content[i].table !== undefined) {
+                            tableNode = doc.content[i];
+                            break;
+                        }
+                    }
+
+                    const rowIndex = 0;
+                    const tableColumnCount = tableNode.table.body[rowIndex].length;
+
+                    if (tableColumnCount > 8) {
+                        doc.pageOrientation = 'landscape';
+                    }
+                }
+            },
+            {
+                extend: 'print',
+                exportOptions: {columns: $columns},
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ],
+        {% else %}
+        dom: 'fgtp',
+        {% endif %}
+        ...window.datatableParams,
+    }
+
+    /** Setup and config table */
+    let $table = $('{{ datatable }}');
+    let table = $table.DataTable(window.datatableParams);
+
+    /** Add search functions */
+    let $filters = $('{{ datatable }} .filters > .filter');
+
+    table.columns().every(function () {
+        const that = this;
+
+        if ($filters[that.index()]) {
+            $('input', $filters[that.index()]).on('keyup change', function () {
+                if (that.search() !== this.value)
+                    that.search(this.value)
+                        .draw();
+            });
+        }
+    });
+    {#-- End Plugin - DataTables --#}
+</script>

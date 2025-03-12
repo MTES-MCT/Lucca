@@ -1,0 +1,128 @@
+{% trans_default_domain 'FolderBundle' %}
+
+{% set plot = minute.plot %}
+{% set folder = courier.folder %}
+
+{% set structureName = adherent.structureName %}
+{% set structureOffice = adherent.structureOffice %}
+
+<br>
+{% block lucca_courier_offender_content_followedBy %}
+{% endblock %}
+<br>
+{% block lucca_courier_offender_content_object %}
+{% endblock %}
+<br>
+
+<div class="row">
+
+    <div class="col-12 pv letter-content">
+        <div class="clearfix">
+            Recommandée avec A.R.
+        </div>
+        <br>
+
+        <div class="clearfix">
+            <p>{{ human|human_gender }}, </p>
+        </div>
+
+        <div class="clearfix">
+            <p>
+                Je vous informe qu’un procès-verbal d’infraction au Code de l’Urbanisme a été dressé à votre encontre,
+                le {{ folder.dateClosure|date('d/m/Y') }}
+
+                {#En fonction de si le dossier est un obstacle ou non le contenu diffère#}
+                {% if folder.nature is not constant('NATURE_OBSTACLE', folder) %}
+                    pour des travaux réalisés sans autorisation sur l’unité
+                    foncière cadastrée {{ plot.parcel }} {% if plot.place %}lieudit {{ plot.place }}{% endif %} à
+                    l'adresse {{ plot.address }} sur le territoire de la commune
+                    de {{ plot.town.name }} {{ plot.town.zipcode }}.
+                {% else %}
+                    pour Obstacle au droit de visite des constructions par les autorités habilitées.<br>
+                    <br>
+                    Les travaux devant faire l'objet d'un contrôle sont situés sur l'unité foncière cadastrée
+                    {{ plot.parcel }} {% if plot.place %}lieudit {{ plot.place }}{% endif %} à
+                    l'adresse {{ plot.address }} sur le territoire de la commune
+                    de {{ plot.town.name }} {{ plot.town.zipcode }}.
+                {% endif %}
+
+            </p>
+        </div>
+
+        {#Si ce n'est pas un obstacle, liste des travaux illicites#}
+        {% if folder.ascertainment and folder.nature is not constant('NATURE_OBSTACLE', folder) %}
+            <div class="clearfix">
+                <p> Les travaux illicites consistent à : </p>
+                {% if 'print' in app.request.pathinfo %}
+                    {{ folder.ascertainment|localPath|raw }}
+                {% else %}
+                    {{ folder.ascertainment|raw }}
+                {% endif %}
+                <br>
+            </div>
+        {% endif %}
+
+        <div class="clearfix">
+            <p>
+                {#Changement de l'article en fonction de si l'on a a faire à un obstacle ou non#}
+                {% if folder.nature is not constant('NATURE_OBSTACLE', folder) %}
+                    Ces faits constituent des délits sanctionnés par l’article L 480-4 du code de l’urbanisme et
+                    susceptibles d’être poursuivis devant le tribunal correctionnel à l’initiative du procureur de la
+                    république à qui je transmets le procès verbal d’infraction dressé à votre encontre.
+                {% else %}
+                    Ces faits constituent des délits sanctionnés par l’article L 480-12 du code de l’urbanisme et
+                    susceptibles d’être poursuivis devant le tribunal correctionnel à l’initiative du procureur de la
+                    république à qui je transmets le procès verbal d’infraction dressé à votre encontre.
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="clearfix">
+            <p>
+                En tant que pièce de procédure pénale, le procès-verbal d’infraction ne pourra vous être communiqué que
+                par l’autorité judiciaire après en avoir fait la demande.
+            </p>
+        </div>
+
+        <div class="clearfix">
+            <p>
+                {#Indication de la procédure en fonction du type de courrier (obstacle ou contravention)#}
+                {% if folder.nature is not constant('NATURE_OBSTACLE', folder) %}
+                    Vous avez la possibilité de mettre un terme à cette situation en remettant à l’état initial la parcelle
+                    sus-visée avant la commission des infractions. Dans ce cas, je vous invite à me contacter aux
+                    coordonnées suivantes :
+                {% else %}
+                    Vous avez la possibilité de mettre un terme à cette situation en me contactant aux
+                    coordonnées suivantes :
+                {% endif %}
+            </p>
+            <ul>
+                <li>Par voie postale : {{ adherent.officialAddressInline }}.
+                    {% if adherent.phone %}
+                <li> ou par téléphone au {{ adherent.phone }}.</li>
+                {% endif %}
+            </ul>
+
+            {#Si ce n'est pas un obstacle on affiche le texte suivant#}
+            {% if folder.nature is not constant('NATURE_OBSTACLE', folder) %}
+                <p> afin de constater la régularisation des travaux irréguliers. </p>
+            {% endif %}
+        </div>
+
+        <div class="clearfix">
+            <p>
+                Je vous avise, par ailleurs, que les informations nominatives vous concernant et consignées dans le
+                procès-verbal sus-visé ont fait l’objet d’un enregistrement informatique. Conformément à la loi «
+                information et liberté » du 6 janvier 1978 et à la loi n°2018-493 du 20 juin 2018 relative à
+                la protection des données personnelles, vous disposez d’un droit d’accès et de rectification aux
+                données personnelles enregistrées.
+            </p>
+        </div>
+
+        <div class="clearfix">
+            <p>Je vous prie d'agréer, {{ human|human_gender }}, l'assurance de ma considération
+                distinguée.</p>
+        </div>
+    </div>
+
+</div>

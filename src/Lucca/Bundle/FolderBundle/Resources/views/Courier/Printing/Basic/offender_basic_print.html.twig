@@ -1,0 +1,27 @@
+{#-- Extends view --#}
+{% extends "@LuccaModel/Printing/base.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'ControlBundle' %}
+
+
+{% block lucca_title %}
+    Lettre au contrevenant
+{% endblock lucca_title %}
+
+
+{% block lucca_model_content %}
+
+    {% if isPreprint is defined and isPreprint %}
+        <img src="{{ pdf_asset }}{{ asset('assets/img/preprint.png') }}"
+             alt="preprint" class="preprint">
+    {% endif %}
+
+    {% if 'setting.courier.offenderContent.name'|setting == true %}
+        {% set filename = '@LuccaFolder/Courier/Printing/Custom/offender_content-' ~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+        {% include filename with {'minute': minute, 'courier': courier, 'human': human} %}
+    {% else %}
+        {% include '@LuccaFolder/Courier/Printing/Basic/offender_content.html.twig' with {'minute': minute, 'courier': courier, 'human': human} %}
+    {% endif %}
+
+{% endblock lucca_model_content %}

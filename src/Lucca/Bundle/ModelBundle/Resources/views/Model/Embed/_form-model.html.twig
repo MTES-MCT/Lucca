@@ -1,0 +1,63 @@
+{% trans_default_domain 'ModelBundle' %}
+
+{% import "@LuccaThemeStreamDashboardUiKit/Macro/buttonHelp.html.twig" as macroButtonHelp %}
+
+    {#-- Panel - main --#}
+<div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="card card-default">
+        <div class="card-header">
+            {{ 'title.new'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ entity_trans }}</b>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="card-body">
+                {{ form_row(form.name) }}
+                {{ form_row(form.enabled) }}
+                {{ form_row(form.size) }}
+                {{ form_row(form.orientation) }}
+                {{ form_row(form.font) }}
+
+                {{ macroButtonHelp.buttonInfoHelpLight('help.color.infos'|trans) }}
+                {{ form_row(form.color) }}
+
+                {{ macroButtonHelp.buttonInfoHelpLight('help.background.infos'|trans) }}
+                {{ form_row(form.background) }}
+
+                {{ macroButtonHelp.buttonInfoHelpLight('help.type.infos'|trans) }}
+                {{ form_row(form.type) }}
+                {% if form.owner is defined %}
+                    <div id="js-owner" style="display: none">
+                        {{ macroButtonHelp.buttonInfoHelpLight('help.owner.infos'|trans) }}
+                        {{ form_row(form.owner) }}
+                    </div>
+                {% endif %}
+                {#If sharedService is defined it's mean all shared are defined#}
+                {% if form.sharedService is defined %}
+                    <div id="js-shared" style="display: none">
+                        {{ form_row(form.sharedService) }}
+                        {{ form_row(form.sharedIntercommunal) }}
+                        {{ form_row(form.sharedTown) }}
+                    </div>
+                {% endif %}
+                {{ macroButtonHelp.buttonInfoHelpLight('help.layout.infos'|trans) }}
+                {{ form_row(form.layout) }}
+                {{ macroButtonHelp.buttonInfoHelpLight('help.documents.infos'|trans) }}
+                {{ form_row(form.documents) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="pb-3">
+        {% block lucca_embed_buttons_model %}
+
+        {% endblock %}
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+</div>
+{#-- End Panel - main --#}

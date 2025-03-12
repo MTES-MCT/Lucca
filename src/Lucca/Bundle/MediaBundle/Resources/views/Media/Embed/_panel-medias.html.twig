@@ -1,0 +1,23 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'MediaBundle' %}
+
+
+{#-- View embed --#}
+<div class="card card-default">
+    <div class="card-header">
+        <a class="collapse-link" title="{{ 'link.reducePanel'|trans }}">
+            <h5><i class="fas fa-image"></i> {{ 'entity.media'|trans }} </h5>
+        </a>
+    </div>
+
+    <div class="card-wrapper">
+        <div class="card-body">
+            <div class="row">
+                {% for media in medias %}
+                    {% include '@LuccaMedia/Media/Embed/_element-media.html.twig' with {'media': media, 'colSize': 3 } %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{#-- End - View embed --#}

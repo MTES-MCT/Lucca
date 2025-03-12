@@ -1,0 +1,90 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'ModelBundle' %}
+
+{% set unit = page.marginUnit | trans %}
+{% if value is not defined %}
+    {% set value = 4 %}
+{% endif %}
+{% if var is not defined %}
+    {% set var = [] %}
+{% endif %}
+<style>
+    {#    Define margin style#}
+    .margin-{{ margin.id }} {
+        position: relative;
+        height: {{ margin.height }}{{ unit }};
+        width: {{ margin.width }}{{ unit }};
+        max-height: {{ margin.height }}{{ unit }};
+        max-width: {{ margin.width }}{{ unit }};
+        overflow: hidden;
+    {% if margin.backgroundImg %} background-image: url({{ margin.backgroundImg | mediaPdfPath }});
+        background-repeat: no-repeat;
+        background-size: cover;
+    {% endif %}
+    {% if margin.background %} background-color: {{ margin.background }};
+    {% endif %}
+    }
+</style>
+<div class="margin-{{ margin.id }}" id="margin-{{ margin.id }}">
+    {% for bloc in margin.blocs %}
+        <style>
+            {# Define Bloc style #}
+            .bloc-{{ bloc.id }} {
+                position: relative;
+            {% if bloc.backgroundImg %} background-image: url({{ bloc.backgroundImg | mediaPdfPath }});
+                background-repeat: no-repeat;
+                background-size: cover;
+            {% endif %} height: {{ bloc.height }}{{ unit }};
+                width: {{ bloc.width }}{{ unit }};
+                max-height: {{ bloc.height }}{{ unit }};
+                max-width: {{ bloc.width }}{{ unit }};
+            {% if bloc.color %} color: {{ bloc.color }};
+            {% endif %}{% if bloc.headerSize %} top: {{ bloc.headerSize }}{{ unit }};
+            {% endif %}{% if bloc.footerSize %} bottom: {{ bloc.footerSize }}{{ unit }};
+            {% endif %}{% if bloc.leftSize %} left: {{ bloc.leftSize }}{{ unit }};
+            {% endif %}{% if bloc.rightSize %} right: {{ bloc.rightSize }}{{ unit }};
+            {% endif %}{{ bloc.cssInline }} overflow: hidden;
+            }
+
+            .bloc-{{ bloc.id }} img {
+                height: {{ bloc.height }}{{ unit }};
+                /** Set width to auto in order to avoid deform image */
+                width: auto;
+            }
+
+        </style>
+        <div class="bloc-{{ bloc.id }}">
+            {% if bloc.typeContent is constant('TYPE_CONTENT_HTML', bloc) %}
+                {{ bloc.content | replace(var) | raw }}
+                {#javascript used to display page number on footer if needed#}
+                <script type="text/javascript">
+                    (function () {
+                        // get all url parameters and transform it to a list
+                        // pdf generator adds a param for current and the total page sum
+                        // add the value to the html elements
+                        var urlParams = document.location.search.substring(1).split('&');
+                        var urlParamsList = {};
+                        var pagingElements = ['topage', 'page'];
+
+                        for (var i in urlParams) {
+                            var param = urlParams[i].split('=', 2);
+                            urlParamsList[param[0]] = unescape(param[1]);
+                        }
+
+                        for (var i in pagingElements) {
+                            var elem = document.getElementsByClassName(pagingElements[i]);
+                            for (var j = 0; j < elem.length; ++j) {
+                                elem[j].textContent = urlParamsList[pagingElements[i]];
+                            }
+                        }
+                    })();
+                </script>
+
+            {% elseif bloc.typeContent is constant('TYPE_CONTENT_ADHERENT_LOGO', bloc) and adherent.logo is not null and adherent.logo is not null %}
+                {{ adherent.logo | mediaPdf }}
+            {% else %}
+                {{ bloc.media | mediaPdf }}
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>

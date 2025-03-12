@@ -1,0 +1,22 @@
+{% trans_default_domain 'ModelBundle' %}
+
+$(document).ready(function () {
+    toggleOwner($('.js-type').find(":selected").text());
+
+});
+$('.js-type').on('change', function () {
+    toggleOwner($(this).find(":selected").text());
+});
+
+function toggleOwner(p_valueType) {
+    if (p_valueType === '{{ constant('TYPE_ORIGIN', model) | trans }}') {
+        $('#js-owner').hide('slow');
+        $('#js-shared').hide('slow');
+    } else if (p_valueType === '{{ constant('TYPE_SHARED', model) | trans }}'){
+        $('#js-owner').hide('slow');
+        $('#js-shared').show('slow');
+    } else {
+        $('#js-owner').show('slow');
+        $('#js-shared').hide('slow');
+    }
+}

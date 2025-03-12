@@ -1,0 +1,5 @@
+# LuccaCoreBundle Routing
+lucca_core_bundle:
+    resource: "@LuccaCoreBundle/Controller/"
+    type:     attribute
+    prefix:   /back-office

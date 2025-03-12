@@ -1,0 +1,71 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+
+#    encoders:
+#        FOS\UserBundle\Model\UserInterface: bcrypt
+    
+    providers:
+        lucca_user_provider:
+            entity:
+                class: Lucca\Bundle\UserBundle\Entity\User
+    
+    role_hierarchy:
+        ROLE_VISU: [ ROLE_MEDIA_READ, ROLE_USER ]
+        ROLE_LUCCA: [ ROLE_VISU, ROLE_USER ]
+        ROLE_ADMIN: [ ROLE_USER, ROLE_LUCCA, ROLE_VISU, ROLE_MEDIA_TOTAL ]
+        ROLE_SUPER_ADMIN: [ ROLE_USER, ROLE_LUCCA, ROLE_ADMIN, ROLE_FOLDER_OPEN, ROLE_DELETE_FOLDER ]
+
+    # https://symfony.com/doc/current/security.html#c-encoding-passwords
+    password_hashers:
+        # auto hasher with default options for the User class (and children)
+        Lucca\Bundle\UserBundle\Entity\User: 'auto'
+
+#        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        # Declare the main firewall and override configuration for each environment
+        main:
+            pattern: ^/
+
+            # This allows the user to login by submitting a username and password
+            # Reference: https://symfony.com/doc/current/security/form_login_setup.html
+#            form_login:
+#                # The route name that the login form submits to
+#                check_path: lucca_user_security_login
+#                # The name of the route where the login form lives
+#                # When the user tries to access a protected page, they are redirected here
+#                login_path: lucca_user_security_login
+#                # Secure the login form against CSRF
+#                # Reference: https://symfony.com/doc/current/security/csrf.html
+#                enable_csrf: true
+
+            custom_authenticators:
+                # ADD the cas authenticator declared in this bundle
+                - lucca.security.authenticator.simple
+
+            provider: lucca_user_provider
+            
+            # The logout path
+            logout:
+                # This route will never be called because of listener. It will catch it and redirect user.
+                path: lucca_user_security_logout
+                target: lucca_user_security_login
+                # success_handler has been replaced by event listener on LogoutEvent
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        ## Anonymous access
+#        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/back-office/media/manager/file/(.+), role: IS_AUTHENTICATED_ANONYMOUSLY }
+
+        ## Admin access
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/back-office/, role: ROLE_USER }
+

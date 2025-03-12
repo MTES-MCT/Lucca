@@ -1,0 +1,48 @@
+{% trans_default_domain 'MinuteBundle' %}
+
+{% import "@LuccaThemeStreamDashboardUiKit/Macro/buttonHelp.html.twig" as macroButtonHelp %}
+
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="text-right text-warning js-helpManual" style="display: none">
+            <small>{{ 'help.plot.manual'|trans }}</small>
+        </div>
+        {{ form_row(form.plot.locationFrom) }}
+
+        <div class="text-right text-warning">
+            <small>{{ 'help.admin.permission'|trans }} {{ 'help.admin.town'|trans }}</small>
+        </div>
+        {{ form_row(form.plot.town) }}
+
+        <div class="text-right text-warning">
+            <small>{{ 'help.link.geoportail_information'|trans }}
+                <a href="https://www.geoportail-urbanisme.gouv.fr/map/#tile=1&lon=2.424722&lat=46.76305599999998&zoom=6"
+                   target="_blank">{{ 'help.link.geoportail'|trans }}</a> </small>
+        </div>
+        {{ macroButtonHelp.buttonInfoHelp('help.plot.infos'|trans) }}
+        {{ form_row(form.plot.parcel) }}
+
+        <div class="text-right text-warning">
+            <small>{{ 'help.minute.plot_address_place'|trans }}</small>
+        </div>
+        <div class="js-locationFromAddress">
+            {{ form_row(form.plot.address) }}
+            {{ form_row(form.plot.place) }}
+        </div>
+
+        <div class="js-locationFromCoordinates" style="display: none;">
+            {{ form_row(form.plot.latitude) }}
+            {{ form_row(form.plot.longitude) }}
+        </div>
+
+        <div class="bool-inline">{{ form_row(form.plot.isRiskZone) }}</div>
+        <div class="risk-zone" style="display: none;">
+            {{ form_row(form.plot.risk) }}
+        </div>
+
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div id="js-google-map" class="mapMinute"></div>
+    </div>
+</div>

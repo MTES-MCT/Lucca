@@ -1,0 +1,29 @@
+{#-- Extends view --#}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'MediaBundle' %}
+
+{#-- Parameters --#}
+{% set entity_trans='entity.gallery'|trans %}
+{% block menuActive_parameter %}active{% endblock %}
+
+
+{% block lucca_panels %}
+
+    {#-- Embed view - params and block --#}
+    {% embed "@LuccaMedia/Gallery/Embed/_form-gallery.html.twig" with { 'form': form } %}
+        {#-- Translation domain embed --#}
+        {% trans_default_domain 'MediaBundle' %}
+
+        {% block lucca_embed_buttons_gallery %}
+            <a href="{{ path('lucca_media_gallery_index') }}" class="btn btn-secondary btn-lg"
+               title="{{ 'link.gallery.backList'|trans }}">
+                <i class="fas fa-reply"></i></a>
+
+            <button type="submit" class="btn btn-success btn-lg"
+                    title="{{ 'link.gallery.new'|trans }}"><i class="fas fa-check"></i></button>
+        {% endblock %}
+    {% endembed %} {#-- End Embed --#}
+
+{% endblock lucca_panels %}

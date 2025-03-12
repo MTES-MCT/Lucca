@@ -1,0 +1,57 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'MediaBundle' %}
+
+
+{#-- Form theming - collection_widget --#}
+{% block collection_widget %}
+    {% if prototype is defined %}
+        {% set attr = attr|merge({'data-prototype': form_widget(prototype)}) %}
+        {% set attr = attr|merge({'data-prototype-name': prototype.vars.name}) %}
+    {% endif %}
+    {% set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) %}
+    {% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}
+    {% set attr = attr|merge({'data-name-prefix': full_name}) %}
+
+    {{ form_errors(form) }}
+
+    <table {{ block('widget_attributes') }}>
+        <thead>
+        <tr>
+            <th style="min-width: 100px">{{ 'label.name'|trans }}</th>
+            <th style="min-width: 100px">{{ 'label.value'|trans }}</th>
+            <th style="min-width: 200px">{{ 'label.description'|trans }}</th>
+            <th></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for item in form %}
+            {{ form_widget(item) }}
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+
+{#-- Form theming - field widget --#}
+{% block lucca_mediaBundle_extension_widget %}
+
+    <tr {{ block('widget_attributes') }}>
+        <td>{{ form_widget(form.name) }}</td>
+        <td>{{ form_widget(form.value) }}</td>
+        <td>{{ form_widget(form.description) }}</td>
+        <td class="text-center">
+            <a href="#" class="collection-up btn btn-secondary btn-sm" title="{{ "link.extension.up"|trans }}">
+                <span class="fa fa-arrow-up"></span></a>
+            <a href="#" class="collection-down btn btn-secondary btn-sm" title="{{ "link.extension.down"|trans }}">
+                <span class="fa fa-arrow-down"></span></a>
+
+            <a href="#" class="collection-remove btn btn-danger btn-sm" title="{{ "link.extension.delete"|trans }}">
+                <span class="fas fa-trash"></span></a>
+            <a href="#" class="collection-duplicate btn btn-info btn-sm" title="{{ "link.extension.duplicate"|trans }}">
+                <span class="fas fa-th-large"></span></a>
+        </td>
+    </tr>
+
+{% endblock %}

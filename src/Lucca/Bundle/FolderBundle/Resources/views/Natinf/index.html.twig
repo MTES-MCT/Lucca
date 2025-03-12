@@ -1,0 +1,61 @@
+{#-- Extends view --#}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/index.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'FolderBundle' %}
+
+{#-- Parameters --#}
+{% set entity_trans='entity.natinf'|trans %}
+{% block menuActive_parameter %}active{% endblock %}
+{% block menuActive_natinf %}active{% endblock %}
+
+
+{% block lucca_list %}
+
+    <table class="table table-hover w-100 responsive dataTables">
+        <thead>
+        <tr>
+            <th><i class="fa fa-map"></i> {{ 'label.num'|trans }}</th>
+            <th>{{ 'label.qualification'|trans }}</th>
+            <th>{{ 'label.tags'|trans }}</th>
+            <th>{{ 'label.parent'|trans }}</th>
+            {% if app.user and is_granted("ROLE_ADMIN") %}
+                <th class="table-warning"><i class="fa fa-cogs"></i> {{ 'label.actions'|trans }}</th>
+            {% endif %}
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for natinf in natinfs %}
+            <tr>
+                <td>{{ natinf.num }}</td>
+                <td>{{ natinf.qualification }}</td>
+                <td>
+                    <span class="badge badge-info">{{ natinf.tags|length }}</span>
+                    {% for tag in natinf.tags %}{{ tag.name }}{% if not loop.last %},{% endif %} {% endfor %}
+                </td>
+                <td>{% if natinf.parent %}{{ natinf.parent.num }}{% endif %}</td>
+
+                {% if app.user and is_granted("ROLE_ADMIN") %}
+                    <td class="table-warning">
+                        <a href="{{ path('lucca_natinf_show', { 'id': natinf.id }) }}" class="btn btn-primary btn-sm"
+                           title="{{ 'link.natinf.show'|trans }}"> <i class="fa fa-eye"></i> </a>
+                        <a href="{{ path('lucca_natinf_edit', { 'id': natinf.id }) }}" class="btn btn-warning btn-sm"
+                           title="{{ 'link.natinf.edit'|trans }}"> <i class="fas fa-pencil-alt"></i> </a>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if app.user and is_granted("ROLE_ADMIN") %}
+        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_core_parameter') }}"
+           title="{{ 'link.parameter'|trans }}"><i class="fa fa-reply"></i></a>
+
+        <a class="btn btn-primary btn-lg" href="{{ path('lucca_natinf_new') }}"
+           title="{{ 'link.natinf.new'|trans }}"><i class="fa fa-plus"></i></a>
+    {% endif %}
+
+{% endblock lucca_list %}
+

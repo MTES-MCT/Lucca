@@ -1,0 +1,926 @@
+#####################################################
+## Lucca Minute Bundle
+## Locale: fr
+#####################################################
+
+########################
+# Entity
+########################
+entity:
+    minute: "Dossier"
+    tag: "Mot clé"
+    natinf: "Natinf"
+    control: "Contrôle"
+    folder: "Procès verbal"
+    courier: "Courrier"
+    updating: "Réactualisation"
+    decision: "Décision de justice"
+    closure: "Clotûre"
+    tribunal: "Tribunal"
+    mayorLetter: "Courrier de rattachement"
+
+
+########################
+# Label
+########################
+label:
+    name: "Nom"
+    enabled: "Activé ?"
+    actions: "Actions"
+    statusMinute: "Etat"
+    dateOpening: "Date d'ouverture"
+    office: "Siège"
+    authority: "Autorité administrative"
+    description: "Description"
+    num: "Num."
+    num_folder: "Numéro du PV"
+    qualification: "Qualification"
+    repressedBy: "Réprimé par"
+    definedBy: "Défini par"
+    tags: "Mots clés"
+    origin: "Origine"
+    tag: "Mot clé"
+    parent: "Natinf parent"
+    agent: "Agent verbalisateur"
+    followedBy: "Suivi par"
+    firstname: "Prénom"
+    function: "Fonction"
+    quality: "Qualité au regard du code de procédure pénale"
+    commission: "N° de commission"
+    tribunal: "Tribunal d'assermentation"
+    tribunalCompetent: "Tribunal compétent"
+    town: "Commune"
+    place: "Complèment d'adresse"
+    parcel: "Section / parcelle ou unité foncière"
+    isRiskZone: "Parcelle exposée aux risques ?"
+    address: "Adresse de la parcelle"
+    addressHuman: "Adresse"
+    cadastral_situation: "Situation cadastrale"
+    addressCompany: "Adresse de la société"
+    human: "Personne"
+    dateComplaint: "Date du signalement"
+    nameComplaint: "Nom/Prénom du plaignant"
+    gender: "Genre"
+    status: "Statut"
+    statusCompany: "Statut de la société"
+    plot: "Parcelle cadastrale"
+    risk: "Risque"
+    locationFrom: "Type de saisie"
+    responsible: "Responsable pénal"
+    datePostal: "Date courrier"
+    dateControl: "Date du contrôle"
+    hourControl: "Heure du contrôle"
+    stateControl: "Statut du contrôle"
+    dateSended: "Envoyé le"
+    nameMayor: "Nom du maire"
+    addressMayor: "Adresse du maire"
+    dateNotified: "Avisé le"
+    dateReturned: "Retourné le"
+    dateContact: "Contactée par téléphone le"
+    accepted: "Contrôle accepté ?"
+    summoned: "Convocation ?"
+    courierDelivery: "Courrier remis contre décharge"
+    humanSummoned: "Personne convoquée"
+    humanNeighbour: "Voisin"
+    humanOther: "Personne autre"
+    sameAgent: "Est ce le même agent ?"
+    complaint: "Signalement"
+    letterConvocation: "Lettre de convocation"
+    convocationEdited: "Convocation modifiée manuellement ?"
+    letterAccess: "Lettre de convocation"
+    accessEdited: "Autorisation d'accès modifiée manuellement ?"
+    adherent: "Adhérent"
+    adherentSimple: "Adhérent"
+    person: "Personne"
+    code: "Code"
+    structure: "Autorité administrative"
+    email: "Email"
+    mobile: "Tél portable"
+    phone: "Tél fixe"
+    agentAttendant: "Agent accompagnant"
+    sentence: "Phrase"
+    procedure: "Procédure en cours ?"
+    proposals: "Propositions"
+    company: "Société"
+    reason: "Motif de retour"
+    access: "Autorisation d'accès à la propriété "
+    category: "Catégorie"
+    violations: "Liste des règles violées"
+    nature: "Nature de l'infraction"
+    nature_updating: "Evolution de la situation"
+    statusSummon: "La personne convoquée était"
+    violation: "Attendu que"
+    dateClosure: "Date de clôture de PV"
+    ascertainment: "Constatations"
+    natinfs: "Natinfs"
+    checklist: "Liste de pièces à joindre au PV d'infraction"
+    civilParty: "Etes vous partie civile ?"
+    judicialEdited: "Lettre au parquet modifiée manuellement ?"
+    ddtmEdited: "Lettre modifiée manuellement ?"
+    letterOffenderEdited: "Lettre au contrevenant modifiée manuellement ?"
+    letterOffender: "Lettre au contrevenant"
+    control: "Contrôle"
+    folder: "Procès verbal"
+    folderEdited: "PV modifié manuellement ?"
+    humanResponsible: "Personne pénalement responsable"
+    humanConvocated: "Personne convoquée"
+    humanPresent: "Personne présente sur les lieux"
+    humanRefusedControl: "Personne refusant le contrôle"
+    reasonObstacle: "Motif du PV d'obstacle"
+    context: "Ajout d'éléments de contexte"
+    amount: "Montant"
+    ## Decision
+    dateClosing: "Date de clôture"
+    observation: "Observations"
+    reasonClosing: "Raison de clôture"
+    natureRegularized: "Nature"
+    initiatingStructure: "Structure initiatrice"
+    dateHearing: "Date d'audience"
+    dateHearingTribunal: "Date d'audience TGI"
+    dateHearingAppeal: "Date d'audience Cour d'appel"
+    dateAdjournment: "Date d'ajournement"
+    dateDeliberation: "Date du délibéré"
+    dateJudicialDesision: "Date de la décision de justice"
+    statusDecision: "Type de décision"
+    amountFine: "Montant de l'amende"
+    dateExecution: "Date limite d'exécution"
+    dateAnswer: "Date de la réponse"
+    amountPenalty: "Montant des astreintes"
+    dateStartPenality: "Date de départ des astreintes"
+    restitution: "Suite donnée"
+    appeal: "Appel de la décision"
+    cassationComplaint: "Demande de pourvoi en cassation"
+    dateAskCassation: "Date de la demande du pourvoi"
+    dateAnswerCassation: "Date de la réponse"
+    statusCassation: "Résultat"
+    nameNewCassation: "Nom de la nouvelle juridiction compétente"
+    dateReferralEurope: "Date de la saisine"
+    answerEurope: "Date de la décision"
+    dataEurope: "Suite donnée"
+    amountPenaltyDaily: "Montant des astreintes journalières"
+    dateStartRecovery: "Date du début de l'astreinte"
+    totalPenaltyRecovery: "Montant total des astreintes mises en recouvrement"
+    totalPenaltyDue: "Montant total des astreintes dues"
+    datePenaltyDue: "Date butoire des astreintes dues"
+    dateNoticeDdtm: "Date du courrier de mise en demeure"
+    dateFolder3: "Date PV"
+    dateFolder6: "Date PV réactualisation"
+    preparedBy: "Etabli par"
+    juridiction: "Juridiction"
+    dateDecision: "Date décision"
+    kindDecision: "Type de décision"
+    contradictory: "Mise en demeure"
+    expulsion: "Procédure d'expulsion"
+    demolition: "Procédure de démolition"
+    timeAllowed: "Délai accordé"
+    validation: "Réponse de l'intéressé"
+    answer: "Eléments de réponse"
+    amountActivity: "Montant de la prestation"
+    lawFirm: "Cabinet d'avocat"
+    amountDelivrery: "Montant de la prestation"
+    amountCompany: "Montant du marché"
+    dateDemolition: "Date de démolition"
+    result: "Résultat"
+    bailif: "Huissier de justice"
+    officeBailif: "Cabinet d'huissier"
+    amountBailif: "Montant de la prestation"
+    professions: "Corps de métier"
+    penalties: "Astreintes"
+    jurisdiction: "Juridiction compétente"
+    company_intervening: "Société intervenante"
+    comment: "Observation"
+    displayOnMap: "Affiché sur la carte ?"
+    ## Statistics
+    dateStart: "Date début"
+    dateEnd: "Date fin"
+    dateStartOpening: "Date début ouverture dossier"
+    dateEndOpening: "Date fin ouverture dossier"
+    intercommunal: "Interco."
+    service: "Service adhérent"
+    interval: "Interval de date"
+    ## Minute
+    reporting: "Signalement"
+    ## Plot
+    latitude: "Latitude"
+    longitude: "Longitude"
+    ## Annex
+    annexes: 'Annexes'
+    position: 'Position'
+    title: 'Titre'
+    image: 'Image'
+    elements: 'Element(s)'
+    ## Other
+    folderSigned: 'PV signé'
+    closureChart: 'Raison de la clôture des dossiers :'
+    numberControls: 'Nombre de controles'
+    numberFolders: 'Nombre de PV'
+    dateStartClosure: 'Date début cloture PV'
+    dateEndClosure: 'Date fin cloture PV'
+    countMinuteOpen: 'Nombre dossiers ouverts'
+    countMinuteClosed: 'Nombre dossiers fermés'
+    minutes: 'Dossiers'
+    serviceOrTown: 'Service Adhérent / Commune Adhérente'
+
+
+title:
+    frame1: "Cadre 1 - Eléments de base du dossier"
+    frame2: "Cadre 2 - Convocation en vue d'un contrôle"
+    frame3: "Cadre 3 - Rédaction du procès verbal d'infraction"
+    frame4: "Cadre 4 - Courriers de transmission du PV et d'information"
+    frame5: "Cadre 5 - Arrêté interruptif de travaux"
+    frame6: "Cadre 6 - Réactualisation d'une situation"
+    frame7: "Cadre 7 - Décisions et Astreintes"
+    frame8: "Cadre 8 - Clôture du dossier"
+
+    humanResponsible: "Personne pénalement responsable"
+    plot: "Renseignement sur la parcelle"
+    reporting: "Signalement de l'infraction"
+    agent: "Agent verbalisateur"
+    adherent: "Adhérent"
+    proposals: "Propositions de phrases pour le procès verbal"
+    mentions: "Autres mentions à préciser"
+    natinfs: "Natinfs correspondants aux mots-clés sélectionnés dans les précédents cadres"
+    tags: "Mots clés sélectionnés"
+    all_natinf: "Liste de tous les natinfs relatifs au Code de l'Urbanisme"
+    courier_judicial: "Cadre 4 - Courrier au parquet"
+    control_historic: "Historique des contrôles"
+    folder_historic: "Historique des procès verbaux"
+    page_tools: "Fiche outils"
+
+    control:
+        letterAccess: "Modification manuelle de la lettre d'accès"
+        letterConvocation: "Modification manuelle de la lettre de convocation"
+
+    folder:
+        manualVersion: "Modification manuelle du Procès Verbal"
+
+    courier:
+        judicial: "Modification manuelle de la lettre au parquet"
+        ddtm: "Modification manuelle de la lettre à la %DDTM%"
+        offender: "Modification manuelle des lettres aux contrevenants"
+
+    folderSigned: "PV signé"
+    statistics: 'Dossiers'
+    annexes: 'Annexes liées au PV'
+
+########################
+# Text
+########################
+text:
+    year: "Année du dossier"
+    status: "Statut de la personne convoquée"
+    attendant: "Je suis accompagné lors du contrôle"
+    activatedManuallyEditing: "Activer l'édition manuelle"
+    minute:
+        pending: "La procédure est cours . . ."
+        finished: "La procédure est clôturée !"
+        noDate: "Aucune date"
+    control:
+        refused: "Refusé"
+        acceptd: "Validé"
+        not_completed: "Non abouti"
+        access: "Accepté"
+        refuse: "Refusé"
+        empty: "Modèle vierge"
+        print: "Imprimer"
+        letter: "Convocation"
+        at: "à"
+        manualEditing: "Personnaliser"
+        neighbour: "Depuis propriété voisine"
+
+    folder:
+        not_closed: "En cours"
+        closed: "Clôturé"
+        init: "Déclaration initiale"
+        nature: "Nature de l'infraction"
+        rule: "Réglementation applicable"
+        natinf: "Choix des natinfs"
+        manualEditing: "Personnaliser"
+        obstacle: "Obstacle"
+        name:
+            offense: "PV d'infraction"
+            obstacle: "PV d'obstacle"
+            refresh: "PV de constatation"
+        isReReaded: "Relu"
+        isNotReReaded: "Non relu"
+
+    courier:
+        folder_not_close: "Le PV n'est pas clôturé"
+        ready_to_send: "Courrier prêt à l'envoi"
+        offender: "Information au contrevenant"
+        judicial: "Saisine du parquet"
+        ddtm: "Information à la %DDTM%"
+        offender_name: "Contrevenant"
+        ddtm_name: "%DDTM%"
+        judicial_name: "Parquet"
+        manualEditing: "Personnaliser"
+        fill: "Compléter"
+
+    ait:
+        not_available: "L'AIT n'est pas disponible actuellement dans cette version de l'application."
+
+    updating:
+        control: "Contrôle de réactualisation"
+        status: "Statut du contrôle"
+        folder: "PV pour réactualisation"
+        courier: "Courriers"
+        evolution: "Evolution de la situation"
+
+    decision:
+        1st_instance: "1ère Instance - Tribunal de Grande Instance"
+        2nd_instance: "2ème Instance - Cour d'appel"
+        3rd_instance: "3ème Instance - Pourvoi en cassation"
+        4th_instance: "Saisine - Cour Européenne des Droits de l'Homme"
+        penalties: "Astreintes"
+        appeal_penalties: "Recours sur astreintes"
+        execution: "Execution d'office"
+        cedh: "Saisine de la CEDH"
+        commission: "Commission"
+        result: "Résultat de la décision"
+        appeal: "Cour d'appel de Montpellier"
+        cassation: "Pourvoi en cassation"
+        europe: "Cour Européenne"
+        penalty: "Astreintes de recouvrement"
+        report_folder: "Procès verbal de constatation"
+        liquidations: "Etat liquidatif"
+        other_worker: "Autres intervants"
+        yes: "Oui"
+        no: "Non"
+
+    mayorLetter:
+        informations: "Informations"
+        folderList: "Liste des PV de la ville sélectionnée"
+        followedBy: "Suivi par"
+        helpNeed: "Aide : "
+        helpSelect: "Pour sélectionner plusieurs lignes, maintenez la touche 'Ctrl' enfoncée."
+        generate: "Générer et imprimer le courrier"
+        badField: "Le formulaire est mal rempli, veuillez verifier les informations renseignées."
+
+    updateMap: "Affiche un point sur la carte à la localisation renseignée."
+    refresh: "Mets à jour les données de la ligne."
+
+    filter:
+        folder: "Filtres dossiers"
+        adherent: "Filtres adhérents"
+
+########################
+# Statistics
+########################
+statistics:
+    filters: "Filtres de recherche"
+    results: "Résultats de recherche"
+    overall:
+        title: "Etat des dossiers"
+        description: "Analyse et suivi des dossiers sur une période spécifique, en filtrant sur les adhérents ou sur la localisation des dossiers.."
+    minutes:
+        title: "Etat des dossiers"
+        description: "Analyse et suivi des dossiers sur une période spécifique, en filtrant par Structure, selon un maillage territorial, ou selon les informations des différents cadres."
+        countDemolition: "Démolitions"
+    countPenalties: "Astreintes"
+    countContradictories: "Mise en demeure"
+    countExpulsion: "Expulsion"
+    countDemolition: "Démolition"
+    selectAdherent: 'Sélectionner un adhérent :'
+    filterAdherent: 'Filtrer sur les adhérents :'
+    filterLocation: 'Filtrer sur la localisation des dossiers :'
+    selectTeritorialMesh: 'Ou sélectionner le maillage territorial concerné :'
+    decisionTypeChart:
+        title: 'Types de décisions :'
+    decisionChart:
+        title: 'Décisions :'
+    historicChart:
+        title: 'Historique des dossiers'
+    historicStats:
+        title: 'Historique des dossiers'
+        description: 'Le graphique ci-dessous représente la répartition des contrôles, PV, Rapports de constatation et décisions par mois.'
+    minutesReasonClosure:
+        title: 'Raisons de cloture des dossiers'
+        description: 'Le graphique ci-dessous représente le nombre de dossier clôturés répartis selon leur type de clôtures.'
+    historic:
+        title: 'Historique'
+
+    decisions:
+        title: 'Decisions'
+        description: 'Les graphiques ci dessous font état des informations sur les décisions.
+                      <br>Le premier représente le nombre de procédures faisant suite à une décision répartie par rapport au type de procédure.
+                      <br>Le second représente le nombre de décisions réparties par rapport à leur type.'
+    noData: 'Aucune données disponible'
+    control:
+        legend: 'Contrôle'
+
+########################
+# Help
+########################
+help:
+    data:
+        option: "Cette donnée est facultative."
+        check_all: "Cocher tous les éléments suivants."
+        uncheck_all: "Décocher tous les éléments suivants."
+        select: "Sélectionner une option"
+    admin:
+        permission: "Ouvrir un dossier en tant qu'administrateur."
+        adherent: "Sélectionner un adhérent."
+        town: "Sélectionner une commune."
+    minute:
+        parcel: "Choisir les parcelles de l'unité foncière : A21,A22,A23"
+        address: "Renseigner la rue"
+        plot_address_place: "Renseigner l'adresse ou le complément. L'un des deux est obligatoire."
+        choose_or_create_agent: "Pour ajouter un nouvel agent verbalisateur, cliquer sur \"Mes Agents\" dans le menu principal."
+        reporting: "Vous pouvez décrire comment l'infraction vous a été signalée. Ces notes ne serviront qu'à titre d'information complémentaires."
+        date_old_minute: "Pour saisir un dossier à une date antérieure, saisissez une date à l'année voulue. (ex : la date du contrôle qui avait été effectué.)"
+        place: "Lieu-dit"
+
+    human:
+        adress_neighbour: "Saisir le numéro de parcelle cadastrale"
+    control:
+        edit: "Modifier le contrôle"
+        delete: "Supprimer le contrôle"
+        letter: "Visualiser la lettre de convocation"
+        print: "Imprimer ou télécharger le document"
+        access: "Le contrôle a été accepté"
+        refuse: "Le contrôle a été refusé"
+        adress: "Renseigner le numéro de parcelle et la commune"
+        manualEditing: "Modifier manuellement le fichier"
+        courierDelivery: "Nom de la personne ayant réceptionné le courrier et date de remise"
+        validate_information: "Valider les informations et imprimer les lettres de convocation avant de continuer la saisie"
+
+    folder:
+        edit: "Modifier le dossier"
+        delete: "Supprimer le dossier"
+        open: "Ouvrir le dossier"
+        step1: "Nature infraction"
+        step2: "Réglementation applicable"
+        step3: "Natinf"
+        ascertainment: "Faire une description précise de la situation"
+        custom_tags: "Pour prevenir un saut de page utilisez les balises : "
+        text: "votre texte"
+        infos: "\"votre texte\" est à remplacer par le texte qui ne doit pas être séparé sur 2 pages. Les balises seront visibles tant que le PV n'est pas clôturé."
+        add_text: "Ajouter ce texte au Procès verbal"
+        fence: "Clôturer un procès verbal, il ne pourra plus être modifié."
+        obstacle: "Visualiser le procès verbal d'obstacle"
+        print: "Imprimer ou télécharger le document"
+        reported_docs: "Attention: reporter le numéro du PV sur les pièces jointes au dossier."
+        manualEditing: "Modifier manuellement le procès verbal"
+        visualize: "Visualiser le provès verbal"
+        markAsReRead: "Marquer comme relu"
+        markAsUnReRead: "Marquer comme non relu"
+
+    link:
+        geoportail: "Géoportail de l'urbanisme"
+        geoportail_information: "Informations cadastrales sur le site : "
+
+    violation:
+        delete: "Supprimer la règle"
+        duplicate: "Dupliquer la règle"
+        add: "Ajouter une règle"
+
+    courier:
+        judicial: "Lettre au parquet"
+        offender: "Lettres aux contrevenants"
+        ddtm: "Lettre à la %DDTM%"
+        send_offender: "Dater le courrier"
+        print_offender: "Imprimer la(les) lettre(s) au(x) contrevenant(s)"
+        send_judicial: "Dater le courrier"
+        edit_judicial: "Editer le courrier"
+        print_judicial: "Imprimer la lettre au parquet"
+        send_ddtm: "Dater la lettre à la %DDTM%"
+        print_ddtm: "Imprimer la lettre à la %DDTM%"
+        joined_at: "correspondant au PV"
+        dont_send_pv: "Ne pas envoyer le PV d'infraction"
+        manualEditing: "Modifier manuellement le courrier"
+        editJudicial: "Modifier manuellement la lettre au parquet"
+        editDdtm: "Modifier manuellement la lettre à la %DDTM%"
+        editOffender: "Modifier manuellement les lettres aux contrevenants"
+
+    updating:
+        aggravated: "En cas d'aggravation de la situation, ce contrôle doit être enregistré dans le cadre 2 et un nouveau Procès Verbal d'infraction doit être rédigé."
+
+    closure:
+        closure_close_all_data: "La clôture du dossier entraînera la clôture de tous les PV en cours relatifs au dossier."
+
+    tools:
+        listPages: "Cf. fiches outils"
+
+    ## Form map
+    getInfoFromMap: "Attention toutes les informations du formulaire ci-dessous vont être mises à jour."
+
+    plot:
+        location_manual: "Attention les données de localisation ont toutes été renseignée manuellement."
+        # New or edit folder
+        manual: "En mode de saisie manuelle / cartographie cliquez sur la carte pour mettre à jour toutes les données de localisation."
+        infos: 'Le numéro de parcelle ne doit comprendre aucun espace et ne contenir que des lettres majuscules ou des chiffres. Les numéros doivent être séparés par des virgules. Ex: A21,A22.'
+
+    ## Images
+    image:
+        infos: 'Seules les images sont autorisées. Convertisseur PDF -> image: '
+
+    ## Annexes
+    annexes:
+        maxElementsStart: 'Vous pouvez transmettre au maximum '
+        maxElementsEnd: 'éléments.'
+        maxSizeElementsStart: "Le poids maximum d'un fichier est "
+        maxSizeElementsEnd: 'mo.'
+        maxSizeCollectionStart: 'Veillez à ne pas dépasser '
+        maxSizeCollectionEnd: 'mo au total.'
+
+########################
+# Columns
+########################
+column:
+    town: "Commune (parcelle)"
+
+    minute:
+        responsibles: "Responsables pénaux"
+        closing: "Clôture dossier"
+
+    folder:
+        num: "Num PV"
+        dateClosing: "Date de clôture du PV"
+        nature: "Nature PV"
+
+    decision:
+        tgi: "TGI"
+        cour: "Cour d'appel"
+        penalty: "Astreinte"
+        expulsion: "Expulsion"
+        demolition: "Démolition"
+
+########################
+# Choice
+########################
+choice:
+    #### Minute status
+    statusMinute:
+        open: "Ouvert"
+        control: "Convocation/Contrôle"
+        folder: "Procès Verbal"
+        courier: "Courrier"
+        ait: "AIT"
+        updating: "Actualisation"
+        decision: "Décision"
+        closure: "Clôturé"
+    #### Human / Closure / Decision
+    status:
+        ## Human
+        owner: "Propriétaire"
+        undivided: "Propriétaire en indivision"
+        usufruct: "Usufruit"
+        occupant: "Occupant"
+        neighbour: "Voisin"
+        director: "Directeur"
+        manager: "Gérant"
+        leader: "Dirigeant"
+        president: "Président"
+
+        ## Decision
+        regularized: "Régularisé"
+        demolition: "Démolition"
+        exec_office: "Exécution d'office"
+        relaxed: "Relaxé"
+
+        ## Closure
+        guilty: "Coupable"
+        other: "Autre"
+
+    #### Plot
+    risk:
+        fire: "Incendie"
+        flood: "Inondation"
+        avalanche: "Avalanche"
+        groundMovement: "Mouvement de terrain"
+        technological: "Technologique"
+        other: "Autre"
+
+    #### Human
+    gender:
+        male: "Monsieur"
+        female: "Madame"
+    person:
+        physical: "Personne physique"
+        corporation: "Personne morale"
+
+    #### Agent
+    function:
+        mayor: "Maire"
+        deputy: "Adjoint au maire"
+        police: "Policier municipal"
+        dgs: "Directeur Services Techniques"
+        dst: "Directeur Général des Services"
+        town_manager: "Responsable urbanisme"
+        admin_agent: "Agent administratif territorial"
+        country_agent: "Agent de l'Etat"
+        asvp: "ASVP"
+        country_guard: "Garde champêtre"
+
+    #### Control
+    state:
+        outside: "Depuis l'extérieur de la propriété"
+        inside: "Depuis l'intérieur de la propriété"
+        inside_without_convocation: "Depuis l'intérieur de la propriété sans convocation"
+        neighbour: "Depuis une propriété voisine"
+    reason:
+        error_adress: "Défaut d'accès ou d'adressage"
+        unknown_adress: "Destinataire inconnu"
+        refused_letter: "Pli refusé par le destinataire"
+        unclaimed_letter: "Pli avisé et non réclamé"
+
+    accepted:
+        ok: "Accepté"
+        nok: "Refusé"
+        none: "Non abouti"
+
+    #### Tag
+    category:
+        nature: "Nature de l'infraction"
+        town: "Urbanisme"
+
+    #### Minute
+    authority:
+        town: "Commune"
+        intercommunal: "Intercommunalité"
+        service: "Service de l'état"
+    origin:
+        courier: "Courrier"
+        phone: "Téléphone"
+        eagle: "Aigle"
+        agent: "Agent"
+        other: "Autre"
+
+    #### Closure
+    natureRegularized:
+        administrative: "Régularisation administrative"
+        field: "Régularisation sur le terrain"
+    initstruct:
+        ddtm: "la DDTM"
+        ddt: "la DDT"
+        town: "la commune"
+        other: "autres (interco, autres services d’État, …)"
+
+    #### Folder
+    reason_obs:
+        refuseAccessAfterLetter: "Contrôle refusé par courrier ou téléphone"
+        refuseByRecipient: "Pli refusé par le destinataire"
+        unclaimedByRecipient: "Pli avisé et non réclamé par le destinataire"
+        accessRefused: "Refus d'accès à la parcelle lors du contrôle"
+        absentDuringControl: "Absent sur les lieux lors du contrôle"
+
+    #### Folder / Updating
+    nature:
+        hut: "Cabanisation"
+        formalOffense: "Infraction de forme"
+        substantiveOffense: "Infraction de fond"
+        obstacle: "Obstacle au droit de visite"
+        other: "Autres infractions à l'urbanisme"
+
+        regularized: "La situation est régularisée"
+        aggravated: "La situation s'est aggravée"
+        unchanged: "La situation est inchangée"
+
+    #### All
+    enabled:
+        yes: "Oui"
+        no: "Non"
+        dont_know: "Je ne sais pas"
+        none: "Non abouti"
+
+    admission:
+        yes: "Admis"
+        no: "Non admis"
+
+    #### Decision
+    status_deci:
+        relaxed: "Relaxé"
+        guilty: "Reconnu coupable"
+        guilty_exempt: "Reconnu coupable avec dispense de peine"
+        guilty_restitution: "Reconnu coupable avec mesures de restitution"
+
+        ## Human
+        owner: "Propriétaire"
+        undivided: "Propriétaire en indivision"
+        usufruct: "Usufruit"
+        occupant: "Occupant"
+        neighbour: "Voisin"
+        director: "Directeur"
+        manager: "Gérant"
+        leader: "Dirigeant"
+        president: "Président"
+
+    result:
+        realized: "Réalisé"
+        reported: "Reporté"
+        cancelled: "Annulé"
+        waiting: "En attente"
+
+    locationFrom:
+        address: "Adresse"
+        coordinates: "Coordonnées"
+        manual: "Manuel / Cartographie"
+
+    #### Agent
+    quality:
+        mayor: "Maire ou Adjoint au maire"
+        police: "Policier municipal"
+        administrative: "Agent administratif territorial"
+        country: "Agent de l'Etat"
+        
+########################
+# Badge
+########################
+badge:
+    sadmin: "S.admin"
+    advanced: "Avancé"
+    admin: "Admin"
+
+########################
+# Link
+########################
+link:
+    new: "Nouveau"
+    addFile: "Ajouter une pièce jointe"
+    back: "Retour"
+    show: "Visualiser"
+    edit: "Modifier"
+    complete: "Compléter"
+    delete: "Supprimer"
+    print: "Imprimer"
+    preprint: "Aperçu"
+    enable: "Activer"
+    disable: "Désactiver"
+    duplicate: "Dupliquer"
+    parameter: "Retour à la liste des paramètres"
+    check_all: "Cocher tout"
+    uncheck_all: "Décocher tout"
+    fence: "Clôturer"
+    open: "Ouvrir"
+    fence_temporarily: "Clôturer provisoirement"
+    visualize: "Visualiser"
+    preview: "Prévisualiser"
+    fill: "Saisir"
+    date_and_print: "Dater et imprimer"
+    backMinute: "Retour au dossier"
+    markAsReRead: "Marquer comme relu"
+    markAsUnReRead: "Marquer comme non relu"
+
+    save_and_continue: "Sauvegarder et continuer la saisie"
+    frame1: "Eléments de base"
+    frame2: "Convocation"
+
+    minute:
+        new: "Créer un nouveau dossier"
+        show: "Visualiser le dossier"
+        edit: "Modifier le dossier"
+        delete: "Supprimer le dossier"
+        backList: "Retour à la liste des dossiers"
+        open: "Ouvrir le dossier"
+        filter: "Filtrer les dossiers"
+
+    human:
+        new: "Créer une nouvelle personne"
+        show: "Visualiser la personne"
+        edit: "Modifier la personne"
+        delete: "Supprimer la personne"
+        backList: "Retour à la liste des personne"
+        duplicate: "Dupliquer la personne"
+
+    agentAttendant:
+        new: "Créer un nouvel agent accompagnant"
+        show: "Visualiser l'agent accompagnant"
+        edit: "Modifier l'agent accompagnant"
+        delete: "Supprimer l'agent accompagnant"
+        backList: "Retour à la liste des agents accompagnant"
+        duplicate: "Dupliquer l'agent accompagnant"
+
+    control:
+        new: "Créer un nouveau contrôle"
+        show: "Visualiser le contrôle"
+        edit: "Modifier le contrôle"
+        delete: "Supprimer le contrôle"
+        backList: "Retour à la liste des contrôles"
+        manual:
+            convocationUpdate: "Modifier la version de la lettre de convocation"
+            accessUpdate: "Modifier la version de l'autorisation d'accès"
+
+    folder:
+        new: "Créer un nouveau procès verbal"
+        show: "Visualiser le procès verbal"
+        edit: "Modifier le procès verbal"
+        delete: "Supprimer le procès verbal"
+        backList: "Retour à la liste des procès verbaux"
+        print: "Imprimer le procès verbal"
+        step1: "Validez la première étape"
+        step2: "Validez la seconde étape"
+        step3: "Validez la troisième étape"
+        manual:
+            folderUpdate: "Modifier la version du Procès Verbal"
+
+    courier:
+        new: "Créer un nouveau courrier"
+        show: "Visualiser le courrier"
+        edit: "Modifier le courrier"
+        delete: "Supprimer le courrier"
+        backList: "Retour à la liste des courriers"
+        manual:
+            judicialUpdate: "Modifier la version de la lettre au parquet"
+            ddtmUpdate: "Modifier la version de la lettre à la %DDTM%"
+            offenderpdate: "Modifier la version des lettres aux contrevenants"
+
+    updating:
+        new: "Créer une nouvelle actualisation"
+        show: "Visualiser l'actualisation"
+        edit: "Modifier l'actualisation"
+        delete: "Supprimer l'actualisation"
+        backList: "Retour à la liste des actualisations"
+
+    decision:
+        new: "Créer une nouvelle décision"
+        show: "Visualiser la décision"
+        edit: "Modifier la décision"
+        delete: "Supprimer la décision"
+        backList: "Retour à la liste des décisions"
+
+    liquidation:
+        new: "Créer une nouvelle liquidation"
+        show: "Visualiser la liquidation"
+        edit: "Modifier la liquidation"
+        delete: "Supprimer la liquidation"
+        duplicate: "Dupliquer la liquidation"
+
+    contradictory:
+        new: "Créer une nouvelle procédure contradictoire"
+        show: "Visualiser la procédure contradictoire"
+        edit: "Modifier la procédure contradictoire"
+        delete: "Supprimer la procédure contradictoire"
+        duplicate: "Dupliquer la procédure contradictoire"
+
+    penalty:
+        new: "Créer une nouvelle pénalité"
+        show: "Visualiser la pénalité"
+        edit: "Modifier la pénalité"
+        delete: "Supprimer la pénalité"
+        duplicate: "Dupliquer la pénalité"
+
+    profession:
+        new: "Créer une nouvelle profession"
+        show: "Visualiser la profession"
+        edit: "Modifier la profession"
+        delete: "Supprimer la profession"
+        duplicate: "Dupliquer la profession"
+
+    appeal-penalty:
+        new: "Créer un nouvel appel"
+        show: "Visualiser l'appel"
+        edit: "Modifier l'appel"
+        delete: "Supprimer l'appel"
+        duplicate: "Dupliquer l'appel"
+
+    closure:
+        new: "Créer une nouvelle clôture"
+        show: "Visualiser la clôture"
+        edit: "Modifier la clôture"
+        delete: "Supprimer la clôture"
+        backList: "Retour à la liste des clôtures"
+
+    natinf:
+        new: "Créer un nouveau natinf"
+        show: "Visualiser le natinf"
+        edit: "Modifier le natinf"
+        delete: "Supprimer le natinf"
+        enable: "Activer le natinf"
+        disable: "Désactiver le natinf"
+        backList: "Retour à la liste des natinfs"
+
+    tag:
+        new: "Créer un nouveau mot clé"
+        show: "Visualiser le mot clé"
+        edit: "Modifier le mot clé"
+        delete: "Supprimer le mot clé"
+        enable: "Activer le mot clé"
+        disable: "Désactiver le mot clé"
+        backList: "Retour à la liste des mots clé"
+
+    proposal:
+        new: "Créer une nouvelle proposition"
+        show: "Visualiser la proposition"
+        edit: "Modifier la proposition"
+        delete: "Supprimer la proposition"
+        enable: "Activer la proposition"
+        disable: "Désactiver la proposition"
+        backList: "Retour à la liste des propositions"
+        duplicate: "Dupliquer la proposition"
+
+    folderSigned:
+        new: 'Ajouter un PV signé'
+        edit: "Modifier le PV signé"
+
+    close: "Fermer"
+    map: "Carte"
+    useData: "Utiliser ces données"
+    save_and_stop: 'Sauvegarder et terminer la saisie'
+
+    element:
+        up: 'Monter'
+        down: 'Descendre'
+
+    annexes:
+        save: 'Enregistrer les modifications'
+        edit: 'Modifier les annexes'

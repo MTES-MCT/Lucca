@@ -1,0 +1,85 @@
+{% trans_default_domain 'MinuteBundle' %}
+
+const decisionTypeCtx = document.getElementById('decisionTypeChart').getContext('2d');
+const decisionTypeChart = new Chart(decisionTypeCtx, {
+    type: 'pie',
+    data: {
+        labels: [
+            {% for item in decisions %}
+            {% if item['statusDecision'] is not null %}
+            "{{ item['statusDecision'] | trans }}"
+            {% if not loop.last %}
+            ,
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        ],
+        datasets: [
+            {
+                backgroundColor: [
+                    {% for item in decisions %}
+                    {% if item['statusDecision'] is not null %}
+                    "{{ item['statusDecision'] | colorTypeDecision }}"
+                    {% if not loop.last %}
+                    ,
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                ],
+                data: [
+                    {% for item in decisions %}
+                    {% if item['statusDecision'] is not null %}
+                    "{{ item['countType'] }}"
+                    {% if not loop.last %}
+                    ,
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                ]
+            }
+        ]
+    },
+    plugins: [ChartDataLabels],
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top'
+            },
+            title: {
+                display: true,
+                text: '{{ 'statistics.decisionTypeChart.title' | trans }}'
+            },
+            datalabels: {
+                backgroundColor: function (context) {
+                    return context.dataset.backgroundColor;
+                },
+                color: 'white',
+                anchor: 'center',
+                display: function (context) {
+                    let dataset = context.dataset;
+                    let value = parseInt(dataset.data[context.dataIndex]);
+
+                    let biggest = 0;
+
+                    for (var i = 0; i < dataset['data'].length; i++) {
+                        if (biggest < dataset['data'][i])
+                            biggest = dataset['data'][i];
+                    }
+
+                    let percentage = value / biggest * 100;
+
+                    if (percentage < 10) {
+                        return "";
+                    }
+
+                    return value !== 0;
+                },
+                font: {
+                    weight: 'bold'
+                }
+            }
+        }
+    }
+});
+

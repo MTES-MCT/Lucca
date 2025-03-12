@@ -1,0 +1,52 @@
+{% trans_default_domain 'MinuteBundle' %}
+
+
+{% block lucca_minuteBundle_agent_attendant_row %}
+    <div class="col-12">
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
+
+{% block lucca_minuteBundle_agent_attendant_widget %}
+
+    {% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+    <div {{ block('widget_attributes') }}>
+
+        <div class="row">
+
+            <div class="col-4">
+                {{ form_row(form.name) }}
+            </div>
+
+            <div class="col-4">
+                {{ form_row(form.firstname) }}
+            </div>
+
+            <div class="col-3">
+                {{ form_row(form.function) }}
+            </div>
+
+            <div class="col-1">
+                <p class="text-center">
+                    <a href="#" class="collection-remove btn btn-danger" title="{{ 'link.agentAttendant.delete'|trans }}">
+                        <span class="fa fa-trash"></span></a>
+                </p>
+            </div>
+
+            <div class="col-12">
+                <hr>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block lucca_minuteBundle_agents_attendant_widget %}
+    {{ form_widget(form.humans) }}
+{% endblock %}
+
+
+

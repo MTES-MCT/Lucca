@@ -1,0 +1,33 @@
+{#-- Extends view --#}
+{% extends "@LuccaModel/Printing/base.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'ControlBundle' %}
+
+
+{% block lucca_title %}
+    Lettre à la {{ 'setting.general.ddtAcronym.name'|setting }}
+{% endblock lucca_title %}
+
+
+{% block lucca_model_content %}
+
+    {% if isPreprint is defined and isPreprint %}
+        <img src="{{ pdf_asset }}{{ asset('assets/img/preprint.png') }}"
+             alt="preprint" class="preprint">
+    {% endif %}
+
+    {% if courier.edition and courier.edition.ddtmEdited %}
+    {#We need to replace the logo of view by logo of pdf#}
+        {{ courier.edition.letterDdtm|localPath|raw }}
+    {% else %}
+        {% if 'setting.courier.ddtmContent.name'|setting == true %}
+            {% set filename = '@LuccaFolder/Courier/Printing/Custom/ddtm_content-' ~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+            {#Logo in header#}
+            {% include filename %}
+        {% else %}
+            {% include '@LuccaFolder/Courier/Printing/Basic/ddtm_content.html.twig' %}
+        {% endif %}
+    {% endif %}
+
+{% endblock lucca_model_content %}

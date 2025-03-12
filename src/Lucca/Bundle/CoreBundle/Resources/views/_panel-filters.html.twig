@@ -1,0 +1,55 @@
+{% trans_default_domain 'CoreBundle' %}
+
+{#Check if there is at least one filter that is not empty#}
+{% set emptyFilters = true %}
+{% for filter in filters %}
+    {% if filter is not null %}
+        {% set emptyFilters = false %}
+    {% endif %}
+{% endfor %}
+
+<div class="card card-default">
+    <div class="card-header">
+        <h2>{{ 'statistics.title' | trans }}</h2>
+    </div>
+    <div class="card-wrapper">
+        <div class="card-body">
+            {{ 'statistics.text' | trans }}
+            {% if emptyFilters %}
+                <div class="text-center mt-2"><b>{{ 'statistics.noFilters' | trans }}</b></div>
+            {% endif %}
+            <table class="table">
+                <thead>
+                <tr>
+                    {% for key, filter in filters %}
+                        {% if filter is not null and filter | length > 0 %}
+                            <th>{{ ('label.' ~ key) | trans({}, transDomain) }}</th>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    {% for key, filter in filters %}
+                        {% if filter is not null and filter | length > 0 %}
+                            <td>
+                                {% if 'date' in key %}
+                                    <button class="border-grey-thin stats-buttons">
+                                        {{ filter | date ('d/m/Y') }}
+                                    </button>
+                                {% else %}
+                                    {% for value in filter %}
+                                        <button class="border-grey-thin stats-buttons">
+                                            {{ value.name }}
+                                        </button>
+                                    {% endfor %}
+                                {% endif %}
+                            </td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

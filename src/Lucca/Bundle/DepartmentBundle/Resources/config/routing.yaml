@@ -1,0 +1,5 @@
+# LuccaDepartmentBundle Routing - Admin
+lucca_department_bundle_admin:
+    resource: "@LuccaDepartmentBundle/Controller/Admin"
+    type:     attribute
+    prefix:   /back-office

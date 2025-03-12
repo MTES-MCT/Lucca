@@ -1,0 +1,96 @@
+{#-- Extends view --#}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'FolderBundle' %}
+
+{#-- Parameters --#}
+{% set entity_trans='entity.natinf'|trans %}
+{% block menuActive_parameter %}active{% endblock menuActive_parameter %}
+
+
+{% block lucca_panels %}
+    {#-- Panel - main --#}
+    <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+
+        <div class="card card-default">
+            <div class="card-header">
+                {{ 'title.show'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ natinf.num }}</b>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+                    <div class="col-12">
+                        <table class="table table-striped table-hover">
+                            <tbody>
+                            <tr>
+                                <th><i class="fa fa-natinf"></i> {{ 'label.num'|trans }}</th>
+                                <td>{{ natinf.num }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.qualification'|trans }}</th>
+                                <td>{{ natinf.qualification }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.definedBy'|trans }}</th>
+                                <td>{{ natinf.definedBy }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.repressedBy'|trans }}</th>
+                                <td>{{ natinf.repressedBy }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.tags'|trans }}</th>
+                                <td>
+                                    {% for tag in natinf.tags %}
+                                        <i class="fa fa-tag"></i> {{ tag.name }}<br>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.parent'|trans }}</th>
+                                <td>
+                                    {% if natinf.parent %}-
+                                        <a href="{{ path('lucca_natinf_show', { 'id': natinf.parent.id }) }}">
+                                            <i class="fa fa-tags"></i> {{ natinf.parent.num }}
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_natinf_index') }}"
+                           title="{{ 'link.natinf.backList'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <a class="btn btn-warning btn-lg"
+                           href="{{ path('lucca_natinf_edit', { 'id': natinf.id }) }}"
+                           title="{{ 'link.natinf.edit'|trans }}"><i class="fas fa-pencil-alt"></i></a>
+
+                        <a class="btn btn-danger btn-lg pull-right" data-toggle="modal"
+                           data-target=".delWin" title="{{ 'link.natinf.delete'|trans }}">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {#-- End Panel - main --#}
+{% endblock lucca_panels %}
+
+{% block lucca_modal %}
+    {{ parent() }}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': natinf.num, 'name': natinf.num, 'delForm': delete_form} %}
+{% endblock lucca_modal %}
+
+{% block lucca_css %}
+    {{ parent() }}
+{% endblock lucca_css %}
+
+{% block lucca_js %}
+    {{ parent() }}
+{% endblock lucca_js %}

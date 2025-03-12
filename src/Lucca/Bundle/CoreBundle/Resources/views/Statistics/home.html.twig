@@ -1,0 +1,93 @@
+{% extends "@LuccaThemeStreamDashboardUiKit/Layout/layout.html.twig" %}
+{% trans_default_domain 'CoreBundle' %}
+{% block menuActive_statistics %}active{% endblock %}
+
+{% block lucca_title %}
+    <title>{{ 'setting.general.app.name'| setting }} | {{ 'title.statistics'|trans }}</title>
+{% endblock lucca_title %}
+
+{% block lucca_header %}
+    {{ 'title.statistics'|trans }}
+{% endblock lucca_header %}
+
+
+{% block lucca_page %}
+
+    {#-- Main Area --#}
+    <div class="row margin-bottom-30">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-12">
+                    <h2>{{ 'title.statistics'|trans({}, 'MinuteBundle') }}</h2>
+                </div>
+
+                {#-- Param - Overall --#}
+                <div class="col-4">
+                    <div class="card card-default">
+                        <div class="card-wrapper text-center">
+                            <div class="card-body">
+                                <a href="{{ path('lucca_statistics_minutes_overall') }}"
+                                   class="link-unstyled text-primary">
+                                    <em class="fas fa-5x fa-layer-group mb-lg"></em>
+                                    <br>
+                                    <span class="h4">{{ 'label.overall'|trans }}</span>
+                                    <br>
+                                    <small class="text-muted">{{ 'label.seeDetails'|trans }} →</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {#-- End Param - Overall --#}
+
+                {#-- Param - Minutes --#}
+                <div class="col-4">
+                    <div class="card card-default">
+                        <div class="card-wrapper text-center">
+                            <div class="card-body">
+                                <a href="{{ path('lucca_statistics_minutes_table') }}"
+                                   class="link-unstyled text-primary">
+                                    <em class="fas fa-5x fa-layer-group mb-lg"></em>
+                                    <br>
+                                    <span class="h4">{{ 'label.minutes'|trans }}</span>
+                                    <br>
+                                    <small class="text-muted">{{ 'label.seeDetails'|trans }} →</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {#-- End Param - Minutes --#}
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <h2>{{ 'title.statistics'|trans({}, 'AdherentBundle') }}</h2>
+                </div>
+
+                {#-- Param - Adherent --#}
+                <div class="col-4">
+                    <div class="card card-default">
+                        <div class="card-wrapper text-center">
+                            <div class="card-body">
+                                <a href="{{ path('lucca_statistics_adherents') }}"
+                                   class="link-unstyled text-primary">
+                                    <em class="fas fa-5x far fa-user mb-lg"></em>
+                                    <br>
+                                    <span class="h4">{{ 'label.adherents'|trans({}, 'AdherentBundle') }}</span>
+                                    <br>
+                                    <small class="text-muted">{{ 'label.seeDetails'|trans }} →</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {#-- End Param - Adherent --#}
+            </div>
+        </div>
+    </div>
+    {#-- End - Main Area --#}
+
+{% endblock lucca_page %}
+

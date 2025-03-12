@@ -1,0 +1,34 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'DepartmentBundle' %}
+
+
+{#-- View embed --#}
+<table class="table table-hover w-100 responsive dataTables">
+    <thead>
+    <tr>
+        <th>{{ 'label.department'|trans }}</th>
+        <th> {{ 'label.code'|trans }}</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for department in departments %}
+        <tr>
+            <td>
+                <a href="{{ path('lucca_department_admin_show', { 'id': department.id }) }}"
+                   title="{{ 'link.department.show'|trans }}">
+                    {{ department.name }}
+                </a>
+            </td>
+            <td>{{ department.code }}</td>
+            <td>
+            {#-- Block embed --#}
+            {% block theme_embed_buttons_department %}
+
+            {% endblock %} {#-- End Block embed --#}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{#-- End - View embed --#}

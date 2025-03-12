@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+
+    <link href="{{ pdf_asset }}{{ asset('plugins/bootstrap/dist/css/bootstrap.css') }}" rel="stylesheet"
+          type="text/css">
+    <link href="{{ pdf_asset }}{{ asset('assets/css/lucca-angle.css') }}" rel="stylesheet" type="text/css">
+    <title></title>
+
+</head>
+<body>
+
+{% block lucca_control_footer %}
+<div class="row letter-footer">
+    <div class="col-12">
+        <hr>
+
+        <div class="clearfix">
+            <h4>Informations à lire attentivement</h4>
+            <p class="text-justify">
+                <b>Article L461-1 du Code de l’Urbanisme – Droit de visite et de communication</b><br>
+                Le préfet et l'autorité compétente mentionnée aux articles L422-1 à L422-3 ou ses délégués, ainsi que
+                les fonctionnaires et les agents commissionnés à cet effet par le ministre chargé de l'urbanisme et
+                assermentés, peuvent visiter les constructions en cours, procéder aux vérifications qu'ils jugent utiles
+                et se faire communiquer tous documents techniques se rapportant à la réalisation des bâtiments, en
+                particulier ceux relatifs à l'accessibilité aux personnes handicapées quel que soit le type de handicap.
+                Ce droit de visite et de communication peut aussi être exercé après l'achèvement des travaux pendant
+                trois ans.
+            </p>
+            <p class="text-justify">
+                <b>Article L480-12 du Code de l’Urbanisme – Infractions</b><br>
+                Sans préjudice de l'application, le cas échéant, des peines plus fortes prévues aux articles 433-7 et
+                433-8 du Code Pénal, quiconque aura mis obstacle à l'exercice du droit de visite prévu à l'article
+                L461-1 sera puni d'une amende de 3 750 euros.<br>
+                En outre un emprisonnement de un mois pourra être prononcé.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+</body>
+</html>
+

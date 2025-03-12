@@ -1,0 +1,52 @@
+{% trans_default_domain 'ChecklistBundle' %}
+
+{% block collection_widget %}
+    {% if prototype is defined %}
+        {% set attr = attr|merge({'data-prototype': form_widget(prototype)}) %}
+        {% set attr = attr|merge({'data-prototype-name': prototype.vars.name}) %}
+    {% endif %}
+    {% set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) %}
+    {% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}
+    {% set attr = attr|merge({'data-name-prefix': full_name}) %}
+
+    {{ form_errors(form) }}
+
+    <table {{ block('widget_attributes') }}>
+        <thead>
+        <tr>
+            <th>{{ 'label.name'|trans }}</th>
+            <th>{{ 'label.enabled'|trans }}</th>
+            <th>{{ 'label.position'|trans }}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for item in form %}
+            {{ form_widget(item) }}
+        {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block lucca_checklistbundle_element_widget %}
+
+    <tr {{ block('widget_attributes') }}>
+        <td>{{ form_widget(form.name) }}</td>
+        <td>{{ form_widget(form.enabled) }}</td>
+        <td>{{ form_widget(form.position) }}</td>
+
+        <td class="text-center">
+            <a href="#" class="collection-remove btn btn-danger" title="Delete element">
+                <span class="fa fa-trash"></span></a>
+            <a href="#" class="collection-add btn btn-success" title="Add element">
+                <span class="fa fa-plus"></span></a>
+            <a href="#" class="collection-duplicate btn btn-info" title="Duplicate element">
+                <span class="fa fa-th-large"></span></a>
+        </td>
+    </tr>
+
+{% endblock %}
+
+{% block lucca_checklistbundle_element_label %}{% endblock %}

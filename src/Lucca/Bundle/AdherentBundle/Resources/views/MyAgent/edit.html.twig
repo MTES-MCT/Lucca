@@ -1,0 +1,89 @@
+{#-- Extends view --#}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'AdherentBundle' %}
+
+{#-- Parameters --#}
+{% set entity_trans='entity.agent'|trans %}
+{% block menuActive_myAgent %}active{% endblock %}
+
+
+{% block lucca_panels %}
+
+    {{ form_start(edit_form) }}
+    {{ form_errors(edit_form) }}
+
+    {#-- Panel - main --#}
+    <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+
+        <div class="card card-default">
+            <div class="card-header">
+                {{ 'title.edit'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ agent.name }}</b>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+
+                    <div class="col-12">
+                        {{ form_row(edit_form.name) }}
+                        {{ form_row(edit_form.firstname) }}
+                        {{ form_row(edit_form.function) }}
+
+                        <div class="js-commission" style="display: none;">
+                            {{ form_row(edit_form.commission) }}
+                        </div>
+
+                        {{ form_row(edit_form.tribunal) }}
+
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_myagent_index') }}"
+                           title="{{ 'link.agent.back'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <button type="submit" class="btn btn-warning btn-lg" title="{{ 'link.agent.edit'|trans }}">
+                            <i class="fa fa-check"></i></button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {#-- End Panel - main --#}
+
+    {{ form_rest(edit_form) }}
+    {{ form_end(edit_form) }}
+
+{% endblock lucca_panels %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script>
+        {#--------------------------------------------------------------------#}
+        {#-- Function --#}
+        {#--------------------------------------------------------------------#}
+        var functionsAgentWithCommission = ['choice.function.mayor', 'choice.function.deputy'];
+
+        $(document).ready(function () {
+            $(".js-commission").hide('slow');
+
+            if ($.inArray($('#agent_function').val(), functionsAgentWithCommission) === -1)
+                $(".js-commission").show('slow');
+        });
+
+        $('#agent_function').on('change', function () {
+            $(".js-commission").hide('slow');
+
+            {# Function #}
+            if ($.inArray($(this).val(), functionsAgentWithCommission) === -1)
+                $(".js-commission").show('slow');
+        });
+        {#-- End Function --#}
+    </script>
+{% endblock lucca_js %}

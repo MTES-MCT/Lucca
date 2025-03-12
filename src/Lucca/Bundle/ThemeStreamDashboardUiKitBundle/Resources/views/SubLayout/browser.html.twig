@@ -1,0 +1,126 @@
+{#-- Extends view --#}
+{% extends "@LuccaThemeStreamDashboardUiKit/Layout/layout.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'ThemeStreamDashboardUiKit' %}
+
+{#-- Parameters --#}
+{% set param_topbar='gray-bg' %}
+
+{% block lucca_title %}
+    <title>{{ 'setting.general.app.name'| setting }} | {{ entity_trans }} - {{ 'title.browser'|trans }}</title>
+{% endblock lucca_title %}
+
+{% block lucca_header %}
+    {{ entity_trans }}
+{% endblock lucca_header %}
+
+
+{% block lucca_page %}
+
+    {#-- Panel - Description --#}
+    {% block lucca_description %}
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card card-default">
+            <div class="card-header">
+                <div class="card-title">
+                    {% block lucca_description_title %}
+                    {% endblock lucca_description_title %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock lucca_description %}
+    {#-- End Panel - description --#}
+
+
+    {#-- Panel - filters --#}
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card card-default">
+            <div class="card-header">
+                <div class="card-title">
+                    <b>{{ 'title.filters'|trans }}</b>
+                </div>
+            </div>
+
+            <div class="card-wrapper collapse show">
+                <div class="card-body">
+                    <div class="col-12">
+                        {% block lucca_filters_form %}
+                        {% endblock lucca_filters_form %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#-- End Panel - filters --#}
+
+
+    {% include '@LuccaThemeStreamDashboardUiKit/Flash/flashes.html.twig' %}
+
+    {#-- Panel - browser --#}
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card card-default">
+            <div class="card-header">
+                <div class="card-title">
+                    <b>{{ 'title.results'|trans }}</b>
+                </div>
+            </div>
+
+            <div class="card-wrapper collapse show">
+                <div class="card-body">
+                    <div class="col-12">
+                        {% block lucca_results_list %}
+                        {% endblock lucca_results_list %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#-- End Panel - browser --#}
+
+{% endblock lucca_page %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    <link href="{{ asset('plugins/chosen-js/chosen.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/select2/dist/css/select2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('plugins/@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.css') }}"
+          rel="stylesheet">
+
+    {#-- Plugin - DataTables --#}
+    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/datatables.css.html.twig" %}
+
+{% endblock lucca_css %}
+
+{% block lucca_modal %}
+    {{ parent() }}
+{% endblock lucca_modal %}
+
+{% block lucca_js %}
+    {{ parent() }}
+
+
+    <script src="{{ asset('plugins/chosen-js/chosen.jquery.js') }}"></script>
+    <script src="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/select2/dist/js/select2.full.min.js') }}"></script>
+
+    <script>
+        {# Chosen #}
+        $('.select2').select2({});
+
+        {# Chosen #}
+        $('.chosen-select').chosen({
+            placeholder_text_single: " ",
+            no_results_text: "Aucun résultat!"
+        });
+    </script>
+
+    {#-- Plugin - DataTables --#}
+    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/datatables.js.html.twig" with { 'params' :
+        { 'id_datatable': '.dataTables', 'pageLength': 10 }
+    } %}
+
+{% endblock lucca_js %}

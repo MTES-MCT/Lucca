@@ -1,0 +1,58 @@
+{% extends "@LuccaThemeDocsUiKit/Layout/layout.html.twig" %}
+{% trans_default_domain 'ContentBundle' %}
+{% block menuActive_dashboard %}active{% endblock %}
+
+{% block lucca_title %}
+    <title>{{ 'setting.general.app.name'| setting }} | {{ page.name }}</title>
+{% endblock lucca_title %}
+
+{% block lucca_header %}
+    {{ 'title.dashboard'|trans }}
+{% endblock lucca_header %}
+
+
+{% block lucca_page %}
+    {#-- Main Area --#}
+    <div class="row margin-bottom-30">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h2>{{ page.name }}</h2>
+            {{ page.content|raw }}
+        </div>
+    </div>
+    {#-- End - Main Area --#}
+
+    {#-- medias Area --#}
+    <div class="row margin-bottom-30">
+
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+
+            <div class="row">
+                {% for media in page.mediasLinked %}
+                    {% if media %}
+                        <div class="col-lg-3 col-md-3 col-sm-4">
+                            <a href="{{ path('lucca_media_show', { 'p_fileName': media.nameCanonical }) }}"
+                               class="link-file" target="_blank">
+                                <i class="fas fa-file-pdf fa-3x"></i> {{ media.name }}
+                            </a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if is_granted("ROLE_ADMIN") %}
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <aside class="div-admin">
+                    <div class="label label-warning label-admin">{{ 'badge.admin'|trans({}, 'CoreBundle') }}</div>
+
+                    <a class="btn btn-warning btn-lg" title="{{ 'link.edit'|trans }}"
+                       href="{{ path('lucca_page_edit', { 'id': page.id }) }}">
+                        <i class="fa fa-pencil"></i></a>
+                </aside>
+            </div>
+        {% endif %}
+    </div>
+    {#-- End - medias Area --#}
+
+{% endblock lucca_page %}
+

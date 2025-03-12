@@ -1,0 +1,141 @@
+{#-- Extends view --#}
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'AdherentBundle' %}
+
+{#-- Parameters --#}
+{% set entity_trans='entity.adherent'|trans %}
+{% block menuActive_adherent %}active{% endblock %}
+
+
+{% block lucca_panels %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+        {#-- Panel - main --#}
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+            <div class="card card-default">
+                <div class="card-header">
+                    {{ 'title.new'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ entity_trans }}</b>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <div class="col-12">
+
+                            {{ form_row(form.name) }}
+                            {{ form_row(form.enabled) }}
+
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-2 required"
+                                       for="parameter">{{ 'label.authority'|trans }}</label>
+
+                                <div class="col-sm-10">
+                                    <label class="radio-inline mr-2">
+                                        <input type="radio" name="parameter" id="town"
+                                               value="town"> {{ 'label.town'|trans }}
+                                    </label>
+                                    <label class="radio-inline mr-2">
+                                        <input type="radio" name="parameter" id="intercommunal"
+                                               value="intercommunal"> {{ 'label.intercommunal'|trans }}
+                                    </label>
+                                    <label class="radio-inline mr-2">
+                                        <input type="radio" name="parameter" id="service"
+                                               value="service"> {{ 'label.service'|trans }}
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="field-parameter" id="field-town" style="display: none;">
+                                {{ form_row(form.town) }}
+                            </div>
+
+                            <div class="field-parameter" id="field-intercommunal" style="display: none;">
+                                {{ form_row(form.intercommunal) }}
+                            </div>
+
+                            <div class="field-parameter" id="field-service" style="display: none;">
+                                {{ form_row(form.service) }}
+                            </div>
+
+                            {{ form_row(form.firstname) }}
+                            {{ form_row(form.function) }}
+                            {{ form_row(form.address) }}
+                            {{ form_row(form.zipcode) }}
+                            {{ form_row(form.city) }}
+                            {{ form_row(form.phone) }}
+                            {{ form_row(form.mobile) }}
+                            {{ form_row(form.emailPublic) }}
+                            {{ form_row(form.unitAttachment) }}
+
+                            <hr class="hr-big">
+
+                            {{ form_row(form.logo,{ 'attr': { 'class': 'labels-hidden' } }) }}
+
+                            <a class="btn btn-secondary btn-lg" href="{{ path('lucca_adherent_index') }}"
+                               title="{{ 'link.adherent.back'|trans }}"><i class="fa fa-reply"></i></a>
+
+                            <button type="submit" class="btn btn-success btn-lg"
+                                    title="{{ 'link.adherent.new'|trans }}"><i class="fa fa-check"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Panel - main --#}
+
+        {#-- Panel - user --#}
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+            <div class="card card-default">
+                <div class="card-header">
+                    {{ 'title.new'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ entity_trans }}</b>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <div class="col-12">
+                            {{ form_widget(form.user) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Panel - user --#}
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock lucca_panels %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script>
+        {# Custom JS #}
+        {#-- Radion buttons for location --#}
+        $('input[name="parameter"]').click(function () {
+            $(".field-parameter").hide('slow');
+
+            switch ($(this).val()) {
+                case 'town':
+                    $("#field-town").show('slow');
+                    break;
+                case 'intercommunal':
+                    $("#field-intercommunal").show('slow');
+                    break;
+                case 'service':
+                    $("#field-service").show('slow');
+                    break;
+            }
+        });
+    </script>
+{% endblock lucca_js %}

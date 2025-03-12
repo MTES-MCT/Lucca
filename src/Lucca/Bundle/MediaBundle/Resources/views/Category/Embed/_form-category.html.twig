@@ -1,0 +1,75 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'MediaBundle' %}
+
+{#-- Form theming - apply to this form --#}
+{% form_theme form.extensions '@LuccaMedia/Extension/Form/theme-extension.html.twig' %}
+{% form_theme form.metasDatasModels '@LuccaMedia/MetaDataModel/Form/theme-metaDataModel.html.twig' %}
+
+
+{#-- View embed --#}
+<div class="col-12">
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {#-- Panel - main --#}
+
+    <div class="card card-default">
+        <div class="card-header">
+            <a class="collapse-link" title="{{ 'link.reducePanel'|trans }}">
+                <h5><i class="fas fa-bookmark"></i> {{ entity_trans }} </h5>
+            </a>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="card-body">
+                {{ form_row(form.name) }}
+                {{ form_row(form.icon) }}
+                {{ form_row(form.storager) }}
+                {{ form_row(form.description) }}
+            </div>
+        </div> {#-- End Panel - main --#}
+    </div>
+
+    {#-- Panel - meta --#}
+
+    <div class="card card-default">
+        <div class="card-header">
+            <a class="collapse-link" title="{{ 'link.reducePanel'|trans }}">
+                <h5><i class="far fa-meteor"></i> {{ 'entity.metaDataModel'|trans }} </h5>
+            </a>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="card-body">
+                <div class="scrollbar-default scroll-x-responsive">
+                    {{ form_widget(form.metasDatasModels) }}
+                </div>
+            </div>
+        </div> {#-- End Panel - meta --#}
+
+    </div>
+    {#-- Panel - extension --#}
+    <div class="card card-default">
+        <div class="card-header">
+            <a class="collapse-link" title="{{ 'link.reducePanel'|trans }}">
+                <h5><i class="far fa-file-chart-pie"></i> {{ 'entity.extension'|trans }} </h5>
+            </a>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="card-body">
+                <div class="scrollbar-default scroll-x-responsive">
+                    {{ form_widget(form.extensions) }}
+                </div>
+            </div>
+        </div> {#-- Panel - extension --#}
+    </div>
+    <div class="col-12 pb-3">
+        {#-- Block embed --#}
+        {% block lucca_embed_buttons_category %}
+        {% endblock %} {#-- End Block embed --#}
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+</div>
+{#-- End - View embed --#}

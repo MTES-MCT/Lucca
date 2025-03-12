@@ -1,0 +1,52 @@
+services:
+  php:
+    volumes:
+      # The "cached" option has no effect on Linux but improves performance on Mac
+      - ./:/srv/app:rw,cached
+      # If you develop on Linux, comment out the following volumes to just use bind-mounted project directory from host
+      - ./var:/srv/app/var:rw
+      # If you develop on Mac you can remove the var/ directory from the bind-mount
+      # for better performance by enabling the next line
+      # - /srv/app/var
+    env_file:
+      - .env
+    environment:
+      - COMPOSER=composer.json
+    networks:
+      - nw-lan-dev
+    user: root
+
+  caddy:
+    volumes:
+      - ./public:/srv/app/public:ro
+    networks:
+      - nw-lan-dev
+    ports:
+      # HTTP
+      -   target: 80
+          published: 8027
+          protocol: tcp
+      # HTTPS
+      -   target: 443
+          published: 443
+          protocol: tcp
+      # HTTP/3
+      -   target: 443
+          published: 443
+          protocol: udp
+
+  ###> doctrine/doctrine-bundle ###
+  db:
+    ports:
+      -   target: 3306
+          published: 33066
+          protocol: tcp
+    networks:
+      - nw-lan-dev
+  ###< doctrine/doctrine-bundle ###
+
+###< symfony/mailer ###
+
+networks:
+  nw-lan-dev:
+    external: true

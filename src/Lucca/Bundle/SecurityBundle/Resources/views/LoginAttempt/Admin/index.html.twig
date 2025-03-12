@@ -1,0 +1,51 @@
+{#-- Extends view --#}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/index.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'SecurityBundle' %}
+
+
+{#-- Parameters --#}
+{% set entity_trans='entity.loginAttempt'|trans %}
+{% block menuActive_parameter %}active{% endblock %}
+
+
+{% block lucca_list %}
+
+    <table class="table table-striped table-hover table-bordered w-100 dataTables">
+        <thead class="form-filters">
+        <tr>
+            <th>{{ 'label.requestedAt'|trans }}</th>
+            <th>{{ 'label.requestIp'|trans }}</th>
+            <th>{{ 'label.requestUri'|trans }}</th>
+            <th>{{ 'label.username'|trans }}</th>
+            <th>{{ 'label.address'|trans }}</th>
+            <th>{{ 'label.addressRemote'|trans }}</th>
+            <th>{{ 'label.isCleared'|trans }}</th>
+            <th><i class="fas fa-cogs"></i> {{ 'label.actions'|trans }}</th>
+        </tr>
+        <tr>
+            <td>{{ form_widget(form.requestedAt) }}</td>
+            <td>{{ form_widget(form.requestIp) }}</td>
+            <td>{{ form_widget(form.requestUri) }}</td>
+            <td>{{ form_widget(form.username) }}</td>
+            <td>{{ form_widget(form.address) }}</td>
+            <td>{{ form_widget(form.addressRemote) }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        </thead>
+    </table>
+
+    <a class="btn btn-secondary btn-lg" href="{{ path('lucca_core_parameter') }}"
+       title="{{ 'link.parameter'|trans }}"><i class="fa fa-cogs"></i></a>
+
+{% endblock lucca_list %}
+
+{% block lucca_js_head %}
+    {{ parent() }}
+
+    {#-- Datatable scripts --#}
+    {% include '@LuccaSecurity/LoginAttempt/Js/login_attempt_browser.js.html.twig' %}
+{% endblock lucca_js_head %}
+

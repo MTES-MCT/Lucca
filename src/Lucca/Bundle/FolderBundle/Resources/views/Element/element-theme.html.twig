@@ -1,0 +1,52 @@
+{% trans_default_domain 'FolderBundle' %}
+
+
+{% block lucca_folderBundle_element_row %}
+
+    <div class="col-12 minute-folder-elements-container">
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+    </div>
+
+{% endblock %}
+
+{% block lucca_folderBundle_element_widget %}
+
+    {% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+    {# Split attributes - result like array(0 => "id="lucca_folderBundle_minute_elements_0") #}
+    {% set widget_attributes = block('widget_attributes')|split('" ') %}
+
+    <div {{ block('widget_attributes') }}>
+
+        <div class="row">
+
+            <div>{{ form_widget(form.position) }}</div>
+            <div class="col-1">{{ form_row(form.state) }}</div>
+            <div class="col-4">{{ form_row(form.name) }}</div>
+            {% if 'setting.folder.blockAttachmentToChecklist.name'|setting == false %}
+                    <div class="col-2">{{ form_widget(form.image) }}</div>
+            {% endif %}
+            <div class="col-4">{{ form_widget(form.comment) }}</div>
+            <div class="col-1">
+                <p class="text-center">
+                    <a href="#" class="collection-up btn btn-secondary btn-sm" title="{{ "link.element.up"|trans }}">
+                        <span class="fa fa-arrow-up"></span></a>
+                    <a href="#" class="collection-down btn btn-secondary btn-sm" title="{{ "link.element.down"|trans }}">
+                        <span class="fa fa-arrow-down"></span></a>
+                </p>
+            </div>
+        </div>
+        <hr>
+    </div>
+
+{% endblock %}
+
+{% block lucca_folderBundle_minute_elements_widget %}
+
+    {{ form_widget(form.elements) }}
+
+{% endblock %}
+
+
+

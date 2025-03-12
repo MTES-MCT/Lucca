@@ -1,0 +1,48 @@
+#####################################################
+## Lucca Checklist Bundle
+#####################################################
+
+########################
+# Entity
+########################
+entity:
+    checklist: "Liste mnémotechnique"
+
+
+########################
+# Label
+########################
+label:
+    actions: "Actions"
+    name: "Nom"
+    position: "Position"
+    help: "Aide"
+    enabled: "Actif ?"
+    description: "Description"
+    elements: "Eléments"
+    status: "Statut"
+
+########################
+# Choice
+########################
+choice:
+    ## Checklist
+    status:
+        minute: "Dossier"
+        updating: "Réactualisation"
+
+########################
+# Link
+########################
+link:
+    new: "Nouveau"
+    back: "Retour"
+    edit: "Modifier le profil"
+    changePassword: "Changer votre mot de passe"
+    show: "Visualiser"
+    delete: "Supprimer"
+    print: "Imprimer"
+    enable: "Activer"
+    disable: "Désactiver"
+
+    parameter: "Paramètres"

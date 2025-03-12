@@ -1,0 +1,33 @@
+{% trans_default_domain 'MinuteBundle' %}
+
+{#-- Panel - Controls --#}
+<div class="col-xs-12">
+    {% if loopControls is defined and loopControls %}
+        <strong>{{ 'title.control_historic'|trans }}</strong>
+
+        {% for control in loopControls %}
+            {% include "@LuccaMinute/Control/frameNoAction.html.twig" with { 'control': control } %}
+        {% endfor %}
+    {% endif %}
+</div> {#-- End Panel - Controls --#}
+
+            {#-- Panel - Folders --#}
+<div class="col-xs-12">
+    {% if loopFolders is defined and loopFolders %}
+        <strong>{{ 'title.folder_historic'|trans }}</strong>
+
+        {% for folder in loopFolders %}
+            {% include "@LuccaFolder/Folder/frameNoAction.html.twig" with { 'folder': folder } %}
+        {% endfor %}
+    {% endif %}
+</div> {#-- End Panel - Folders --#}
+
+
+<script>
+    {# Custom JS #}
+    {#-- A link for collapse Control --#}
+    $('a.btn-collapse').click(function () {
+        $("#" + $(this).attr('data-value')).toggle('slow');
+    });
+    {#-- End - A link for collapse Control --#}
+</script>

@@ -1,0 +1,25 @@
+{% trans_default_domain 'DecisionBundle' %}
+
+{% set structureName = minute.adherent.structureName %}
+{% set structureOffice = minute.adherent.structureOffice %}
+
+{#-- Close --#}
+<div class="row mb200 pt15">
+    {# SETTINGS  #}
+    {% if 'setting.folder.docFooterDueDate.name'|setting == true %}
+        <div class="col-12 letter-content">
+            Fait et clos à {{ structureOffice }},
+            le {% if folder.dateClosure %}{{ folder.dateClosure|date('d/m/Y') }}{% endif %}
+        </div>
+    {% endif %}
+
+    <div class="col-6 offset-6 text-right letter-signature">
+            {{ agent.officialName }}, {{ agent.function|trans({}, 'DecisionBundle') }}<br>
+        <br>
+        <br>
+        Signature :
+        <br>
+    </div>
+</div>
+{#-- End - Close --#}
+

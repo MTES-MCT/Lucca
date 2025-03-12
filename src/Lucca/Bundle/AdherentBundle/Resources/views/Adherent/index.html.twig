@@ -1,0 +1,76 @@
+{#-- Extends view --#}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/index.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'AdherentBundle' %}
+
+{#-- Parameters --#}
+{% set entity_trans='entity.adherent'|trans %}
+{% block menuActive_adherent %}active{% endblock %}
+
+
+{% block lucca_list %}
+
+    <table class="table table-hover w-100 responsive dataTables">
+        <thead>
+        <tr>
+            <th><i class="fa fa-male"></i> {{ 'label.name'|trans }}</th>
+            <th><i class="fa fa-at"></i> {{ 'label.email'|trans }}</th>
+            <th><i class="fa fa-phone"></i> {{ 'label.phone'|trans }}</th>
+            <th>{{ 'label.service'|trans }} / {{ 'label.intercommunal'|trans }} / {{ 'label.town'|trans }}</th>
+            <th>{{ 'label.address'|trans }}</th>
+            <th>{{ 'label.username'|trans }}</th>
+            <th>{{ 'label.logo'|trans }}</th>
+            <th><i class="fa fa-shield"></i> {{ 'label.groups'|trans }}</th>
+            <th><i class="fa fa-cogs"></i> {{ 'label.actions'|trans }}</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for adherent in adherents %}
+            <tr>
+                <td>{{ adherent.officialName }}</td>
+                <td>{% if adherent.user %}{{ adherent.user.email }}{% endif %}</td>
+                <td>{% if adherent.phone %}{{ adherent.phone }}
+                    {% else %}{{ adherent.mobile }}{% endif %}</td>
+                <td>
+                    {% if adherent.service %}{{ adherent.service.name }}
+                    {% elseif adherent.intercommunal %}{{ adherent.intercommunal.name }}
+                    {% elseif adherent.town %}{{ adherent.town.name }}
+                    {% endif %}
+                </td>
+                <td>{{ adherent.officialAddressInline }}</td>
+                <td>{% if adherent.user %}{{ adherent.user.username }}{% endif %}</td>
+                <td>{% if adherent.logo %}{{ 'label.yes' | trans }}{% else %}{{ 'label.no' | trans }}{% endif %}</td>
+                <td>
+                    {% for group in adherent.user.groups %}
+                        {{ group.name }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% if adherent.enabled %}
+                        <a href="{{ path('lucca_adherent_disable', { 'id': adherent.id }) }}"
+                           class="btn btn-info btn-sm" title="{{ 'link.adherent.disable'|trans }}">
+                            <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('lucca_adherent_enable', { 'id': adherent.id }) }}"
+                           class="btn btn-danger btn-sm" title="{{ 'link.adherent.enable'|trans }}">
+                            <i class="fa fa-toggle-off" aria-hidden="true"></i>
+                        </a>
+                    {% endif %}
+
+                    <a href="{{ path('lucca_adherent_show', { 'id': adherent.id }) }}" class="btn btn-primary btn-sm"
+                       title="{{ 'link.adherent.show'|trans }}"> <i class="fa fa-eye"></i> </a>
+                    <a href="{{ path('lucca_adherent_edit', { 'id': adherent.id }) }}" class="btn btn-warning btn-sm"
+                       title="{{ 'link.adherent.edit'|trans }}"> <i class="fas fa-pencil-alt"></i> </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary btn-lg" href="{{ path('lucca_adherent_new') }}"
+       title="{{ 'link.adherent.new'|trans }}"><i class="fa fa-plus"></i></a>
+{% endblock lucca_list %}
+

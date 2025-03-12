@@ -1,0 +1,25 @@
+{#--
+-- Tracking - Google analytics
+--
+--#}
+
+{#-- Check if global variable in defined on Twig configuration and if its settled --#}
+{% if google_analytics_id is defined and
+    google_analytics_id is not null and
+    google_analytics_id != 'null' %}
+
+    {#-- Global site tag (gtag.js) - Google Analytics --#}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ google_analytics_id }}"></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', '{{ google_analytics_id }}');
+    </script>
+    {#-- End Google Analytics Code --#}
+{% endif %}

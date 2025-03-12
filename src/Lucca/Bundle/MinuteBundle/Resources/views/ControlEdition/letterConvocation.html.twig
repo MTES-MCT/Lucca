@@ -1,0 +1,64 @@
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig' %}
+{% trans_default_domain 'MinuteBundle' %}
+
+{% set entity_trans='entity.control'|trans %}
+
+
+{% block menuActive_minute %}active{% endblock %}
+
+
+{% block lucca_panels %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {# Form theme apply for child only #}
+    {% form_theme form '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig' %}
+    {% form_theme form.editions '@LuccaMinute/ControlEdition/editionConvocation-theme.html.twig' %}
+
+    <div class="row">
+
+        {#-- Panel - main --#}
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            <div class="card card-default">
+                <div class="card-header"><strong>{{ 'title.control.letterConvocation'|trans }}</strong></div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+
+                        {{ form_widget(form.editions) }}
+
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"
+                           title="{{ 'link.backMinute'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <button type="submit" class="btn btn-success btn-lg" title="{{ 'link.control.manual.convocationUpdate'|trans }}">
+                            <i class="fa fa-check"></i></button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {#-- End Panel - main --#}
+
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+{% endblock lucca_panels %}
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script src="{{ asset('assets/js/jquery.collection.js') }}"></script>
+
+    <script>
+
+        {# Collection form #}
+        $('.editions-collection').collection({
+            allow_duplicate: false, allow_up: false, allow_down: false, allow_add: false, allow_delete: false,
+        });
+    </script>
+{% endblock lucca_js %}

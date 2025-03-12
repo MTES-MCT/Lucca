@@ -1,0 +1,19 @@
+<?php
+
+/*
+ * Copyright (c) 2025. Numeric Wave
+ *
+ * Afero General Public License (AGPL) v3
+ *
+ * For more information, please refer to the LICENSE file at the root of the project.
+ */
+
+namespace Lucca\Bundle\LogBundle\Entity;
+
+interface LoggableInterface
+{
+    /**
+     * Return entity's name for log text
+     */
+    public function getLogName();
+}

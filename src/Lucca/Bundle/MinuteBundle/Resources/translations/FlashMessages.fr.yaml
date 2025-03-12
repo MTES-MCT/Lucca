@@ -1,0 +1,54 @@
+####################################
+## Flash Domain
+## Locale: fr
+####################################
+
+flash:
+    minute:
+        createdSuccessfully: "Le dossier a bien été créé."
+        updatedSuccessfully: "Le dossier a bien été modifié."
+        deletedSuccessfully: "Le dossier a bien été supprimé."
+
+        create_agent_before_minute: "Avant de créer un dossier, ajouter un agent verbalisateur à votre profil adhérent."
+        filters_too_large: "Les dates sélectionnées sont trop larges. Veuillez sélectionner des dates qui n'excèdent pas un an d'écart. Les dates par défaut ont été appliqués pour la récupération de données."
+        cantAccess: "Vous n'avez pas accès à ce dosier."
+
+    control:
+        refused: "Le dernier contrôle a été refusé. Pouvez-vous effectuer un contrôle depuis l'extérieur ou une propriété voisine ?"
+
+        convocation:
+            updatedSuccessfully: "Les modifications sur la lettre de convocation ont été enregistrées."
+        access:
+            updatedSuccessfully: "Les modifications sur l'autorisation d'accès ont été enregistrées."
+
+        minute:
+            createdSuccessfully: "Le contrôle du dossier a bien été créé."
+            updatedSuccessfully: "Le contrôle du dossier a bien été modifié."
+            deletedSuccessfully: "Le contrôle du dossier a bien été supprimé."
+        updating:
+            createdSuccessfully: "Le contrôle de l'actualisation a bien été créé."
+            updatedSuccessfully: "Le contrôle de l'actualisation a bien été modifié."
+            deletedSuccessfully: "Le contrôle de l'actualisation a bien été supprimé."
+
+        accompagnantFunctionMissing: "Si un agent accompagnant est ajouté, il faut renseigner sa fonction."
+
+    updating:
+        createdSuccessfully: "Une nouvelle actualisation a été ajoutée au dossier."
+        updatedSuccessfully: "L'actualisation a été modifiée."
+        deletedSuccessfully: "L'actualisation a été supprimée."
+
+    closure:
+        closedSuccessfully: "Le dossier a bien été clôturé."
+        openSuccessfully: "Le dossier a bien été ouvert."
+
+    plot:
+        townNotAuthorize: "Vous n'êtes pas autorisé à saisir des dossiers sur cette ville. (Dans le cas de coordonnées vérifier à ne pas être proche de la bordure de la ville)"
+
+    filters:
+        datesIncorrect: "Les dates saisie sont incorrect. Il est obligatoire de saisir une période."
+
+    model:
+        notFound: "Aucun Model trouvé pour ce document"
+
+    pdf:
+        cantBeCreated: "Le PDF ne peut être généré avec les données actuelles."

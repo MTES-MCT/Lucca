@@ -1,0 +1,34 @@
+services:
+    #################################################################
+    ##  Generator
+    #################################################################
+    lucca.generator.setting:
+        class: Lucca\Bundle\SettingBundle\Generator\SettingGenerator
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - '@cache.settings'
+            - '@Lucca\Bundle\SettingBundle\Generator\DataGenerator'
+
+    #################################################################
+    ##  Manager
+    #################################################################
+    lucca.manager.setting:
+        class: Lucca\Bundle\SettingBundle\Manager\SettingManager
+
+    #################################################################
+    ##  Utils
+    #################################################################
+    #    Add setting because there might be an other csv converter
+    lucca.utils.setting.converter.csv_array:
+        class: Lucca\Bundle\SettingBundle\Utils\ConverterCsvArray
+
+    #################################################################
+    ## EventListener
+    #################################################################
+
+    lucca.setting.listener:
+        class: Lucca\Bundle\SettingBundle\EventListener\SettingsListener
+        arguments:
+          - '@Lucca\Bundle\SettingBundle\Generator\SettingGenerator'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }

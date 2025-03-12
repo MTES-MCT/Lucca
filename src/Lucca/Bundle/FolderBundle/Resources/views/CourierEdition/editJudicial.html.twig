@@ -1,0 +1,65 @@
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig' %}
+{% trans_default_domain 'FolderBundle' %}
+
+{% set entity_trans='entity.folder'|trans %}
+
+
+{% block menuActive_minute %}active{% endblock %}
+
+
+{% block lucca_panels %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+
+        {#-- Panel - main --#}
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            <div class="card card-default">
+                <div class="card-header"><strong>{{ 'title.courier.judicial'|trans }}</strong></div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-2">
+                                {{ form_widget(form.judicialEdited) }}
+                            </div>
+
+                            <div class="col-10">
+                                {{ form_widget(form.letterJudicial) }}
+                            </div>
+                        </div>
+
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"
+                           title="{{ 'link.backMinute'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <button type="submit" class="btn btn-success btn-lg"
+                                title="{{ 'link.courier.manual.judicialUpdate'|trans }}">
+                            <i class="fa fa-check"></i></button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {#-- End Panel - main --#}
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+{% endblock lucca_panels %}
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script>
+        {% include '@LuccaMinute/Js/summernoteEdition.js.twig' with
+            {'param_height': 600, 'nameWidget': "", 'form': form,
+                'origin': "judicial", 'isEdited': form.vars.value.judicialEdited}
+        %}
+    </script>
+{% endblock lucca_js %}

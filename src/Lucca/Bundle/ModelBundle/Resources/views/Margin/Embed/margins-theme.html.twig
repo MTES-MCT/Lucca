@@ -1,0 +1,40 @@
+{% trans_default_domain 'ModelBundle' %}
+
+
+{% block lucca_modelbundle_page_margin_row %}
+    <div class="col-12">
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
+
+{% block lucca_modelbundle_page_margin_widget %}
+
+    {#Split attributes - result like array(0 => "id="lucca_modelBundle_margin_0")#}
+    {% set widget_attributes = block('widget_attributes')|split('" ') %}
+
+    {#Split value - result like "lucca_modelBundle_margin_0"#}
+    {% set idWidget = widget_attributes[0]|split('"')[1] %}
+    {% set nameWidget = widget_attributes[1]|split('"')[1] %}
+
+    <div {{ block('widget_attributes') }}>
+        <div class="row">
+            <div class="col-12">
+                {% if form.height is defined %}
+                    {{ form_row(form.height) }}
+                {% endif %}
+                {% if form.width is defined %}
+                    {{ form_row(form.width) }}
+                {% endif %}
+                {{ form_row(form.background) }}
+
+                {{ form_row(form.backgroundImg,{ 'attr': { 'class': 'labels-hidden' } }) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block lucca_modelbundle_page_margins_widget %}
+    {{ form_widget(form.margins) }}
+{% endblock %}

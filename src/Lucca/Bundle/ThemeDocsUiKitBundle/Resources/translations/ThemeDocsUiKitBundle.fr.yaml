@@ -1,0 +1,59 @@
+#####################################################
+## Lucca Theme Docs Ui Kit Bundle
+#####################################################
+
+########################
+# Meta
+########################
+meta:
+    lucca: "Lucca"
+    lucca_long: "Lucca - Application de lutte contre la cabanisation"
+    text: "Lutte contre la cabanisation"
+    text2: "et autres infractions à l'urbanisme"
+    website: "Site web"
+    description: "Lucca est une application à destination des communes et services de l'Etat, dédiée à la gestion des dossiers d'infractions à l'urbanisme et y compris des dossiers de cabanisation."
+    keywords: "lucca, cabanisation, administratif, ddtm"
+    author: "Numeric Wave"
+    error: "Erreur"
+
+########################
+# Header
+########################
+header:
+    login: "Espace adhérent"
+    mySpace: "Mon espace"
+    prefecture: "Préfecture"
+
+########################
+# Footer
+########################
+footer:
+    66:
+        title: "Direction Départementale des Territoires et de la Mer des Pyrénées Orientales"
+        legalMentions: "Tous droits réservés à la société Numeric Wave, et à la DDTM des Pyrénées Orientales."
+    34:
+        title: "Direction Départementale des Territoires et de la Mer de l'Hérault"
+        legalMentions: "Tous droits réservés à la société Numeric Wave, et à la DDTM de l'Hérault."
+    12:
+        title: "Direction Départementale des Territoires de l'Aveyron"
+        legalMentions: "Tous droits réservés à la société Numeric Wave, et à la DDT de l'Aveyron."
+    31:
+        title: "Direction Départementale des Territoires de la Haute-Garonne"
+        legalMentions: "Tous droits réservés à la société Numeric Wave, et à la DDT de la Haute-Garonne."
+    33:
+        title: "Direction Départementale des Territoires de la Gironde"
+        legalMentions: "Tous droits réservés à la société Numeric Wave, et à la DDT de la Gironde."
+    privacyPolicy: "Politique de confidentialité"
+    termsService: "Mentions légales"
+
+########################
+# Error
+########################
+error:
+    title: "Page d'erreur"
+    home: "Page d'accueil"
+    404:
+        title: "Page non trouvée"
+        description: "La page demandée n'as pas été trouvée. Vérifiez l'adresse de la page ou retournez sur la"
+label:
+    legalMention66: 'Titulaire en l’espèce DDTM66'

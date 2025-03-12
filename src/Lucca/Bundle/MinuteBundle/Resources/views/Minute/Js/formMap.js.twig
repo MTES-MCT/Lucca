@@ -1,0 +1,219 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'MinuteBundle' %}
+
+/****************************** Global var *****************************************************************************/
+var map;
+var displayResults = false;
+var marker = null;
+
+var inputAddress = "#lucca_minuteBundle_minute_plot_address";
+var selectTown = "#lucca_minuteBundle_minute_plot_town";
+var inputCoordinatesLat = "#lucca_minuteBundle_minute_plot_latitude";
+var inputCoordinatesLng = "#lucca_minuteBundle_minute_plot_longitude";
+var selectLocationFrom = "#lucca_minuteBundle_minute_plot_locationFrom";
+
+/****************************** General *****************************************************************************/
+{#Custom JS#}
+$(document).ready(function () {
+    {% if minute.id and minute.plot.isRiskZone %}
+    $(".risk-zone").show('slow');
+    {% endif %}
+
+    /** In the modal set the field readonly depends on user choice */
+    switchOpenFieldFormModal($(selectLocationFrom).val());
+});
+
+{#-- Radion buttons for Plot --#}
+$('input[name*="[isRiskZone]"]').click(function () {
+    $(".risk-zone").hide('slow');
+
+    if ($(this).val() === '0')
+        $(".risk-zone").show('slow');
+});
+
+/****************************** Map code *****************************************************************************/
+/*********** Functions ****************************/
+function initMap() {
+
+    map = new google.maps.Map(document.getElementById('js-google-map'), {
+        {#Center on default latitude and longitude define in parameters#}
+        center: {lat: {{ 'setting.map.lat.name'|setting }}, lng: {{ 'setting.map.lon.name'|setting }} },
+        zoom: 14,
+        styles: config,
+        clickableIcons: false,
+        disableDefaultUI: true,
+        zoomControl: true,
+        mapTypeControl: true,
+    });
+
+    {% if minute.id and minute.plot.latitude and minute.plot.longitude %}
+    var latLng = new google.maps.LatLng({{ minute.plot.latitude }}, {{ minute.plot.longitude }});
+    marker = createMarker("", '{{ asset('assets/img/Pins/png/spoting.png') }}', latLng);
+    marker.setMap(map);
+    map.setCenter(latLng);
+    {% endif %}
+
+    map.addListener('click', function (e) {
+        if ($(selectLocationFrom).val() === "choice.locationFrom.manual") {
+            if (marker)
+                marker.setMap(null);
+            setAddressAndCoordinates(e.latLng);
+            marker = createMarker("", '{{ asset('assets/img/Pins/png/spoting.png') }}', e.latLng);
+        }
+    });
+}
+
+/** Get the address by using latitude and longitude and update all the fields in the modal */
+function setAddressAndCoordinates(latLng, disableSetTown) {
+    $.ajax({
+        url: Routing.generate('lucca_get_adress'),
+        data: {
+            lat: latLng.lat,
+            lng: latLng.lng
+        },
+        success: function (response) {
+            let res = JSON.parse(response);
+            $(inputAddress).val(res['street']);
+
+            //round the coordinates to 6 decimals
+            res['coords']['lat'] = Math.round(parseFloat(res['coords']['lat']) * 1000000) / 1000000;
+            res['coords']['lng'] = Math.round(parseFloat(res['coords']['lng']) * 1000000) / 1000000;
+
+            $(inputCoordinatesLat).val(res['coords']['lat']);
+            $(inputCoordinatesLng).val(res['coords']['lng']);
+            if(disableSetTown === false) {
+                updateTown(res['city']);
+            }
+        },
+        error: function (response) {
+            Swal.fire({
+                type: 'error',
+                title: 'Erreur dans la recherche de l\'addresse',
+                text: response['message'],
+            });
+        }
+    });
+}
+
+/** Get coordinates from an address and set the fiels of coordinates */
+function updateMapFromCoordinates() {
+    var lat = $(inputCoordinatesLat).val().replace(',', '.');
+    var lng = $(inputCoordinatesLng).val().replace(',', '.');
+
+    if (lat !== "" && lng !== "") {
+        if (marker)
+            marker.setMap(null);
+
+        var latLng = new google.maps.LatLng(lat, lng);
+        //Update coords and address
+        setAddressAndCoordinates(latLng);
+
+        marker = createMarker("", '{{ asset('assets/img/Pins/png/spoting.png') }}', latLng);
+        marker.setMap(map);
+        map.setCenter(latLng);
+    }
+}
+function updateMapFromAddress(disableSetTown = false) {
+    var addr = $(inputAddress).val() + " " + $(selectTown).chosen().find("option:selected" ).text();
+    if($(inputAddress).val() !== ""){
+        var request = $.ajax({
+            url: Routing.generate('lucca_get_geocode'),
+            data: {
+                address: addr
+            },
+            success: function (response) {
+                var res = JSON.parse(response);
+                var lat = res['lat'];
+                var lng = res['lng'];
+
+                if (marker)
+                    marker.setMap(null);
+
+                var latLng = new google.maps.LatLng(lat, lng);
+                //Update coords and address
+                setAddressAndCoordinates(latLng, disableSetTown);
+
+                marker = createMarker("", '{{ asset('assets/img/Pins/png/spoting.png') }}', latLng);
+                marker.setMap(map);
+                map.setCenter(latLng);
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+    }
+}
+
+/** This function will switch the readonly field depends on the value given in param  */
+function switchOpenFieldFormModal(value) {
+    if (value.toString() === "choice.locationFrom.coordinates") {
+        /** Set readonly on field that not correspond to coordinates */
+
+        /** Display corresponding field under the modal too */
+        $('.js-locationFromAddress').hide();
+        $('.js-locationFromCoordinates').show();
+        $('.js-helpManual').hide();
+
+    } else if (value.toString() === "choice.locationFrom.address") {
+
+        /** Display corresponding field under the modal too */
+        $('.js-locationFromAddress').show();
+        $('.js-locationFromCoordinates').hide();
+        $('.js-helpManual').hide();
+
+    } else {
+
+        /** Display corresponding field under the modal too */
+        $('.js-locationFromAddress').show();
+        $('.js-locationFromCoordinates').show();
+        $('.js-helpManual').show();
+    }
+}
+
+function updateTown(townName) {
+    var request = $.ajax({
+        url: Routing.generate('lucca_get_townId'),
+        data: {
+            city: townName
+        },
+        success: function (response) {
+            var res = JSON.parse(response);
+            var selectCity = $(selectTown);
+            selectCity.val(res['id']);
+            selectCity.trigger("chosen:updated");
+        },
+        error: function (response) {
+            Swal.fire({
+                type: 'error',
+                title: 'Erreur dans la recherche de l\'adresse',
+                text: JSON.parse(response['responseText'])['message']
+            });
+        }
+    });
+}
+
+/****** Listen events to update field or map in modal *************/
+{#-- Choice location from for Plot --#}
+$(selectLocationFrom).change(function () {
+    /** In the modal set the field readonly depends on user choice */
+    switchOpenFieldFormModal($(selectLocationFrom).val());
+});
+{#-- If input address change --#}
+$(inputAddress).change(function () {
+    /** In the modal set the field readonly depends on user choice */
+    updateMapFromAddress();
+});
+
+{#-- If town change --#}
+$(selectTown).change(function () {
+    /** In the modal set the field readonly depends on user choice */
+    updateMapFromAddress(true);
+});
+
+{#-- Button to refresh the map with the data given in the coordinate fields --#}
+$(inputCoordinatesLat).change(function () {
+    updateMapFromCoordinates();
+});
+$(inputCoordinatesLng).change(function () {
+    updateMapFromCoordinates();
+});

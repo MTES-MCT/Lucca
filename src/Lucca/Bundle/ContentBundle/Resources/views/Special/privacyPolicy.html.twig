@@ -1,0 +1,37 @@
+{% extends "@LuccaThemeDocsUiKit/Layout/layout.html.twig" %}
+{% trans_default_domain 'ContentBundle' %}
+
+{% block lucca_title %}
+    <title>{{ 'setting.general.app.name'| setting }} | {{ 'title.privacyPolicy'|trans }}</title>
+{% endblock lucca_title %}
+
+
+{% block lucca_page %}
+    {#-- Main Area --#}
+    <div class="row margin-bottom-30">
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="text-center">
+                <h2>{{ 'title.privacyPolicy'|trans }}</h2>
+            </div>
+
+            <div>
+                Pellentesque in ipsum id orci porta dapibus. Quisque velit nisi, pretium ut lacinia in, elementum id
+                enim. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec rutrum congue leo eget
+                malesuada. Vivamus suscipit tortor eget felis porttitor volutpat.
+
+                Quisque velit nisi, pretium ut lacinia in, elementum id enim. Nulla quis lorem ut libero malesuada
+                feugiat. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Proin eget tortor risus. Nulla
+                porttitor accumsan tincidunt.
+
+                Donec sollicitudin molestie malesuada. Vivamus magna justo, lacinia eget consectetur sed, convallis at
+                tellus. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ac diam sit
+                amet quam vehicula elementum sed sit amet dui. Vivamus magna justo, lacinia eget consectetur sed,
+                convallis at tellus.
+            </div>
+        </div>
+    </div>
+    {#-- End - Main Area --#}
+
+{% endblock lucca_page %}
+

@@ -1,0 +1,42 @@
+{% trans_default_domain 'CoreBundle' %}
+
+<div class="card card-default">
+    <div class="card-header">{{ 'title.contact'|trans }}</div>
+
+    <div class="card-wrapper">
+        <div class="card-body">
+
+            <div class="row  mt-2">
+                <div class="col-sm-2">
+                    <i class="fa fa-envelope fa-2x text-primary"></i>
+                </div>
+                <div class="col-sm-10">
+                    <a href="mailto:{{ info['mailto'] }}">
+                        {{ info['mailto'] }}
+                    </a>
+                </div>
+            </div>
+
+            <div class="row  mt-2">
+                <div class="col-sm-2">
+                    <i class="fa fa-phone fa-2x text-info"></i>
+                </div>
+                <div class="col-sm-10">
+                    {{ info['phone'] }}
+                </div>
+            </div>
+
+            <div class="row  mt-2">
+                <div class="col-sm-2">
+                    <i class="fas fa-map-marker-alt fa-2x text-warning"></i>
+                </div>
+                <div class="col-sm-10">
+                    <address>
+                        {{ info['addr'] | raw }}
+                    </address>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

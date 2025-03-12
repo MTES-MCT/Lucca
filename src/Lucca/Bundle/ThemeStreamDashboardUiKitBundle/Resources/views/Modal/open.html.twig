@@ -1,0 +1,36 @@
+{% trans_default_domain 'ThemeStreamDashboardUiKit' %}
+
+
+<div id="{{ id }}" class="modal inmodal fade openWin" tabindex="-1" role="dialog" aria-labelledby="modal-open"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content animated flipInX">
+
+            <div class="modal-header">
+                <h5 class="modal-title"><b>{{ 'modal.open.confirm'|trans }}</b></h5>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p>{{ 'modal.open.message'|trans }}</p>
+                <p><strong>{{ 'modal.open.element'|trans }}</strong> - {{ name }}</p>
+
+                <div class="text-warning">
+                    {{ 'modal.open.no_rollback'|trans }}<br>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-warning btn-sm btn-labeled" href="{{ link }}" title="{{ 'link.open'|trans }}">
+                    <span class="btn-label"><i class="fa fa-gavel"></i> </span> {{ 'link.open'|trans }}
+                </a>
+
+                <a class="btn btn-sm btn-secondary" data-dismiss="modal"> {{ 'link.close'|trans }} </a>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,58 @@
+{% trans_default_domain 'MinuteBundle' %}
+
+function createMarkersUpdating() {
+
+    /** Get coords of the border of the map */
+    var bds = map.getBounds();
+
+    var request = $.ajax({
+        url: Routing.generate('lucca_get_updatings'),
+        data: {
+            displayResults: displayResults,
+            adherent: {% if adherentId %}{{ adherentId }}{% else %}null{% endif %},
+            minLat: bds.getSouthWest().lat(),
+            minLon: bds.getSouthWest().lng(),
+            maxLat: bds.getNorthEast().lat(),
+            maxLon: bds.getNorthEast().lng()
+            {% if dateStart is defined %}
+            ,
+            dateStart: "{{ dateStart | date('d/m/Y') }}",
+            dateEnd: "{{ dateEnd | date('d/m/Y') }}"
+            {% endif %}
+        },
+        success: function (response) {
+            let res = JSON.parse(response);
+            let typeMarker = "updates";
+
+            for (let i = 0; i < res.length; i++) {
+                latLng = new google.maps.LatLng(res[i]['lat'],res[i]['lon']);
+                iconBase = '{{ asset('assets/img/Pins/png/redo.png') }}';
+                num = res[i]['id'].toString();
+                var markerU = createMarker(num, iconBase, latLng);
+
+                /** Create infos popup */
+                htmlInfos = generateHtmlInfos(
+                    res[i]['minuteNum'],
+                    "{{ path('lucca_minute_show', { 'id': 'minute.id', '_fragment' : 'updating-update.id'}) }}"
+                        .replace('minute.id', res[i]['minuteId']).replace('update.id', res[i]['id']),
+                    [
+                        "Adresse : " + res[i]['address'],
+                        "Agent : " + res[i]['agent']
+                    ]
+                );
+                createInfoWindow(res[i]['id'], markerU, htmlInfos);
+                /** End popup */
+
+                datas[typeMarker].push(markerU);
+            }
+
+            clusters[typeMarker] = new MarkerClusterer(map, datas[typeMarker], {
+                imagePath: "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
+                maxZoom: maxZoomCluster,
+                ignoreHidden: true,
+            });
+        },
+        error: function (response) {
+        }
+    });
+}

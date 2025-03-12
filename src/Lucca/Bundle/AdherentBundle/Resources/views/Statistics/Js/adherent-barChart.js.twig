@@ -1,0 +1,39 @@
+{% trans_default_domain 'AdherentBundle' %}
+
+const adherentCtx = document.getElementById('adherentBarChart').getContext('2d');
+const adherentChart = new Chart(adherentCtx, {
+    type: 'bar',
+    data: {
+        labels: [
+            {% for key, data in finalArray %}
+            {% if data['countAdherent'] > 0 %}
+            "{{ key }}"
+            {% if not loop.last %}
+            ,
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        ],
+        datasets: [
+            {
+                label: "{{ 'label.countAdherent' | trans }}",
+                backgroundColor:
+                    "#352063"
+                ,
+                data: [
+                    {% for key, data in finalArray %}
+                    {% if data['countAdherent'] > 0 %}
+                    "{{ data['countAdherent'] }}"
+                    {% if not loop.last %}
+                    ,
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                ]
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+    }
+});

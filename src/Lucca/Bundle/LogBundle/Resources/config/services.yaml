@@ -1,0 +1,23 @@
+services:
+    #################################################################
+    ## Subscriber
+    #################################################################
+
+    ## Subscriber on Doctrine event to store data and call LogEvent
+    lucca.subscriber.log.doctrine:
+        class: Lucca\Bundle\LogBundle\EventSubscriber\DoctrineSubscriber
+        arguments:
+            - "@event_dispatcher"
+            - "@security.token_storage"
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
+    ## Subscriber on LogEvent and create all necessary log
+    lucca.subscriber.log:
+        class: Lucca\Bundle\LogBundle\EventSubscriber\LogCreatorSubscriber
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@doctrine"
+            - "@security.token_storage"
+        tags:
+            - { name: kernel.event_subscriber, connection: default }

@@ -1,0 +1,13 @@
+####################################
+## LuccaAdherentBundle
+####################################
+
+constraint:
+    parameter:
+        town: "Vous ne pouvez pas sélectionner une ville et un autre statut."
+        service: "Vous ne pouvez pas sélectionner un service et un autre statut."
+        intercommunal: "Vous ne pouvez pas sélectionner une intercommunalité et un autre statut."
+
+    agent:
+        commission_must_be_null: "Le numéro de commission doit être vide."
+        commission_is_required: "Le numéro de commission est requis pour cette fonction."

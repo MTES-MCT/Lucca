@@ -1,0 +1,63 @@
+{% extends "@LuccaThemeStreamDashboardUiKit/Layout/layout.html.twig" %}
+{% trans_default_domain 'ThemeStreamDashboardUiKit' %}
+
+{% set param_topbar='gray-bg' %}
+
+{% block lucca_title %}
+    <title>{{ 'setting.general.app.name'| setting }} | {{ entity_trans }} - {{ 'title.edit'|trans }}</title>
+{% endblock lucca_title %}
+
+{% block lucca_header %}
+    {{ entity_trans }}
+{% endblock lucca_header %}
+
+
+{% block lucca_page %}
+
+    {% include '@LuccaThemeStreamDashboardUiKit/Flash/flashes.html.twig' %}
+
+    {% block lucca_panels %}
+    {% endblock lucca_panels %}
+
+{% endblock lucca_page %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    <link href="{{ asset('plugins/chosen-js/chosen.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/select2/dist/css/select2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('plugins/@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.css') }}"
+          rel="stylesheet">
+
+    {#-- Plugin - Summernote --#}
+    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/summernote.css.html.twig" %}
+{% endblock lucca_css %}
+
+{% block lucca_modal %}
+    {{ parent() }}
+{% endblock lucca_modal %}
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script src="{{ asset('plugins/chosen-js/chosen.jquery.js') }}"></script>
+    <script src="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/select2/dist/js/select2.full.min.js') }}"></script>
+
+    {#-- Plugin - Summernote --#}
+    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/summernote.js.html.twig" %}
+
+    <script>
+        {# Chosen #}
+        $('.select2').select2({
+            width: '100%',
+        });
+
+        {# Chosen #}
+        $('.chosen-select').chosen({
+            placeholder_text_single: " ",
+            no_results_text: "Aucun résultat!"
+        });
+    </script>
+{% endblock lucca_js %}

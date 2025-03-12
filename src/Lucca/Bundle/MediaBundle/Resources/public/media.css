@@ -1,0 +1,51 @@
+.file-input i {
+    color: #333;
+    margin-left: 15px;
+    font-size: 1.3em;
+    padding: 3px;
+}
+
+.file-input {
+    display: inline-block;
+    background-color: #fff;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    border: 1px solid;
+    border-color: #eaeaea;
+    color: #333;
+}
+
+.file-input input[type="file"] {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.media-form-container .file-input label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #333;
+    display: inline-block;
+    cursor: pointer;
+    min-width: 150px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    margin-right: 20px;
+    padding: 3px;
+
+}
+
+.media-form-container .control-label {
+    margin-top: 8px;
+}
+
+.meta-data {
+    display: flex;
+}
+
+.meta-data .form-label {
+    margin: 0 10px;
+}

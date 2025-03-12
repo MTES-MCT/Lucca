@@ -1,0 +1,19 @@
+{#-- Extends view --#}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/index.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'AdherentBundle' %}
+
+{#-- Parameters --#}
+{% set entity_trans='entity.agent'|trans %}
+{% block menuActive_myAgent %}active{% endblock menuActive_myAgent %}
+
+
+{% block lucca_list %}
+
+    {% include '@LuccaAdherent/MyAgent/list-myAgent.html.twig' with { 'agents': agents } %}
+
+    <a class="btn btn-primary btn-lg" href="{{ path('lucca_myagent_new') }}" title="{{ 'link.agent.new'|trans }}">
+        <i class="fa fa-plus"></i></a>
+{% endblock lucca_list %}
+

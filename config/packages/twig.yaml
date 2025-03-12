@@ -1,0 +1,19 @@
+# config/packages/twig.yaml
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    
+    ## Theme applied on all forms
+    form_themes:
+        - 'bootstrap_4_horizontal_layout.html.twig'
+    
+    ## Global variables used for all application
+    globals:
+        pdf_asset: "%env(resolve:LUCCA_PDF_URL)%"
+        avoid_break_page: '%env(LUCCA_AVOID_BREAK_PAGE)%'
+        maxFilesize: '%env(LUCCA_UPLOAD_MAX_FILE_SIZE)%'
+        maxCollectionFiles: '%env(LUCCA_UPLOAD_MAX_COLLECTION_SIZE)%'
+
+    ## Use for this mailer logic
+    paths:
+        # point this wherever your images live
+        '%kernel.project_dir%/public/assets/img': images

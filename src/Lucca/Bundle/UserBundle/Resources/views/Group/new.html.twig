@@ -1,0 +1,41 @@
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
+{% trans_default_domain 'UserBundle' %}
+
+{% set entity_trans='entity.group'|trans %}
+{% block menuActive_group %}active{% endblock menuActive_group %}
+
+
+{% block lucca_panels %}
+
+    {#-- Panel - main --#}
+    <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+
+        <div class="card card-default">
+            <div class="card-header">
+                {{ 'title.new'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ entity_trans }}</b>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card-body">
+                    <div class="col-12">
+                        {{ form_start(form, { 'action': path('lucca_user_group_new'), 'attr': { 'class': 'lucca_user_group_new' } }) }}
+
+                        {{ form_widget(form) }}
+
+                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_user_group_index') }}"
+                           title="{{ 'link.back'|trans }}"><i class="fa fa-reply"></i></a>
+
+                        <button type="submit" class="btn btn-success btn-lg"
+                                title="{{ 'link.new'|trans }}"><i class="fa fa-check"></i></button>
+
+                        {{ form_rest(form) }}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#-- End Panel - main --#}
+
+{% endblock lucca_panels %}
+

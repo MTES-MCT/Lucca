@@ -1,0 +1,48 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'DepartmentBundle' %}
+
+{#-- View embed --#}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div class="row">
+        {#-- Panel - main --#}
+        <div class="col-12 col-xl-6">
+
+            <div class="card card-default">
+                <div class="card-header">
+                    {% if department is defined %}
+                        {{ 'title.edit'|trans({}, 'ThemeStreamDashboardUiKit') }} -
+                        <b>{{ department.name }}</b>
+                    {% else %}
+                        {{ 'title.new'|trans({}, 'ThemeStreamDashboardUiKit') }}
+                        {{ entity_trans }}
+                    {% endif %}
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <div class="col-12">
+                            {{ form_row(form.code) }}
+                            {{ form_row(form.name) }}
+                            {{ form_row(form.comment) }}
+                        </div>
+
+                        <div class="col-md-12 col-12 pb-3 px-0">
+                            {#-- Block embed --#}
+                            {% block theme_embed_buttons_department %}
+
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {#-- End Panel - main --#}
+        </div>
+
+    </div>
+
+{#-- End - View embed --#}
+{{ form_rest(form) }}
+{{ form_end(form) }}

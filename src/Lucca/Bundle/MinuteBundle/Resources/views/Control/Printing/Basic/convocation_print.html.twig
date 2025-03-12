@@ -1,0 +1,50 @@
+{#-- Extends view --#}
+{% extends "@LuccaModel/Printing/base.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'MinuteBundle' %}
+
+
+{% block lucca_title %}
+    {{ 'title.letter'|trans }}
+{% endblock lucca_title %}
+
+
+{% block lucca_model_content %}
+
+    {% if control.editions and control.editions|length > 0 %}
+
+        {% for edition in control.editions %}
+
+            {% if 'setting.control.convocationContent.name'|setting == true %}
+                {% set filename = '@LuccaMinute/Control/Printing/Custom/convocation_content-'~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+                {% include filename with {'minute': minute, 'control': control, 'human': edition.human} %}
+            {% else %}
+                {% include '@LuccaMinute/Control/Printing/Basic/convocation_content.html.twig' with {'minute': minute, 'control': control, 'human': edition.human} %}
+            {% endif %}
+
+            {% if not loop.last %}
+                <div class="page-break"></div>
+            {% endif %}
+        {% endfor %}
+
+    {% else %}
+
+        {% for human in control.humansByMinute|merge(control.humansByControl) %}
+
+            {% if 'setting.control.convocationContent.name'|setting == true %}
+                {% set filename = '@LuccaMinute/Control/Printing/Custom/convocation_content-' ~ 'setting.general.departement.name'|setting ~ '.html.twig' %}
+                {% include filename with {'minute': minute, 'control': control, 'human': human} %}
+            {% else %}
+                {% include '@LuccaMinute/Control/Printing/Basic/convocation_content.html.twig' with {'minute': minute, 'control': control, 'human': human} %}
+            {% endif %}
+
+            {% if not loop.last %}
+                <div class="page-break"></div>
+            {% endif %}
+        {% endfor %}
+
+    {% endif %}
+
+{% endblock lucca_model_content %}
+

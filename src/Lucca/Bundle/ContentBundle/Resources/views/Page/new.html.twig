@@ -1,0 +1,115 @@
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
+{% trans_default_domain 'ContentBundle' %}
+
+{% set entity_trans='entity.page'|trans %}
+{% block menuActive_page %}active{% endblock %}
+
+{# Media - Set isPublic to true in order to make the media public and uploaded #}
+{% set isPublic = true %}
+
+{% block lucca_panels %}
+
+    {# Form theming - apply to this form #}
+    {% form_theme form '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig' %}
+    {% form_theme form.mediasLinked '@LuccaMedia/Media/Theme/theme-dropzone.html.twig' %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+        {#-- Panel - main --#}
+        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <div class="card card-default">
+                <div class="card-header">
+                    {{ 'title.new'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ entity_trans }}</b>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <div class="col-12">
+                            {{ form_row(form.name) }}
+                            {{ form_row(form.enabled) }}
+
+                            <div class="text-right">
+                                <small>{{ 'help.icon'|trans }} <a href="http://fontawesome.io/icons/">http://fontawesome.io/icons/</a>
+                                </small>
+                            </div>
+                            {{ form_row(form.icon) }}
+
+                            {{ form_row(form.link) }}
+                            {{ form_row(form.position) }}
+                            {{ form_row(form.author) }}
+                            {{ form_row(form.subarea) }}
+
+                            <hr class="hr-big">
+                            {{ form_row(form.mediasLinked) }}
+
+                            <a class="btn btn-secondary btn-lg" href="{{ path('lucca_page_index') }}"
+                               title="{{ 'link.back'|trans }}"><i class="fa fa-reply"></i></a>
+
+                            <button type="submit" class="btn btn-success btn-lg"
+                                    title="{{ 'link.new'|trans }}"><i class="fa fa-check"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Panel - main --#}
+
+        {#-- Panel - Content --#}
+        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <div class="card card-default">
+                <div class="card-header"><b>{{ 'label.content'|trans }}</b></div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <div class="col-12">
+                            {{ form_widget(form.content) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Panel - Content --#}
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+{% endblock lucca_panels %}
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    {#-- Plugin - Summernote --#}
+    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/summernote.css.html.twig" %}
+
+{% endblock lucca_css %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    {#-- Form Collection --#}
+    <script src="{{ asset('assets/js/jquery.collection.js') }}"></script>
+
+    {#-- Plugin - Summernote --#}
+    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/summernote.js.html.twig" %}
+
+    <script>
+
+        {# Collection form - media #}
+        $('.media-collection').collection({
+            allow_duplicate: false, allow_up: true, allow_down: true, allow_remove: false, add_at_the_end: true,
+            add: '<a href="#" class="btn btn-primary" title="{{ 'link.media.new'|trans({}, 'MediaBundle') }}"><span class="fas fa-plus"></span></a>',
+
+            {# Table display#}
+            elements_selector: 'tr.media',
+            elements_parent_selector: '%id% tbody',
+            init_with_n_elements: 1,
+        });
+        {# End - Collection form - media #}
+    </script>
+
+{% endblock lucca_js %}
+

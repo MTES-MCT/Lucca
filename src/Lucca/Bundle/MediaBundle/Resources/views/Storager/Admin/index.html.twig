@@ -1,0 +1,77 @@
+{#-- Extends view --#}
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/index.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'MediaBundle' %}
+
+{#-- Parameters --#}
+{% set entity_trans='entity.storager'|trans %}
+{% block menuActive_parameter %}active{% endblock %}
+
+
+{% block lucca_list %}
+    <div class="scrollbar-default scroll-x-responsive">
+        {% if app.user and is_granted("ROLE_ADMIN") %}
+            <a class="btn btn-primary btn-lg mb-3" href="{{ path('lucca_media_storager_new') }}"
+               title="{{ 'link.storager.new'|trans }}"><i class="fa fa-plus"></i></a>
+        {% endif %}
+
+        <table class="table table-striped table-hover dataTables">
+            <thead>
+            <tr>
+                <th><i class="fas fa-sd-card"></i> {{ 'label.name'|trans }}</th>
+                <th><i class="fal fa-folders"></i> {{ 'label.serviceFolderNaming'|trans }}</th>
+                <th><i class="fas fa-image"></i> {{ 'label.serviceMediaNaming'|trans }}</th>
+                <th>{{ 'label.description'|trans }}</th>
+                <th><i class="fas fa-cogs"></i> {{ 'label.actions'|trans }}</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for storager in storagers %}
+                <tr>
+                    <td>{{ storager.name }}</td>
+                    <td>{{ storager.serviceFolderNaming }}</td>
+                    <td>{{ storager.serviceMediaNaming }}</td>
+                    <td>{{ storager.description|raw }}</td>
+                    <td>
+                        {% if app.user and is_granted("ROLE_ADMIN") %}
+                            {% if storager.enabled %}
+                                <a href="{{ path('lucca_media_storager_enable', { 'id': storager.id }) }}"
+                                   class="btn btn-primary btn-sm" title="{{ 'link.storager.disable'|trans }}">
+                                    <i class="fas fa-toggle-on" aria-hidden="true"></i>
+                                </a>
+                            {% else %}
+                                <a href="{{ path('lucca_media_storager_enable', { 'id': storager.id }) }}"
+                                   class="btn btn-danger btn-sm" title="{{ 'link.storager.enable'|trans }}">
+                                    <i class="fas fa-toggle-off" aria-hidden="true"></i>
+                                </a>
+                            {% endif %}
+                        {% endif %}
+
+                        <a href="{{ path('lucca_media_storager_show', { 'id': storager.id }) }}"
+                           class="btn btn-info btn-sm" title="{{ 'link.storager.show'|trans }}"> <i
+                                class="fas fa-eye"></i>
+                        </a>
+
+                        {% if app.user and is_granted("ROLE_ADMIN") %}
+                            <a href="{{ path('lucca_media_storager_edit', { 'id': storager.id }) }}"
+                               class="btn btn-warning btn-sm" title="{{ 'link.storager.edit'|trans }}">
+                                <i class="fas fa-pencil-alt"></i> </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_core_parameter') }}"
+           title="{{ 'link.parameters'|trans }}"><i class="fa fa-cogs"></i></a>
+
+        {% if app.user and is_granted("ROLE_ADMIN") %}
+            <a class="btn btn-primary btn-lg" href="{{ path('lucca_media_storager_new') }}"
+               title="{{ 'link.storager.new'|trans }}"><i class="fa fa-plus"></i></a>
+        {% endif %}
+
+    </div>
+{% endblock lucca_list %}

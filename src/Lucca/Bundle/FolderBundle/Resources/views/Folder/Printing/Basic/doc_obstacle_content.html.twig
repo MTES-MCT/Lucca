@@ -1,0 +1,271 @@
+{% trans_default_domain 'FolderBundle' %}
+
+{% set control = folder.control %}
+{% set minute = folder.minute %}
+{% set plot = minute.plot %}
+
+
+{% set structureName = minute.adherent.structureName %}
+{% set structureOffice = minute.adherent.structureOffice %}
+
+{% import "@LuccaMinute/Human/human-macro.html.twig" as humanMacro %}
+{% import "@LuccaMinute/Agent/agent-attendant-macro.html.twig" as agentAttendantMacro %}
+
+<div class="row mb25 mt150 pt15">
+    <div class="col-12 text-center">
+        <h3 class="bordered letter-title">
+            {# On regarde si le pv est une réctualisation ou non #}
+            {% if folder.type is constant('TYPE_REFRESH', folder) %}
+                Procès verbal de constatation à l'urbanisme
+            {% else %}
+                Procès verbal d'infraction à l'urbanisme
+            {% endif %}
+
+            <br>Obstacle au droit de visite
+
+            {# Si le pv possède le tag 'Plan de prévention des risques' on affiche le text nécéessaire #}
+            {% if folder.hasTag('Plan de prévention des risques') %}
+                <br>Et au code de l'environnement
+            {% endif %}
+            <br>
+            <small>N° {{ folder.num }}</small>
+        </h3>
+    </div>
+</div>
+
+{#-- Agent function article --#}
+{% block lucca_folder_doc_obstacle_content_article %}
+<div class="row mb25 mb15 pt15">
+    <div class="col-12 letter-object">
+
+        {# Selon la fonction de l'agent on affiche les articles correspondant #}
+
+        {# Si l'agent est maire ou député #}
+        {% if agent.function in [
+            constant('FUNCTION_MAYOR', agent),
+            constant('FUNCTION_DEPUTY', agent)
+        ] %}
+            Vu les articles L. 480-1, L . 610-1 et R. 480-3 du code de l’urbanisme;<br>
+            Vu les articles 16 et 431 du code de procédure pénale;<br>
+            Vu l’article L.2122-31 du Code Général des Collectivités Territoriales.
+
+            {# Si l'agent est agent de police #}
+        {% elseif agent.function in [
+            constant('FUNCTION_POLICE', agent)
+        ] %}
+            Vu les articles L. 480-1, L.610-1 et R. 480-3 du code de l’urbanisme;<br>
+            Vu les articles 16 et 431 du code de procédure pénale;<br>
+            Vu les articles 21§2, 21-2 et D15 du Code de Procédure Pénale;<br>
+            Vu l'article L.511-1 du Code de la Sécurité Intérieure;<br>
+            Vu l’article L.2122-19 du Code Général des Collectivités Territoriales.
+
+            {# Si l'agent est Directeur Services Technique, Directeur Général des Services, Responsable urbanisme ou Admin  #}
+        {% elseif agent.function in [
+            constant('FUNCTION_DGS', agent),
+            constant('FUNCTION_DST', agent),
+            constant('FUNCTION_TOWN_MANAGER', agent),
+            constant('FUNCTION_ADMIN_AGENT', agent)
+        ] %}
+            Vu les articles L. 480-1, L.610-1 et R. 480-3 du code de l’urbanisme;<br>
+            Vu les articles 28 et 431 du code de procédure pénale;<br>
+            Vu l’article L.2122-19 du Code Général des Collectivités Territoriales.
+
+            {# Si l'agent n'a aucun des roles suivant on affiche les articles par défaut #}
+        {% else %}
+            Vu les articles L. 480-1, L.610-1 et R. 480-3 du code de l’urbanisme;<br>
+            Vu les articles 28 et 431 du code de procédure pénale.
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
+
+{#-- Agent function --#}
+{% block lucca_folder_doc_obstacle_content_agent %}
+<div class="row mb25 mb15 pt15">
+    <div class="col-12 letter-content">
+
+        {# Selon la fonction de l'agent, si il n'est pas maire ou député on affiche plus d'informations sur celui ci #}
+        {% if agent.function in [
+            constant('FUNCTION_MAYOR', agent),
+            constant('FUNCTION_DEPUTY', agent)
+        ] %}
+            Je soussigné, {{ agent.officialName }}, agissant en tant que {{ agent.function|trans({}, 'FolderBundle') }}
+            de la commune de {{ structureName }} rapporte et certifie que :
+        {% else %}
+            Je soussigné {{ agent.officialName }}, {{ agent.function|trans({}, 'FolderBundle') }} en poste à la commune de
+            {{ structureOffice }} ayant prêté serment devant le Tribunal de Grande Instance de
+            {{ minute.tribunal.office.name }} et porteur de la commission n° {{ agent.commission }}, rapporte ce qui suit :
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+{#-- End - Agent function --#}
+
+
+
+{#-- Plot --#}
+{% block lucca_folder_doc_obstacle_content_plot %}
+{% if control.accepted is constant('ACCEPTED_OK', control) %}     {# Si le control est accepté #}
+    <div class="row mb25 mb15 pt15">
+        <div class="col-12 letter-content">
+            Le {{ control.dateControl|date('d/m/Y') }} à {{ control.hourControl|date('H:i') }} heures.<br>
+
+            {# Si le controle possède une date et une heure on l'affiche sous forme de texte #}
+            {% if control.dateControl and control.hourControl %}
+                {{ control.dateControl|dateToLetter }} {{ control.hourControl|hourToLetter }}.<br>
+            {% endif %}
+
+            Je me suis transporté(e),
+            {# Affichage des informations des agents accompagnants #}
+            {{ agentAttendantMacro.agentAtendantViewTextNamed(control.agentAttendants) }}
+
+            {# Affichage des différentes informations de la passerelle si on connait les infomations #}
+            sur l’unité foncière cadastrée {{ plot.parcel }} située sur la commune de {{ plot.town.name }}
+            ({{ plot.town.zipcode }}), {% if plot.place %}lieudit {{ plot.place }},{% endif %}
+            {% if plot.address %}à l'adresse {{ plot.address }},{% endif %}
+            appartenant à :
+            <ul>
+                {# Affichage des informations de la (des) personne(s) #}
+                {{ humanMacro.humansResponsiblesByMinuteViewListComplete(minute.humans) }}
+            </ul>
+
+            {# Si le control est refusé ou si la personne convoqué était absente durant le controle #}
+            {% if folder.reasonObstacle in [
+                constant('REASON_OBS_ACCESS_REFUSED', folder),
+                constant('REASON_OBS_ABSENT_DURING_CONTROL', folder)
+            ] %}
+                A notre arrivée,
+                {# Affichage des informations de la (des) personne(s) #}
+                {{ humanMacro.humansByFolderViewTextNamed(folder.humansByMinute|merge(folder.humansByFolder)) }}
+
+                {# Si le control est refusé#}
+                {% if folder.reasonObstacle is constant('REASON_OBS_ACCESS_REFUSED', folder) %}
+                    s'est oppposé à l'accès à la parcelle et à la visite des lieux.
+
+                    {# Si la personne convoqué était absente durant le controle #}
+                {% elseif folder.reasonObstacle is constant('REASON_OBS_ABSENT_DURING_CONTROL', folder) %}
+                    était absent malgré le courrier de convocation régulièrement notifié.
+                {% endif %}
+            {% endif %}
+
+            <br>
+            Je précise que
+            {# Affichage des informations de la personne puis on ajoute les dates d'envoi de courrier et notification #}
+            {{ humanMacro.humansByFolderViewTextNamed(folder.humansByMinute|merge(folder.humansByFolder)) }}
+            a été avisé de la date et de l'heure du contrôle par courrier recommandé avec accusé de réception envoyé le
+            {% if control.dateSended %}{{ control.dateSended|date('d/m/Y') }}{% endif %}, avisé le
+            {% if control.dateNotified %}{{ control.dateNotified|date('d/m/Y') }}{% endif %}.
+
+            {# Si la personne était absente durant le controle #}
+            {% if folder.reasonObstacle is constant('REASON_OBS_ABSENT_DURING_CONTROL', folder) %}
+                A ce jour,
+                {# Affichage des informations de la (des) personne(s) #}
+                {{ humanMacro.humansByFolderViewTextNamed(folder.humansByMinute|merge(folder.humansByFolder)) }}
+                ne s'est pas manifesté auprès de mes services pour faire part d'une éventuelle indisponibilité.
+            {% endif %}
+
+        </div>
+    </div>
+
+{% else %}    {# Si le control est refusé #}
+    <div class="row mb25 mb15 pt15">
+        <div class="col-12 letter-content">
+            {# Affichage des différentes informations de la passerelle si on connait les infomations #}
+            Des travaux ont été relevés sur l’unité foncière cadastrée {{ plot.parcel }} située sur la commune
+            de {{ plot.town.name }} ({{ plot.town.zipcode }}), {% if plot.place %}lieudit {{ plot.place }},{% endif %}
+            {% if plot.address %}à l'adresse {{ plot.address }},{% endif %}
+            appartenant à :
+            <ul>
+                {# Affichage des informations de la (des) personne(s) #}
+                {{ humanMacro.humansResponsiblesByMinuteViewListComplete(minute.humans) }}
+            </ul>
+
+            Un courrier recommandé avec accusé de réception en date du {{ control.datePostal|date('d/m/Y') }}
+            a été adressé à :
+            <ul>
+                {# Affichage des informations de la (des) personne(s) #}
+                {{ humanMacro.humansByControlViewList(control.humansByMinute|merge(control.humansByControl)) }}
+            </ul>
+            aux fins de contrôle sur ladite parcelle le {{ control.dateControl|date('d/m/Y') }}. <br>
+            <br>
+
+            {# Si le controle est refusé ou la personne n'a pas récupéré la lettre #}
+            {% if control.reason in [
+                constant('REASON_REFUSED_LETTER', control),
+                constant('REASON_UNCLAIMED_LETTER', control)
+            ] %}
+                Le {% if control.dateReturned %}{{ control.dateReturned|date('d/m/Y') }}{% endif %} le courrier adressé à
+                {# Affichage des informations de la personne #}
+                {{ humanMacro.humansByFolderViewTextNamed(folder.humansByMinute|merge(folder.humansByFolder)) }}
+                a été retourné avec la mention "{{ control.reason|trans({}, 'MinuteBundle') }}".
+
+            {% else %}
+                Suite à ce courrier, le contrôle a été refusé par :
+                <ul>
+                    {# Affichage des informations de la (des) personne(s) #}
+                    {{ humanMacro.humansByFolderViewListNamed(folder.humansByMinute|merge(folder.humansByFolder)) }}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
+{% endblock %}
+{#-- End - Plot --#}
+
+
+{#-- natinfs --#}
+{% block lucca_folder_doc_obstacle_content_update %}
+{# Affichage des natinfs uniquement si le pv n'est pas une réactualisation #}
+{% if update is defined and not update %}
+    <div class="row mb25 mb15 pt15 page-break">
+        <div class="col-12 letter-content">
+            Les faits rapportés ci-dessus constituent des infractions aux :
+            <ul>
+                {# Affichage de tous les natinfs #}
+                {% for natinf in folder.natinfs %}
+                    <li>{{ natinf.definedBy }} réprimées par les {{ natinf.repressedBy }} -
+                        <b>code natinf n° {{ natinf.num }}</b> {{ natinf.qualification }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}
+{#-- End - natinfs --#}
+
+{#-- Annex --#}
+{# Si le dossier possède des pièces annexes #}
+{% if folder.elements|length > 0 %}
+    <div class="row mb25 mb15 pt15">
+        <div class="col-12 letter-content">
+            Pièces annexées :
+            <ul>
+                {# Affichage de tous les pièces annexes #}
+                {% for element in folder.elements %}
+                    {% if element.state %}
+                        <li>{{ element.name }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endif %}
+{#-- End - Annex --#}
+
+{#-- Close --#}
+{% block lucca_folder_doc_obstacle_content_close %}
+<div class="row mb25 mb15 pt15">
+    <div class="col-12 letter-content">
+        Je dresse le présent procès-verbal en double exemplaire à l’encontre de :
+        <ul>
+            {# Affichage des informations de la (des) personne(s) #}
+            {{ humanMacro.humansByFolderViewListComplete(folder.humansByMinute|merge(folder.humansByFolder)) }}
+        </ul>
+
+        pour être transmis à Monsieur le Procureur de la République.<br>
+        Une copie du procès verbal sera adressée à la Direction des Territoires et de la Mer / Affaires juridiques.<br>
+    </div>
+</div>
+{% endblock %}
+{#-- End - Close --#}

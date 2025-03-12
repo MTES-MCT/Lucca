@@ -1,0 +1,206 @@
+####################################
+## LuccaMediaBundle
+####################################
+
+###############
+## Entity
+###############
+entity:
+    media: "Média|Médias"
+    category: "Catégorie|Catégories"
+    gallery: "Galerie|Galeries"
+    extension: "Extension|Extensions"
+    storager: "Stockeur|Stockeurs"
+    metaDataModel: "Modèle de métadonnée|Modèles de métadonnée"
+    metaData: "Métadonnée|Métadonnées"
+    folder: "Dossier|Dossiers"
+
+###############
+## label
+###############
+label:
+    file: "Fichier"
+    name: "Nom"
+    description: "Description"
+    storager: "Storager"
+    extensions: "Extensions"
+    metasDatasModels: "Modèles de métadonnées"
+    metaData: "Métadonnées"
+    actions: "Actions"
+    value: "Valeur"
+    keyword: "Mot clé"
+    validate: "Valider"
+    icon: "Icône"
+    public: "Public"
+    path: "Chemin"
+    virtualPath: "Chemin (virtuel)"
+    category: "Catégorie"
+    nameCanonical: "Nom canonique"
+    createdAt: "Date de création"
+    updatedAt: "Date de mise à jour"
+    uploadFile: "Choisissez un fichier"
+    serviceMediaNaming: "Naming media"
+    serviceFolderNaming: "Naming dossier"
+    folders: "Dossiers"
+    enabled: "Est actif ?"
+    defaultMedia: "Média par défaut"
+    medias: "Liste des médias"
+    media: "Media"
+    dropzone: "Choisissez des fichiers"
+    
+    ## Other bundles labels
+    avatar: "Avatar"
+    logo: "Logo"
+    logoColor: "Logo (couleur)"
+    logoDarkBg: "Logo (fond foncé)"
+    logoLightBg: "Logo (fond clair)"
+    signature: "Signature"
+    signatureWithStamp: "Signature & tampon"
+    mediasLinked: "Médias liés"
+    image: 'Image'
+    backgroundImg: "Image de fond"
+
+    ## operation
+    banner: "Bannière"
+
+###############
+## Title
+###############
+title:
+    media:
+        editModal: "Modifier rapidement le média"
+        deleteModal: "Supprimer le média"
+
+###############
+## Modal
+###############
+modal:
+    delete:
+        confirm: "Confirmation de suppression"
+        message: "Êtes vous sûr(e) de vouloir supprimer ce média ?"
+        element: "Object"
+        
+###############
+## Message
+###############
+message:
+    media:
+        successUpload: "Téléversement réussi"
+        failedUpload: "Téléversement échoué"
+        titleUpload: "Téléversement du fichier"
+        removeMediaConfirm: 'Êtes vous sûr(e) de vouloir supprimer le média ?'
+        removeMedia: "Média supprimé"
+        mediaNotFound: "Media non trouvé"
+        failedRemoveMedia: "La suppression du fichier a échoué"
+        mediaProcessing: "Téléversement en cours"
+        mediaEmpty: "Le média n'a pas de fichier associé"
+        
+    dropzone: 
+        title: "Déposer des fichiers ici ou cliquer pour les télécharger."
+        cancelUpload: "Annuler"
+        removeFile: "Supprimer"
+        maxFilesReached: "Nombre maximum de fichiers à téléverser atteint"
+        mediaProcessing: "Des fichiers sont encore en cours de téléversement: Veuillez patienter"
+        fileTooBig: "Fichier trop volumineux!"
+
+###############
+## Help
+###############
+help:
+    media:
+        replace: "Remplacer le fichier existant:"
+
+###############
+## Parameters
+###############
+parameters:
+    title: "Module - Media"
+    seeList: "Voir la liste"
+
+###############
+## Link
+###############
+link:
+    reducePanel: "Réduire le panneau"
+    closePanel: "Fermer le panneau"
+    delete: "Supprimer"
+    close: "Fermer"
+    parameters: "Retour aux paramètres"
+
+    file:
+        new: "Ajouter un fichier"
+    
+    metaDataModel:
+        new: "Créer un nouveau modèle de métadonnée"
+        show: "Visualiser le modèle de métadonnée"
+        edit: "Modifier le modèle de métadonnée"
+        delete: "Supprimer le modèle de métadonnée"
+        enable: "Activer le modèle de métadonnée"
+        disable: "Désactiver le modèle de métadonnée"
+        backList: "Retour à la liste des modèles de métadonnée"
+        duplicate: "Dupliquer un modèle de métadonnée"
+        up: "Monter le modèle de métadonnée"
+        down: "Descendre le modèle de métadonnée"
+    
+    metaData:
+        new: "Créer une nouvelle métadonnée"
+        show: "Visualiser la métadonnée"
+        edit: "Modifier la métadonnée"
+        delete: "Supprimer la métadonnée"
+        enable: "Activer la métadonnée"
+        disable: "Désactiver la métadonnée"
+        backList: "Retour à la liste des métadonnées"
+        up: "Monter la métadonnée"
+        down: "Descendre la métadonnée"
+        duplicate: "Dupliquer la métadonnée"
+    
+    extension:
+        new: "Créer une nouvelle extension"
+        show: "Visualiser l'extension"
+        edit: "Modifier l'extension"
+        delete: "Supprimer l'extension"
+        enable: "Activer l'extension"
+        disable: "Désactiver l'extension"
+        backList: "Retour à la liste des extension"
+        duplicate: "Dupliquer l'extension"
+        up: "Monter l'extension"
+        down: "Descendre l'extension"
+    
+    category:
+        new: "Créer une nouvelle catégorie"
+        show: "Visualiser la catégorie"
+        edit: "Modifier la catégorie"
+        delete: "Supprimer la catégorie"
+        enable: "Activer la catégorie"
+        disable: "Désactiver la catégorie"
+        backList: "Retour à la liste des catégories"
+    
+    media:
+        new: "Créer un nouveau media"
+        show: "Visualiser le media"
+        edit: "Modifier le media"
+        delete: "Supprimer le media"
+        enable: "Activer le media"
+        disable: "Désactiver le media"
+        backList: "Retour à la liste des medias"
+        duplicate: "Dupliquer le media"
+        up: "Monter le media"
+        down: "Descendre le media"
+    
+    gallery:
+        new: "Créer une nouvelle galerie"
+        show: "Visualiser la galerie"
+        edit: "Modifier la galerie"
+        delete: "Supprimer la galerie"
+        enable: "Activer la galerie"
+        disable: "Désactiver la galerie"
+        backList: "Retour à la liste des galeries"
+    
+    storager:
+        new: "Créer un nouveau stockeur"
+        show: "Visualiser le stockeur"
+        edit: "Modifier le stockeur"
+        delete: "Supprimer le stockeur"
+        enable: "Activer le stockeur"
+        disable: "Désactiver le stockeur"
+        backList: "Retour à la liste des stockeurs"

@@ -1,0 +1,160 @@
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
+{% trans_default_domain 'ChecklistBundle' %}
+
+{% set entity_trans='entity.checklist'|trans %}
+
+
+
+{% block menuActive_parameter %}active{% endblock menuActive_parameter %}
+
+
+{% block lucca_panels %}
+
+    <div class="row">
+
+        {#-- Panel - main --#}
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
+            <div class="card card-default">
+                <div class="card-header">
+                    {{ 'title.show'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ checklist.name }}</b>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <div class="col-12">
+
+                            <table class="table table-striped table-hover">
+                                <tbody>
+                                <tr>
+                                    <th><i class="fa fa-th-list"></i> {{ 'label.name'|trans }}</th>
+                                    <td>{{ checklist.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.status'|trans }}</th>
+                                    <td>
+                                        <button class="btn btn-secondary">{{ checklist.status|trans }}</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.enabled'|trans }}</th>
+                                    <td>{% if checklist.enabled %}<i class="fa fa-check"></i>{% else %}<i
+                                            class="fas fa-times"></i>{% endif %} </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.description'|trans }}</th>
+                                    <td>{{ checklist.description|raw }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <a class="btn btn-secondary btn-lg" href="{{ path('lucca_checklist_index') }}"
+                               title="{{ 'link.back'|trans }}"><i class="fa fa-reply"></i></a>
+
+                            <a class="btn btn-warning btn-lg"
+                               href="{{ path('lucca_checklist_edit', { 'id': checklist.id }) }}"
+                               title="{{ 'link.edit'|trans }}"><i class="fas fa-pencil-alt"></i></a>
+
+                            <a class="btn btn-danger btn-lg pull-right" data-toggle="modal"
+                               data-target=".delWin" title="{{ 'link.delete'|trans }}">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Panel - main --#}
+
+        {#-- Panel - element --#}
+        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+
+            <div class="card card-default">
+                <div class="card-header">
+                    {{ 'title.manage'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ 'label.elements'|trans }}</b>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <div class="col-12">
+
+                            <table class="table table-hover w-100 responsive dataTables">
+                                <thead>
+                                <tr>
+                                    <th>{{ 'label.position'|trans }}</th>
+                                    <th><i class="fa fa-cubes"></i> {{ 'label.name'|trans }}</th>
+                                    <th>{{ 'label.enabled'|trans }}</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {% for element in checklist.elements %}
+                                    <tr>
+                                        <td>{{ element.position }}</td>
+                                        <td>{{ element.name }}</td>
+                                        <td>
+                                            {% if element.enabled %} <i class="fa fa-check"></i>
+                                            {% else %} <i class="fas fa-times"></i> {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Panel - element --#}
+    </div>
+
+{% endblock lucca_panels %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    {#-- Data Tables --#}
+    <link href="{{ asset('plugins/datatables.net-bs4/css/dataTables.bootstrap4.css') }}"
+          rel="stylesheet">
+    <link href="{{ asset('plugins/datatables.net-keytable-bs/css/keyTable.bootstrap.css') }}"
+          rel="stylesheet">
+    <link href="{{ asset('plugins/datatables.net-responsive-bs/css/responsive.bootstrap.css') }}"
+          rel="stylesheet">
+
+{% endblock lucca_css %}
+
+{% block lucca_modal %}
+    {{ parent() }}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': checklist.name, 'name': checklist.name, 'delForm': delete_form} %}
+{% endblock lucca_modal %}
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    {#-- Data Tables --#}
+    <script src="{{ asset('plugins/dataTables/DataTables-1.10.18/js/jquery.dataTables.min.js') }}"></script>
+
+    <script src="{{ asset('plugins/datatables.net-bs4/js/dataTables.bootstrap4.js') }}"></script>
+    <script src="{{ asset('plugins/dataTables/Buttons-1.5.6/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('plugins/dataTables/Buttons-1.5.6/js/buttons.bootstrap.min.js') }}"></script>
+
+    <script src="{{ asset('plugins/datatables.net-keytable/js/dataTables.keyTable.js') }}"></script>
+    <script src="{{ asset('plugins/datatables.net-responsive/js/dataTables.responsive.js') }}"></script>
+    <script src="{{ asset('plugins/datatables.net-responsive-bs/js/responsive.bootstrap.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.dataTables').DataTable({
+                pageLength: 10,
+                responsive: true,
+                "language": {
+                    "url": "{{ asset('plugins/dataTables/lang/dataTables.fr.json') }}"
+                },
+            });
+        });
+    </script>
+{% endblock lucca_js %}

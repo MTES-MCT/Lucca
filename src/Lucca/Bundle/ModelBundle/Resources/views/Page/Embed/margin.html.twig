@@ -1,0 +1,137 @@
+{% trans_default_domain 'ModelBundle' %}
+
+<div class="card card-transparent" role="tabpanel">
+    <!-- Nav tabs-->
+    <ul class="nav nav-tabs nav-fill" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link bb0 active" href="#configuration{{ margin.id }}"
+               aria-controls="configuration"
+               role="tab" data-toggle="tab"
+               aria-selected="true">
+                {{ 'label.configuration'|trans }}
+            </a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link bb0" href="#blocs{{ margin.id }}" aria-controls="blocs"
+               role="tab" data-toggle="tab"
+               aria-selected="false">{{ 'label.blocs'|trans }}
+            </a>
+        </li>
+    </ul>
+    <!-- Tab panes-->
+    <div class="tab-content p-0 bg-white">
+        <div class="tab-pane active" id="configuration{{ margin.id }}" role="tabpanel">
+            <table class="table table-striped table-hover">
+                <tbody>
+                <tr>
+                    <th>{{ 'label.width'|trans }} :</th>
+                    <td>{{ margin.width }}</td>
+                </tr>
+                <tr>
+                    <th>{{ 'label.height'|trans }} :</th>
+                    <td>{{ margin.height }}</td>
+                </tr>
+                <tr>
+                    <th>{{ 'label.background'|trans }} :</th>
+                    <td style="color:{{ margin.background }}">{{ margin.background }}</td>
+                </tr>
+                <tr>
+                    <th>{{ 'label.backgroundImg'|trans }} :</th>
+                    <td>{{ margin.backgroundImg|mediaTag(200) }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tab-pane" id="blocs{{ margin.id }}" role="tabpanel">
+            <div class="text-center">
+                <a class="btn btn-warning btn-xs m-2"
+                   href="{{ path('lucca_model_bloc_edit', { 'p_id': page.id, 'mod_id': model.id, 'mar_id': margin.id }) }}"
+                   title="{{ 'link.bloc.edit'|trans }}"><i
+                            class="fas fa-pencil-alt"></i> {{ 'link.bloc.edit'|trans }}</a>
+            </div>
+            {% if margin.blocs | length > 0 %}
+                {% for key, bloc in margin.blocs %}
+                    <div class="card card-default m-2">
+                        <div class="card-header hover-pointer" data-tool="card-collapse">
+                            <strong class="ml-2">{{ 'label.bloc'|trans }} {{ key + 1 }}
+                                - {{ bloc.typeContent | trans }}</strong>
+                            <a class="float-right" data-tool="card-collapse" title="Collapse card">
+                                <em class="fa fa-plus"></em>
+                            </a>
+                        </div>
+
+                        <div class="card-wrapper collapse">
+                            <div class="card-body">
+                                <div>
+                                    <table style="width: 100%;">
+                                        <tbody style="margin: 10px;">
+                                        {% if bloc.height %}
+                                            <tr>
+                                                <th>{{ 'label.height'|trans }} :</th>
+                                                <td>{{ bloc.height }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        {% if bloc.width %}
+                                            <tr>
+                                                <th>{{ 'label.width'|trans }} :</th>
+                                                <td>{{ bloc.width }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        {% if bloc.headerSize %}
+                                            <tr>
+                                                <th>{{ 'label.headerSize'|trans }} :</th>
+                                                <td>{{ bloc.headerSize }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        {% if bloc.footerSize %}
+                                            <tr>
+                                                <th>{{ 'label.footerSize'|trans }} :</th>
+                                                <td>{{ bloc.footerSize }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        {% if bloc.leftSize %}
+                                            <tr>
+                                                <th>{{ 'label.leftSize'|trans }} :</th>
+                                                <td>{{ bloc.leftSize }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        {% if bloc.rightSize %}
+                                            <tr>
+                                                <th>{{ 'label.rightSize'|trans }} :</th>
+                                                <td>{{ bloc.rightSize }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        {% if bloc.rightSize %}
+                                            <tr>
+                                                <th>{{ 'label.content'|trans }} :</th>
+                                                <td>{{ bloc.content }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        {% if bloc.media %}
+                                            <tr>
+                                                <th>{{ 'label.media'|trans }} :</th>
+                                                <td>{{ bloc.media|mediaTag(200) }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        {% if bloc.cssInline %}
+                                            <tr>
+                                                <th>{{ 'label.cssInline'|trans }} :</th>
+                                                <td>{{ bloc.cssInline }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="text-center">
+                    {{ 'label.noBloc' | trans }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

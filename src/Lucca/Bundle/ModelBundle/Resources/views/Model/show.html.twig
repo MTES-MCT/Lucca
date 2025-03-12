@@ -1,0 +1,221 @@
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig" %}
+{% trans_default_domain 'ModelBundle' %}
+
+{% set entity_trans='entity.model'|trans %}
+
+
+{% block menuActive_model %}active{% endblock menuActive_model %}
+
+{% block lucca_panels %}
+
+    <div class="row">
+        {#-- Panel - main --#}
+        <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12">
+
+            <div class="card card-default">
+
+                {% if model.layout is constant('LAYOUT_COVER', model) %}
+                    <span class="jumbotron-warning m-2 p-2">
+                    <span class="text-help">{{ 'help.layout.coverMessage'|trans }}</span>
+                </span>
+                {% endif %}
+
+                <div class="card-header">
+                    {{ 'title.show'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ model.name }}</b>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <div class="col-12">
+                            <table class="table table-striped table-hover">
+                                <tbody>
+                                <tr>
+                                    <th>{{ 'label.name'|trans }}</th>
+                                    <td>{{ model.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.enabled'|trans }}</th>
+                                    <td>{{ model.isEnabled|boolean }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.size'|trans }}</th>
+                                    <td>{{ model.size|trans }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.orientation'|trans }}</th>
+                                    <td>{{ model.orientation|trans }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.font'|trans }}</th>
+                                    <td style="font-family: '{{ model.font|trans }}', sans-serif">{{ model.font|trans }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.color'|trans }}</th>
+                                    <td><p style="color:{{ model.color }}"> {{ model.color }}</p></td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.background'|trans }}</th>
+                                    <td style="color:{{ model.background }}">{{ model.background }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.type'|trans }}</th>
+                                    <td>{{ model.type|trans }}</td>
+                                </tr>
+                                {% if model.owner %}
+                                    <tr>
+                                        <th>{{ 'label.owner'|trans }}</th>
+                                        <td>{{ model.owner.officialName }}</td>
+                                    </tr>
+                                {% endif %}
+                                {% if model.sharedService %}
+                                    <tr>
+                                        <th>{{ 'label.sharedService'|trans }}</th>
+                                        <td>{{ model.sharedService.name }}</td>
+                                    </tr>
+                                {% endif %}
+                                {% if model.sharedIntercommunal %}
+                                    <tr>
+                                        <th>{{ 'label.sharedIntercommunal'|trans }}</th>
+                                        <td>{{ model.sharedIntercommunal.name }}</td>
+                                    </tr>
+                                {% endif %}
+                                {% if model.sharedTown %}
+                                    <tr>
+                                        <th>{{ 'label.sharedTown'|trans }}</th>
+                                        <td>{{ model.sharedTown.name }}</td>
+                                    </tr>
+                                {% endif %}
+                                <tr>
+                                    <th>{{ 'label.layout'|trans }}</th>
+                                    <td>{{ model.layout|trans }}</td>
+                                </tr>
+                                <tr>
+                                    <th><i class="fa fa-file-invoice"></i> {{ 'label.documents'|trans }}</th>
+                                    <td>
+                                        <ul>{% for doc in model.documents %}
+                                                <li>{{ doc|trans }}</li>
+                                            {% endfor %}</ul>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="mb-4">
+                <a class="btn btn-secondary btn-lg" href="{{ path('lucca_model_index') }}"
+                   title="{{ 'link.backlist'|trans }}"><i class="fa fa-reply"></i></a>
+
+                <a class="btn btn-warning btn-lg"
+                   href="{{ path('lucca_model_edit', { 'id': model.id }) }}"
+                   title="{{ 'link.model.edit'|trans }}"><i class="fas fa-pencil-alt"></i></a>
+
+                {% if model.enabled %}
+                    <a href="{{ path('lucca_model_enable', { 'id': model.id }) }}"
+                       class="btn btn-info btn-lg" title="{{ 'link.model.disable'|trans }}">
+                        <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('lucca_model_enable', { 'id': model.id }) }}"
+                       class="btn btn-danger btn-lg" title="{{ 'link.model.enable'|trans }}">
+                        <i class="fa fa-toggle-off" aria-hidden="true"></i>
+                    </a>
+                    <a class="btn btn-danger btn-lg pull-right" data-toggle="modal"
+                       data-target=".delWin" title="{{ 'link.model.delete'|trans }}">
+                        <i class="fas fa-times"></i>
+                    </a>
+                {% endif %}
+                <a class="btn btn-info btn-lg" target="_blank"
+                   href="{{ path('lucca_model_print', { 'id': model.id }) }}"
+                   title="{{ 'link.model.print'|trans }}"><i
+                        class="fas fa-print"></i> {{ 'link.model.print'|trans }}
+                </a>
+            </div>
+        </div>
+        {#-- End Panel - main --#}
+
+        {#-- Panel - Preview --#}
+        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+
+            <div class="card card-default">
+
+                <div class="card-header">
+                    {{ 'title.show'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ model.name }}</b>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body text-center">
+                        <embed src="{{ path('lucca_model_print', { 'id': model.id }) }}" width="500" height="600"
+                               type='application/pdf'>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Panel - main --#}
+    </div>
+
+    <div class="row">
+        {% if verso is not null and model.layout is same as constant('LAYOUT_COVER', model) %}
+            {#-- Panel - Page --#}
+            {#-- Embed view - params and block --#}
+            {% embed "@LuccaModel/Page/Embed/page.html.twig" with {'page': verso} %}
+                {#-- Translation domain embed --#}
+                {% trans_default_domain 'ModelBundle' %}
+
+                {% block lucca_embed_title_page %}
+                    <b>{{ 'label.firstPage'|trans }}</b>
+                {% endblock %}
+
+                {% block lucca_embed_buttons_page %}
+                    <a class="btn btn-warning btn-xs"
+                       href="{{ path('lucca_model_page_edit', { 'id': verso.id, 'mod_id': model.id }) }}"
+                       title="{{ 'link.page.edit'|trans }}"><i
+                            class="fas fa-pencil-alt"></i> {{ 'link.page.edit'|trans }}</a>
+                {% endblock %}
+
+            {% endembed %} {#-- End Embed --#}
+            {#-- End Panel - Page --#}
+        {% endif %}
+
+        {#-- Panel - Page --#}
+        {#-- Embed view - params and block --#}
+        {% embed "@LuccaModel/Page/Embed/page.html.twig" with {'page': recto} %}
+            {#-- Translation domain embed --#}
+            {% trans_default_domain 'ModelBundle' %}
+
+            {% block lucca_embed_title_page %}
+                {% if verso is not null and model.layout is same as constant('LAYOUT_COVER', model) %}
+                    <b>{{ 'label.otherPages'|trans }}</b>
+                {% else %}
+                    <b>{{ 'label.allPages'|trans }}</b>
+                {% endif %}
+            {% endblock %}
+
+            {% block lucca_embed_buttons_page %}
+                <a class="btn btn-warning btn-xs"
+                   href="{{ path('lucca_model_page_edit', { 'id': recto.id, 'mod_id': model.id }) }}"
+                   title="{{ 'link.page.edit'|trans }}"><i class="fas fa-pencil-alt"></i> {{ 'link.page.edit'|trans }}
+                </a>
+            {% endblock %}
+
+        {% endembed %} {#-- End Embed --#}
+        {#-- End Panel - Page --#}
+    </div>
+
+
+{% endblock lucca_panels %}
+
+{% block lucca_modal %}
+    {{ parent() }}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': model.name, 'name': model.name, 'delForm': delete_form} %}
+{% endblock lucca_modal %}
+
+{% block lucca_css %}
+    {{ parent() }}
+{% endblock lucca_css %}
+
+{% block lucca_js %}
+    {{ parent() }}
+{% endblock lucca_js %}

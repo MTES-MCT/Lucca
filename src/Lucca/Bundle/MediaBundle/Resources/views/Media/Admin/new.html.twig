@@ -1,0 +1,43 @@
+{#-- Extends view --#}
+{% extends "@LuccaThemeStreamDashboardUiKit/SubLayout/new.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'MediaBundle' %}
+
+{#-- Parameters --#}
+{% set entity_trans='entity.media'|trans %}
+{% block menuActive_parameter %}active{% endblock %}
+
+
+{% block lucca_panels %}
+
+    {#-- Embed view - params and block --#}
+    {% embed "@LuccaMedia/Media/Embed/_form-media.html.twig" with {
+        'form': form,
+    } %}
+        {#-- Translation domain embed --#}
+        {% trans_default_domain 'MediaBundle' %}
+
+        {% block lucca_embed_buttons_media %}
+            <a href="{{ path('lucca_media_index') }}" class="btn btn-secondary btn-lg"
+               title="{{ 'link.media.backList'|trans }}">
+                <i class="fas fa-reply"></i></a>
+
+            <button type="submit" class="btn btn-success btn-lg"
+                    title="{{ 'link.file.new'|trans }}"><i class="fas fa-check"></i></button>
+        {% endblock %}
+    {% endembed %} {#-- End Embed --#}
+{% endblock lucca_panels %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script>
+        {#-- Collection form - MetaData --#}
+        {% include "@LuccaMedia/MetaData/Js/collection-metaData.js.twig" with { 'params' :
+            {'position_field_selector': '.position'}
+        } %}
+    </script>
+
+{% endblock lucca_js %}

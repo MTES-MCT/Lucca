@@ -1,0 +1,27 @@
+{#-- Extends view --#}
+{% extends "@LuccaThemeDocsUiKit/Layout/layout.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'SecurityBundle' %}
+
+
+{# Title #}
+{% block lucca_title %}
+    <title>{{ 'setting.general.app.name'| setting }} | {{ 'ban.title'|trans }}</title>
+{% endblock lucca_title %}
+
+
+{% block lucca_page %}
+
+    <div class="row mt-5">
+        <div class="col-lg-12 text-center">
+            <h3 class="ban-title">{{ 'ban.title'|trans }}</h3>
+            <h4 class="ban-subtitle">{{ 'ban.contact'|trans }}</h4>
+
+            <img src="{{ asset('assets/img/banned.png') }}" alt="{{ 'ban.altLogo'|trans }}"
+                 class="mt-2 img-fluid " style="max-width: 35%;">
+        </div>
+    </div>
+
+{% endblock lucca_page %}
+

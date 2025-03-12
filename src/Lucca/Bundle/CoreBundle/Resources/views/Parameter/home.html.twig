@@ -1,0 +1,248 @@
+{% extends "@LuccaThemeStreamDashboardUiKit/Layout/layout.html.twig" %}
+{% trans_default_domain 'CoreBundle' %}
+{% block menuActive_parameter %}active{% endblock %}
+
+{% block lucca_title %}
+    <title>{{ 'setting.general.app.name'| setting }} | {{ 'title.parameter'|trans }}</title>
+{% endblock lucca_title %}
+
+{% block lucca_header %}
+    {{ 'title.parameter'|trans }}
+{% endblock lucca_header %}
+
+
+{% block lucca_page %}
+
+    {#-- Main Area --#}
+    <div class="row margin-bottom-30">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-12">
+                    <h2>{{ 'title.natinf'|trans }}</h2>
+                </div>
+
+                {#-- Param - Natinf --#}
+                <div class="col-3">
+                    <div class="card card-default">
+                        <div class="card-wrapper text-center">
+                            <div class="card-body">
+                                <a href="{{ path('lucca_natinf_index') }}" class="link-unstyled text-primary">
+                                    <em class="fa fa-5x fa-puzzle-piece mb-lg"></em>
+                                    <br>
+                                    <span class="h4">{{ 'label.natinf'|trans }}</span>
+                                    <br>
+                                    <small class="text-muted">{{ 'label.see_list'|trans }} →</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {#-- End Param - Natinf --#}
+
+                {#-- Param - Tag --#}
+                <div class="col-3">
+                    <div class="card card-default">
+                        <div class="card-wrapper text-center">
+                            <div class="card-body">
+                                <a href="{{ path('lucca_tag_index') }}" class="link-unstyled text-primary">
+                                    <em class="fas fa-5x fa-thumbtack mb-lg"></em>
+                                    <br>
+                                    <span class="h4">{{ 'label.tag'|trans }}</span>
+                                    <br>
+                                    <small class="text-muted">{{ 'label.see_list'|trans }} →</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {#-- End Param - Tag --#}
+
+                {#-- Param - Checklist --#}
+                <div class="col-3">
+                    <div class="card card-default">
+                        <div class="card-wrapper text-center">
+                            <div class="card-body">
+                                <a href="{{ path('lucca_checklist_index') }}" class="link-unstyled text-primary">
+                                    <em class="fa fa-5x fa-th-list mb-lg"></em>
+                                    <br>
+                                    <span class="h4">{{ 'label.checklist'|trans }}</span>
+                                    <br>
+                                    <small class="text-muted">{{ 'label.see_list'|trans }} →</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {#-- End Param - Checklist --#}
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <h2>{{ 'title.service'|trans }}</h2>
+                </div>
+
+                {#-- Param - Town --#}
+                <div class="col-3">
+                    <div class="card card-default">
+                        <div class="card-wrapper text-center">
+                            <div class="card-body">
+                                <a href="{{ path('lucca_town_index') }}" class="link-unstyled text-info">
+                                    <em class="fa fa-5x fa-road mb-lg"></em>
+                                    <br>
+                                    <span class="h4">{{ 'label.town'|trans }}</span>
+                                    <br>
+                                    <small class="text-muted">{{ 'label.see_list'|trans }} →</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {#-- End Param - Town --#}
+
+                {#-- Param - Intercommunal --#}
+                <div class="col-3">
+                    <div class="card card-default">
+                        <div class="card-wrapper text-center">
+                            <div class="card-body">
+                                <a href="{{ path('lucca_intercommunal_index') }}" class="link-unstyled text-info">
+                                    <em class="fas fa-5x fa-building mb-lg"></em>
+                                    <br>
+                                    <span class="h4">{{ 'label.intercommunal'|trans }}</span>
+                                    <br>
+                                    <small class="text-muted">{{ 'label.see_list'|trans }} →</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {#-- End Param - Intercommunal --#}
+
+                {#-- Param - Service --#}
+                <div class="col-3">
+                    <div class="card card-default">
+                        <div class="card-wrapper text-center">
+                            <div class="card-body">
+                                <a href="{{ path('lucca_service_index') }}" class="link-unstyled text-info">
+                                    <em class="fas fa-5x fa-star mb-lg"></em>
+                                    <br>
+                                    <span class="h4">{{ 'label.service'|trans }}</span>
+                                    <br>
+                                    <small class="text-muted">{{ 'label.see_list'|trans }} →</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {#-- End Param - Service --#}
+            </div>
+
+
+            <div class="row">
+                <div class="col-12">
+                    <h2>{{ 'title.others'|trans }}</h2>
+                </div>
+
+                {#-- Param - Tribunal --#}
+                <div class="col-3">
+                    <div class="card card-default">
+                        <div class="card-wrapper text-center">
+                            <div class="card-body">
+                                <a href="{{ path('lucca_tribunal_index') }}" class="link-unstyled text-dark">
+                                    <em class="fa fa-5x fa-university mb-lg"></em>
+                                    <br>
+                                    <span class="h4">{{ 'label.tribunal'|trans }}</span>
+                                    <br>
+                                    <small class="text-muted">{{ 'label.see_list'|trans }} →</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {#-- End Param - Tribunal --#}
+
+                {#-- Param - Partner --#}
+                <div class="col-3">
+                    <div class="card card-default">
+                        <div class="card-wrapper text-center">
+                            <div class="card-body">
+                                <a href="{{ path('lucca_partner_index') }}" class="link-unstyled text-dark">
+                                    <em class="fas fa-5x fa-user-circle mb-lg"></em>
+                                    <br>
+                                    <span class="h4">{{ 'label.partner'|trans }}</span>
+                                    <br>
+                                    <small class="text-muted">{{ 'label.see_list'|trans }} →</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {#-- End Param - Partner --#}
+
+                {#-- Param - Log --#}
+                <div class="col-3">
+                    <div class="card card-default">
+                        <div class="card-wrapper text-center">
+                            <div class="card-body">
+                                <a href="{{ path('lucca_log_index') }}" class="link-unstyled text-warning">
+                                    <em class="fas fa-5x fa-tasks mb-lg"></em>
+                                    <br>
+                                    <span class="h4">{{ 'label.log'|trans }}</span>
+                                    <br>
+                                    <small class="text-muted">{{ 'label.see_list'|trans }} →</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {#-- End Param - Log --#}
+
+                {#-- Param - LoginAttempt --#}
+                <div class="col-3">
+                    <div class="card card-default">
+                        <div class="card-wrapper text-center">
+                            <div class="card-body">
+
+                                <a href="{{ path('lucca_security_login_attempt_index') }}"
+                                   class="link-unstyled text-danger">
+                                    <em class="fas fa-5x fa-book-dead mb-lg"></em>
+                                    <br>
+                                    <span class="h4">{{ 'label.loginAttempt'|trans }}</span>
+                                    <br>
+                                    <small class="text-muted">{{ 'label.see_list'|trans }} →</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div> {#-- End Param - LoginAttempt --#}
+
+                {#-- Param - Setting --#}
+                <div class="col-3">
+                    <div class="card card-default">
+                        <div class="card-wrapper text-center">
+                            <div class="card-body">
+
+                                <a href="{{ path('lucca_setting_index') }}"
+                                   class="link-unstyled text-warning">
+                                    <em class="fas fa-5x fa-cogs mb-lg"></em>
+                                    <br>
+                                    <span class="h4">{{ 'label.setting'|trans }}</span>
+                                    <br>
+                                    <small class="text-muted">{{ 'label.see_list'|trans }} →</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div> {#-- End Param - Setting --#}
+
+                {#-- Param - Media --#}
+                {% include '@LuccaMedia/panel-parameters.html.twig' %}
+                {#-- End Param - Media --#}
+            </div>
+        </div>
+
+    </div>
+    {#-- End - Main Area --#}
+
+{% endblock lucca_page %}
+

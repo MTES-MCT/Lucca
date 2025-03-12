@@ -1,0 +1,8 @@
+<component name="CopyrightManager">
+  <copyright>
+    <option name="allowReplaceRegexp" value="Copyright \(c\) \d+" />
+    <option name="keyword" value="Copyright \(c\) \d+" />
+    <option name="notice" value="Copyright (c) &amp;#36;originalComment.match(&quot;Copyright \(c\) (\d+)&quot;, 1, &quot;-&quot;, &quot;&amp;#36;today.year&quot;)&amp;#36;today.year. Numeric Wave&#10;&#10;Afero General Public License (AGPL) v3&#10;&#10;For more information, please refer to the LICENSE file at the root of the project." />
+    <option name="myName" value="Numeric Wave License AGPL" />
+  </copyright>
+</component>

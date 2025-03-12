@@ -1,0 +1,207 @@
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/edit.html.twig' %}
+{% trans_default_domain 'MinuteBundle' %}
+
+{% set entity_trans='entity.minute'|trans %}
+
+
+{% block menuActive_minute %}active{% endblock menuActive_minute %}
+
+{% block lucca_header_badge %}
+    {{ parent() }}
+
+    <span class="badge badge-info mr15">
+        {{ 'text.minute.pending'|trans }}
+    </span>
+
+{% endblock lucca_header_badge %}
+
+{% block lucca_panels %}
+
+    {{ form_start(edit_form) }}
+
+    {% form_theme edit_form '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig' %}
+
+    {#Form theme apply for child only#}
+    {% form_theme edit_form.humans '@LuccaMinute/Human/human-theme.html.twig' %}
+
+    {{ form_errors(edit_form) }}
+
+    <div class="row">
+        {#-- Panel - main --#}
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+            <div class="card card-default">
+                <div class="card-header"><strong>{{ 'title.frame1'|trans }}</strong></div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label"
+                                   for="lucca_adherent">{{ 'label.adherent'|trans }}</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="lucca_adherent" class="form-control"
+                                       value="{{ minute.adherent.formLabel }}" disabled="disabled">
+                            </div>
+                        </div>
+
+                        {{ form_row(edit_form.dateComplaint) }}
+                        {{ form_row(edit_form.nameComplaint) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Panel - main --#}
+
+        {#-- Panel - agent --#}
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+            <div class="card card-default">
+                <div class="card-header">
+                    <strong>{{ 'title.agent'|trans }}</strong>
+
+                    (<a href="{{ path('lucca_core_page_tools') }}"
+                        target="_blank">{{ 'help.tools.listPages'|trans }}</a>)
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+
+                        <div class="text-right text-warning">
+                            <small>{{ 'help.minute.choose_or_create_agent'|trans }}</small>
+                        </div>
+                        {{ form_row(edit_form.agent) }}
+                        {{ form_row(edit_form.tribunal) }}
+                        {{ form_row(edit_form.tribunalCompetent) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Panel - agent --#}
+
+        {#-- Panel - Reporting --#}
+        <div class="col-lg-12 col-md-8 col-sm-12 col-xs-12">
+            <div class="card card-default">
+                <div class="card-header"><strong>{{ 'title.reporting'|trans }}</strong></div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <div class="text-right text-warning">
+                            <small>{{ 'help.minute.reporting'|trans }}</small>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                {{ form_row(edit_form.origin) }}
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                {{ form_row(edit_form.reporting) }}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Panel - Reporting --#}
+
+        {#-- Panel - plot --#}
+        <div class="col-lg-12 col-md-8 col-sm-12 col-xs-12">
+            <div class="card card-default">
+                <div class="card-header">
+                    <strong>{{ 'title.plot'|trans }}</strong>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+
+                        {#Twig file that contain all the form and the map#}
+                        {% include('@LuccaMinute/Minute/plot-form_map.html.twig') with {'form' : edit_form} %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Panel - plot --#}
+
+        {#-- Panel - human --#}
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card card-default">
+                <div class="card-header">
+                    <strong>{{ 'title.humanResponsible'|trans }}</strong>
+
+                    (<a href="{{ path('lucca_core_page_tools') }}"
+                        target="_blank">{{ 'help.tools.listPages'|trans }}</a>)
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <div class="col-12">
+                            {{ form_widget(edit_form.humans) }}
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <a href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"
+                               class="btn btn-secondary btn-lg" title="{{ 'link.minute.show'|trans }}">
+                                <i class="fa fa-eye"></i></a>
+
+                            <button type="submit" class="btn btn-warning btn-lg" title="{{ 'link.minute.edit'|trans }}">
+                                <i class="fa fa-check"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-- End Panel - human --#}
+    </div>
+
+    {{ form_rest(edit_form) }}
+    {{ form_end(edit_form) }}
+
+{% endblock lucca_panels %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+
+    <link href="{{ asset('bundles/luccacore/css/lucca_map.css') }}" rel="stylesheet">
+    {#-- Plugin sweet alert 2 --#}
+    <link href="{{ asset('plugins/sweetalert2/sweetalert2.css') }}" rel="stylesheet">
+
+    <style>
+
+    </style>
+
+{% endblock lucca_css %}
+
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+
+    <script src="{{ asset('assets/js/jquery.collection.js') }}"></script>
+
+    {#Modal map#}
+    <script src="{{ asset('bundles/luccacore/js/lucca_map.js') }}"></script>
+    <script src="{{ asset('bundles/luccacore/js/lucca_config_map.js') }}"></script>
+    {#-- Plugin sweet alert 2 --#}
+    <script src="{{ asset('plugins/sweetalert2/sweetalert2.js') }}"></script>
+
+    {#-- Plugin - Google maps --#}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ 'setting.map.mapKey.name'|setting  }}&callback=initMap"
+            async defer></script>
+
+    <script>
+
+        {#-- Contain all js needed for the modal map --#}
+        {% include('@LuccaMinute/Minute/Js/formMap.js.twig') with { 'minute': minute } %}
+
+        {#Collection form#}
+        $('.human-collection').collection({
+            allow_duplicate: false, allow_up: false, allow_down: false,
+            add_at_the_end: true,
+            add: '<a href="#" class="btn btn-secondary" title="{{ 'link.human.new'|trans }}"><span class="fa fa-plus-circle"></span></a>',
+        });
+
+    </script>
+{% endblock lucca_js %}

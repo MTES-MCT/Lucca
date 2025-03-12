@@ -1,0 +1,34 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'SecurityBundle' %}
+
+{#
+# Panel included in parmaters view
+# Fill with all parameters entities
+#}
+
+{#-- Bundle - Security --#}
+{% if is_granted("ROLE_ADMIN") %}
+    <div class="col-12">
+        <div class="row">
+
+            <div class="col-12">
+                <h2 class="text-link">{{ 'parameters.title'|trans }}</h2>
+            </div>
+
+            {#-- Param - LoginAttempt --#}
+            <div class="col-lg-2 col-md-6 col-12">
+                <a href="{{ path('lucca_security_login_attempt_index') }}" class="link-unstyled text-danger">
+                    <div class="panel-element text-center">
+                        <em class="fas fa-book-dead fa-3x mb-lg"></em>
+                        <br>
+                        <span class="h4">{{ 'entity.loginAttempt'|trans }}</span>
+                        <br>
+                        <small class="text-muted">{{ 'parameters.seeList'|trans }} →</small>
+                    </div>
+                </a>
+            </div> {#-- End Param - LoginAttempt --#}
+
+        </div>
+    </div>
+{% endif %}
+{#-- End Bundle - Security --#}

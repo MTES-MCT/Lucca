@@ -1,0 +1,68 @@
+{% trans_default_domain 'MinuteBundle' %}
+
+
+{% block lucca_minuteBundle_controlEdition_access_row %}
+    <div class="col-12">
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
+
+{% block lucca_minuteBundle_controlEdition_access_widget %}
+
+    {% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+    {# Split attributes - result like array(0 => "id="lucca_minuteBundle_control_convocation_editions_0") #}
+    {% set widget_attributes = block('widget_attributes')|split('" ') %}
+
+    {# Split value - result like "lucca_minuteBundle_control_convocation_editions_0" #}
+    {% set idWidget = widget_attributes[0]|split('"')[1] %}
+    {% set nameWidget = widget_attributes[1]|split('"')[1] %}
+
+    <div {{ block('widget_attributes') }}>
+
+        <div class="row">
+
+            <div class="col-2">
+                <div class="form-group row">
+                    <label class="col-form-label" for="lucca_human">{{ 'label.humanResponsible'|trans }}</label>
+
+                    {% if form.vars.value.human.person is constant('PERSON_PHYSICAL', form.vars.value.human) %}
+                        <input type="text" name="lucca_human" class="form-control"
+                               value="{{ form.vars.value.human.officialName }}" disabled="disabled">
+                    {% elseif form.vars.value.human.person is constant('PERSON_CORPORATION', form.vars.value.human) %}
+                        <input type="text" name="lucca_human" class="form-control"
+                               value="{{ ' Société ' ~ form.vars.value.human.company }}" disabled="disabled">
+                    {% endif %}
+
+                </div>
+
+                {{ form_row(form.accessEdited) }}
+            </div>
+
+            <div class="col-10">
+                {{ form_row(form.letterAccess) }}
+            </div>
+
+            <div class="col-12">
+                <hr>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        {% include '@LuccaMinute/Js/summernoteEdition.js.twig' with
+            {'param_height': 600, 'idWidget': idWidget, 'nameWidget': nameWidget, 'form': form,
+                'origin': "access", 'isEdited': form.vars.value.accessEdited}
+        %}
+    </script>
+
+{% endblock %}
+
+{% block lucca_minuteBundle_control_access_widget %}
+    {{ form_widget(form.editions) }}
+{% endblock %}
+
+
+

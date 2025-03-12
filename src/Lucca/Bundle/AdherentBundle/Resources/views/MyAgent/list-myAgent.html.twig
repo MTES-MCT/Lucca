@@ -1,0 +1,51 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'AdherentBundle' %}
+
+{# View embed #}
+<div class="row">
+    <div class="col-12">
+
+        <table class="table table-hover w-100 responsive dataTables">
+            <thead>
+            <tr>
+                <th><i class="fa fa-male"></i> {{ 'label.name'|trans }}</th>
+                <th>{{ 'label.function'|trans }}</th>
+                <th>{{ 'label.commission'|trans }}</th>
+                <th><i class="fa fa-university"></i> {{ 'label.tribunal'|trans }}</th>
+                <th><i class="fa fa-cogs"></i> {{ 'label.actions'|trans }}</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for agent in agents %}
+                <tr>
+                    <td>{{ agent.officialName }}</td>
+                    <td>{{ agent.function|trans }}</td>
+                    <td>{{ agent.commission }}</td>
+                    <td>{% if agent.tribunal %}{{ agent.tribunal.name }}{% endif %}</td>
+                    <td>
+                        {% if app.user and is_granted("ROLE_LUCCA") %}
+                            {% if agent.enabled %}
+                                <a href="{{ path('lucca_myagent_enable', { 'id': agent.id }) }}"
+                                   class="btn btn-info btn-sm" title="{{ 'link.agent.disable'|trans }}">
+                                    <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                                </a>
+                            {% else %}
+                                <a href="{{ path('lucca_myagent_enable', { 'id': agent.id }) }}"
+                                   class="btn btn-danger btn-sm" title="{{ 'link.agent.enable'|trans }}">
+                                    <i class="fa fa-toggle-off" aria-hidden="true"></i>
+                                </a>
+                            {% endif %}
+
+                            <a href="{{ path('lucca_myagent_edit', { 'id': agent.id }) }}"
+                               class="btn btn-warning btn-sm" title="{{ 'link.agent.edit'|trans }}">
+                                <i class="fas fa-pencil-alt"></i> </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{# End - View embed #}

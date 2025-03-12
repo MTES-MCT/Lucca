@@ -1,0 +1,32 @@
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
+{% trans_default_domain 'SettingBundle' %}
+
+{% set entity_trans='entity.setting'|trans %}
+
+
+{% block lucca_title_name %}
+    <h2>{{ entity_trans }} - <b>{{ (setting.name)|trans }}</b></h2>
+{% endblock lucca_title_name %}
+
+{% block lucca_panels %}
+
+    {% embed "@LuccaSetting/Setting/Embed/panel-setting.html.twig" with { 'setting': setting, 'isShow': true } %}
+        {#-- Translation domain embed --#}
+        {% trans_default_domain 'SettingBundle' %}
+
+        {% block lucca_embed_buttons_setting %}
+            <div class="col-12 mt-4">
+                <a class="btn btn-secondary btn-lg" href="{{ path('lucca_setting_index') }}"
+                   title="{{ 'link.setting.backList'|trans }}"><i class="fa fa-reply"></i></a>
+                <a href="{{ path('lucca_setting_edit', { 'id': setting.id }) }}"
+                   class="btn btn-warning btn-lg"
+                   title="{{ 'link.setting.edit'|trans }}">
+                    <i class="fas fa-pencil-alt"></i>
+                </a>
+            </div>
+        {% endblock %}
+    {% endembed %}
+    {#-- End Panel - main --#}
+
+
+{% endblock lucca_panels %}

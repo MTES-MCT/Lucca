@@ -1,0 +1,50 @@
+{#-- Translation domain --#}
+{% trans_default_domain 'FolderBundle' %}
+
+{% block collection_widget %}
+    {% if prototype is defined %}
+        {% set attr = attr|merge({'data-prototype': form_widget(prototype)}) %}
+        {% set attr = attr|merge({'data-prototype-name': prototype.vars.name}) %}
+    {% endif %}
+    {% set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) %}
+    {% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}
+    {% set attr = attr|merge({'data-name-prefix': full_name}) %}
+
+    {{ form_errors(form) }}
+
+    <table {{ block('widget_attributes') }}>
+        <thead>
+        <tr>
+            <th>{{ 'label.sentence'|trans }}</th>
+            <th>{{ 'label.enabled'|trans }}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for item in form %}
+            {{ form_widget(item) }}
+        {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block lucca_folderBundle_proposal_widget %}
+
+    <tr {{ block('widget_attributes') }}>
+        <td>{{ form_widget(form.sentence) }}</td>
+        <td>{{ form_widget(form.enabled, {'attr' : {'checked': 'checked'}}) }}</td>
+        <td class="text-center">
+            <a href="#" class="collection-remove btn btn-danger" title="{{ 'link.proposal.delete'|trans }}">
+                <span class="fa fa-trash"></span></a>
+            <a href="#" class="collection-add btn btn-success" title="{{ 'link.proposal.new'|trans }}">
+                <span class="fa fa-plus"></span></a>
+            <a href="#" class="collection-duplicate btn btn-info" title="{{ 'link.proposal.duplicate'|trans }}">
+                <span class="fa fa-th-large"></span></a>
+        </td>
+    </tr>
+
+{% endblock %}
+
+{% block lucca_folderBundle_proposal_label %}{% endblock %}

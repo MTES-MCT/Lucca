@@ -1,0 +1,18 @@
+{#-- Footer Area --#}
+{% if footer %}
+    {% for subarea in footer.subareas %}
+        <div class="{{ subarea.width }} mb-4 order-lg-2">
+            <div class="headline">
+                <h4 class="h6 text-white">{{ subarea.title }}</h4>
+            </div>
+            <ul class="list-unstyled">
+                {% for page in subarea.pages %}
+                    <li class="mb-3">
+                        <a class="link-white-55" href="{{ path('lucca_content_page', { 'slug': page.slug}) }}"> {{ page.link }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+{% endif %}
+{#-- End - Footer Area --#}

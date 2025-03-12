@@ -1,0 +1,119 @@
+#####################################################
+## LuccaAdherent Bundle
+#####################################################
+
+########################
+# Entity
+########################
+entity:
+    adherent: "Adhérent"
+    agent: "Agent"
+
+########################
+# Label
+########################
+label:
+    actions: "Actions"
+    adherent: "Adhérent"
+    adherents: 'Adhérents'
+    name: "Nom"
+    firstname: "Prénom"
+    address: "Adresse"
+    zipcode: "Code postal"
+    city: "Ville"
+    phone: "Téléphone"
+    mobile: "Mobile"
+    town: "Commune"
+    towns: 'Communes'
+    partner: "Partenaire"
+    intercommunal: "Inter communalité"
+    service: "Service de l'état"
+    function: "Fonction"
+    invitedByMail: "Invité par mail ?"
+    enabled: "Actif ?"
+    username: "Nom d'utilisateur"
+    email: "Email"
+    groups: "Groupes"
+    lastLogin: "Dernière connexion"
+    authority: "Autorité"
+    password: "Mot de passe"
+    commission: "N° commission"
+    tribunal: "Tribunal d'assermentation"
+    emailPublic: "Email (public - affiché sur les documents)"
+    unitAttachment: "Unité de rattachement"
+    logo: "Logo (affiché sur document)"
+    countAdherent: "Nombre d'adhérents"
+    townMinute: "Commune dossiers"
+    no: 'Non'
+    yes: 'Oui'
+
+########################
+# Title
+########################
+title:
+    agents: "Les agents"
+    statistics: 'Adhérents'
+
+########################
+# Choice
+########################
+choice:
+    function:
+        mayor: "Maire"
+        deputy: "Adjoint au maire"
+        police: "Policier municipal"
+        dgs: "DGS"
+        dst: "DST"
+        town_manager: "Responsable urbanisme"
+        admin_agent: "Agent administratif territorial"
+        country_agent: "Agent de l'état"
+        asvp: "ASVP"
+        country_guard: "Garde champêtre"
+
+########################
+# Link
+########################
+link:
+    new: "Nouveau"
+    back: "Retour"
+    edit: "Modifier"
+    changePassword: "Changer votre mot de passe"
+    show: "Visualiser"
+    delete: "Supprimer"
+    print: "Imprimer"
+    enable: "Activer"
+    disable: "Désactiver"
+    login: "Vous identifier"
+
+    adherent:
+        new: "Créer un adhérent"
+        show: "Visualiser l'adhérent"
+        edit: "Modifier l'adhérent"
+        back: "Retour à la liste des adhérents"
+        delete: "Supprimer l'adhérent"
+        enable: "Activer l'adhérent"
+        disable: "Désactiver l'adhérent"
+
+    agent:
+        new: "Créer un agent"
+        show: "Visualiser l'agent"
+        edit: "Modifier l'agent"
+        back: "Retour à la liste des agents"
+        delete: "Supprimer l'agent"
+        enable: "Activer l'agent"
+        disable: "Désactiver l'agent"
+
+########################
+# Statistics
+########################
+statistics:
+    adherent:
+        title: 'Adhérents par communes'
+        description: 'Statistiques sur les adhérents par commune, et sur les dossiers en cours et clôturés par commune.'
+    filters: 'Filtres'
+    townMinutes:
+        title: 'Dossiers par commune adhérente'
+    filtersAdherent: 'Filtres sur les adhérents :'
+    filtersCity: "Filtres sur la localisation des dossiers (N'impacte que le graphique 'Dossiers par commune adhérente') :"
+    adherentTown:
+        description: 'Seules les informations des adhérents ayant pour autorité une commune sont affichées.'

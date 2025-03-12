@@ -1,0 +1,10 @@
+# LuccaUserBundle Routing
+lucca_user_bundle:
+    resource: "@LuccaUserBundle/Controller/Admin"
+    type:     attribute
+    prefix:   /back-office
+
+lucca_user_bundle_profile:
+    resource: "@LuccaUserBundle/Controller/Profile"
+    type:     attribute
+    prefix:   /back-office

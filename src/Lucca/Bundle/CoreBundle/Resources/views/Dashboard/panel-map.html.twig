@@ -1,0 +1,77 @@
+{% trans_default_domain 'CoreBundle' %}
+
+<div class="card card-default">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-8">{{ 'title.filterBy'|trans }}</div>
+            <div class="col-4">
+                <div class="input-group md-form form-sm form-1 pl-0">
+                    <div class="input-group-prepend js-search" style="box-sizing:content-box;">
+                        <span class="input-group-text blue lighten-3 spanSearch">
+                            <i class="fas fa-search text-white" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <input id="searchAddress" type="text" name="search"
+                           placeholder="{{ 'label.search.address'|trans }}"
+                           class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="text-white m-3 filters row">
+
+            {#--- Priority I ---#}
+            <div class="col-xs-6 col-sm-6 col-md-3 col-3">
+                <span id="filter-minutesClosedRegular" class="m-3 js-filters" style="opacity: 1">
+                    <em class="fas fa-folder p-2"></em> <span> {{ 'label.filters.minutesClosedRegular'|trans }} </span>
+                </span>
+            </div>
+
+            <div class="col-xs-6 col-sm-6 col-md-3 col-3">
+                <span id="filter-minutesClosedOther" class="m-3 js-filters" style="opacity: 1">
+                    <em class="fas fa-folder p-2"></em> <span> {{ 'label.filters.minutesClosedOther'|trans }} </span>
+                </span>
+            </div>
+
+            {#--- Priority II ---#}
+            <div class=" col-xs-6 col-sm-6 col-md-3 col-3">
+                <span id="filter-decisions" class="m-3 js-filters" style="opacity: 0.3">
+                    <em class="fas fa-balance-scale p-2"></em> <span> {{ 'label.filters.decision'|trans }} </span>
+                </span>
+            </div>
+
+            <div class="col-xs-6 col-sm-6 col-md-3 col-3">
+                <span id="filter-minutesSpotted" class="m-3 js-filters" style="opacity: 0.3">
+                    <em class="fas fa-binoculars p-2"></em> <span> {{ 'label.filters.minutesSpotted'|trans }} </span>
+                </span>
+            </div>
+
+            {#--- Priority III ---#}
+            <div class="col-xs-6 col-sm-6 col-md-3 col-3">
+                <span id="filter-updates" class="m-3 js-filters" style="opacity: 0.3">
+                    <em class="fas fa-redo p-2"></em> <span> {{ 'label.filters.updates'|trans }} </span>
+                </span>
+            </div>
+
+            <div class="col-xs-6 col-sm-6 col-md-3 col-3">
+                <span id="filter-controls" class="m-3 js-filters" style="opacity: 0.3">
+                    <em class="fas fa-user-check p-2"></em> <span> {{ 'label.filters.control'|trans }} </span>
+                </span>
+            </div>
+
+            {#--- Priority IV ---#}
+            <div class=" col-xs-6 col-sm-6 col-md-3 col-3">
+                <span id="filter-folders" class="m-3 js-filters" style="opacity: 0.3">
+                    <em class="fas fa-clipboard-check p-2"></em> <span> {{ 'label.filters.folder' | trans }} </span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-wrapper">
+        <div class="card-body">
+            <div id="js-google-map"></div>
+        </div>
+    </div>
+</div>

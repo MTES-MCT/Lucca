@@ -1,0 +1,209 @@
+{% trans_default_domain 'MinuteBundle' %}
+
+{#################################################### Minute ################################################### #}
+
+{#-- Humans Responsibles By Minute - List and element with complete description --#}
+{% macro humansResponsiblesByMinuteViewListComplete(humans) %}
+
+    {# Si il y a une ou des personnes rataché au PV on affiche les informations #}
+    {% if humans|length > 0 %}
+        {% for human in humans %}
+
+            {# Si la personne est une personne physique on affiche son nom et son status #}
+            {% if human.person is constant('PERSON_PHYSICAL', human) and human.status in [
+                constant('STATUS_OWNER', human),
+                constant('STATUS_UNDIVIDED', human)
+            ] %}
+                <li>{{ human.officialName }} ({{ human.status|trans }})</li>
+
+                {# Si la personne est une personne morale on affiche le nom de la société et son status #}
+            {% elseif human.person is constant('PERSON_CORPORATION', human) and human.statusCompany in [
+                constant('STATUS_OWNER', human),
+                constant('STATUS_UNDIVIDED', human)
+            ] %}
+                <li>Société {{ human.company }} ({{ human.statusCompany|trans }})</li>
+            {% endif %}
+
+        {% endfor %}
+    {% endif %}
+
+{% endmacro %}
+{#-- End - Humans Responsibles responsible - List and element with complete description --#}
+
+{#-- Humans Responsibles By Minute Inline - List and element with complete description without li tag --#}
+{% macro humansResponsiblesByMinuteViewListCompleteInline(humans) %}
+
+    {% if humans|length > 0 %}
+        {% for human in humans %}
+
+            {% if human.person is constant('PERSON_PHYSICAL', human) and human.status in [
+                constant('STATUS_OWNER', human),
+                constant('STATUS_UNDIVIDED', human)
+            ] %}
+                {{ human.officialName }} ({{ human.status|trans }})
+
+            {% elseif human.person is constant('PERSON_CORPORATION', human) and human.statusCompany in [
+                constant('STATUS_OWNER', human),
+                constant('STATUS_UNDIVIDED', human)
+            ] %}
+                Société {{ human.company }} ({{ human.statusCompany|trans }})
+            {% endif %}
+
+            {% if not(loop.last) %}
+                ,
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+{% endmacro %}
+{#-- End - Humans Responsibles responsible - List and element with complete description --#}
+
+{#-- Humans By Minute - List and element with complete description --#}
+{% macro humansByMinuteViewListComplete(humans) %}
+
+    {# Si il y a une ou des personnes rataché au PV on affiche les informations #}
+    {% if humans|length > 0 %}
+        {% for human in humans %}
+
+            {# Si la personne est une personne physique on affiche son nom, son adresse et son status #}
+            {% if human.person is constant('PERSON_PHYSICAL', human) %}
+                <li>{{ human.officialName }} demeurant {{ human.address }} en sa qualité
+                    de {{ human.status|trans }}
+                </li>
+
+                {# Si la personne est une personne morale on affiche le nom de la société, l'adresse, le nom du propriétaire et son status #}
+            {% elseif human.person is constant('PERSON_CORPORATION', human) %}
+                <li>Société {{ human.company }} à l'adresse {{ human.addressCompany }} représentée
+                    par {{ human.officialName }} en sa qualité de {{ human.status|trans }}
+                </li>
+            {% endif %}
+
+        {% endfor %}
+    {% endif %}
+
+{% endmacro %}
+{#-- End - Humans responsible - List and element with complete description --#}
+
+
+{#################################################### Control ################################################### #}
+
+{#-- Humans By Control - List --#}
+{% macro humansByControlViewList(humans) %}
+
+    {# Si il y a une ou des personnes rataché au controle on affiche les informations #}
+    {% if humans|length > 0 %}
+        {% for human in humans %}
+
+            {# Si la personne est une personne physique on affiche son genre et son status #}
+            {% if human.person is constant('PERSON_PHYSICAL', human) %}
+                <li>{{ human|human_genderName }}, en sa qualité de {{ human.status|trans }}</li>
+
+                {# Si la personne est une personne morale on affiche le nom de la société, le status de la personne lié et le nom de la société de la perosnne lié #}
+            {% elseif human.person is constant('PERSON_CORPORATION', human) %}
+                <li>  {{ human.officialName }}, en sa qualité de {{ human.status|trans }} de la société {{ human.company }}</li>
+            {% endif %}
+
+        {% endfor %}
+    {% endif %}
+
+{% endmacro %}
+{#-- End - Humans By Control - List --#}
+
+{#-- Humans By Control - div for each human--#}
+{% macro humansByControlViewDiv(humans) %}
+
+    {# Si il y a une ou des personnes rataché au controle on affiche les informations #}
+    {% if humans|length > 0 %}
+        {% for human in humans %}
+
+            {# Affichage d'une description complète de la personne #}
+            {{ human|human_inlineDescription }}
+            {% if not loop.last %}
+                <hr>{% endif %}
+
+        {% endfor %}
+    {% endif %}
+
+{% endmacro %}
+{#-- End - Humans By Control - div for each human--#}
+
+{#################################################### Folder ################################################### #}
+
+{#-- Humans by Folder - List and element with gender and name --#}
+{% macro humansByFolderViewListNamed(humans) %}
+
+    {# Si il y a une ou des personnes rataché au dossier on affiche les informations #}
+    {% if humans|length > 0 %}
+        {% for human in humans %}
+            {# Affichage d'une description de la personne basé sur son genre #}
+            <li>{{ human|human_genderName }}</li>
+        {% endfor %}
+    {% endif %}
+
+{% endmacro %}
+{#-- End - Humans by Folder - List and element with gender and name --#}
+
+{#-- Humans by Folder - Text with gender and name --#}
+{% macro humansByFolderViewTextNamed(humans) %}
+
+    {# Si il y a une ou des personnes rataché au dossier on affiche les informations #}
+    {% if humans|length > 0 %}
+        {% for human in humans %}
+
+            {# Si la personne est une personne physique on affiche son nom et son status #}
+            {% if human.person is constant('PERSON_PHYSICAL', human) %}
+                {{ human.officialName }} ({{ human.status|trans }})
+
+                {# Si la personne est une personne morale on affiche son nom, son status et le nom de la société de la personne lié #}
+            {% elseif human.person is constant('PERSON_CORPORATION', human) %}
+                {{ human.officialName }} ({{ human.status|trans }} de la société {{ human.company }})
+            {% endif %}
+
+            {% if not loop.last %}, {% endif %}
+        {% endfor %}
+    {% endif %}
+
+{% endmacro %}
+{#-- End - Humans by Folder - List and element with gender and name --#}
+
+{#-- Humans By Folder - List and element with complete description --#}
+{% macro humansByFolderViewListComplete(humans) %}
+
+    {# Si il y a une ou des personnes rataché au dossier on affiche les informations #}
+    {% if humans|length > 0 %}
+        {% for human in humans %}
+
+            {# Si la personne est une personne physique on affiche son nom et son status #}
+            {% if human.person is constant('PERSON_PHYSICAL', human) %}
+                <li>{{ human.officialName }} en sa qualité de {{ human.status|trans }}
+                </li>
+
+                {# Si la personne est une personne morale on affiche le nom de la société de la personne lié, son nom et son status #}
+            {% elseif human.person is constant('PERSON_CORPORATION', human) %}
+                <li>Société {{ human.company }} creprésentée
+                    par {{ human.officialName }} en sa qualité de {{ human.status|trans }}
+                </li>
+            {% endif %}
+
+        {% endfor %}
+    {% endif %}
+
+{% endmacro %}
+{#-- End - Humans By Folder - List and element with complete description --#}
+
+{#################################################### Courier ################################################### #}
+
+{#-- Humans by Courier - Text with gender and name --#}
+{% macro humansByCourierViewText(humans) %}
+
+    {# Si il y a une ou des personnes rataché au courrier on affiche les informations #}
+    {% if humans|length > 0 %}
+        {% for human in humans %}
+            {# Affichage détaillé du nom de la personne #}
+            {{ human|human_inlineName }}
+            {% if not loop.last %}, {% endif %}
+        {% endfor %}
+    {% endif %}
+
+{% endmacro %}
+{#-- End - Humans by Courier - List and element with gender and name --#}

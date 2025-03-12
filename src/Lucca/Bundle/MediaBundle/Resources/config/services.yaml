@@ -1,0 +1,164 @@
+services:
+
+    #################################################################
+    ## Namer
+    #################################################################
+
+    ## Media namer
+    lucca.namer.media:
+        class: Lucca\Bundle\MediaBundle\Namer\MediaNamer
+        arguments:
+            - "@lucca.utils.canonalizer"
+
+    ## Folder namer
+    lucca.namer.folder:
+        class: Lucca\Bundle\MediaBundle\Namer\FolderNamer
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@lucca.utils.canonalizer"
+            - "%env(resolve:LUCCA_UPLOAD_DIR)%"
+
+    ## Folder by date namer
+    lucca.namer.folder_by_date:
+        class: Lucca\Bundle\MediaBundle\Namer\FolderByDateNamer
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@lucca.utils.canonalizer"
+            - "%env(resolve:LUCCA_UPLOAD_DIR)%"
+
+    #################################################################
+    ## Manager
+    #################################################################
+
+#    ## Manager file to create Media
+#    lucca.manager.file:
+#        class: Lucca\Bundle\MediaBundle\Manager\FileManager
+#        arguments:
+#            - "@service_container"
+#            - "@doctrine.orm.entity_manager"
+#            - "@security.token_storage"
+#            - "@lucca.namer.media"
+
+    ## Decision maker - choose format file
+    lucca.decision_maker.format:
+        class: Lucca\Bundle\MediaBundle\Utils\FormatDecisionMaker
+
+#    ## Resize image
+#    lucca.resizer.image:
+#        class: Lucca\Bundle\MediaBundle\Utils\ImageResizer
+#        arguments:
+#            - '@lucca.decision_maker.format'
+#            - '%env(resolve:LUCCA_UPLOAD_DIR)%'
+
+    ## Manager file to create Media
+    lucca.utils.manager.gallery_for_pdf:
+        class: Lucca\Bundle\MediaBundle\Manager\GalleryForPdfManager
+        arguments:
+            - "@doctrine.orm.entity_manager"
+
+
+    #################################################################
+    ## Formatter
+    #################################################################
+    ## Manager file to create Media
+    lucca.utils.formatter.media_path:
+        class: Lucca\Bundle\MediaBundle\Utils\PathFormatter
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@router.default"
+            - "%env(APP_LOCALE)%"
+
+    #################################################################
+    ## Listeners
+    #################################################################
+
+    ## Doctrine event listener
+    lucca.event_listener.media.doctrine:
+        class: Lucca\Bundle\MediaBundle\EventListener\DoctrineEventListener
+        tags:
+            - { name: doctrine.event_listener, event: preRemove }
+        arguments:
+          [ '@Lucca\Bundle\MediaBundle\Manager\FileManager' ]
+
+    ## Manage Media passed in Form
+    lucca.listener.form.media:
+        class: Lucca\Bundle\MediaBundle\EventListener\MediaFormListener
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@Lucca\Bundle\MediaBundle\Manager\FileManager'
+            - '%env(resolve:LUCCA_UPLOAD_DIR)%'
+        tags:
+            - { name: kernel.event_listener, event: form.bind, method: onSubmit }
+
+    ## Manage Gallery passed in Form
+    lucca.listener.form.gallery:
+        class: Lucca\Bundle\MediaBundle\EventListener\GalleryFormListener
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@Lucca\Bundle\MediaBundle\Manager\FileManager'
+            - '%env(resolve:LUCCA_UPLOAD_DIR)%'
+        tags:
+            - { name: kernel.event_listener, event: form.bind, method: onSubmit }
+
+    ## Manage Dropzone passed in Form
+    lucca.listener.form.dropzone:
+        class: Lucca\Bundle\MediaBundle\EventListener\DropzoneFormListener
+        arguments:
+            - '@Lucca\Bundle\MediaBundle\Manager\FileManager'
+            - '@doctrine.orm.entity_manager'
+            - '%env(resolve:LUCCA_UPLOAD_DIR)%'
+        tags:
+            - { name: kernel.event_listener, event: form.bind, method: onSubmit }
+
+    #################################################################
+    ## FormTypes
+    #################################################################
+
+    ## Form Media who can be embed
+    form.type.media:
+        class: Lucca\Bundle\MediaBundle\Form\Admin\MediaType
+        arguments:
+            - "@lucca.listener.form.media"
+        tags:
+            - { name: form.type }
+
+    ## Form Basic Media who can be embed
+    form.type.media.basic:
+        class: Lucca\Bundle\MediaBundle\Form\Media\MediaBasicType
+        arguments:
+            - "@lucca.listener.form.media"
+        tags:
+            - { name: form.type }
+
+    ## Form Quick Media who can be embed
+    form.type.media.quick:
+        class: Lucca\Bundle\MediaBundle\Form\Media\MediaQuickType
+        arguments:
+            - "@lucca.listener.form.media"
+        tags:
+            - { name: form.type }
+
+    ## Form Dropzone who can be embed
+    form.type.dropzone:
+        class: Lucca\Bundle\MediaBundle\Form\Dropzone\DropzoneType
+        arguments:
+            - "@lucca.listener.form.dropzone"
+            - '@router'
+        tags:
+            - { name: form.type }
+
+    ## Form Gallery who can be embed
+    form.type.gallery:
+        class: Lucca\Bundle\MediaBundle\Form\Admin\GalleryType
+        arguments:
+            - "@lucca.listener.form.gallery"
+        tags:
+            - { name: form.type }
+
+    ## Form Quick Gallery who can be embed
+    form.type.gallery.basic:
+        class: Lucca\Bundle\MediaBundle\Form\Gallery\GalleryQuickType
+        arguments:
+            - "@lucca.listener.form.gallery"
+        tags:
+            - { name: form.type }
