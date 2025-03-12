@@ -34,7 +34,7 @@ class Courier implements LoggableInterface
     private ?int $id = null;
 
     #[ORM\OneToOne(targetEntity: Folder::class, cascade: ["persist", "remove"])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private Folder $folder;
 
     #[ORM\ManyToOne(targetEntity: Department::class)]

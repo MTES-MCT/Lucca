@@ -7,6 +7,7 @@ services:
     working_dir: /srv/app
     volumes:
       - .:/srv/app
+      - ../lucca-v2.doc:/srv/docs
     depends_on:
       - db
 

@@ -61,7 +61,7 @@ class Adherent implements LoggableInterface, MediaAsyncInterface
     #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
-    private string $firstname;
+    private string $firstname = '';
 
     #[ORM\Column(length: 50)]
     #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]

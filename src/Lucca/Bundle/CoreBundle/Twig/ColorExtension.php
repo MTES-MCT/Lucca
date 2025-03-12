@@ -13,7 +13,7 @@ namespace Lucca\Bundle\CoreBundle\Twig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
-use Lucca\Bundle\MinuteBundle\Entity\Commission;
+use Lucca\Bundle\DecisionBundle\Entity\Commission;
 
 class ColorExtension extends AbstractExtension
 {
