@@ -1,0 +1,35 @@
+variables:
+    REGISTRY_IMAGE_PATH: 'nw/lucca-v2'
+    CONTAINERS_TO_BUILD: 'php-fpm,caddy'
+    DUMP_TO_IMPORT: 'http://db.tec2.numeric-wave.local:8080/lucca-v2_dump.zip'
+    PHP_VERSION: '8.2'
+    PHP_BRANCH: 'main'
+    CADDY_VERSION: '2'
+    CADDY_BRANCH: 'main'
+    MAIN_VERSION: '8.2-2'
+    PHP_MEMORY_LIMIT: '512M'
+
+
+stages:
+    - build
+    - scan
+    - tests
+    - sbom
+    - production
+
+include:
+    -   project: 'nw/gitlab-ci'
+        ref: main
+        file: '/build/docker_build.yml'
+    -   project: 'nw/gitlab-ci'
+        ref: main
+        file: '/scan/docker_scan_trivy.yml'
+    -   project: 'nw/gitlab-ci'
+        ref: main
+        file: '/sbom/docker_sbom.yml'
+    -   project: 'nw/gitlab-ci'
+        ref: main
+        file: '/tests/docker_paratest.yml'
+    -   project: 'nw/gitlab-ci'
+        ref: main
+        file: '/production/docker_build_push_prod.yml'
