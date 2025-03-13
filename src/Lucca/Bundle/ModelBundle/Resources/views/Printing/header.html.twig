@@ -42,7 +42,7 @@
                 var elem = document.getElementsByClassName(pagingElements[i]);
                 for (var j = 0; j < elem.length; ++j) {
                     elem[j].textContent = urlParamsList[pagingElements[i]];
-                    {% if cover is defined %}
+                    {% if cover is defined and page.marginTop %}
                     if (urlParamsList[pagingElements[i]] == 1) {
                         document.getElementById("margin-{{ page.marginTop.id }}").style.display = 'none';
                     }
