@@ -27,7 +27,9 @@ class AdherentControllerTest extends BasicLuccaTestCase
         /**
          * Entity to use for the tests
          */
-        $adherent = $em->getRepository(Adherent::class)->findOneBy([]);
+        $adherent = $em->getRepository(Adherent::class)->findOneBy([
+            'user' => $this->getUser(),
+        ]);
 
         /** Urls to test */
         return [

@@ -41,6 +41,11 @@ abstract class BasicLuccaTestCase extends WebTestCase
      */
     abstract protected function getUrls(EntityManagerInterface $em, RouterInterface $router): array;
 
+    public function getUser(): UserInterface
+    {
+        return $this->clientAuthenticated;
+    }
+
     /************************************ Init Test functions ************************************/
 
     /**
