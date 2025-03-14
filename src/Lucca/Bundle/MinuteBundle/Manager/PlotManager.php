@@ -88,9 +88,4 @@ readonly class PlotManager
             }
         }
     }
-
-    public function getName(): string
-    {
-        return 'lucca.manager.plot';
-    }
 }

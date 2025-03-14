@@ -144,9 +144,4 @@ class DateExtension extends AbstractExtension
 
         return $dateLetter;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.twig.date';
-    }
 }

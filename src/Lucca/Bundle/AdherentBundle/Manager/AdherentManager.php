@@ -113,9 +113,4 @@ readonly class AdherentManager
         /** Return true if a dangerous message has been found in Session */
         return !$this->requestStack->getSession()->getFlashBag()->has('danger');
     }
-
-    public function getName(): string
-    {
-        return 'lucca.manager.adherent';
-    }
 }

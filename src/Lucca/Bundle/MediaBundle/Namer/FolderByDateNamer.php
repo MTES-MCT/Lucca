@@ -6,6 +6,7 @@ use DateTime;
 use Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -14,11 +15,14 @@ use Lucca\Bundle\MediaBundle\Entity\{Category, Media, Folder};
 
 class FolderByDateNamer implements FolderNamerInterface
 {
+    private Folder $currentFolder;
+
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly Canonalizer $canonalizer,
-        private Folder $currentFolder,
-        private string $upload_dir,
+
+        #[Autowire(param: 'lucca_media.upload_directory')]
+        private readonly string $upload_dir,
     )
     {
     }
@@ -119,10 +123,5 @@ class FolderByDateNamer implements FolderNamerInterface
         }
 
         return $folder;
-    }
-
-    public function getName(): string
-    {
-        return 'lucca.namer.folder_by_date';
     }
 }

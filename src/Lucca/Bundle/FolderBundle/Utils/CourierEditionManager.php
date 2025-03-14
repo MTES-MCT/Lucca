@@ -192,9 +192,4 @@ readonly class CourierEditionManager
 
         return $courier;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.manager.courier_human_edition';
-    }
 }

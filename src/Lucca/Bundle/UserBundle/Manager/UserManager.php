@@ -114,9 +114,4 @@ readonly class UserManager
 
         return $user;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.user.manager';
-    }
 }

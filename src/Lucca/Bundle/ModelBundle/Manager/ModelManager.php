@@ -93,9 +93,4 @@ readonly class ModelManager
 
         return $newModel;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.manager.model';
-    }
 }

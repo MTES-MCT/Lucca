@@ -13,6 +13,7 @@ namespace Lucca\Bundle\MediaBundle\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, BinaryFileResponse, Response};
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -27,10 +28,13 @@ use Lucca\Bundle\MediaBundle\Utils\ImageResizer;
 class MediaController extends AbstractController
 {
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly TokenStorageInterface $tokenStorage,
+        private readonly EntityManagerInterface        $em,
+        private readonly TokenStorageInterface         $tokenStorage,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
-        private readonly ImageResizer $imageResizer,
+        private readonly ImageResizer                  $imageResizer,
+
+        #[Autowire(param: 'lucca_media.upload_directory')]
+        private readonly string                        $upload_dir,
     )
     {
     }
@@ -77,7 +81,7 @@ class MediaController extends AbstractController
         }
 
         /** Check if file exist */
-        $fullFilePath = $this->getParameter('lucca_media.upload_directory') . $media->getFilePath();
+        $fullFilePath = $this->upload_dir . $media->getFilePath();
         if (!file_exists($fullFilePath)) {
             throw new NotFoundHttpException('File not found', null, 404);
         }

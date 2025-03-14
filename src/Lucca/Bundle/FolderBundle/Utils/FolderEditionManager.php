@@ -53,9 +53,4 @@ readonly class FolderEditionManager
 
         return $folder;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.manager.folder_edition';
-    }
 }

@@ -33,9 +33,4 @@ class PriceExtension extends AbstractExtension
 
         return $price . ' €';
     }
-
-    public function getName(): string
-    {
-        return 'lucca.twig.price';
-    }
 }

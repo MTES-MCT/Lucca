@@ -212,9 +212,4 @@ readonly class FolderManager
 
         return $data;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.manager.folder';
-    }
 }

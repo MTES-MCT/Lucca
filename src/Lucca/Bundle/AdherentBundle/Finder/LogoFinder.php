@@ -38,9 +38,4 @@ class LogoFinder
 
         return null;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.finder.logo';
-    }
 }

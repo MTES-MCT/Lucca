@@ -262,12 +262,4 @@ class SettingGenerator
             unset($name, $setting);
         }
     }
-
-    /**
-     * Set service name
-     */
-    public function getName(): string
-    {
-        return 'lucca.generator.setting';
-    }
 }

@@ -43,9 +43,4 @@ class MediaNamer implements MediaNamerInterface
     {
         return uniqid() . "_" . $this->canonalizer->slugify($filename);
     }
-
-    public function getName(): string
-    {
-        return 'lucca.namer.media';
-    }
 }

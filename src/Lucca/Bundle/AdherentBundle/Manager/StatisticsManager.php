@@ -80,9 +80,4 @@ class StatisticsManager
          */
         return $result;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.manager.adherent_statistics';
-    }
 }

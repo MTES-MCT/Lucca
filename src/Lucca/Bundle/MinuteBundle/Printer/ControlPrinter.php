@@ -148,9 +148,4 @@ class ControlPrinter
 
         return $logo;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.utils.printer.control';
-    }
 }

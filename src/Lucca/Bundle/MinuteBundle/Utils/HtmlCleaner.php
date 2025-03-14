@@ -216,9 +216,4 @@ class HtmlCleaner
             $cassationComission->setRestitution($this->removeAllFonts($cassationComission->getRestitution()));
         }
     }
-
-    public function getName(): string
-    {
-        return 'lucca.utils.html_cleaner';
-    }
 }

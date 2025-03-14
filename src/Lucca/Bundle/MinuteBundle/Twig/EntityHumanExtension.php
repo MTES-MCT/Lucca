@@ -126,9 +126,4 @@ class EntityHumanExtension extends AbstractExtension
 
         return $inlineDescription;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.twig.entity.human';
-    }
 }

@@ -41,9 +41,4 @@ readonly class DoctrineEventListener
             }
         }
     }
-
-    public function getName(): string
-    {
-        return 'lucca.event_listener.media.doctrine';
-    }
 }

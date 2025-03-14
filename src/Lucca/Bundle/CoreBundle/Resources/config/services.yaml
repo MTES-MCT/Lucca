@@ -26,24 +26,3 @@ services:
         tags:
             - { name: doctrine.event_listener, event: preUpdate }
 
-    #################################################################
-    ## Utils
-    #################################################################
-
-    ## Utils for canonalize and slugify string
-    lucca.utils.canonalizer:
-        class: Lucca\Bundle\CoreBundle\Utils\Canonalizer
-
-    ## Utils for convert csv file to array
-    lucca.converter.csv_array:
-        class: Lucca\Bundle\CoreBundle\Utils\ConverterCsvArray
-
-    ## Utils for convert int to string
-    lucca.utils.converter_int_str:
-        class: Lucca\Bundle\CoreBundle\Utils\ConverterIntStr
-
-    ## Utils for GeoLocator
-    lucca.utils.geo_locator:
-        class: Lucca\Bundle\CoreBundle\Service\GeoLocator
-        arguments:
-            - "@lucca.utils.canonalizer"

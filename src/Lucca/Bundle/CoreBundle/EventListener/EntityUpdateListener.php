@@ -10,11 +10,14 @@
 
 namespace Lucca\Bundle\CoreBundle\EventListener;
 
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\Events;
 
 /**
-    * Called when entity is updated
+ * Called when entity is updated
  */
+#[AsDoctrineListener(event: Events::preUpdate)]
 class EntityUpdateListener
 {
     /**
@@ -27,10 +30,5 @@ class EntityUpdateListener
         if (method_exists($entity, 'getUpdatedAt')) {
             $entity->setUpdatedAt(new \DateTime('now'));
         }
-    }
-
-    public function getName(): string
-    {
-        return 'lucca.listener.entity_update';
     }
 }

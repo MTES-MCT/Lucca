@@ -44,10 +44,5 @@ class Canonalizer
 
         return strtolower($transformedString);
     }
-
-    public function getName(): string
-    {
-        return 'lucca.core.utils.canonalizer';
-    }
 }
 

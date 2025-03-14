@@ -11,7 +11,7 @@
 namespace Lucca\Bundle\MediaBundle\Utils;
 
 use GdImage;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 use Lucca\Bundle\MediaBundle\Entity\Media;
 
@@ -19,7 +19,9 @@ readonly class ImageResizer
 {
     public function __construct(
         private FormatDecisionMaker   $formatDecisionMaker,
-        private ParameterBagInterface $params,
+
+        #[Autowire(param: 'lucca_media.upload_directory')]
+        private string                 $upload_dir,
     )
     {
     }
@@ -34,7 +36,7 @@ readonly class ImageResizer
             return false;
         }
 
-        $filePath = $this->params->get('lucca_media.upload_directory') . $media->getFilePath();
+        $filePath = $this->upload_dir . $media->getFilePath();
         $imageSize = getimagesize($filePath);
 
         $originalWidth = $imageSize[0];

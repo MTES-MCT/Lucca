@@ -41,9 +41,4 @@ class BooleanExtension extends AbstractExtension
 
         return '<i class="fa fa-times text-danger"></i>';
     }
-
-    public function getName(): string
-    {
-        return 'lucca.twig.boolean';
-    }
 }

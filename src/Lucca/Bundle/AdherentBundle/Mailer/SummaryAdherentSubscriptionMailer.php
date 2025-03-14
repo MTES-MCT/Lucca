@@ -99,9 +99,4 @@ class SummaryAdherentSubscriptionMailer
 
         return $codeReturnEmail;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.mailer.adherent.subscription.summary';
-    }
 }

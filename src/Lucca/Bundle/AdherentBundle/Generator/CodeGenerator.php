@@ -59,9 +59,4 @@ readonly class CodeGenerator
 
         return $prefix . sprintf('%02d', $increment);
     }
-
-    public function getName(): string
-    {
-        return 'lucca.generator.adherent_code';
-    }
 }

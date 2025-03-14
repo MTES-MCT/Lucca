@@ -28,7 +28,7 @@ use Doctrine\ORM\EntityManagerInterface,
     Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken,
     Symfony\Component\Security\Http\Util\TargetPathTrait,
     Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 
 use Lucca\Bundle\SecurityBundle\Manager\LoginAttemptManager;
@@ -50,22 +50,22 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
 
     /** @var string Define constant to name login route */
     private string $routeLogin = 'lucca_user_security_login';
-    /** @var string Define constant to name route called after a login */
-    private string $routeAfterLogin;
 
     /**
      * SimpleAuthenticator constructor
      */
     public function __construct(
-        private readonly EntityManagerInterface     $em,
-        private readonly UrlGeneratorInterface      $urlGenerator,
-        private readonly CsrfTokenManagerInterface  $csrfTokenManager,
-        private readonly ParameterBagInterface      $parameterBag,
-        private readonly UserPasswordHasher         $passwordHasher,
-        private readonly LoginAttemptManager        $loginAttemptManager
+        private readonly EntityManagerInterface    $em,
+        private readonly UrlGeneratorInterface     $urlGenerator,
+        private readonly CsrfTokenManagerInterface $csrfTokenManager,
+        private readonly UserPasswordHasher        $passwordHasher,
+        private readonly LoginAttemptManager       $loginAttemptManager,
+
+        /** Define constant to name route called after a login */
+        #[Autowire(param: 'lucca_security.default_url_after_login')]
+        private readonly string                    $routeAfterLogin,
     )
     {
-        $this->routeAfterLogin = $this->parameterBag->get('lucca_security.default_url_after_login');
     }
 
     /**

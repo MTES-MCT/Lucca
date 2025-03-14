@@ -215,9 +215,4 @@ class GeoLocator
 
         return $address;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.utils.geo_locator';
-    }
 }

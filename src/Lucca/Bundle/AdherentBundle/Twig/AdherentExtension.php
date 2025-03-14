@@ -49,9 +49,4 @@ class AdherentExtension extends AbstractExtension
 
         return false;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.twig.adherent';
-    }
 }

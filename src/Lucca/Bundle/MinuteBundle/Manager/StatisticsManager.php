@@ -230,9 +230,4 @@ class StatisticsManager
 
         return $count;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.manager.minute_statistics';
-    }
 }

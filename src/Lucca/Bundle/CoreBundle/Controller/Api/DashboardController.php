@@ -330,7 +330,7 @@ class DashboardController extends AbstractController
         $lat = $request->get('lat');
         $lng = $request->get('lng');
 
-        $address = $this->get('lucca.utils.geo_locator')->getAddressFromGeocode($lat, $lng);
+        $address = $this->geoLocator->getAddressFromGeocode($lat, $lng);
         if (!$address or !is_array($address)) {
             return new JsonResponse([
                 'success' => false,

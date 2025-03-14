@@ -47,9 +47,4 @@ readonly class CourierManager
 
         return $courier;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.manager.courier';
-    }
 }

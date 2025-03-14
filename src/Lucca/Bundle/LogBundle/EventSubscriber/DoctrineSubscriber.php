@@ -115,12 +115,4 @@ class DoctrineSubscriber
             $this->eventDispatcher->dispatch($event, LogCreatorEvent::NAME);
         }
     }
-
-    /**
-     * Return the name of this service
-     */
-    public function getName(): string
-    {
-        return 'lucca.log.subscriber.doctrine';
-    }
 }

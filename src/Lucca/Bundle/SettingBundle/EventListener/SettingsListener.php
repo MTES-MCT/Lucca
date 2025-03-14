@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\SettingBundle\EventListener;
 
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 use Lucca\Bundle\SettingBundle\Generator\SettingGenerator;
@@ -30,6 +31,7 @@ readonly class SettingsListener
      * Call on every kernel request
      * Check LoginAttempts made with Ip on request
      */
+    #[AsEventListener(event: 'kernel.request')]
     public function onKernelRequest(RequestEvent $event): void
     {
         $settings = $this->settingGenerator->getCachedSettings();

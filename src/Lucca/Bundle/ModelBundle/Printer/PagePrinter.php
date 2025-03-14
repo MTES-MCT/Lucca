@@ -129,9 +129,4 @@ class PagePrinter
 
         return $index;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.utils.printer.model.page';
-    }
 }

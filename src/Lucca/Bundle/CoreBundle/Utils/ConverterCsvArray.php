@@ -38,9 +38,4 @@ class ConverterCsvArray
 
         return $data;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.utils.converter_csv_array';
-    }
 }

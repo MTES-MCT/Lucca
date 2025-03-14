@@ -10,11 +10,14 @@
 
 namespace Lucca\Bundle\CoreBundle\EventListener;
 
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\PrePersistEventArgs;
+use Doctrine\ORM\Events;
 
 /**
  * Called when entity is created
  */
+#[AsDoctrineListener(event: Events::prePersist)]
 class EntityPersistListener
 {
     /**
@@ -27,10 +30,5 @@ class EntityPersistListener
         if (method_exists($entity, 'getCreatedAt')) {
             $entity->setCreatedAt(new \DateTimeImmutable('now'));
         }
-    }
-
-    public function getName(): string
-    {
-        return 'lucca.listener.entity_persist';
     }
 }

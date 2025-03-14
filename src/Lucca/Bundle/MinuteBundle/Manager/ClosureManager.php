@@ -124,9 +124,4 @@ readonly class ClosureManager
 
         return $minute;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.manager.closure';
-    }
 }

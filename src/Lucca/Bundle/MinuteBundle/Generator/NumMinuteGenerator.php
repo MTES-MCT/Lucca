@@ -63,9 +63,4 @@ readonly class NumMinuteGenerator
 
         return $prefix . sprintf('%03d', $increment);
     }
-
-    public function getName(): string
-    {
-        return 'lucca.generator.minute_num';
-    }
 }
