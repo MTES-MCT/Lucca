@@ -10,7 +10,6 @@
 
 namespace Lucca\Bundle\FolderBundle\Printer;
 
-use Symfony\Bundle\TwigBundle\TwigEngine;
 use Twig\Environment;
 use Twig\Error\Error;
 

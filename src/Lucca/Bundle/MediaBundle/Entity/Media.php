@@ -166,7 +166,7 @@ class Media implements LoggableInterface
         return $this;
     }
 
-    public function isPublic(): bool
+    public function getPublic(): bool
     {
         return $this->public;
     }

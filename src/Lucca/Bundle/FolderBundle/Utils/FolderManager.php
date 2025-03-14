@@ -185,8 +185,12 @@ readonly class FolderManager
     /**
      * This function is used to replace tags that the user had to specify which part of the text can't have a page break inside
      */
-    public function replaceCustomTags($data): array|string
+    public function replaceCustomTags($data): array|string|null
     {
+        if (!$data) {
+            return $data;
+        }
+
         $avoidBreakPageTags = explode(',', $this->params->get('lucca_folder.avoid_break_page'));
 
         /** Search if there is custom tag in the html */

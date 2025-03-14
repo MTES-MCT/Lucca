@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\AdherentBundle\Entity\{Agent, Adherent};
 use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
 use Lucca\Bundle\CoreBundle\Service\GeoLocator;
 use Lucca\Bundle\DecisionBundle\Entity\Decision;
