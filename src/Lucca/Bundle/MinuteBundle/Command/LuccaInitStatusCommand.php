@@ -149,7 +149,7 @@ class LuccaInitStatusCommand extends Command
              * to store errors returned
              * from google Api
              */
-            $path = $this->kernel->getProjectDir() . '/../web/assets/log/';
+            $path = $this->kernel->getProjectDir() . '/public/assets/log/';
             $file = $path . 'initStatus.txt';
 
             $filesystem = new Filesystem();
