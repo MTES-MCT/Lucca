@@ -90,9 +90,4 @@ readonly class LoginAttemptManager
 
         return $loginAttempt;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.security.manager.login_attempt';
-    }
 }

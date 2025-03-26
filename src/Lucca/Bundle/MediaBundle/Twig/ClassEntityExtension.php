@@ -60,9 +60,4 @@ class ClassEntityExtension extends AbstractExtension
         return $classEntity->implementsInterface(MediaAsyncInterface::class)
         || $classEntity->implementsInterface(MediaListAsyncInterface::class);
     }
-
-    public function getName(): string
-    {
-        return 'lucca.twig.classEntity';
-    }
 }

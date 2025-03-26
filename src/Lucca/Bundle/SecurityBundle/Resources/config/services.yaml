@@ -11,19 +11,6 @@ services:
         tags: [ 'controller.service_arguments' ]
 
     #################################################################
-    ## Command
-    #################################################################
-
-    ## Command - Unban ip
-    lucca.security.command.unban:
-        class: Lucca\Bundle\SecurityBundle\Command\UnbanCommand
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@lucca.security.manager.login_attempt'
-        tags:
-            - { name: 'console.command', command: 'lucca:security:unban' }
-
-    #################################################################
     ## Authenticator
     #################################################################
 
@@ -36,9 +23,9 @@ services:
             - "@doctrine.orm.entity_manager"
             - "@router"
             - "@security.csrf.token_manager"
-            - "@parameter_bag"
             - "@security.user_password_hasher"
             - "@lucca.security.manager.login_attempt"
+            - '%env(DEFAULT_URL_AFTER_LOGIN)%'
 
     #################################################################
     ## Security

@@ -49,9 +49,4 @@ readonly class GalleryForPdfManager
 
         return $aMediasImages;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.utils.manager.gallery_for_pdf';
-    }
 }

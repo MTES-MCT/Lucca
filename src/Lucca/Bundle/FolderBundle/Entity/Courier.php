@@ -43,11 +43,9 @@ class Courier implements LoggableInterface
     private Department $department;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: 'constraint.datetime')]
     private ?DateTime $dateOffender = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: 'constraint.datetime')]
     private ?DateTime $dateJudicial = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -62,7 +60,6 @@ class Courier implements LoggableInterface
     private ?int $amount = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: 'constraint.datetime')]
     private ?DateTime $dateDdtm = null;
 
     #[ORM\OneToOne(targetEntity: CourierEdition::class, cascade: ["persist", "remove"], orphanRemoval: true)]

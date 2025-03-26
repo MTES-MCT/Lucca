@@ -34,9 +34,4 @@ class SettingExtension extends AbstractExtension
     {
         return SettingManager::get($settingName);
     }
-
-    public function getName(): string
-    {
-        return 'lucca.twig.setting';
-    }
 }

@@ -11,25 +11,21 @@
 namespace Lucca\Bundle\MediaBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Lucca\Bundle\FolderBundle\Entity\CourierEdition;
-use Lucca\Bundle\FolderBundle\Entity\CourierHumanEdition;
-use Lucca\Bundle\FolderBundle\Entity\FolderEdition;
-use Lucca\Bundle\MinuteBundle\Entity\ControlEdition;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand,
-    Symfony\Component\Console\Input\InputInterface,
+use Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Output\OutputInterface;
-
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+use Lucca\Bundle\FolderBundle\Entity\{CourierEdition, CourierHumanEdition, FolderEdition};
+use Lucca\Bundle\MediaBundle\Utils\PathFormatter;
+use Lucca\Bundle\MinuteBundle\Entity\ControlEdition;
 
 class FixMediaCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
+        private readonly PathFormatter $pathFormatter,
     )
     {
         parent::__construct();
@@ -110,7 +106,6 @@ class FixMediaCommand extends Command
     {
         /******************************* Editions ******************************************************************/
         /** Get services used for the next step */
-        $pathFormatter = $this->getContainer()->get('lucca.utils.formatter.media_path');
         $em = $this->em;
         $batchSize = 10;
         $i = 1;
@@ -127,10 +122,10 @@ class FixMediaCommand extends Command
         /** Example : /media/2020/11/image.jpg -> /media/show/image-jpg */
         foreach ($editions as $edition) {
             if ($edition->getLetterConvocation()) {
-                $edition->setLetterConvocation($pathFormatter->formatBrokenPath($edition->getLetterConvocation(), null, $oldPath, $p_defaultFileName, $p_defaultId));
+                $edition->setLetterConvocation($this->pathFormatter->formatBrokenPath($edition->getLetterConvocation(), null, $oldPath, $p_defaultFileName, $p_defaultId));
             }
             if ($edition->getLetterAccess()) {
-                $edition->setLetterAccess($pathFormatter->formatBrokenPath($edition->getLetterAccess(), null, $oldPath, $p_defaultFileName, $p_defaultId));
+                $edition->setLetterAccess($this->pathFormatter->formatBrokenPath($edition->getLetterAccess(), null, $oldPath, $p_defaultFileName, $p_defaultId));
             }
             $em->persist($edition);
 
@@ -157,10 +152,10 @@ class FixMediaCommand extends Command
         /** Example : /media/2020/11/image.jpg -> /media/show/image.jpg */
         foreach ($editions as $edition) {
             if ($edition->getLetterDdtm()) {
-                $edition->setLetterDdtm($pathFormatter->formatBrokenPath($edition->getLetterDdtm(), null, $oldPath, $p_defaultFileName, $p_defaultId));
+                $edition->setLetterDdtm($this->pathFormatter->formatBrokenPath($edition->getLetterDdtm(), null, $oldPath, $p_defaultFileName, $p_defaultId));
             }
             if ($edition->getLetterJudicial()) {
-                $edition->setLetterJudicial($pathFormatter->formatBrokenPath($edition->getLetterJudicial(), null, $oldPath, $p_defaultFileName, $p_defaultId));
+                $edition->setLetterJudicial($this->pathFormatter->formatBrokenPath($edition->getLetterJudicial(), null, $oldPath, $p_defaultFileName, $p_defaultId));
             }
             $em->persist($edition);
 
@@ -186,7 +181,7 @@ class FixMediaCommand extends Command
         /** Example : /media/2020/11/image.jpg -> /media/show/image.jpg */
         foreach ($editions as $edition) {
             if ($edition->getFolderVersion()) {
-                $edition->setFolderVersion($pathFormatter->formatBrokenPath($edition->getFolderVersion(), null, $oldPath, $p_defaultFileName, $p_defaultId));
+                $edition->setFolderVersion($this->pathFormatter->formatBrokenPath($edition->getFolderVersion(), null, $oldPath, $p_defaultFileName, $p_defaultId));
                 $em->persist($edition);
             }
             /** Update progress bar */
@@ -211,10 +206,10 @@ class FixMediaCommand extends Command
         /** Example : /media/2020/11/image.jpg -> /media/show/image.jpg */
         foreach ($editions as $edition) {
             if ($edition->getLetterOffender()) {
-                $edition->setLetterOffender($pathFormatter->formatBrokenPath($edition->getLetterOffender(), null, $oldPath, $p_defaultFileName, $p_defaultId));
+                $edition->setLetterOffender($this->pathFormatter->formatBrokenPath($edition->getLetterOffender(), null, $oldPath, $p_defaultFileName, $p_defaultId));
             }
             if ($edition->getLetterOffenderEdited()) {
-                $edition->setLetterOffenderEdited($pathFormatter->formatBrokenPath($edition->getLetterOffenderEdited(), null, $oldPath, $p_defaultFileName, $p_defaultId));
+                $edition->setLetterOffenderEdited($this->pathFormatter->formatBrokenPath($edition->getLetterOffenderEdited(), null, $oldPath, $p_defaultFileName, $p_defaultId));
             }
             $em->persist($edition);
             /** Update progress bar */

@@ -122,9 +122,4 @@ class ConverterIntStr
 
         return '';
     }
-
-    public function getName(): string
-    {
-        return 'lucca.utils.converter_int_str';
-    }
 }

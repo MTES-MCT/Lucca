@@ -11,9 +11,10 @@
 namespace Lucca\Bundle\MinuteBundle\Form;
 
 use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
-use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, DateType, TextareaType, TextType};
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, TextareaType, TextType};
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Lucca\Bundle\CoreBundle\Form\Type\HtmlDateType;
 use Lucca\Bundle\MinuteBundle\Entity\Closure;
 
 class ClosureType extends AbstractType
@@ -33,10 +34,9 @@ class ClosureType extends AbstractType
                 ),
                 'label' => 'label.status', 'expanded' => true, 'required' => true
             ))
-            ->add('dateClosing', DateType::class, array(
-                'label' => 'label.dateClosing', 'attr' => array('class' => 'date-picker'),
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
-            ))
+            ->add('dateClosing', HtmlDateType::class, [
+                'label' => 'label.dateClosing', 'required' => true
+            ])
             ->add('natureRegularized', ChoiceType::class, array(
                 'choices' => array(
                     Closure::NATURE_REGULARIZED_ADMINISTRATIVE => Closure::NATURE_REGULARIZED_ADMINISTRATIVE,

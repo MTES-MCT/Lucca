@@ -44,9 +44,4 @@ readonly class AdherentFinder
 
         return $adherent;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.finder.adherent';
-    }
 }

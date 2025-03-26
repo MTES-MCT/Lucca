@@ -12,10 +12,11 @@ namespace Lucca\Bundle\DecisionBundle\Form;
 
 use Lucca\Bundle\DecisionBundle\Entity\PenaltyAppeal;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
+use Lucca\Bundle\CoreBundle\Form\Type\HtmlDateType;
 
 class PenaltyAppealType extends AbstractType
 {
@@ -26,9 +27,8 @@ class PenaltyAppealType extends AbstractType
     {
         $builder
             ->add('juridiction', TextType::class, ['label' => 'label.juridiction'])
-            ->add('dateDecision', DateType::class, [
-                'label' => 'label.dateDecision', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
+            ->add('dateDecision', HtmlDateType::class, [
+                'label' => 'label.dateDecision', 'required' => true
             ])
             ->add('kindDecision', TextType::class, ['label' => 'label.kindDecision']);
     }

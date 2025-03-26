@@ -54,9 +54,4 @@ readonly class MayorLetterManager
         $this->em->remove($mayorLetter);
         $this->em->flush();
     }
-
-    public function getName(): string
-    {
-        return 'lucca.manager.mayor.letter';
-    }
 }

@@ -17,6 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Lucca\Bundle\AdherentBundle\Entity\Agent;
 use Lucca\Bundle\AdherentBundle\Repository\AgentRepository;
+use Lucca\Bundle\CoreBundle\Form\Type\HtmlDateType;
 use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Lucca\Bundle\ParameterBundle\Entity\Tribunal;
 use Lucca\Bundle\ParameterBundle\Repository\TribunalRepository;
@@ -42,9 +43,8 @@ class MinuteType extends AbstractType
                 'entry_options' => ['attr' => ['class' => 'human']],
                 'attr' => ['class' => 'table human-collection'],
             ])
-            ->add('dateComplaint', DateType::class, array(
-                'label' => 'label.dateComplaint', 'attr' => array('class' => 'date-picker'),
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => false,
+            ->add('dateComplaint', HtmlDateType::class, array(
+                'label' => 'label.dateComplaint', 'required' => false,
             ))
             ->add('nameComplaint', TextType::class, array('label' => 'label.nameComplaint', 'required' => false))
             ->add('agent', EntityType::class, array(

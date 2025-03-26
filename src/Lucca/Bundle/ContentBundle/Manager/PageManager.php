@@ -57,9 +57,4 @@ readonly class PageManager
 
         return $page;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.manager.page';
-    }
 }

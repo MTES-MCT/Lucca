@@ -18,6 +18,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Lucca\Bundle\CoreBundle\Form\Type\HtmlDateType;
+
 class PenaltyType extends AbstractType
 {
     /**
@@ -26,9 +28,8 @@ class PenaltyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('dateFolder', DateType::class, [
-                'label' => 'label.dateFolder6', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
+            ->add('dateFolder', HtmlDateType::class, [
+                'label' => 'label.dateFolder6', 'required' => true
             ])
             ->add('preparedBy', TextType::class, ['label' => 'label.preparedBy'])
             ->add('nature', ChoiceType::class, [

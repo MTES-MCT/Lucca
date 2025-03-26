@@ -95,9 +95,4 @@ class ConverterCsvArray
 
         return $data;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.utils.setting.converter.csv_array';
-    }
 }

@@ -187,9 +187,4 @@ readonly class MinuteManager
             $minute->setDateLastUpdate(DateTime::createFromImmutable($minute->getCreatedAt()));
         }
     }
-
-    public function getName(): string
-    {
-        return 'lucca.manager.minute';
-    }
 }

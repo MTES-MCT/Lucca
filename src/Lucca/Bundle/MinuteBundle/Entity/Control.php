@@ -94,19 +94,15 @@ class Control implements LoggableInterface
     private string $type;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: 'constraint.datetime')]
     private ?\DateTime $datePostal = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: 'constraint.datetime')]
     private ?\DateTime $dateSended = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: 'constraint.datetime')]
     private ?\DateTime $dateNotified = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: 'constraint.datetime')]
     private ?\DateTime $dateReturned = null;
 
     #[ORM\Column(length: 60, nullable: true)]
@@ -115,7 +111,6 @@ class Control implements LoggableInterface
     private ?string $reason = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: 'constraint.datetime')]
     private ?\DateTime $dateContact = null;
 
     #[ORM\Column(length: 40, nullable: true)]
@@ -124,7 +119,6 @@ class Control implements LoggableInterface
     private ?string $accepted = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: 'constraint.datetime')]
     private ?\DateTime $dateControl = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]

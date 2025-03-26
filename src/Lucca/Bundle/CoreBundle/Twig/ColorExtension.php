@@ -58,9 +58,4 @@ class ColorExtension extends AbstractExtension
             default => '#FAFCC2',
         };
     }
-
-    public function getName(): string
-    {
-        return 'lucca.twig.color';
-    }
 }

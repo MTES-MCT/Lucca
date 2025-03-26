@@ -10,46 +10,41 @@
 
 namespace Lucca\Bundle\AdherentBundle\Mailer;
 
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
-use Twig\Environment;
-use Twig\Error\Error;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Part\{DataPart, File};
 
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\SettingBundle\Manager\SettingManager;
 
-class SummaryAdherentSubscriptionMailer
+readonly class SummaryAdherentSubscriptionMailer
 {
-    /**
-     * Email automatic
-     */
-    private string $emailAuto = 'terence@numeric-wave.eu';
-
-    /**
-     * Name automatic
-     */
-    private string $nameAuto = 'Térence Gusse';
-
     public function __construct(
-        private readonly ParameterBagInterface $params,
-        private readonly RequestStack $requestStack,
-        private readonly Environment $twig,
-        private readonly MailerInterface $mailer,
+        private RequestStack    $requestStack,
+        private MailerInterface $mailer,
+
+        #[Autowire(param: 'kernel.project_dir')]
+        private string          $project_dir,
     )
     {
     }
 
-    public function sendSubscriptionToAdherent(Adherent $adherent, $password, bool $displayFlashMessage = true): ?bool
+    public function sendSubscriptionToAdherent(Adherent $adherent, $password, bool $displayFlashMessage = true): bool
     {
+        $email = new TemplatedEmail();
+
         /** Step I - Build parameter : from -> array(email => name) */
-        $from = [
-            SettingManager::get('setting.general.emailGlobal.name') => SettingManager::get('setting.general.app.name')
-        ];
+        $from = new Address(
+            SettingManager::get('setting.general.emailGlobal.name'), SettingManager::get('setting.general.app.name')
+        );
 
         /** Step II - Build parameter: to -> array(email => name) */
         $name = $adherent->getOfficialName();
-        $to = [$adherent->getUser()->getEmail() => $name];
+        $to = new Address($adherent->getUser()->getEmail(), $name);
 
         /** Step III - Build parameter: cc -> array(email => name) */
         /** Step IV - Build parameter: bcc -> array(email => name) */
@@ -58,50 +53,43 @@ class SummaryAdherentSubscriptionMailer
         $subject = '[' . SettingManager::get('setting.general.app.name') . '] [' .
             SettingManager::get('setting.general.ddtName.name') . '] Inscription de ' . $name;
 
-        /** Step VI - Initialize message swift */
-        $swiftMail = \Swift_Message::newInstance()
-            ->setFrom($from)
-            ->setTo($to)
-            ->setSubject($subject)
-            ->setBcc([
-                $this->emailAuto => $this->nameAuto
-            ]);
+        /** Step VI - Initialize message */
+        $email
+            ->from($from)
+            ->to($to)
+            ->subject($subject);
 
         /** Step VII - Build parameters: one/many attachments  */
         /** Create template mail */
-        $logo = $swiftMail->embed(\Swift_Image::fromPath(
-            $this->params->get('kernel.project_dir') . '/../web/assets/logo/lucca-logo-transparent.png'
-        ));
-        $web_url = SettingManager::get('setting.general.url.name');
+        // get the image contents from an existing file
+        $logoPath = $this->project_dir . '/public/assets/logo/lucca-logo-transparent.png';
+        $email->addPart((new DataPart(new File($logoPath), 'logo'))->asInline());
 
         /** Step VIII - Build view  */
-        $body = null;
-        try {
-            $body = $this->twig->render(
-                '@LuccaAdherent/Mailer/subscription.html.twig',
-                ['adherent' => $adherent, 'logo' => $logo, 'password' => $password, 'web_url' => $web_url]
-            );
-        } catch (Error $error) {
-            echo 'Template generated for adherent subscription has fail - ' . $error->getMessage();
-        }
-
-        $swiftMail->setBody($body, 'text/html');
+        // path of the Twig template to render
+        $email->htmlTemplate('@LuccaAdherent/Mailer/subscription.html.twig');
+        // pass variables (name => value) to the template
+        $email->context([
+            'adherent' => $adherent,
+            'password' => $password,
+            'web_url' => SettingManager::get('setting.general.url.name')
+        ]);
 
         /** Step IX - Send email and display flash message if needed  */
-        $codeReturnEmail = $this->mailer->send($swiftMail);
+        try {
+            $this->mailer->send($email);
+        } catch (TransportExceptionInterface) {
+            if ($displayFlashMessage) {
+                $this->requestStack->getSession()->getFlashBag()->add('danger', 'flash.mail.adherentSubscription.sendFail');
+            }
 
-        /** If return code is gt 0 - some emails has been sent */
-        if ($displayFlashMessage === true && $codeReturnEmail > 0) {
-            $this->requestStack->getSession()->getFlashBag()->add('info', 'flash.mail.adherentSubscription.sendSuccessfully');
-        } elseif ($displayFlashMessage === true && $codeReturnEmail == 0) {
-            $this->requestStack->getSession()->getFlashBag()->add('danger', 'flash.mail.adherentSubscription.sendFail');
+            return false;
         }
 
-        return $codeReturnEmail;
-    }
+        if ($displayFlashMessage) {
+            $this->requestStack->getSession()->getFlashBag()->add('info', 'flash.mail.adherentSubscription.sendSuccessfully');
+        }
 
-    public function getName(): string
-    {
-        return 'lucca.mailer.adherent.subscription.summary';
+        return true;
     }
 }

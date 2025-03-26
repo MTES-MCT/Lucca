@@ -39,7 +39,7 @@ readonly class UserManager
         if (!$user) {
             $user = new User();
 
-            $user->setIsEnabled(true);
+            $user->setEnabled(true);
             $user->setUsername($p_username);
             $user->setUsernameCanonical($this->canonalizer->slugify($p_username));
             $user->setEmail($p_email);
@@ -100,7 +100,7 @@ readonly class UserManager
      */
     public function activateUser(User $user): User
     {
-        $user->setIsEnabled(true);
+        $user->setEnabled(true);
 
         return $user;
     }
@@ -110,13 +110,8 @@ readonly class UserManager
      */
     public function deactivateUser(User $user): User
     {
-        $user->setIsEnabled(false);
+        $user->setEnabled(false);
 
         return $user;
-    }
-
-    public function getName(): string
-    {
-        return 'lucca.user.manager';
     }
 }

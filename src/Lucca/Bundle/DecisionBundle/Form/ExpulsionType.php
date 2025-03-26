@@ -20,6 +20,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Lucca\Bundle\CoreBundle\Form\Type\HtmlDateType;
+
 class ExpulsionType extends AbstractType
 {
     /**
@@ -30,21 +32,17 @@ class ExpulsionType extends AbstractType
         $builder
             ->add('lawFirm', TextType::class, ['label' => 'label.lawFirm'])
             ->add('amountDelivrery', MoneyType::class, ['label' => 'label.amountDelivrery'])
-            ->add('dateHearing', DateType::class, [
-                'label' => 'label.dateHearing', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
+            ->add('dateHearing', HtmlDateType::class, [
+                'label' => 'label.dateHearing', 'required' => true
             ])
-            ->add('dateAdjournment', DateType::class, [
-                'label' => 'label.dateAdjournment', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
+            ->add('dateAdjournment', HtmlDateType::class, [
+                'label' => 'label.dateAdjournment', 'required' => true
             ])
-            ->add('dateDeliberation', DateType::class, [
-                'label' => 'label.dateDeliberation', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
+            ->add('dateDeliberation', HtmlDateType::class, [
+                'label' => 'label.dateDeliberation', 'required' => true
             ])
-            ->add('dateJudicialDesision', DateType::class, [
-                'label' => 'label.dateJudicialDesision', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
+            ->add('dateJudicialDesision', HtmlDateType::class, [
+                'label' => 'label.dateJudicialDesision', 'required' => true
             ])
             ->add('statusDecision', TextType::class, ['label' => 'label.statusDecision'])
             ->add('comment', TextareaType::class, ['label' => 'label.comment',

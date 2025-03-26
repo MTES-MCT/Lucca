@@ -32,9 +32,4 @@ class JsonDecodeExtension extends AbstractExtension
     {
         return json_decode($json, true);
     }
-
-    public function getName(): string
-    {
-        return 'lucca.twig.json_decode';
-    }
 }

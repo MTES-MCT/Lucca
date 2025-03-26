@@ -57,7 +57,6 @@ class Closure implements LoggableInterface
     private string $status;
 
     #[ORM\Column]
-    #[Assert\DateTime(message: 'constraint.datetime')]
     private \DateTime $dateClosing;
 
     #[ORM\ManyToOne(targetEntity: Department::class)]

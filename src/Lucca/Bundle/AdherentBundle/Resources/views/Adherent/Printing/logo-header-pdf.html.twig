@@ -3,17 +3,17 @@
         {#Check if we are in edit view or print#}
         {% if 'print' not in app.request.pathinfo %}
             {% if officialLogo.id is defined %}
-                {{ officialLogo|mediaPdf(100, "img-header mr-3 media-object") }}
+                {{ officialLogo|mediaPdf(100, "img-header mr-3 mb-3") }}
             {% elseif officialLogo %}
                 <img src="{{ asset(officialLogo) }}" alt="Logo Officiel"
-                     class="img-header mr-3 media-object">
+                     class="img-header mr-3 mb-3">
             {% endif %}
         {% else %}
             {% if officialLogo.id is defined %}
-                {{ officialLogo|mediaPdf(100, "img-header mr-3 media-object") }}
+                {{ officialLogo|mediaPdf(100, "img-header mr-3 mb-3") }}
             {% elseif officialLogo %}
                 <img src="{{ pdf_asset }}{{ asset(officialLogo) }}" alt="Logo Officiel"
-                     class="img-header mr-3 media-object">
+                     class="img-header d-none mr-3 mb-3">
             {% endif %}
         {% endif %}
     {% endif %}

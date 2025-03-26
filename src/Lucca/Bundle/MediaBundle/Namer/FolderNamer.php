@@ -13,18 +13,21 @@ namespace Lucca\Bundle\MediaBundle\Namer;
 use Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 use Lucca\Bundle\CoreBundle\Utils\Canonalizer;
 use Lucca\Bundle\MediaBundle\Entity\{Category, Media, Folder};
 
-class FolderNamer implements FolderNamerInterface
+readonly class FolderNamer implements FolderNamerInterface
 {
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly Canonalizer $canonalizer,
-        private $upload_dir,
+        private EntityManagerInterface $em,
+        private Canonalizer            $canonalizer,
+
+        #[Autowire(param: 'lucca_media.upload_directory')]
+        private string                 $upload_dir,
     )
     {
     }
@@ -113,10 +116,5 @@ class FolderNamer implements FolderNamerInterface
         }
 
         return $folder;
-    }
-
-    public function getName(): string
-    {
-        return 'lucca.namer.folder';
     }
 }

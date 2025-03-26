@@ -125,6 +125,23 @@ header {
     transform: rotate(90deg);
 }
 
+.img-header {
+    display: inline;
+    max-height: 140px;
+}
+
+.pv p {
+    text-align: justify;
+}
+
+.mb-3 {
+    margin-bottom: 1rem;
+}
+
+.mt50 {
+    top: 50px;
+}
+
 /************************************************************
  * Letter
  ************************************************************/

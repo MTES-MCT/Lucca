@@ -53,9 +53,4 @@ readonly class NumFolderGenerator
 
         return $prefix . sprintf('%02d', $increment);
     }
-
-    public function getName(): string
-    {
-        return 'lucca.generator.updating_folder_num';
-    }
 }

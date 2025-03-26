@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, CollectionType, Date
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use Lucca\Bundle\CoreBundle\Form\Type\HtmlDateType;
 use Lucca\Bundle\MinuteBundle\Entity\{Control, Human};
 
 class MinuteControlType extends AbstractType
@@ -41,30 +42,26 @@ class MinuteControlType extends AbstractType
                 ),
                 'label' => 'label.stateControl', 'expanded' => true, 'required' => true
             ))
-            ->add('dateControl', DateType::class, array(
-                'label' => 'label.dateControl', 'attr' => array('class' => 'date-picker'),
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
-            ))
+            ->add('dateControl', HtmlDateType::class, [
+                'label' => 'label.dateControl', 'required' => false
+            ])
             ->add('hourControl', TimeType::class, array(
                 'label' => 'label.hourControl',
                 'widget' => 'single_text', 'input' => 'datetime', 'required' => false
             ))
-            ->add('datePostal', DateType::class, array(
-                'label' => 'label.datePostal', 'attr' => array('class' => 'date-picker'),
+            ->add('datePostal', HtmlDateType::class, [
+                'label' => 'label.datePostal', 'required' => false
+            ])
+            ->add('dateSended', HtmlDateType::class, [
+                'label' => 'label.dateSended', 'attr' => ['class' => 'date-picker'],
                 'widget' => 'single_text', 'input' => 'datetime', 'required' => false
+            ])
+            ->add('dateNotified', HtmlDateType::class, array(
+                'label' => 'label.dateNotified', 'required' => false
             ))
-            ->add('dateSended', DateType::class, array(
-                'label' => 'label.dateSended', 'attr' => array('class' => 'date-picker'),
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
-            ))
-            ->add('dateNotified', DateType::class, array(
-                'label' => 'label.dateNotified', 'attr' => array('class' => 'date-picker'),
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
-            ))
-            ->add('dateReturned', DateType::class, array(
-                'label' => 'label.dateReturned', 'attr' => array('class' => 'date-picker'),
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
-            ))
+            ->add('dateReturned', HtmlDateType::class, [
+                'label' => 'label.dateReturned', 'required' => false
+            ])
             ->add('reason', ChoiceType::class, array(
                 'choices' => array(
                     Control::REASON_ERROR_ADRESS => Control::REASON_ERROR_ADRESS,
@@ -74,9 +71,8 @@ class MinuteControlType extends AbstractType
                 ),
                 'label' => 'label.reason', 'expanded' => false, 'required' => false
             ))
-            ->add('dateContact', DateType::class, array(
-                'label' => 'label.dateContact', 'attr' => array('class' => 'date-picker'),
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
+            ->add('dateContact', HtmlDateType::class, array(
+                'label' => 'label.dateContact', 'required' => false
             ))
             ->add('accepted', ChoiceType::class, array(
                 'choices' => array(

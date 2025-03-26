@@ -36,9 +36,4 @@ class ControlManager
 
         return $control;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.manager.control';
-    }
 }

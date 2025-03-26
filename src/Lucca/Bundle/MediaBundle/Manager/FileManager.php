@@ -14,7 +14,7 @@ use DateTime;
 use Exception;
 use Doctrine\ORM\{EntityManagerInterface, EntityNotFoundException};
 use Doctrine\ORM\Exception\ORMException;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -27,8 +27,13 @@ readonly class FileManager
 {
     public function __construct(
         private EntityManagerInterface  $em,
-        private ParameterBagInterface   $params,
         private TokenStorageInterface   $tokenStorage,
+
+        #[Autowire(param: 'lucca_media.upload_directory')]
+        private string                 $upload_dir,
+
+        #[Autowire(param: 'lucca_media.upload_tmp_directory')]
+        private string                 $upload_temp_dir,
     )
     {
     }
@@ -174,19 +179,19 @@ readonly class FileManager
     }
 
     /**
-     * Create a complete path with param %lucca_media.upload_directory% and file path
+     * Create a complete path with upload_directory and file path
      */
     public function getMediaPath(Media $media): string
     {
-        return $this->params->get('lucca_media.upload_directory') . '/' . $media->getFilePath();
+        return $this->upload_dir . '/' . $media->getFilePath();
     }
 
     /**
-     * Create a complete path with param %lucca_media.upload_directory% and file path
+     * Create a complete path with upload_directory and file path
      */
     public function getFolderPath(Folder $folder): string
     {
-        return $this->params->get('lucca_media.upload_directory') . '/' . $folder->getPath();
+        return $this->upload_dir . '/' . $folder->getPath();
     }
 
     /**
@@ -194,6 +199,6 @@ readonly class FileManager
      */
     public function getTmpPath(): string
     {
-        return $this->params->get('lucca_media.upload_tmp_directory');
+        return $this->upload_temp_dir;
     }
 }

@@ -50,9 +50,4 @@ readonly class ModelFinder
 
         return $model;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.finder.model';
-    }
 }

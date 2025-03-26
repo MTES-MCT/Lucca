@@ -1,3 +1,6 @@
+{#- - Extends view - -#}
+{#{% extends "@LuccaThemeStreamDashboardUiKit/Layout/printLayout.html.twig" %}#}
+
 {% trans_default_domain 'FolderBundle' %}
 
 {% import "@LuccaMinute/Human/human-macro.html.twig" as humanMacro %}
@@ -64,12 +67,10 @@
 {% endblock %}
 {#--  END - Letter header  --#}
 
-<br>
-
 {#-- Letter Content --#}
 {% block lucca_mayor_letter_content_content %}
     <div class="row">
-        <div class="col-12 pv">
+        <div class="col-12 col-xs-12 pv">
             <div class="letter-content">
                 <div class="clearfix">
                     <p>
@@ -153,9 +154,13 @@
                     <div class="col-xs-6">
                     </div>
                 </div>
+            </div>
+        </div>
 
+        <div class="page-break"></div>
 
-                <div class="page-break"></div>
+        <div class="col-12 col-xs-12 pv">
+            <div class="letter-content">
 
                 <div class="clearfix">
                     <p>
@@ -227,10 +232,8 @@
         <br>
 
         {#-- Signature --#}
-        <div class="row mb25 mb15 pt15">
-            <div class="col-8 offset-4 text-center letter-signature">
-                Le directeur,
-            </div>
+        <div class="col-xs-12 text-center letter-signature mt50">
+            Le directeur,
         </div>
         {#-- End - Signature --#}
     </div>

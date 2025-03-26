@@ -10,7 +10,6 @@
 
 namespace Lucca\Bundle\FolderBundle\Printer;
 
-use Symfony\Bundle\TwigBundle\TwigEngine;
 use Twig\Environment;
 use Twig\Error\Error;
 
@@ -91,10 +90,5 @@ class MayorLetterPrinter
         }
 
         return $logo;
-    }
-
-    public function getName(): string
-    {
-        return 'lucca.utils.printer.mayor.letter';
     }
 }

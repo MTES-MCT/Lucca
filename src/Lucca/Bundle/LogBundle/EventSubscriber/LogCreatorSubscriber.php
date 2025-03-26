@@ -218,12 +218,4 @@ readonly class LogCreatorSubscriber implements EventSubscriberInterface
 
         return null;
     }
-
-    /**
-     * Return the name of this service
-     */
-    public function getName(): string
-    {
-        return 'lucca.log.subscriber.creator';
-    }
 }

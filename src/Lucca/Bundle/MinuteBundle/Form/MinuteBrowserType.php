@@ -12,16 +12,18 @@ namespace Lucca\Bundle\MinuteBundle\Form;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
-use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, DateType, TextType};
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, TextType};
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\AdherentBundle\Repository\AdherentRepository;
+use Lucca\Bundle\CoreBundle\Form\Type\HtmlDateType;
 use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Lucca\Bundle\ParameterBundle\Entity\{Intercommunal, Service, Town};
 use Lucca\Bundle\ParameterBundle\Repository\{IntercommunalRepository, ServiceRepository, TownRepository};
 
+// TODO fix name initialization bug
 class MinuteBrowserType extends AbstractType
 {
     public function __construct(
@@ -40,18 +42,12 @@ class MinuteBrowserType extends AbstractType
         $adherentIntercommunals = $options['adherent_intercommunals'];
 
         $builder
-            ->add('dateStart', DateType::class, array(
-                'label' => 'label.dateStart',
-                'widget' => 'single_text',
-                'input' => 'datetime',
-                'required' => false
-            ))
-            ->add('dateEnd', DateType::class, array(
-                'label' => 'label.dateEnd',
-                'widget' => 'single_text',
-                'input' => 'datetime',
-                'required' => false
-            ))
+            ->add('dateStart', HtmlDateType::class, [
+                'label' => 'label.dateStart', 'required' => false
+            ])
+            ->add('dateEnd', HtmlDateType::class, [
+                'label' => 'label.dateEnd', 'required' => false
+            ])
             ->add('num', TextType::class, array(
                     'label' => 'label.num',
                     'required' => false)
@@ -73,85 +69,85 @@ class MinuteBrowserType extends AbstractType
             ));
 
         if ($adherentTowns === null || (gettype($adherentTowns) === 'array' && count($adherentTowns) > 1)) {
-            $builder
-                ->add('folder_town', EntityType::class, array(
-                    'class' => Town::class,
-                    'choice_label' => 'name',
-                    'required' => false,
-                    'multiple' => true,
-                    'expanded' => false,
-                    'label' => 'label.town',
-                    'attr' => array('class' => 'chosen-select'),
-                    'choices' => $adherentTowns,
-                    'query_builder' => function (TownRepository $repo) {
-                        return $repo->getValuesActive();
-                    }
-                ));
+//            $builder
+//                ->add('folder_town', EntityType::class, array(
+//                    'class' => Town::class,
+//                    'choice_label' => 'name',
+//                    'required' => false,
+//                    'multiple' => true,
+//                    'expanded' => false,
+//                    'label' => 'label.town',
+//                    'attr' => array('class' => 'chosen-select'),
+//                    'choices' => $adherentTowns,
+//                    'query_builder' => function (TownRepository $repo) {
+//                        return $repo->getValuesActive();
+//                    }
+//                ));
         }
         if ($adherentIntercommunals === null || (gettype($adherentIntercommunals) === 'array' && count($adherentIntercommunals) > 1)) {
-            $builder
-                ->add('folder_intercommunal', EntityType::class, array(
-                    'class' => Intercommunal::class,
-                    'choice_label' => 'name',
-                    'required' => false,
-                    'multiple' => true,
-                    'expanded' => false,
-                    'label' => 'label.intercommunal',
-                    'attr' => array('class' => 'chosen-select'),
-                    'choices' => $adherentIntercommunals,
-                    'query_builder' => function (IntercommunalRepository $repo) {
-                        return $repo->getValuesActive();
-                    }
-                ));
+//            $builder
+//                ->add('folder_intercommunal', EntityType::class, array(
+//                    'class' => Intercommunal::class,
+//                    'choice_label' => 'name',
+//                    'required' => false,
+//                    'multiple' => true,
+//                    'expanded' => false,
+//                    'label' => 'label.intercommunal',
+//                    'attr' => array('class' => 'chosen-select'),
+//                    'choices' => $adherentIntercommunals,
+//                    'query_builder' => function (IntercommunalRepository $repo) {
+//                        return $repo->getValuesActive();
+//                    }
+//                ));
         }
 
         /** Check if admin - or not */
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN') || $options['allFiltersAvailable']) {
-            $builder
-                ->add('adherent', EntityType::class, array(
-                    'class' => Adherent::class,
-                    'choice_label' => 'officialName',
-                    'required' => false,
-                    'multiple' => true,
-                    'expanded' => false,
-                    'label' => 'label.adherent',
-                    'attr' => array('class' => 'chosen-select'),
-                    'query_builder' => function (AdherentRepository $repo) {
-                        return $repo->getValuesActive();
-                    }
-                ))
-                ->add('adherent_intercommunal', EntityType::class, array(
-                    'class' => Intercommunal::class,
-                    'choice_label' => 'name',
-                    'required' => false,
-                    'multiple' => true,
-                    'expanded' => false,
-                    'label' => 'label.intercommunal',
-                    'attr' => array('class' => 'chosen-select'),
-                    'query_builder' => function (IntercommunalRepository $repo) {
-                        return $repo->getValuesActive();
-                    }
-                ))
-                ->add('adherent_town', EntityType::class, array(
-                    'class' => Town::class,
-                    'choice_label' => 'name',
-                    'required' => false,
-                    'multiple' => true,
-                    'expanded' => false,
-                    'label' => 'label.town',
-                    'attr' => array('class' => 'chosen-select'),
-                    'query_builder' => function (TownRepository $repo) {
-                        return $repo->getValuesActive();
-                    }
-                ))
-                ->add('service', EntityType::class, array(
-                    'class' => Service::class, 'choice_label' => 'name', 'required' => false,
-                    'multiple' => true, 'expanded' => false, 'label' => 'label.service',
-                    'attr' => array('class' => 'chosen-select'),
-                    'query_builder' => function (ServiceRepository $repo) {
-                        return $repo->getValuesActive();
-                    }
-                ));
+//            $builder
+//                ->add('adherent', EntityType::class, array(
+//                    'class' => Adherent::class,
+//                    'choice_label' => 'officialName',
+//                    'required' => false,
+//                    'multiple' => true,
+//                    'expanded' => false,
+//                    'label' => 'label.adherent',
+//                    'attr' => array('class' => 'chosen-select'),
+//                    'query_builder' => function (AdherentRepository $repo) {
+//                        return $repo->getValuesActive();
+//                    }
+//                ))
+//                ->add('adherent_intercommunal', EntityType::class, array(
+//                    'class' => Intercommunal::class,
+//                    'choice_label' => 'name',
+//                    'required' => false,
+//                    'multiple' => true,
+//                    'expanded' => false,
+//                    'label' => 'label.intercommunal',
+//                    'attr' => array('class' => 'chosen-select'),
+//                    'query_builder' => function (IntercommunalRepository $repo) {
+//                        return $repo->getValuesActive();
+//                    }
+//                ))
+//                ->add('adherent_town', EntityType::class, array(
+//                    'class' => Town::class,
+//                    'choice_label' => 'name',
+//                    'required' => false,
+//                    'multiple' => true,
+//                    'expanded' => false,
+//                    'label' => 'label.town',
+//                    'attr' => array('class' => 'chosen-select'),
+//                    'query_builder' => function (TownRepository $repo) {
+//                        return $repo->getValuesActive();
+//                    }
+//                ))
+//                ->add('service', EntityType::class, array(
+//                    'class' => Service::class, 'choice_label' => 'name', 'required' => false,
+//                    'multiple' => true, 'expanded' => false, 'label' => 'label.service',
+//                    'attr' => array('class' => 'chosen-select'),
+//                    'query_builder' => function (ServiceRepository $repo) {
+//                        return $repo->getValuesActive();
+//                    }
+//                ));
         }
     }
 

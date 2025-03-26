@@ -99,9 +99,4 @@ class ContactInfosExtension extends AbstractExtension
             default => [],
         };
     }
-
-    public function getName(): string
-    {
-        return 'lucca.twig.contact_infos';
-    }
 }

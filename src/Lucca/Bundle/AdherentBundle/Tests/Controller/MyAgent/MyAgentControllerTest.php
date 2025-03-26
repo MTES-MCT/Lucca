@@ -27,7 +27,9 @@ class MyAgentControllerTest extends BasicLuccaTestCase
         /**
          * Entity to use for the tests
          */
-        $adherent = $em->getRepository(Adherent::class)->findOneBy([]);
+        $adherent = $em->getRepository(Adherent::class)->findOneBy([
+            'user' => $this->getUser(),
+        ]);
         $agent = $em->getRepository(Agent::class)->findOneBy([
             'adherent' => $adherent
         ]);

@@ -141,9 +141,4 @@ readonly class PageManager
     {
         return $p_margin->getWidth() !== null;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.manager.model.page';
-    }
 }

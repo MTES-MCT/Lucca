@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\DecisionBundle\Form;
 
+use Lucca\Bundle\CoreBundle\Form\Type\HtmlDateType;
 use Lucca\Bundle\DecisionBundle\Entity\Decision;
 use Lucca\Bundle\CoreBundle\Form\DataTransformer\NumberToIntTransformer;
 use Lucca\Bundle\ParameterBundle\Entity\Tribunal;
@@ -55,13 +56,11 @@ class DecisionType extends AbstractType
                     'choice.enabled.yes' => true, 'choice.enabled.no' => false, 'choice.enabled.dont_know' => null
                 ], 'required' => true, 'expanded' => true, 'multiple' => false
             ])
-            ->add('dateAskCassation', DateType::class, [
-                'label' => 'label.dateAskCassation', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
+            ->add('dateAskCassation', HtmlDateType::class, [
+                'label' => 'label.dateAskCassation', 'required' => false
             ])
-            ->add('dateAnswerCassation', DateType::class, [
-                'label' => 'label.dateAnswerCassation', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
+            ->add('dateAnswerCassation', HtmlDateType::class, [
+                'label' => 'label.dateAnswerCassation', 'required' => false
             ])
             ->add('statusCassation', ChoiceType::class, [
                 'label' => 'label.statusCassation', 'choices' => [
@@ -73,25 +72,21 @@ class DecisionType extends AbstractType
             ])
             ->add('nameNewCassation', TextType::class, ['label' => 'label.nameNewCassation', 'required' => false])
             /** Europe */
-            ->add('dateReferralEurope', DateType::class, [
-                'label' => 'label.dateReferralEurope', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
+            ->add('dateReferralEurope', HtmlDateType::class, [
+                'label' => 'label.dateReferralEurope', 'required' => false
             ])
-            ->add('answerEurope', DateType::class, [
-                'label' => 'label.answerEurope', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
+            ->add('answerEurope', HtmlDateType::class, [
+                'label' => 'label.answerEurope', 'required' => false
             ])
             ->add('dataEurope', TextareaType::class, ['label' => 'label.dataEurope', 'required' => false,
                 'attr' => ['class' => 'summernote']])
             /** Penalty */
             ->add('amountPenaltyDaily', MoneyType::class, ['label' => 'label.amountPenaltyDaily', 'required' => false])
-            ->add('dateStartRecovery', DateType::class, [
-                'label' => 'label.dateStartRecovery', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
+            ->add('dateStartRecovery', HtmlDateType::class, [
+                'label' => 'label.dateStartRecovery', 'required' => false
             ])
-            ->add('dateNoticeDdtm', DateType::class, [
-                'label' => 'label.dateNoticeDdtm', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => false
+            ->add('dateNoticeDdtm', HtmlDateType::class, [
+                'label' => 'label.dateNoticeDdtm', 'required' => false
             ])
             ->add('penalties', CollectionType::class, [
                 'label' => false, 'entry_type' => PenaltyType::class, 'prototype' => true,

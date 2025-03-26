@@ -47,9 +47,4 @@ readonly class NumUpdatingGenerator
 
         return $prefix . sprintf('%02d', $increment);
     }
-
-    public function getName(): string
-    {
-        return 'lucca.generator.updating_num';
-    }
 }

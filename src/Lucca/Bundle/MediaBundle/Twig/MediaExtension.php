@@ -10,7 +10,7 @@
 
 namespace Lucca\Bundle\MediaBundle\Twig;
 
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\AbstractExtension;
@@ -28,11 +28,13 @@ use Lucca\Bundle\MediaBundle\Utils\{FormatDecisionMaker, PathFormatter};
 class MediaExtension extends AbstractExtension
 {
     public function __construct(
-        private readonly RouterInterface $router,
-        private readonly FormatDecisionMaker $formatDecisionMaker,
+        private readonly RouterInterface      $router,
+        private readonly FormatDecisionMaker  $formatDecisionMaker,
         private readonly GalleryForPdfManager $galleryForPdf,
-        private readonly PathFormatter $pathFormatter,
-        private readonly ParameterBagInterface $params,
+        private readonly PathFormatter        $pathFormatter,
+
+        #[Autowire(param: 'lucca_media.upload_directory')]
+        private readonly string               $upload_dir,
     )
     {
     }
@@ -199,7 +201,7 @@ class MediaExtension extends AbstractExtension
          * Example:
          * http://lucca.code/app_dev.php/media/show/61af755035d80_le-plan-local-durbanisme-1248x703-jpg -> /var/www/html/lucca.numeric-wave.io/../lucca.numeric-wave.doc/Media/2021/49/61af755035d80_le-plan-local-durbanisme-1248x703-jpg
          */
-        return $this->params->get('lucca_media.upload_directory') . $media->getFilePath();
+        return $this->upload_dir . $media->getFilePath();
     }
 
     /**
@@ -262,7 +264,7 @@ class MediaExtension extends AbstractExtension
      */
     public function getImagePdf(Media $media, $width = null, $class = null): string
     {
-        $url = $this->params->get('lucca_media.upload_directory') . '/' . $media->getFilePath();
+        $url = $this->upload_dir . '/' . $media->getFilePath();
 
         if ($width !== null) {
             $url .= '?width=' . $width;
@@ -288,11 +290,6 @@ class MediaExtension extends AbstractExtension
      */
     public function localPathFormatter(string $p_text): string
     {
-        return $this->pathFormatter->formatText($p_text, "PDF", $this->params->get('lucca_media.upload_directory'));
-    }
-
-    public function getName(): string
-    {
-        return 'lucca.twig.media';
+        return $this->pathFormatter->formatText($p_text, "PDF", $this->upload_dir);
     }
 }

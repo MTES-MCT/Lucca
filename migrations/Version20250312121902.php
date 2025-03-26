@@ -27,6 +27,8 @@ final class Version20250312121902 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
+        $this->addSql('CREATE TABLE lucca_department (id INT AUTO_INCREMENT NOT NULL, code VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, comment LONGTEXT DEFAULT NULL, createdAt DATETIME NOT NULL, updatedAt DATETIME DEFAULT NULL, enabled TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_72A0ED2677153098 (code), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci`');
+
         // Add department relation to tables
         $this->addSql('ALTER TABLE lucca_adherent ADD department_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE lucca_adherent ADD CONSTRAINT FK_208D2875AE80F5DF FOREIGN KEY (department_id) REFERENCES lucca_department (id)');

@@ -18,12 +18,13 @@ use Lucca\Bundle\ParameterBundle\Repository\TownRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
+use Lucca\Bundle\CoreBundle\Form\Type\HtmlDateType;
 
 class MayorLetterType extends AbstractType
 {
@@ -45,11 +46,10 @@ class MayorLetterType extends AbstractType
             ))
             ->add('address', TextareaType::class, array('label' => 'label.addressMayor',
                 'attr' => array('class' => 'js-addressMayor')))
-            ->add('dateSended', DateType::class, array(
-                'label' => 'label.dateSended', 'widget' => 'single_text',
-                'input' => 'datetime', 'required' => false,
-                'attr' => array('class' => 'date-picker js-dateSended')
-            ))
+            ->add('dateSended', HtmlDateType::class, [
+                'label' => 'label.dateSended', 'required' => false,
+                'attr' => ['class' => 'js-dateSended']
+            ])
             ->add('town', EntityType::class, array(
                 'class' => Town::class,
                 'choice_label' => 'name',

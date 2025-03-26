@@ -303,9 +303,4 @@ readonly class MinuteStoryManager
 
         return $result;
     }
-
-    public function getName(): string
-    {
-        return 'lucca.manager.minute_story';
-    }
 }
