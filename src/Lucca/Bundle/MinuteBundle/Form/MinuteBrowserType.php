@@ -12,12 +12,13 @@ namespace Lucca\Bundle\MinuteBundle\Form;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
-use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, DateType, TextType};
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, TextType};
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\AdherentBundle\Repository\AdherentRepository;
+use Lucca\Bundle\CoreBundle\Form\Type\HtmlDateType;
 use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Lucca\Bundle\ParameterBundle\Entity\{Intercommunal, Service, Town};
 use Lucca\Bundle\ParameterBundle\Repository\{IntercommunalRepository, ServiceRepository, TownRepository};
@@ -41,18 +42,12 @@ class MinuteBrowserType extends AbstractType
         $adherentIntercommunals = $options['adherent_intercommunals'];
 
         $builder
-            ->add('dateStart', DateType::class, array(
-                'label' => 'label.dateStart',
-                'widget' => 'single_text',
-                'input' => 'datetime',
-                'required' => false
-            ))
-            ->add('dateEnd', DateType::class, array(
-                'label' => 'label.dateEnd',
-                'widget' => 'single_text',
-                'input' => 'datetime',
-                'required' => false
-            ))
+            ->add('dateStart', HtmlDateType::class, [
+                'label' => 'label.dateStart', 'required' => false
+            ])
+            ->add('dateEnd', HtmlDateType::class, [
+                'label' => 'label.dateEnd', 'required' => false
+            ])
             ->add('num', TextType::class, array(
                     'label' => 'label.num',
                     'required' => false)

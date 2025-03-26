@@ -113,17 +113,14 @@ class Minute implements LoggableInterface
 
     #[ORM\Column]
     #[Assert\NotNull(message: 'constraint.not_null')]
-    #[Assert\DateTime(message: 'constraint.datetime')]
     private \DateTime $dateOpening;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: 'constraint.datetime')]
     private ?\DateTime $dateLastUpdate = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: 'constraint.datetime')]
     #[Assert\Range(
-        minMessage: 'constraint.date.range.min', maxMessage: 'constraint.date.range.max',
+        notInRangeMessage: 'constraint.date.range.notInRange',
         min: '2000-01-01',
         max: 'last day of December',
     )]

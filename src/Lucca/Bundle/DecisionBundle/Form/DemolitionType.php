@@ -15,12 +15,13 @@ use Lucca\Bundle\CoreBundle\Form\DataTransformer\NumberToIntTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
+use Lucca\Bundle\CoreBundle\Form\Type\HtmlDateType;
 
 class DemolitionType extends AbstractType
 {
@@ -32,9 +33,8 @@ class DemolitionType extends AbstractType
         $builder
             ->add('company', TextType::class, ['label' => 'label.company_intervening'])
             ->add('amountCompany', MoneyType::class, ['label' => 'label.amountCompany'])
-            ->add('dateDemolition', DateType::class, [
-                'label' => 'label.dateDemolition', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
+            ->add('dateDemolition', HtmlDateType::class, [
+                'label' => 'label.dateDemolition', 'required' => true
             ])
             ->add('bailif', TextType::class, ['label' => 'label.bailif'])
             ->add('amountBailif', MoneyType::class, ['label' => 'label.amountBailif'])

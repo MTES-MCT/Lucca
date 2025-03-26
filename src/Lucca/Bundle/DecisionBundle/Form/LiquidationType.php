@@ -18,6 +18,8 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Lucca\Bundle\CoreBundle\Form\Type\HtmlDateType;
+
 class LiquidationType extends AbstractType
 {
     /**
@@ -28,13 +30,11 @@ class LiquidationType extends AbstractType
         $builder
 
             ->add('amountPenalty', MoneyType::class, ['label' => 'label.amountPenalty'])
-            ->add('dateStart', DateType::class, [
-                'label' => 'label.dateStart', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
+            ->add('dateStart', HtmlDateType::class, [
+                'label' => 'label.dateStart', 'required' => true
             ])
-            ->add('dateEnd', DateType::class, [
-                'label' => 'label.dateEnd', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
+            ->add('dateEnd', HtmlDateType::class, [
+                'label' => 'label.dateEnd', 'required' => true
             ]);
 
         /** Data Transformer */

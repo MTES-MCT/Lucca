@@ -25,3 +25,7 @@ constraint:
         returned_greater_postal: "La date de retour doit être supérieure à la date du courrier"
         returned_greater_sended: "La date de retour doit être supérieure à la date d'envoi"
         returned_greater_notified: "La date de retour doit être supérieure à la date de notification"
+        
+    date:
+        range:
+            notInRange: "La date doit être comprise entre {{ min }} et {{ max }}"

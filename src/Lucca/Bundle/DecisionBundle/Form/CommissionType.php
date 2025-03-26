@@ -20,6 +20,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Lucca\Bundle\CoreBundle\Form\Type\HtmlDateType;
+
 class CommissionType extends AbstractType
 {
     /**
@@ -28,22 +30,18 @@ class CommissionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('dateHearing', DateType::class, [
-                'label' => 'label.dateHearing', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
+            ->add('dateHearing', HtmlDateType::class, [
+                'label' => 'label.dateHearing', 'required' => true
             ])
-            ->add('dateAdjournment', DateType::class, [
-                'label' => 'label.dateAdjournment', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
+            ->add('dateAdjournment', HtmlDateType::class, [
+                'label' => 'label.dateAdjournment', 'required' => true
             ])
-            ->add('dateDeliberation', DateType::class, [
-                'label' => 'label.dateDeliberation', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
+            ->add('dateDeliberation', HtmlDateType::class, [
+                'label' => 'label.dateDeliberation', 'required' => true
             ])
             ->add('amountFine', MoneyType::class, ['label' => 'label.amountFine'])
-            ->add('dateJudicialDesision', DateType::class, [
-                'label' => 'label.dateJudicialDesision', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
+            ->add('dateJudicialDesision', HtmlDateType::class, [
+                'label' => 'label.dateJudicialDesision', 'required' => true
             ])
             ->add('statusDecision', ChoiceType::class, [
                 'choices' => [
@@ -55,9 +53,8 @@ class CommissionType extends AbstractType
                 'label' => 'label.statusDecision', 'expanded' => true
             ])
             ->add('amountPenalty', MoneyType::class, ['label' => 'label.amountPenalty'])
-            ->add('dateExecution', DateType::class, [
-                'label' => 'label.dateExecution', 'attr' => ['class' => 'date-picker'],
-                'widget' => 'single_text', 'input' => 'datetime', 'required' => true
+            ->add('dateExecution', HtmlDateType::class, [
+                'label' => 'label.dateExecution', 'required' => true
             ])
             ->add('restitution', TextareaType::class, ['label' => 'label.restitution',
                 'attr' => ['class' => 'summernote']]);

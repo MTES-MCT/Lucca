@@ -13,9 +13,9 @@ namespace Lucca\Bundle\SecurityBundle\Form;
 use Symfony\Component\Form\AbstractType,
     Symfony\Component\Form\FormBuilderInterface,
     Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
+use Lucca\Bundle\CoreBundle\Form\Type\HtmlDateType;
 use Lucca\Bundle\SecurityBundle\Entity\LoginAttempt;
 
 class BrowserLoginAttemptType extends AbstractType
@@ -26,10 +26,9 @@ class BrowserLoginAttemptType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('requestedAt', DateType::class, array(
+            ->add('requestedAt', HtmlDateType::class, [
                 'label' => 'label.requestedAt', 'required' => true,
-                'widget' => 'single_text', 'input' => 'datetime', 'html5' => true
-            ))
+            ])
             ->add('requestIp', TextType::class, ['label' => 'label.requestIp'])
             ->add('requestUri', TextType::class, ['label' => 'label.requestUri'])
             ->add('username', TextType::class, ['label' => 'label.username'])

@@ -45,7 +45,6 @@ class MinuteStory implements LoggableInterface
     private Minute $minute;
 
     #[ORM\Column]
-    #[Assert\DateTime(message: 'constraint.datetime')]
     private \DateTime $dateUpdate;
 
     #[ORM\Column(length: 50)]
