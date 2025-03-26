@@ -9,7 +9,8 @@ services:
       # for better performance by enabling the next line
       # - /srv/app/var
     env_file:
-      - .env
+        - .env
+        - .env.local
     environment:
       - COMPOSER=composer.json
     networks:
