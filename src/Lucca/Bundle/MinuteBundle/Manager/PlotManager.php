@@ -11,6 +11,7 @@
 namespace Lucca\Bundle\MinuteBundle\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 use Lucca\Bundle\CoreBundle\Service\GeoLocator;
@@ -70,6 +71,12 @@ readonly class PlotManager
         } else {
             /** Use geolocator service to find city */
             $address = $this->geoLocator->getAddressFromGeocode($plot->getLatitude(), $plot->getLongitude());
+            if (!$address or !is_array($address)) {
+                $this->requestStack->getSession()->getFlashBag()->add('warning', 'flash.plot.geolocalisationFailedManual');
+
+                return;
+            }
+
             if ($address['addrCode'])
                 $town = $this->em->getRepository(Town::class)->findOneBy(array(
                     'zipcode' => $address['addrCode'],
