@@ -91,7 +91,7 @@ class MediaExtension extends AbstractExtension
                 break;
 
             case 'text_document':
-                $icon = "far fa-file-word";
+                $icon = "fas fa-file-word";
                 break;
 
             case 'sheet_document':
@@ -99,11 +99,11 @@ class MediaExtension extends AbstractExtension
                 break;
 
             case 'presentation_document':
-                $icon = "far fa-file-powerpoint";
+                $icon = "fas fa-file-powerpoint";
                 break;
 
             case 'archive':
-                $icon = "far fa-file-archive";
+                $icon = "fas fa-file-archive";
                 break;
 
             case 'media-file-container':
@@ -111,7 +111,7 @@ class MediaExtension extends AbstractExtension
                 break;
 
             default :
-                $icon = "far fa-file-alt";
+                $icon = "fas fa-file-alt";
                 break;
         }
 
