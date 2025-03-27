@@ -166,7 +166,7 @@ class CategoryController extends AbstractController
     {
         if ($category->getEnabled()) {
             $category->setEnabled(false);
-            $this->addFlash('info', 'flash.category.disabledSuccessfully');
+            $this->addFlash('success', 'flash.category.disabledSuccessfully');
         } else {
             $category->setEnabled(true);
             $this->addFlash('info', 'flash.category.enabledSuccessfully');

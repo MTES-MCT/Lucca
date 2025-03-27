@@ -106,7 +106,7 @@ class IntercommunalController extends AbstractController
             $this->em->persist($intercommunal);
             $this->em->flush();
 
-            $this->addFlash('info', 'flash.intercommunal.updatedSuccessfully');
+            $this->addFlash('success', 'flash.intercommunal.updatedSuccessfully');
 
             return $this->redirectToRoute('lucca_intercommunal_show', ['id' => $intercommunal->getId()]);
         }
@@ -133,7 +133,7 @@ class IntercommunalController extends AbstractController
             $this->em->flush();
         }
 
-        $this->addFlash('danger', 'flash.intercommunal.deletedSuccessfully');
+        $this->addFlash('success', 'flash.intercommunal.deletedSuccessfully');
 
         return $this->redirectToRoute('lucca_intercommunal_index');
     }

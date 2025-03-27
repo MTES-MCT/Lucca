@@ -118,7 +118,7 @@ class AdherentController extends AbstractController
             $this->em->persist($adherent);
             $this->em->flush();
 
-            $this->addFlash('info', 'flash.adherent.updatedSuccessfully');
+            $this->addFlash('success', 'flash.adherent.updatedSuccessfully');
 
             return $this->redirectToRoute('lucca_adherent_show', ['id' => $adherent->getId()]);
         }
@@ -144,7 +144,7 @@ class AdherentController extends AbstractController
             $this->em->flush();
         }
 
-        $this->addFlash('danger', 'flash.adherent.deletedSuccessfully');
+        $this->addFlash('success', 'flash.adherent.deletedSuccessfully');
 
         return $this->redirectToRoute('lucca_adherent_index');
     }
@@ -171,7 +171,7 @@ class AdherentController extends AbstractController
         if ($adherent->getUser()->isEnabled()) {
             $adherent->setEnabled(false);
             $adherent->getUser()->setEnabled(false);
-            $this->addFlash('info', 'flash.adherent.disabledSuccessfully');
+            $this->addFlash('success', 'flash.adherent.disabledSuccessfully');
         } else {
             $adherent->setEnabled(true);
             $adherent->getUser()->setEnabled(true);

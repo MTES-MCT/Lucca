@@ -101,7 +101,7 @@ class TownController extends AbstractController
             $this->em->persist($town);
             $this->em->flush();
 
-            $this->addFlash('info', 'flash.town.updatedSuccessfully');
+            $this->addFlash('success', 'flash.town.updatedSuccessfully');
 
             return $this->redirectToRoute('lucca_town_show', ['id' => $town->getId()]);
         }
@@ -128,7 +128,7 @@ class TownController extends AbstractController
             $this->em->flush();
         }
 
-        $this->addFlash('danger', 'flash.town.deletedSuccessfully');
+        $this->addFlash('success', 'flash.town.deletedSuccessfully');
 
         return $this->redirectToRoute('lucca_town_index');
     }
@@ -153,10 +153,10 @@ class TownController extends AbstractController
     {
         if ($town->isEnabled()) {
             $town->setEnabled(false);
-            $this->addFlash('info', 'flash.town.disabledSuccessfully');
+            $this->addFlash('success', 'flash.town.disabledSuccessfully');
         } else {
             $town->setEnabled(true);
-            $this->addFlash('info', 'flash.town.enabledSuccessfully');
+            $this->addFlash('success', 'flash.town.enabledSuccessfully');
         }
 
         $this->em->flush();

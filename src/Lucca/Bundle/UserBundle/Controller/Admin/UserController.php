@@ -159,7 +159,7 @@ class UserController extends AbstractController
 
         $this->userManager->updateUser($user);
 
-        $this->addFlash('info', 'flashes.toggled_successfully');
+        $this->addFlash('success', 'flashes.toggled_successfully');
 
         return $this->redirectToRoute('lucca_user_index');
     }

@@ -126,7 +126,7 @@ class UpdatingFolderController extends AbstractController
             $this->minuteStoryManager->manage($minute);
             $this->em->flush();
 
-            $this->addFlash('info', 'flash.folder.updatedSuccessfully');
+            $this->addFlash('success', 'flash.folder.updatedSuccessfully');
 
             return $this->redirectToRoute('lucca_minute_show', ['id' => $minute->getId()]);
         }
@@ -163,7 +163,7 @@ class UpdatingFolderController extends AbstractController
         $this->em->remove($folder);
         $this->em->flush();
 
-        $this->addFlash('danger', 'flash.folder.deletedSuccessfully');
+        $this->addFlash('success', 'flash.folder.deletedSuccessfully');
 
         return $this->redirectToRoute('lucca_minute_show', ['id' => $minute->getId()]);
     }
@@ -200,7 +200,7 @@ class UpdatingFolderController extends AbstractController
             $this->courierEditionManager->manageEditionsOnFormSubmission($courier);
 
             $this->em->persist($courier);
-            $this->addFlash('info', 'flash.courier.addSuccessfully');
+            $this->addFlash('success', 'flash.courier.addSuccessfully');
         }
 
         $this->em->persist($folder);

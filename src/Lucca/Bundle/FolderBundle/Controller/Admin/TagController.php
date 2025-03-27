@@ -110,7 +110,7 @@ class TagController extends AbstractController
             $this->em->persist($tag);
             $this->em->flush();
 
-            $this->addFlash('info', 'flash.tag.updatedSuccessfully');
+            $this->addFlash('success', 'flash.tag.updatedSuccessfully');
 
             return $this->redirectToRoute('lucca_tag_show', ['id' => $tag->getId()]);
         }
@@ -137,7 +137,7 @@ class TagController extends AbstractController
             $this->em->flush();
         }
 
-        $this->addFlash('danger', 'flash.tag.deletedSuccessfully');
+        $this->addFlash('success', 'flash.tag.deletedSuccessfully');
 
         return $this->redirectToRoute('lucca_tag_index');
     }
@@ -162,10 +162,10 @@ class TagController extends AbstractController
     {
         if ($tag->getEnabled()) {
             $tag->setEnabled(false);
-            $this->addFlash('info', 'flash.tag.disabledSuccessfully');
+            $this->addFlash('success', 'flash.tag.disabledSuccessfully');
         } else {
             $tag->setEnabled(true);
-            $this->addFlash('info', 'flash.tag.enabledSuccessfully');
+            $this->addFlash('success', 'flash.tag.enabledSuccessfully');
         }
 
         $this->em->flush();

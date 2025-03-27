@@ -153,10 +153,10 @@ class GalleryController extends AbstractController
     {
         if ($gallery->getEnabled()) {
             $gallery->setEnabled(false);
-            $this->addFlash('info', 'flash.gallery.disabledSuccessfully');
+            $this->addFlash('success', 'flash.gallery.disabledSuccessfully');
         } else {
             $gallery->setEnabled(true);
-            $this->addFlash('info', 'flash.gallery.enabledSuccessfully');
+            $this->addFlash('success', 'flash.gallery.enabledSuccessfully');
         }
 
         $this->em->flush();

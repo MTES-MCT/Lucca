@@ -102,7 +102,7 @@ class NatinfController extends AbstractController
             $this->em->persist($natinf);
             $this->em->flush();
 
-            $this->addFlash('info', 'flash.natinf.updatedSuccessfully');
+            $this->addFlash('success', 'flash.natinf.updatedSuccessfully');
 
             return $this->redirectToRoute('lucca_natinf_show', ['id' => $natinf->getId()]);
         }
@@ -129,7 +129,7 @@ class NatinfController extends AbstractController
             $this->em->flush();
         }
 
-        $this->addFlash('danger', 'flash.natinf.deletedSuccessfully');
+        $this->addFlash('success', 'flash.natinf.deletedSuccessfully');
 
         return $this->redirectToRoute('lucca_natinf_index');
     }
@@ -154,10 +154,10 @@ class NatinfController extends AbstractController
     {
         if ($natinf->isEnabled()) {
             $natinf->setEnabled(false);
-            $this->addFlash('info', 'flash.natinf.enabledSuccessfully');
+            $this->addFlash('success', 'flash.natinf.enabledSuccessfully');
         } else {
             $natinf->setEnabled(true);
-            $this->addFlash('info', 'flash.natinf.disabledSuccessfully');
+            $this->addFlash('success', 'flash.natinf.disabledSuccessfully');
         }
 
         $this->em->flush();

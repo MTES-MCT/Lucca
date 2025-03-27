@@ -127,7 +127,7 @@ class PartnerController extends AbstractController
             $this->em->flush();
         }
 
-        $this->addFlash('danger', 'flash.partner.deletedSuccessfully');
+        $this->addFlash('success', 'flash.partner.deletedSuccessfully');
 
         return $this->redirectToRoute('lucca_partner_index');
     }

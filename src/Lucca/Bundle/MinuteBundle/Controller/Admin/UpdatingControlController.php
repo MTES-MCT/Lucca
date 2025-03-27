@@ -187,7 +187,7 @@ class UpdatingControlController extends AbstractController
         $this->minuteStoryManager->manage($control->getMinute());
         $em->flush();
 
-        $this->addFlash('danger', 'flash.control.updating.deletedSuccessfully');
+        $this->addFlash('success', 'flash.control.updating.deletedSuccessfully');
         return $this->redirectToRoute('lucca_minute_show', array('id' => $updating->getMinute()->getId()));
     }
 }

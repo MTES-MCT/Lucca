@@ -342,7 +342,7 @@ class FolderController extends AbstractController
 
         $this->em->flush();
 
-        $this->addFlash('danger', 'flash.folder.deletedSuccessfully');
+        $this->addFlash('success', 'flash.folder.deletedSuccessfully');
 
         return $this->redirectToRoute('lucca_minute_show', ['id' => $minute->getId()]);
     }
