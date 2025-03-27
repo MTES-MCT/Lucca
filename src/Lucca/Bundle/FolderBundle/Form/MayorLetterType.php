@@ -53,18 +53,17 @@ class MayorLetterType extends AbstractType
             ->add('town', EntityType::class, array(
                 'class' => Town::class,
                 'choice_label' => 'name',
-                'multiple' => false,
-                'expanded' => false,
+                'autocomplete' => true,
                 'label' => 'label.town',
                 'required' => false,
-                'attr' => array('class' => 'chosen-select js-select-town'),
+                'attr' => array('class' => 'tom-select js-select-town'),
                 'query_builder' => function (TownRepository $repo) {
                     return $repo->getValuesActive();
                 }
             ))
             ->add('agent', EntityType::class, array(
-                'class' => Agent::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'chosen-select required'),
-                'multiple' => false, 'expanded' => false, 'label' => 'label.followedBy', 'required' => true,
+                'class' => Agent::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'tom-select required'),
+                'label' => 'label.followedBy', 'required' => true, 'autocomplete' => true,
                 'query_builder' => function (AgentRepository $er) use ($adherent) {
                     return $er->getAllActiveByAdherent($adherent);
                 }

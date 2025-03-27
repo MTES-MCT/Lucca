@@ -33,7 +33,7 @@ class SubAreaType extends AbstractType
             ->add('title', TextType::class, ['label' => 'label.title', 'required' => true])
             ->add('area', EntityType::class, [
                 'class' => Area::class, 'label' => 'label.area', 'choice_label' => 'name',
-                'multiple' => false, 'expanded' => false, 'required' => true, 'attr' => ['class' => 'chosen-select'],
+                'required' => true, 'attr' => ['class' => 'tom-select'], 'autocomplete' => true,
                 'query_builder' => function (AreaRepository $repo) {
                     return $repo->getValuesActive();
                 }

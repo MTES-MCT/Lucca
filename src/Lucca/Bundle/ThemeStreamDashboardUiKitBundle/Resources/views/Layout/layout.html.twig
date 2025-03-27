@@ -49,6 +49,11 @@
         <script src="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/jquery/dist/jquery.min.js') }}"></script>
         {#-- Jquery loaded on head template - MediaBundle require it --#}
         <script src="{{ asset('assets/js/jquery.collection.js') }}"></script>
+
+        {% block importmap %}
+            {{ importmap('app') }}
+        {% endblock %}
+
     {% endblock lucca_js_head %}
 
     {## Media collection dropzone script#}
@@ -112,7 +117,7 @@
         <div class="dropdown ml-2">
             <a class="link-muted d-flex align-items-center" href="#" role="button" id="dropdownMenuLink"
                aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">
-                <i class="far fas fa-user-cog text-muted mr-3"></i>
+                <i class="fas fa-user-cog text-muted mr-3"></i>
                 <span class="text-dark d-none d-sm-inline-block">{{ 'menu.profile'|trans }}<small
                             class="fa fa-angle-down text-muted ml-1"></small>
                         </span>

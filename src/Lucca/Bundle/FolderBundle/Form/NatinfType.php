@@ -28,12 +28,12 @@ class NatinfType extends AbstractType
             ->add('definedBy', TextType::class, array('label' => 'label.definedBy', 'required' => true))
             ->add('repressedBy', TextType::class, array('label' => 'label.repressedBy', 'required' => true))
             ->add('tags', EntityType::class, array(
-                'class' => Tag::class, 'label' => 'label.tag', 'choice_label' => 'name',
-                'multiple' => true, 'expanded' => false, 'required' => true, 'attr' => array('class' => 'select2')
+                'class' => Tag::class, 'label' => 'label.tag', 'choice_label' => 'name', 'autocomplete' => true,
+                'multiple' => true, 'required' => true, 'attr' => array('class' => 'tom-select')
             ))
             ->add('parent', EntityType::class, array(
                 'class' => Natinf::class, 'label' => 'label.parent', 'choice_label' => 'num',
-                'multiple' => false, 'expanded' => false, 'required' => false, 'attr' => array('class' => 'chosen-select')
+                'required' => false, 'attr' => array('class' => 'tom-select'), 'autocomplete' => true,
             ));
     }
 

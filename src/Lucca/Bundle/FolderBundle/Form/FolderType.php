@@ -62,9 +62,9 @@ class FolderType extends AbstractType
         $builder
             ->add('humansByMinute', EntityType::class, array(
                 'class' => Human::class, 'label' => false, 'required' => false,
-                'multiple' => true, 'expanded' => false, 'choices' => $choicesHuman,
+                'multiple' => true, 'choices' => $choicesHuman, 'autocomplete' => true,
                 'attr' => array(
-                    'class' => 'chosen-select',
+                    'class' => 'tom-select',
                     'data-placeholder' => $this->translator->trans('help.data.select', array(), 'FolderBundle')
                 ),
                 'choice_label' => function (Human $human) {
@@ -86,9 +86,9 @@ class FolderType extends AbstractType
         $builder
             ->add('control', EntityType::class, array(
                 'class' => Control::class, 'label' => 'label.control', 'required' => true,
-                'multiple' => false, 'expanded' => false, 'choices' => $choicesControl,
+                'choices' => $choicesControl, 'autocomplete' => true,
                 'attr' => array(
-                    'class' => 'chosen-select js-control',
+                    'class' => 'tom-select js-control',
                     'data-placeholder' => $this->translator->trans('help.data.select', array(), 'FolderBundle'),
                 ),
                 'choice_attr' => function (Control $control) {

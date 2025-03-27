@@ -35,8 +35,8 @@ class DecisionType extends AbstractType
         $builder
             /** Tribunal */
             ->add('tribunal', EntityType::class, [
-                'class' => Tribunal::class, 'choice_label' => 'name', 'label' => 'label.jurisdiction', 'required' => true,
-                'multiple' => false, 'expanded' => false, 'attr' => ['class' => 'chosen-select']
+                'class' => Tribunal::class, 'choice_label' => 'name', 'label' => 'label.jurisdiction',
+                'attr' => ['class' => 'tom-select'], 'autocomplete' => true,
             ])
             ->add('tribunalCommission', CommissionType::class, [
                 'label' => 'label.tribunalCommission', 'required' => false

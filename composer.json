@@ -10,11 +10,12 @@
         "ext-gd": "*",
         "ext-intl": "*",
         "ext-xml": "*",
+        "doctrine/doctrine-bundle": "^2.14",
         "doctrine/doctrine-migrations-bundle": "^3.4",
-        "doctrine/orm": "*",
         "friendsofsymfony/jsrouting-bundle": "3.5.*",
         "knplabs/knp-snappy-bundle": "*",
         "symfony/asset": "7.2.*",
+        "symfony/asset-mapper": "7.2.*",
         "symfony/cache": "7.2.*",
         "symfony/console": "7.2.*",
         "symfony/dependency-injection": "7.2.*",
@@ -32,11 +33,14 @@
         "symfony/runtime": "7.2.*",
         "symfony/security-bundle": "7.2.*",
         "symfony/serializer": "7.2.*",
+        "symfony/stimulus-bundle": "*",
         "symfony/translation": "7.2.*",
         "symfony/twig-bundle": "7.2.*",
+        "symfony/ux-autocomplete": "^2.23",
         "symfony/validator": "7.2.*",
         "symfony/yaml": "7.2.*",
         "tomsgu/pdf-merger": "*",
+        "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^3.0"
     },
     "require-dev": {
@@ -94,7 +98,8 @@
     "scripts": {
         "auto-scripts": {
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
-            "cache:clear": "symfony-cmd"
+            "cache:clear": "symfony-cmd",
+            "importmap:install": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"

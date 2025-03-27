@@ -27,7 +27,7 @@ class FolderStep3Type extends AbstractType
             ->add('natinfs', EntityType::class, array(
                 'class' => Natinf::class, 'choice_label' => 'num', 'choices' => $natinfsFiltered,
                 'multiple' => true, 'expanded' => true, 'label' => 'label.natinfs', 'required' => false,
-                'attr' => array('class' => 'chosen-select',)
+                'attr' => array('class' => 'tom-select'), 'autocomplete' => true,
             ));
     }
 

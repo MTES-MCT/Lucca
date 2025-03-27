@@ -28,7 +28,7 @@ class TownType extends AbstractType
             ->add('zipcode', TextType::class, ['label' => 'label.zipcode'])
             ->add('intercommunal', EntityType::class, [
                 'class' => Intercommunal::class, 'label' => 'label.intercommunal', 'choice_label' => 'name',
-                'multiple' => false, 'expanded' => false, 'required' => false, 'attr' => ['class' => 'chosen-select']
+                'required' => false, 'attr' => ['class' => 'tom-select'], 'autocomplete' => true,
             ]);
     }
 

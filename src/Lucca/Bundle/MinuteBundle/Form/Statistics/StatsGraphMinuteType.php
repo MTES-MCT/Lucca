@@ -38,40 +38,40 @@ class StatsGraphMinuteType extends AbstractType
             ))
             ->add('adherent', EntityType::class, array(
                 'class' => Adherent::class, 'choice_label' => 'officialName', 'required' => false,
-                'multiple' => true, 'expanded' => false, 'label' => 'label.adherentSimple',
-                'attr' => array('class' => 'chosen-select'),
+                'multiple' => true, 'label' => 'label.adherentSimple', 'autocomplete' => true,
+                'attr' => array('class' => 'tom-select'),
                 'query_builder' => function (AdherentRepository $repo) {
                     return $repo->getValuesActive();
                 }
             ))
             ->add('town', EntityType::class, array(
                 'class' => Town::class, 'choice_label' => 'formLabelInsee', 'required' => false,
-                'multiple' => true, 'expanded' => false, 'label' => 'label.town',
-                'attr' => array('class' => 'chosen-select'),
+                'multiple' => true, 'label' => 'label.town', 'autocomplete' => true,
+                'attr' => array('class' => 'tom-select'),
                 'query_builder' => function (TownRepository $repo) {
                     return $repo->getValuesActive();
                 }
             ))
             ->add('townAdherent', EntityType::class, array(
                 'class' => Town::class, 'choice_label' => 'formLabelInsee', 'required' => false,
-                'multiple' => true, 'expanded' => false, 'label' => 'label.town',
-                'attr' => array('class' => 'chosen-select'),
+                'multiple' => true, 'label' => 'label.town', 'autocomplete' => true,
+                'attr' => array('class' => 'tom-select'),
                 'query_builder' => function (TownRepository $repo) {
                     return $repo->getValuesActive();
                 }
             ))
             ->add('intercommunal', EntityType::class, array(
                 'class' => Intercommunal::class, 'choice_label' => 'name', 'required' => false,
-                'multiple' => true, 'expanded' => false, 'label' => 'label.intercommunal',
-                'attr' => array('class' => 'chosen-select'),
+                'multiple' => true, 'label' => 'label.intercommunal', 'autocomplete' => true,
+                'attr' => array('class' => 'tom-select'),
                 'query_builder' => function (IntercommunalRepository $repo) {
                     return $repo->getValuesActive();
                 }
             ))
             ->add('service', EntityType::class, array(
                 'class' => Service::class, 'choice_label' => 'name', 'required' => false,
-                'multiple' => true, 'expanded' => false, 'label' => 'label.service',
-                'attr' => array('class' => 'chosen-select'),
+                'multiple' => true, 'label' => 'label.service',
+                'attr' => array('class' => 'tom-select'),
                 'query_builder' => function (ServiceRepository $repo) {
                     return $repo->getValuesActive();
                 }

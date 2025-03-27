@@ -108,9 +108,9 @@ class MinuteControlType extends AbstractType
 
         $builder->add('humansByMinute', EntityType::class, array(
             'class' => Human::class, 'label' => false, 'required' => false,
-            'multiple' => true, 'expanded' => false, 'choices' => $choicesHuman,
+            'multiple' => true, 'choices' => $choicesHuman, 'autocomplete' => true,
             'attr' => array(
-                'class' => 'select2',
+                'class' => 'tom-select',
                 'data-placeholder' => $this->translator->trans('help.data.select', array(), 'MinuteBundle')
             ),
             'choice_label' => function (Human $human) {

@@ -109,9 +109,9 @@ class UpdatingControlType extends AbstractType
 
         $builder->add('humansByMinute', EntityType::class, array(
             'class' => Human::class, 'label' => false, 'required' => false,
-            'multiple' => true, 'expanded' => false, 'choices' => $choicesHuman,
+            'multiple' => true, 'choices' => $choicesHuman, 'autocomplete' => true,
             'attr' => array(
-                'class' => 'select2',
+                'class' => 'tom-select',
                 'data-placeholder' => $this->translator->trans('help.data.select', array(), 'MinuteBundle')
             ),
             'choice_label' => function (Human $human) {
@@ -139,8 +139,8 @@ class UpdatingControlType extends AbstractType
                 ), 'required' => true, 'expanded' => true, 'multiple' => false, 'mapped' => false
             ))
             ->add('agent', EntityType::class, array(
-                'class' => Agent::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'chosen-select required'),
-                'multiple' => false, 'expanded' => false, 'label' => 'label.agent', 'required' => false, 'mapped' => false,
+                'class' => Agent::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'tom-select required'),
+                'label' => 'label.agent', 'required' => false, 'mapped' => false, 'autocomplete' => true,
                 'query_builder' => function (AgentRepository $er) use ($adherent) {
                     return $er->getAllByAdherent($adherent);
                 }

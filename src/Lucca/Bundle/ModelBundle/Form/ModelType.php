@@ -66,7 +66,7 @@ class ModelType extends AbstractType
                     Model::DOCUMENTS_OFFENDER_LETTER => Model::DOCUMENTS_OFFENDER_LETTER,
                 ],
                 'label' => 'label.documents', 'multiple' => true,
-                'attr' => ['class' => 'select2']
+                'attr' => ['class' => 'tom-select'], 'autocomplete' => true,
             ])
             ->add('color', TextType::class, ['label' => 'label.color', 'required' => false,
                 'attr' => ['class' => 'form-control colorpicker-element']])
@@ -94,32 +94,29 @@ class ModelType extends AbstractType
                 ])
                 ->add('owner', EntityType::class, [
                     'class' => Adherent::class, 'choice_label' => 'officialName', 'required' => false,
-                    'multiple' => false, 'expanded' => false, 'label' => 'label.owner',
-                    'attr' => ['class' => 'select2'],
+                    'multiple' => false, 'label' => 'label.owner',
+                    'attr' => ['class' => 'tom-select'], 'autocomplete' => true,
                     'query_builder' => function (AdherentRepository $repo) {
                         return $repo->getValuesActive();
                     }
                 ])
                 ->add('sharedService', EntityType::class, [
                     'class' => Service::class, 'choice_label' => 'name', 'required' => false,
-                    'multiple' => false, 'expanded' => false, 'label' => 'label.sharedService',
-                    'attr' => ['class' => 'select2'],
+                    'label' => 'label.sharedService', 'attr' => ['class' => 'tom-select'], 'autocomplete' => true,
                     'query_builder' => function (ServiceRepository $repo) {
                         return $repo->getValuesActive();
                     }
                 ])
                 ->add('sharedIntercommunal', EntityType::class, [
                     'class' => Intercommunal::class, 'choice_label' => 'name', 'required' => false,
-                    'multiple' => false, 'expanded' => false, 'label' => 'label.sharedIntercommunal',
-                    'attr' => ['class' => 'select2'],
+                    'label' => 'label.sharedIntercommunal', 'attr' => ['class' => 'tom-select'], 'autocomplete' => true,
                     'query_builder' => function (IntercommunalRepository $repo) {
                         return $repo->getValuesActive();
                     }
                 ])
                 ->add('sharedTown', EntityType::class, [
                     'class' => Town::class, 'choice_label' => 'name', 'required' => false,
-                    'multiple' => false, 'expanded' => false, 'label' => 'label.sharedTown',
-                    'attr' => ['class' => 'select2'],
+                    'label' => 'label.sharedTown', 'attr' => ['class' => 'tom-select'], 'autocomplete' => true,
                     'query_builder' => function (TownRepository $repo) {
                         return $repo->getValuesOrderedByName();
                     }

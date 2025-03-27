@@ -36,14 +36,14 @@ class PageType extends AbstractType
                 'attr' => ['class' => 'summernote']])
             ->add('author', EntityType::class, [
                 'class' => User::class, 'label' => 'label.author', 'choice_label' => 'username',
-                'multiple' => false, 'expanded' => false, 'required' => true, 'attr' => ['class' => 'chosen-select'],
+                'required' => true, 'attr' => ['class' => 'tom-select'], 'autocomplete' => true,
                 'query_builder' => function (UserRepository $repo) {
                     return $repo->getValuesActive();
                 }
             ])
             ->add('subarea', EntityType::class, [
                 'class' => SubArea::class, 'label' => 'label.subarea', 'choice_label' => 'name',
-                'multiple' => false, 'expanded' => false, 'required' => true, 'attr' => ['class' => 'chosen-select'],
+                'required' => true, 'attr' => ['class' => 'tom-select'], 'autocomplete' => true,
                 'query_builder' => function (SubAreaRepository $repo) {
                     return $repo->getValuesActive();
                 }
