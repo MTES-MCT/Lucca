@@ -57,7 +57,7 @@ class SubArea implements LoggableInterface
 
     #[ORM\Column(type: Types::SMALLINT)]
     #[Assert\Type(type: 'int', message: 'constraint.type')]
-    private int $position;
+    private int $position = 0;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotNull(message: 'constraint.not_null')]
