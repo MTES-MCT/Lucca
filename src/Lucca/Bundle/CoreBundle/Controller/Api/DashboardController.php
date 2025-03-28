@@ -331,7 +331,7 @@ class DashboardController extends AbstractController
         $lng = $request->get('lng');
 
         $address = $this->geoLocator->getAddressFromGeocode($lat, $lng);
-        if (!$address or !is_array($address)) {
+        if (empty($address)) {
             return new JsonResponse([
                 'success' => false,
                 'code' => 400,

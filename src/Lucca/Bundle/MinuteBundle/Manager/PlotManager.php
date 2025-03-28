@@ -71,7 +71,7 @@ readonly class PlotManager
         } else {
             /** Use geolocator service to find city */
             $address = $this->geoLocator->getAddressFromGeocode($plot->getLatitude(), $plot->getLongitude());
-            if (!$address or !is_array($address)) {
+            if (empty($address)) {
                 $this->requestStack->getSession()->getFlashBag()->add('warning', 'flash.plot.geolocalisationFailedManual');
 
                 return;
