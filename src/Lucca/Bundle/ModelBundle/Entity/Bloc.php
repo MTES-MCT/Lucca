@@ -63,7 +63,7 @@ class Bloc implements LoggableInterface, MediaListAsyncInterface
     #[ORM\ManyToOne(targetEntity: Department::class)]
     /** TODO: set nullable for migration */
     #[ORM\JoinColumn(nullable: true)]
-    private Department $department;
+    private ?Department $department;
 
     #[ORM\Column(name: 'header_size', type: Types::SMALLINT, nullable: true)]
     #[Assert\Type(type: 'int', message: 'constraint.type')]

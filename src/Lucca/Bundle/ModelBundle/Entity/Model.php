@@ -110,7 +110,7 @@ class Model implements LoggableInterface
     #[ORM\ManyToOne(targetEntity: Department::class)]
     /** TODO: set nullable for migration */
     #[ORM\JoinColumn(nullable: true)]
-    private Department $department;
+    private ?Department $department = null;
 
     #[ORM\ManyToOne(targetEntity: Page::class, cascade: ['persist', 'remove'])]
     private ?Page $verso = null;
@@ -336,12 +336,12 @@ class Model implements LoggableInterface
         return $this;
     }
 
-    public function getDepartment(): Department
+    public function getDepartment(): ?Department
     {
         return $this->department;
     }
 
-    public function setDepartment(Department $department): self
+    public function setDepartment(?Department $department): self
     {
         $this->department = $department;
 

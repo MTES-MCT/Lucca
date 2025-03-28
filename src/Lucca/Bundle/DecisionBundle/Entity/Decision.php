@@ -57,7 +57,7 @@ class Decision implements LoggableInterface
     #[ORM\ManyToOne(targetEntity: Department::class)]
     /** TODO: set nullable for migration */
     #[ORM\JoinColumn(nullable: true)]
-    private Department $department;
+    private ?Department $department = null;
 
     #[ORM\ManyToOne(targetEntity: Commission::class, cascade: ["persist", "remove"])]
     private ?Commission $appealCommission = null;
@@ -227,12 +227,12 @@ class Decision implements LoggableInterface
         return $this;
     }
 
-    public function getDepartment(): Department
+    public function getDepartment(): ?Department
     {
         return $this->department;
     }
 
-    public function setDepartment(Department $department): self
+    public function setDepartment(?Department $department): self
     {
         $this->department = $department;
 

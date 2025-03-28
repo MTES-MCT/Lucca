@@ -96,7 +96,7 @@ class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncIn
     #[ORM\ManyToOne(targetEntity: Department::class)]
     /** TODO: set nullable for migration */
     #[ORM\JoinColumn(nullable: true)]
-    private Department $department;
+    private ?Department $department = null;
 
     #[ORM\OneToOne(targetEntity: Courier::class, orphanRemoval: true)]
     #[ORM\JoinColumn(onDelete: "CASCADE")]
@@ -372,12 +372,12 @@ class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncIn
         return $this;
     }
 
-    public function getDepartment(): Department
+    public function getDepartment(): ?Department
     {
         return $this->department;
     }
 
-    public function setDepartment(Department $department): self
+    public function setDepartment(?Department $department): self
     {
         $this->department = $department;
 

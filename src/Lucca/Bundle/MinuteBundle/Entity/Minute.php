@@ -84,7 +84,7 @@ class Minute implements LoggableInterface
     #[ORM\ManyToOne(targetEntity: Department::class)]
     /** TODO: set nullable for migration */
     #[ORM\JoinColumn(nullable: true)]
-    private Department $department;
+    private ?Department $department = null;
 
     #[ORM\ManyToOne(targetEntity: Tribunal::class)]
     private ?Tribunal $tribunal = null;
@@ -370,14 +370,14 @@ class Minute implements LoggableInterface
         return $this->plot;
     }
 
-    public function setDepartment(Department $department): self
+    public function setDepartment(?Department $department): self
     {
         $this->department = $department;
 
         return $this;
     }
 
-    public function getDepartment(): Department
+    public function getDepartment(): ?Department
     {
         return $this->department;
     }
