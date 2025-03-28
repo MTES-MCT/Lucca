@@ -35,14 +35,19 @@
                     {% include '@LuccaMedia/Media/Embed/_list-media.html.twig' %}
                 </div>
 
-                {#-- Init basic modal --#}
-                {% include '@LuccaMedia/Modal/_modal-form.html.twig' %}
-
             </div>
         </div>
     </div> {#-- End .wrapper --#}
 
 {% endblock lucca_page %}
+
+
+{% block lucca_modal %}
+    {{ parent() }}
+
+    {#-- Init basic modal --#}
+    {% include '@LuccaMedia/Modal/_modal-form.html.twig' %}
+{% endblock lucca_modal %}
 
 
 {% block lucca_js %}

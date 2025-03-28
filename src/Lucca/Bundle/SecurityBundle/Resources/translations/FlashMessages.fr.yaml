@@ -1,0 +1,10 @@
+####################################
+## Flash Domain
+## locale: fr
+####################################
+
+flash:
+    loginAttempt:
+        deletedSuccessfully: "La tentative de login a bien été supprimée."
+        deletedCancelled: "La tentative de login n'a pas été supprimée."
+        ipClearedSuccessfully: "Les tentatives de login avec cette ip ont été whitelistés."

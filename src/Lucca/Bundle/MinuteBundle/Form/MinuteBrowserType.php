@@ -134,7 +134,7 @@ class MinuteBrowserType extends AbstractType
                     'choice_label' => 'name',
                     'required' => false,
                     'multiple' => true,
-                    'expanded' => false,
+                    'autocomplete' => true,
                     'label' => 'label.town',
                     'attr' => array('class' => 'tom-select'),
                     'query_builder' => function (TownRepository $repo) {
