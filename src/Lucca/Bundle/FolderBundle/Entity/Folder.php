@@ -115,7 +115,7 @@ class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncIn
     private ?string $reasonObstacle = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?\DateTime $dateClosure = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

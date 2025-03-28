@@ -37,7 +37,7 @@ class PenaltyAppeal implements LoggableInterface
     private string $juridiction;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateDecision = null;
 
     #[ORM\Column(length: 50, nullable: true)]

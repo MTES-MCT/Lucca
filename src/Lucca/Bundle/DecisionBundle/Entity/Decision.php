@@ -67,11 +67,11 @@ class Decision implements LoggableInterface
     private ?bool $cassationComplaint = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateAskCassation = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateAnswerCassation = null;
 
     #[ORM\Column(nullable: true)]
@@ -86,11 +86,11 @@ class Decision implements LoggableInterface
     private ?string $nameNewCassation = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateReferralEurope = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $answerEurope = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -101,11 +101,11 @@ class Decision implements LoggableInterface
     private ?int $amountPenaltyDaily = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateStartRecovery = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateNoticeDdtm = null;
 
     #[ORM\JoinTable(name: "lucca_minute_decision_linked_penalty")]

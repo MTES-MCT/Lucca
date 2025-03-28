@@ -51,7 +51,7 @@ class Demolition implements LoggableInterface
     private ?int $amountCompany = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateDemolition = null;
 
     #[ORM\Column(length: 50, nullable: true)]

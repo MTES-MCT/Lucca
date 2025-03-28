@@ -31,11 +31,11 @@ class Liquidation implements LoggableInterface
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateStart = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateEnd = null;
 
     #[ORM\Column(nullable: true)]

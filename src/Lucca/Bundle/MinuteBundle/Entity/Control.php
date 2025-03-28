@@ -122,7 +122,7 @@ class Control implements LoggableInterface
     private ?\DateTime $dateControl = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
-    #[Assert\Time(message: 'constraint.time')]
+    #[Assert\Type('\DateTimeInterface')]
     private ?\DateTime $hourControl = null;
 
     #[ORM\Column(length: 60)]
