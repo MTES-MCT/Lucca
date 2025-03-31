@@ -42,6 +42,9 @@ flash:
         openSuccessfully: "Le dossier a bien été ouvert."
 
     plot:
+        geolocalisationFailed: "L'adresse renseignée n'a pas pu être localisée par google map. Ce dossier ne sera donc pas affiché sur la carte."
+        geolocalisationFailedCoordinates: "Les coordonnées renseignées n'ont pas permis de trouver une adresse correcte."
+        geolocalisationFailedManual: "Les données renseignées manuellement ne permettent pas de trouver une adresse correcte"
         townNotAuthorize: "Vous n'êtes pas autorisé à saisir des dossiers sur cette ville. (Dans le cas de coordonnées vérifier à ne pas être proche de la bordure de la ville)"
 
     filters:

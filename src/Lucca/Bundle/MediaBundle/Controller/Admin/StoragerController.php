@@ -124,7 +124,7 @@ class StoragerController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->remove($storager);
             $this->em->flush();
-            $this->addFlash('info', 'flash.storager.deletedSuccessfully');
+            $this->addFlash('success', 'flash.storager.deletedSuccessfully');
         } else {
             $this->addFlash('warning', 'flash.storager.deletedCancelled');
         }
@@ -153,10 +153,10 @@ class StoragerController extends AbstractController
     {
         if ($storager->getEnabled()) {
             $storager->setEnabled(false);
-            $this->addFlash('info', 'flash.storager.disabledSuccessfully');
+            $this->addFlash('success', 'flash.storager.disabledSuccessfully');
         } else {
             $storager->setEnabled(true);
-            $this->addFlash('info', 'flash.storager.enabledSuccessfully');
+            $this->addFlash('success', 'flash.storager.enabledSuccessfully');
         }
 
         $this->em->flush();

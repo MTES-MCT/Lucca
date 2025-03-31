@@ -37,15 +37,15 @@ class Commission implements LoggableInterface
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateHearing = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateAdjournment = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateDeliberation = null;
 
     #[ORM\Column(nullable: true)]
@@ -53,7 +53,7 @@ class Commission implements LoggableInterface
     private ?int $amountFine = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateJudicialDesision = null;
 
     #[ORM\Column(length: 40, nullable: true)]
@@ -65,14 +65,14 @@ class Commission implements LoggableInterface
     private ?int $amountPenalty = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateExecution = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $restitution = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateStartPenality = null;
 
     /************************************************************************ Custom functions ************************************************************************/

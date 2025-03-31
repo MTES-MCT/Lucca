@@ -57,7 +57,7 @@ class Decision implements LoggableInterface
     #[ORM\ManyToOne(targetEntity: Department::class)]
     /** TODO: set nullable for migration */
     #[ORM\JoinColumn(nullable: true)]
-    private Department $department;
+    private ?Department $department = null;
 
     #[ORM\ManyToOne(targetEntity: Commission::class, cascade: ["persist", "remove"])]
     private ?Commission $appealCommission = null;
@@ -67,11 +67,11 @@ class Decision implements LoggableInterface
     private ?bool $cassationComplaint = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateAskCassation = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateAnswerCassation = null;
 
     #[ORM\Column(nullable: true)]
@@ -86,11 +86,11 @@ class Decision implements LoggableInterface
     private ?string $nameNewCassation = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateReferralEurope = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $answerEurope = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -101,11 +101,11 @@ class Decision implements LoggableInterface
     private ?int $amountPenaltyDaily = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateStartRecovery = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\DateTime(message: "constraint.datetime")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?DateTime $dateNoticeDdtm = null;
 
     #[ORM\JoinTable(name: "lucca_minute_decision_linked_penalty")]
@@ -175,6 +175,7 @@ class Decision implements LoggableInterface
     public function setMinute(Minute $minute): self
     {
         $this->minute = $minute;
+        $minute?->addDecision($this);
 
         return $this;
     }
@@ -227,12 +228,12 @@ class Decision implements LoggableInterface
         return $this;
     }
 
-    public function getDepartment(): Department
+    public function getDepartment(): ?Department
     {
         return $this->department;
     }
 
-    public function setDepartment(Department $department): self
+    public function setDepartment(?Department $department): self
     {
         $this->department = $department;
 
@@ -479,6 +480,7 @@ class Decision implements LoggableInterface
     public function setExpulsion(?Expulsion $expulsion): self
     {
         $this->expulsion = $expulsion;
+        $expulsion?->setDecision($this);
 
         return $this;
     }
@@ -491,6 +493,7 @@ class Decision implements LoggableInterface
     public function setDemolition(?Demolition $demolition): self
     {
         $this->demolition = $demolition;
+        $demolition?->setDecision($this);
 
         return $this;
     }

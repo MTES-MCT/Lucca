@@ -32,11 +32,11 @@ class TribunalType extends AbstractType
             ->add('city', TextType::class, ['label' => 'label.city', 'required' => false])
             ->add('region', TextType::class, ['label' => 'label.region', 'required' => false])
             ->add('country', CountryType::class, ['label' => 'label.country', 'preferred_choices' => ['FR'],
-                'attr' => ['class' => 'select2']
+                'attr' => ['class' => 'tom-select'], 'autocomplete' => true,
             ])
             ->add('office', EntityType::class, [
                 'class' => Town::class, 'label' => 'label.office', 'choice_label' => 'formLabel',
-                'multiple' => false, 'expanded' => false, 'required' => false, 'attr' => ['class' => 'chosen-select']
+                'required' => false, 'attr' => ['class' => 'tom-select'], 'autocomplete' => true,
             ]);
     }
 

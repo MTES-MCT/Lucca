@@ -62,7 +62,7 @@ class Closure implements LoggableInterface
     #[ORM\ManyToOne(targetEntity: Department::class)]
     /** TODO: set nullable for migration */
     #[ORM\JoinColumn(nullable: true)]
-    private Department $department;
+    private ?Department $department = null;
 
     #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
@@ -145,14 +145,14 @@ class Closure implements LoggableInterface
         return $this->dateClosing;
     }
 
-    public function setDepartment(Department $department): self
+    public function setDepartment(?Department $department): self
     {
         $this->department = $department;
 
         return $this;
     }
 
-    public function getDepartment(): Department
+    public function getDepartment(): ?Department
     {
         return $this->department;
     }

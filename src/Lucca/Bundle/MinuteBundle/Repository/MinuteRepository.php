@@ -366,7 +366,7 @@ class MinuteRepository extends EntityRepository
             'partial minute.{id, num, dateOpening}',
             'partial plot.{id, parcel, latitude, longitude}',
             'partial plot_town.{id, name}',
-            'partial plot_intercommunal.{id}',
+            'partial plot_intercommunal.{id, name}',
             'partial humans.{id, name, firstname}',
             'partial closure.{id, dateClosing}',
             'partial decisions.{id}',
@@ -378,7 +378,7 @@ class MinuteRepository extends EntityRepository
             'partial updatings.{id}',
             'partial controls62.{id}',
             'partial folder63.{id, dateClosure, num}',
-            'partial service.{id}',
+            'partial service.{id, name}',
             'partial town.{id, name}',
             'partial intercommunal.{id}',
         ]);

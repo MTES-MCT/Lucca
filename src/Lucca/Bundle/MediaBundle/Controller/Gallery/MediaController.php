@@ -47,7 +47,7 @@ class MediaController extends AbstractController
             $this->em->remove($media);
             $this->em->flush();
 
-            $this->addFlash('info', 'flash.media.deletedSuccessfully');
+            $this->addFlash('success', 'flash.media.deletedSuccessfully');
         } else {
             $this->addFlash('warning', 'flash.media.unusedInGallery');
         }

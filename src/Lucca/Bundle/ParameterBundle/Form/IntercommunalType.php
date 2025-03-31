@@ -27,7 +27,7 @@ class IntercommunalType extends AbstractType
             ->add('enabled', CheckboxType::class, ['label' => 'label.enabled', 'required' => false])
             ->add('office', EntityType::class, [
                 'class' => Town::class, 'label' => 'label.office', 'choice_label' => 'formLabel',
-                'multiple' => false, 'expanded' => false, 'required' => false, 'attr' => ['class' => 'chosen-select']
+                'required' => false, 'attr' => ['class' => 'tom-select'], 'autocomplete' => true,
             ]);
     }
 

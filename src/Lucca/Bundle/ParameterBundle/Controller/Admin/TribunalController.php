@@ -101,7 +101,7 @@ class TribunalController extends AbstractController
             $this->em->persist($tribunal);
             $this->em->flush();
 
-            $this->addFlash('info', 'flash.tribunal.updatedSuccessfully');
+            $this->addFlash('success', 'flash.tribunal.updatedSuccessfully');
 
             return $this->redirectToRoute('lucca_tribunal_show', ['id' => $tribunal->getId()]);
         }
@@ -128,7 +128,7 @@ class TribunalController extends AbstractController
             $this->em->flush();
         }
 
-        $this->addFlash('danger', 'flash.tribunal.deletedSuccessfully');
+        $this->addFlash('success', 'flash.tribunal.deletedSuccessfully');
 
         return $this->redirectToRoute('lucca_tribunal_index');
     }
@@ -153,10 +153,10 @@ class TribunalController extends AbstractController
     {
         if ($tribunal->isEnabled()) {
             $tribunal->setEnabled(false);
-            $this->addFlash('info', 'flash.tribunal.disabledSuccessfully');
+            $this->addFlash('success', 'flash.tribunal.disabledSuccessfully');
         } else {
             $tribunal->setEnabled(true);
-            $this->addFlash('info', 'flash.tribunal.enabledSuccessfully');
+            $this->addFlash('success', 'flash.tribunal.enabledSuccessfully');
         }
 
         $this->em->flush();

@@ -52,8 +52,8 @@ class UpdatingFolderType extends AbstractType
             ))
 /*            ->add('checklist', EntityType::class, array(
                 'class' => Checklist::class, 'choice_label' => 'name',
-                'multiple' => false, 'expanded' => false, 'label' => 'label.checklist', 'required' => false,
-                'attr' => array('class' => 'chosen-select')
+                'label' => 'label.checklist', 'required' => false, 'autocomplete' => true,
+                'attr' => array('class' => 'om-select')
             ))*/
             ->add('elements', CollectionType::class, array(
                 'label' => 'label.elements', 'entry_type' => ElementType::class,
@@ -66,9 +66,9 @@ class UpdatingFolderType extends AbstractType
         $builder
             ->add('humansByMinute', EntityType::class, array(
                 'class' => Human::class, 'label' => false, 'required' => false,
-                'multiple' => true, 'expanded' => false, 'choices' => $choicesHuman,
+                'multiple' => true, 'choices' => $choicesHuman, 'autocomplete' => true,
                 'attr' => array(
-                    'class' => 'chosen-select',
+                    'class' => 'tom-select',
                     'data-placeholder' => $this->translator->trans('help.data.select', array(), 'FolderBundle')
                 ),
                 'choice_label' => function (Human $human) {
@@ -90,9 +90,9 @@ class UpdatingFolderType extends AbstractType
         $builder
             ->add('control', EntityType::class, array(
                 'class' => Control::class, 'label' => 'label.control', 'required' => true,
-                'multiple' => false, 'expanded' => false, 'choices' => $choicesControl,
+                'choices' => $choicesControl, 'autocomplete' => true,
                 'attr' => array(
-                    'class' => 'chosen-select',
+                    'class' => 'tom-select',
                     'data-placeholder' => $this->translator->trans('help.data.select', array(), 'FolderBundle')
                 ),
                 'choice_label' => 'formLabel'

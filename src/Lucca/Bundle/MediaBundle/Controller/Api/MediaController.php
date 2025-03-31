@@ -125,7 +125,6 @@ class MediaController extends AbstractController
             $fileToUpload = new UploadedFile($file['file']['tmp_name'],
                 $file['file']['name'],
                 $file['file']['type'],
-                $file['file']['size'],
                 $file['file']['error']);
 
             if ($request->get('uploadMedia')) {

@@ -166,7 +166,7 @@ class DecisionController extends AbstractController
         $this->minuteStoryManager->manage($minute);
         $this->em->flush();
 
-        $this->addFlash('danger', 'flash.decision.deletedSuccessfully');
+        $this->addFlash('success', 'flash.decision.deletedSuccessfully');
 
         return $this->redirectToRoute('lucca_minute_show', ['id' => $minute->getId()]);
     }

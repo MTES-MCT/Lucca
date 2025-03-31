@@ -48,22 +48,22 @@ class MinuteType extends AbstractType
             ))
             ->add('nameComplaint', TextType::class, array('label' => 'label.nameComplaint', 'required' => false))
             ->add('agent', EntityType::class, array(
-                'class' => Agent::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'chosen-select required'),
-                'multiple' => false, 'expanded' => false, 'label' => 'label.agent', 'required' => true,
+                'class' => Agent::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'tom-select required'),
+                'label' => 'label.agent', 'required' => true, 'autocomplete' => true,
                 'query_builder' => function (AgentRepository $er) use ($adherent) {
                     return $er->getAllActiveByAdherent($adherent);
                 }
             ))
             ->add('tribunal', EntityType::class, array(
-                'class' => Tribunal::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'chosen-select required'),
-                'multiple' => false, 'expanded' => false, 'label' => 'label.tribunal', 'required' => true,
+                'class' => Tribunal::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'tom-select required'),
+                'label' => 'label.tribunal', 'required' => true, 'autocomplete' => true,
                 'query_builder' => function (TribunalRepository $er) {
                     return $er->getValuesActive();
                 }
             ))
             ->add('tribunalCompetent', EntityType::class, array(
-                'class' => Tribunal::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'chosen-select'),
-                'multiple' => false, 'expanded' => false, 'label' => 'label.tribunalCompetent', 'required' => false,
+                'class' => Tribunal::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'tom-select'),
+                'label' => 'label.tribunalCompetent', 'required' => false, 'autocomplete' => true,
                 'query_builder' => function (TribunalRepository $er) {
                     return $er->getValuesActive();
                 }

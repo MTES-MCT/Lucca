@@ -74,9 +74,9 @@ class FolderBrowserType extends AbstractType
                     'choice_label' => 'officialName',
                     'required' => false,
                     'multiple' => true,
-                    'expanded' => false,
+                    'autocomplete' => true,
                     'label' => 'label.adherent',
-                    'attr' => array('class' => 'chosen-select'),
+                    'attr' => array('class' => 'tom-select'),
                     'query_builder' => function (AdherentRepository $repo) {
                         return $repo->getValuesActive();
                     }
@@ -86,9 +86,9 @@ class FolderBrowserType extends AbstractType
                     'choice_label' => 'name',
                     'required' => false,
                     'multiple' => true,
-                    'expanded' => false,
+                    'autocomplete' => true,
                     'label' => 'label.town',
-                    'attr' => array('class' => 'chosen-select'),
+                    'attr' => array('class' => 'tom-select'),
                     'query_builder' => function (TownRepository $repo) {
                         return $repo->getValuesActive();
                     }
@@ -98,17 +98,17 @@ class FolderBrowserType extends AbstractType
                     'choice_label' => 'name',
                     'required' => false,
                     'multiple' => true,
-                    'expanded' => false,
+                    'autocomplete' => true,
                     'label' => 'label.intercommunal',
-                    'attr' => array('class' => 'chosen-select'),
+                    'attr' => array('class' => 'tom-select'),
                     'query_builder' => function (IntercommunalRepository $repo) {
                         return $repo->getValuesActive();
                     }
                 ))
                 ->add('service', EntityType::class, array(
                     'class' => Service::class, 'choice_label' => 'name', 'required' => false,
-                    'multiple' => true, 'expanded' => false, 'label' => 'label.service',
-                    'attr' => array('class' => 'chosen-select'),
+                    'multiple' => true, 'label' => 'label.service', 'autocomplete' => true,
+                    'attr' => array('class' => 'tom-select'),
                     'query_builder' => function (ServiceRepository $repo) {
                         return $repo->getValuesActive();
                     }

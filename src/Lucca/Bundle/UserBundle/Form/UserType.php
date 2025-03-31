@@ -39,7 +39,7 @@ class UserType extends AbstractType
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class, 'required' => false,
                 'first_options' => ['label' => 'label.password'],
-                'second_options' => ['label' => 'label.password_confirmation'],
+                'second_options' => ['label' => 'label.passwordConfirmation'],
                 'invalid_message' => 'user.password.mismatch',
             ])
             ->add('name', TextType::class, ['label' => 'label.name', 'required' => false]);

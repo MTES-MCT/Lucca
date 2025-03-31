@@ -40,7 +40,7 @@ class Courier implements LoggableInterface
     #[ORM\ManyToOne(targetEntity: Department::class)]
     /** TODO: set nullable for migration */
     #[ORM\JoinColumn(nullable: true)]
-    private Department $department;
+    private ?Department $department = null;
 
     #[ORM\Column(nullable: true)]
     private ?DateTime $dateOffender = null;
@@ -98,16 +98,17 @@ class Courier implements LoggableInterface
     public function setFolder(Folder $folder): self
     {
         $this->folder = $folder;
+        $folder->setCourier($this);
 
         return $this;
     }
 
-    public function getDepartment(): Department
+    public function getDepartment(): ?Department
     {
         return $this->department;
     }
 
-    public function setDepartment(Department $department): self
+    public function setDepartment(?Department $department): self
     {
         $this->department = $department;
 

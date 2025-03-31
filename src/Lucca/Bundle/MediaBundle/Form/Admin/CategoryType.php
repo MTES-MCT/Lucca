@@ -44,8 +44,7 @@ class CategoryType extends AbstractType
             ])
             ->add('storager', EntityType::class, [
                 'class' => Storager::class, 'choice_label' => 'formLabel', 'required' => true,
-                'multiple' => false, 'expanded' => false, 'label' => 'label.storager',
-                'attr' => ['class' => 'select2'],
+                'label' => 'label.storager', 'attr' => ['class' => 'tom-select'], 'autocomplete' => true,
             ])
             ->add('icon', TextType::class, ['label' => 'label.icon', 'required' => false])
             ->add('description', TextareaType::class, ['label' => 'label.description', 'required' => false]);

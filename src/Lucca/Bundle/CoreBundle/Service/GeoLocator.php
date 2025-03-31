@@ -10,6 +10,8 @@
 
 namespace Lucca\Bundle\CoreBundle\Service;
 
+use Symfony\Component\HttpFoundation\RequestStack;
+
 use Lucca\Bundle\CoreBundle\Utils\Canonalizer;
 use Lucca\Bundle\SettingBundle\Manager\SettingManager;
 
@@ -19,7 +21,8 @@ class GeoLocator
     private ?string $google_api_is_active;
 
     public function __construct(
-        private readonly Canonalizer $canonalizer,
+        private readonly Canonalizer  $canonalizer,
+        private readonly RequestStack $requestStack,
     )
     {
         $this->google_api_geocode_key = SettingManager::get('setting.map.geocodeKey.name');
@@ -29,7 +32,7 @@ class GeoLocator
     /**
      * Search geometry coordinates with an AddressableTrait entity
      */
-    public function addGeocodeFromAddress($entity, ?string $rawAddress = null): bool|object|null
+    public function addGeocodeFromAddress(object $entity, ?string $rawAddress = null): ?object
     {
         if (!$this->google_api_is_active) {
             return $entity;
@@ -37,7 +40,7 @@ class GeoLocator
 
         /** If entity have already his geocode */
         if ($entity->getLatitude() && $entity->getLongitude()) {
-            echo('Entity may have his geocode already defined - lat:' . $entity->getLatitude() . ' and long:' . $entity->getLongitude());
+            $this->requestStack->getSession()->getFlashBag()->add('info', 'L\'entité peut avoir son géocode déjà défini - lat:' . $entity->getLatitude() . ' and long:' . $entity->getLongitude());
         }
 
         $fullAddress = '';
@@ -102,7 +105,7 @@ class GeoLocator
         $googleResultsDecoded = json_decode($googleResultsFounded);
 
         if ($googleResultsDecoded->status !== 'OK') {
-            echo('Results returned by Google API has been rejected - ' . $googleResultsDecoded->status);
+            $this->requestStack->getSession()->getFlashBag()->add('danger', 'Les résultats renvoyés par l\'API Google ont été rejetés - ' . $googleResultsDecoded->status);
         } else {
             /** Take the first result - TODO clean or purpose all results founded */
             $googleFirstResult = $googleResultsDecoded->results[0];
@@ -150,7 +153,7 @@ class GeoLocator
         $googleResultsDecoded = json_decode($googleResultsFounded);
 
         if ($googleResultsDecoded->status !== 'OK') {
-            echo('Results returned by Google API has been rejected - ' . $googleResultsDecoded->status);
+            $this->requestStack->getSession()->getFlashBag()->add('danger', 'Les résultats renvoyés par l\'API Google ont été rejetés - ' . $googleResultsDecoded->status);
 
             return null;
         }
@@ -167,10 +170,12 @@ class GeoLocator
     /**
      * Search address from geocode
      */
-    public function getAddressFromGeocode($lat, $lng): array|string
+    public function getAddressFromGeocode($lat, $lng): array
     {
         if (!$this->google_api_is_active) {
-            return "La google map n'est pas activée";
+            $this->requestStack->getSession()->getFlashBag()->add('danger', 'La google map n\'est pas activée');
+
+            return [];
         }
 
         $address = [];
@@ -185,7 +190,9 @@ class GeoLocator
         $googleResultsDecoded = json_decode($googleResultsFounded);
 
         if ($googleResultsDecoded->status !== 'OK') {
-            return ('Results returned by Google API has been rejected - ' . $googleResultsDecoded->status);
+            $this->requestStack->getSession()->getFlashBag()->add('danger', 'Les résultats renvoyés par l\'API Google ont été rejetés - ' . $googleResultsDecoded->status);
+
+            return [];
         } else {
             /** Take the first result - TODO clean or purpose all results founded */
             foreach ($googleResultsDecoded->results[0]->address_components as $data) {

@@ -1,5 +1,5 @@
 # PHP
-FROM php:8.2-fpm AS php-fpm
+FROM php:8.4-fpm AS php-fpm
 
 # Workdir during installation
 WORKDIR /tmp

@@ -41,40 +41,40 @@ class BrowserMinuteType extends AbstractType
             ))
             ->add('adherent', EntityType::class, array(
                 'class' => Adherent::class, 'choice_label' => 'officialName', 'required' => false,
-                'multiple' => true, 'expanded' => false, 'label' => 'label.adherentSimple',
-                'attr' => array('class' => 'chosen-select'),
+                'multiple' => true, 'label' => 'label.adherentSimple', 'autocomplete' => true,
+                'attr' => array('class' => 'tom-select'),
                 'query_builder' => function (AdherentRepository $repo) {
                     return $repo->getValuesActive();
                 }
             ))
             ->add('town', EntityType::class, array(
                 'class' => Town::class, 'choice_label' => 'formLabelInsee', 'required' => false,
-                'multiple' => true, 'expanded' => false, 'label' => 'label.town',
-                'attr' => array('class' => 'chosen-select'),
+                'multiple' => true, 'label' => 'label.town', 'autocomplete' => true,
+                'attr' => array('class' => 'tom-select'),
                 'query_builder' => function (TownRepository $repo) {
                     return $repo->getValuesActive();
                 }
             ))
             ->add('townAdherent', EntityType::class, array(
                 'class' => Town::class, 'choice_label' => 'formLabelInsee', 'required' => false,
-                'multiple' => true, 'expanded' => false, 'label' => 'label.town',
-                'attr' => array('class' => 'chosen-select'),
+                'multiple' => true, 'label' => 'label.town', 'autocomplete' => true,
+                'attr' => array('class' => 'tom-select'),
                 'query_builder' => function (TownRepository $repo) {
                     return $repo->getValuesActive();
                 }
             ))
             ->add('intercommunal', EntityType::class, array(
                 'class' => Intercommunal::class, 'choice_label' => 'name', 'required' => false,
-                'multiple' => true, 'expanded' => false, 'label' => 'label.intercommunal',
-                'attr' => array('class' => 'chosen-select'),
+                'multiple' => true, 'label' => 'label.intercommunal', 'autocomplete' => true,
+                'attr' => array('class' => 'tom-select'),
                 'query_builder' => function (IntercommunalRepository $repo) {
                     return $repo->getValuesActive();
                 }
             ))
             ->add('service', EntityType::class, array(
                 'class' => Service::class, 'choice_label' => 'name', 'required' => false,
-                'multiple' => true, 'expanded' => false, 'label' => 'label.service',
-                'attr' => array('class' => 'chosen-select'),
+                'multiple' => true, 'label' => 'label.service', 'autocomplete' => true,
+                'attr' => array('class' => 'tom-select'),
                 'query_builder' => function (ServiceRepository $repo) {
                     return $repo->getValuesActive();
                 }
@@ -87,8 +87,8 @@ class BrowserMinuteType extends AbstractType
                     Minute::ORIGIN_AGENT => Minute::ORIGIN_AGENT,
                     Minute::ORIGIN_OTHER => Minute::ORIGIN_OTHER,
                 ),
-                'attr' => array('class' => 'chosen-select'),
-                'label' => 'label.origin', 'expanded' => false, 'required' => false, 'multiple' => true
+                'attr' => array('class' => 'tom-select'), 'autocomplete' => true,
+                'label' => 'label.origin', 'required' => false, 'multiple' => true
             ))
             ->add('risk', ChoiceType::class, array(
                 'choices' => array(
@@ -99,8 +99,8 @@ class BrowserMinuteType extends AbstractType
                     Plot::RISK_TECHNOLOGICAL => Plot::RISK_TECHNOLOGICAL,
                     Plot::RISK_OTHER => Plot::RISK_OTHER,
                 ),
-                'attr' => array('class' => 'chosen-select'),
-                'label' => 'label.risk', 'expanded' => false, 'required' => false, 'multiple' => true
+                'attr' => array('class' => 'tom-select'),
+                'label' => 'label.risk', 'required' => false, 'multiple' => true, 'autocomplete' => true,
             ))
             ->add('stateControl', ChoiceType::class, array(
                 'choices' => array(
@@ -109,8 +109,8 @@ class BrowserMinuteType extends AbstractType
                     Control::STATE_NEIGHBOUR => Control::STATE_NEIGHBOUR,
                     Control::STATE_OUTSIDE => Control::STATE_OUTSIDE,
                 ),
-                'attr' => array('class' => 'chosen-select'),
-                'label' => 'label.stateControl', 'expanded' => false, 'required' => false, 'multiple' => true
+                'attr' => array('class' => 'tom-select'), 'autocomplete' => true,
+                'label' => 'label.stateControl', 'required' => false, 'multiple' => true
             ))
             ->add('nature', ChoiceType::class, array(
                 'choices' => array(
@@ -120,13 +120,13 @@ class BrowserMinuteType extends AbstractType
                     Folder::NATURE_OTHER => Folder::NATURE_OTHER,
                     Folder::NATURE_OBSTACLE => Folder::NATURE_OBSTACLE,
                 ),
-                'attr' => array('class' => 'chosen-select'),
-                'label' => 'label.nature', 'expanded' => false, 'required' => false, 'multiple' => true
+                'attr' => array('class' => 'tom-select'), 'autocomplete' => true,
+                'label' => 'label.nature', 'required' => false, 'multiple' => true
             ))
             ->add('natinfs', EntityType::class, array(
                 'class' => Natinf::class, 'choice_label' => 'formLabel', 'required' => false,
-                'multiple' => true, 'expanded' => false, 'label' => 'label.natinfs',
-                'attr' => array('class' => 'chosen-select'),
+                'multiple' => true, 'label' => 'label.natinfs', 'autocomplete' => true,
+                'attr' => array('class' => 'tom-select'),
                 'query_builder' => function (NatinfRepository $repo) {
                     return $repo->getValuesActive();
                 }

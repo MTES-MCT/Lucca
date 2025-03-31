@@ -37,6 +37,7 @@ label:
     lastLogin: "Dernière connexion"
     authority: "Autorité"
     password: "Mot de passe"
+    passwordConfirmation: "Confirmation du mot de passe"
     commission: "N° commission"
     tribunal: "Tribunal d'assermentation"
     emailPublic: "Email (public - affiché sur les documents)"

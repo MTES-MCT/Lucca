@@ -167,10 +167,10 @@ class DepartmentController extends AbstractController
 
         if ($department->getEnable()) {
             $department->setEnable(false);
-            $this->addFlash('info', 'flash.user.disabledSuccessfully');
+            $this->addFlash('success', 'flash.user.disabledSuccessfully');
         } else {
             $department->setEnable(true);
-            $this->addFlash('info', 'flash.user.enabledSuccessfully');
+            $this->addFlash('success', 'flash.user.enabledSuccessfully');
         }
 
         $em->persist($department);

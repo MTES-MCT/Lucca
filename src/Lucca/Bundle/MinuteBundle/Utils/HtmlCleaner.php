@@ -15,7 +15,7 @@ class HtmlCleaner
     /**
      * This function will remove specific regex given from the html given
      */
-    private function removeRegexFromHtml($p_regex, $p_html): array|string
+    private function removeRegexFromHtml($p_regex, $p_html): array|string|null
     {
         $match = null;
         /** While the asking regex is find in html remove it */
@@ -33,7 +33,7 @@ class HtmlCleaner
     /**
      * Remove all font family from html
      */
-    public function removeAllFonts($p_html): array|string
+    public function removeAllFonts($p_html): array|string|null
     {
         // TODO Create an array with all the regex
         //****************************** Clean from font family ***************************************/

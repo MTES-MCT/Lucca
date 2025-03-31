@@ -61,6 +61,9 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->userManager->updateUser($user);
 
+            $this->em->persist($user);
+            $this->em->flush();
+
             $this->addFlash('success', 'flashes.created_successfully');
 
             return $this->redirectToRoute('lucca_user_show', ['id' => $user->getId()]);
@@ -75,7 +78,7 @@ class UserController extends AbstractController
     /**
      * Finds and displays a User entity.
      */
-    #[Route(path: '/{id}', name: 'lucca_user_show', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Route(path: '-{id}', name: 'lucca_user_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
     public function showAction(User $user): Response
     {
@@ -90,7 +93,7 @@ class UserController extends AbstractController
     /**
      * Displays a form to edit an existing User entity.
      */
-    #[Route(path: '/{id}/edit', name: 'lucca_user_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '-{id}/edit', name: 'lucca_user_edit', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function editAction(Request $request, User $user): Response
     {
@@ -101,6 +104,9 @@ class UserController extends AbstractController
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->userManager->updateUser($user);
+
+            $this->em->persist($user);
+            $this->em->flush();
 
             $this->addFlash('success', 'flashes.updated_successfully');
 
@@ -117,7 +123,7 @@ class UserController extends AbstractController
     /**
      * Deletes a User entity.
      */
-    #[Route(path: '/{id}', name: 'lucca_user_delete', methods: ['DELETE'])]
+    #[Route(path: '-{id}', name: 'lucca_user_delete', methods: ['DELETE'])]
     #[IsGranted('ROLE_ADMIN')]
     public function deleteAction(Request $request, User $user): Response
     {
@@ -125,10 +131,13 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->userManager->deleteUser($user);
-        }
+            $this->em->remove($user);
+            $this->em->flush();
 
-        $this->addFlash('success', 'flashes.deleted_successfully');
+            $this->addFlash('success', 'flashes.deleted_successfully');
+        } else {
+            $this->addFlash('danger', 'flashes.deletedCancelled');
+        }
 
         return $this->redirectToRoute('lucca_user_index');
     }
@@ -147,7 +156,7 @@ class UserController extends AbstractController
     /**
      * Finds and enable / disable a User entity.
      */
-    #[Route(path: '/{id}/enable', name: 'lucca_user_enable', methods: ['GET'])]
+    #[Route(path: '-{id}/enable', name: 'lucca_user_enable', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
     public function enableAction(User $user): Response
     {
@@ -159,7 +168,10 @@ class UserController extends AbstractController
 
         $this->userManager->updateUser($user);
 
-        $this->addFlash('info', 'flashes.toggled_successfully');
+        $this->em->persist($user);
+        $this->em->flush();
+
+        $this->addFlash('success', 'flashes.toggled_successfully');
 
         return $this->redirectToRoute('lucca_user_index');
     }

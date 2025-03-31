@@ -63,91 +63,96 @@ class MinuteBrowserType extends AbstractType
                     Minute::STATUS_DECISION => Minute::STATUS_DECISION,
                     Minute::STATUS_CLOSURE => Minute::STATUS_CLOSURE,
                 ),
-                'label' => 'label.statusMinute', 'expanded' => false, 'required' => false,
-                'multiple' => true, 'attr' => array('class' => 'chosen-select'),
+                'label' => 'label.statusMinute', 'required' => false, 'autocomplete' => true,
+                'multiple' => true, 'attr' => array('class' => 'tom-select'),
                 'placeholder' => false
             ));
 
         if ($adherentTowns === null || (gettype($adherentTowns) === 'array' && count($adherentTowns) > 1)) {
-//            $builder
-//                ->add('folder_town', EntityType::class, array(
-//                    'class' => Town::class,
-//                    'choice_label' => 'name',
-//                    'required' => false,
-//                    'multiple' => true,
-//                    'expanded' => false,
-//                    'label' => 'label.town',
-//                    'attr' => array('class' => 'chosen-select'),
-//                    'choices' => $adherentTowns,
-//                    'query_builder' => function (TownRepository $repo) {
-//                        return $repo->getValuesActive();
-//                    }
-//                ));
+            $builder
+                ->add('folder_town', EntityType::class, array(
+                    'class' => Town::class,
+                    'choice_label' => 'name',
+                    'required' => false,
+                    'multiple' => true,
+                    'autocomplete' => true,
+                    'label' => 'label.town',
+                    'attr' => array('class' => 'tom-select'),
+                    'choices' => $adherentTowns,
+                    'query_builder' => function (TownRepository $repo) {
+                        return $repo->getValuesActive();
+                    }
+                ));
         }
         if ($adherentIntercommunals === null || (gettype($adherentIntercommunals) === 'array' && count($adherentIntercommunals) > 1)) {
-//            $builder
-//                ->add('folder_intercommunal', EntityType::class, array(
-//                    'class' => Intercommunal::class,
-//                    'choice_label' => 'name',
-//                    'required' => false,
-//                    'multiple' => true,
-//                    'expanded' => false,
-//                    'label' => 'label.intercommunal',
-//                    'attr' => array('class' => 'chosen-select'),
-//                    'choices' => $adherentIntercommunals,
-//                    'query_builder' => function (IntercommunalRepository $repo) {
-//                        return $repo->getValuesActive();
-//                    }
-//                ));
+            $builder
+                ->add('folder_intercommunal', EntityType::class, array(
+                    'class' => Intercommunal::class,
+                    'choice_label' => 'name',
+                    'required' => false,
+                    'multiple' => true,
+                    'autocomplete' => true,
+                    'label' => 'label.intercommunal',
+                    'attr' => array('class' => 'tom-select'),
+                    'choices' => $adherentIntercommunals,
+                    'query_builder' => function (IntercommunalRepository $repo) {
+                        return $repo->getValuesActive();
+                    }
+                ));
         }
 
         /** Check if admin - or not */
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN') || $options['allFiltersAvailable']) {
-//            $builder
-//                ->add('adherent', EntityType::class, array(
-//                    'class' => Adherent::class,
-//                    'choice_label' => 'officialName',
-//                    'required' => false,
-//                    'multiple' => true,
-//                    'expanded' => false,
-//                    'label' => 'label.adherent',
-//                    'attr' => array('class' => 'chosen-select'),
-//                    'query_builder' => function (AdherentRepository $repo) {
-//                        return $repo->getValuesActive();
-//                    }
-//                ))
-//                ->add('adherent_intercommunal', EntityType::class, array(
-//                    'class' => Intercommunal::class,
-//                    'choice_label' => 'name',
-//                    'required' => false,
-//                    'multiple' => true,
-//                    'expanded' => false,
-//                    'label' => 'label.intercommunal',
-//                    'attr' => array('class' => 'chosen-select'),
-//                    'query_builder' => function (IntercommunalRepository $repo) {
-//                        return $repo->getValuesActive();
-//                    }
-//                ))
-//                ->add('adherent_town', EntityType::class, array(
-//                    'class' => Town::class,
-//                    'choice_label' => 'name',
-//                    'required' => false,
-//                    'multiple' => true,
-//                    'expanded' => false,
-//                    'label' => 'label.town',
-//                    'attr' => array('class' => 'chosen-select'),
-//                    'query_builder' => function (TownRepository $repo) {
-//                        return $repo->getValuesActive();
-//                    }
-//                ))
-//                ->add('service', EntityType::class, array(
-//                    'class' => Service::class, 'choice_label' => 'name', 'required' => false,
-//                    'multiple' => true, 'expanded' => false, 'label' => 'label.service',
-//                    'attr' => array('class' => 'chosen-select'),
-//                    'query_builder' => function (ServiceRepository $repo) {
-//                        return $repo->getValuesActive();
-//                    }
-//                ));
+            $builder
+                ->add('adherent', EntityType::class, array(
+                    'class' => Adherent::class,
+                    'choice_label' => 'officialName',
+                    'required' => false,
+                    'multiple' => true,
+                    'autocomplete' => true,
+                    'label' => 'label.adherent',
+                    'attr' => array('class' => 'tom-select'),
+                    'query_builder' => function (AdherentRepository $repo) {
+                        return $repo->getValuesActive();
+                    }
+                ))
+                ->add('adherent_intercommunal', EntityType::class, array(
+                    'class' => Intercommunal::class,
+                    'choice_label' => 'name',
+                    'required' => false,
+                    'expanded' => false,
+                    'multiple' => true,
+                    'autocomplete' => true,
+                    'label' => 'label.intercommunal',
+                    'attr' => array('class' => 'tom-select'),
+                    'query_builder' => function (IntercommunalRepository $repo) {
+                        return $repo->getValuesActive();
+                    }
+                ))
+                ->add('adherent_town', EntityType::class, array(
+                    'class' => Town::class,
+                    'choice_label' => 'name',
+                    'required' => false,
+                    'multiple' => true,
+                    'autocomplete' => true,
+                    'label' => 'label.town',
+                    'attr' => array('class' => 'tom-select'),
+                    'query_builder' => function (TownRepository $repo) {
+                        return $repo->getValuesActive();
+                    }
+                ))
+                ->add('service', EntityType::class, array(
+                    'class' => Service::class,
+                    'choice_label' => 'name',
+                    'required' => false,
+                    'multiple' => true,
+                    'autocomplete' => true,
+                    'label' => 'label.service',
+                    'attr' => array('class' => 'tom-select'),
+                    'query_builder' => function (ServiceRepository $repo) {
+                        return $repo->getValuesActive();
+                    }
+                ));
         }
     }
 

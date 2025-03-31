@@ -139,7 +139,7 @@ class MediaController extends AbstractController
             $this->em->remove($media);
 
             $this->em->flush();
-            $this->addFlash('info', 'flash.media.deletedSuccessfully');
+            $this->addFlash('success', 'flash.media.deletedSuccessfully');
         } else {
             $this->addFlash('warning', 'flash.media.usedInGallery');
         }
@@ -157,10 +157,10 @@ class MediaController extends AbstractController
     {
         if ($media->getEnabled()) {
             $media->setEnabled(false);
-            $this->addFlash('info', 'flash.media.disabledSuccessfully');
+            $this->addFlash('success', 'flash.media.disabledSuccessfully');
         } else {
             $media->setEnabled(true);
-            $this->addFlash('info', 'flash.media.enabledSuccessfully');
+            $this->addFlash('success', 'flash.media.enabledSuccessfully');
         }
 
         $this->em->flush();

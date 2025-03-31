@@ -150,11 +150,10 @@ class MinuteController extends AbstractController
                 $filters['folder_intercommunal'] = $form->get('folder_intercommunal')->getData();
 
             if ($this->authorizationChecker->isGranted('ROLE_ADMIN') || $adherent->getService()) {
-                // TODO fix name initialization bug
-//                $filters['adherent'] = $form->get('adherent')->getData();
-//                $filters['service'] = $form->get('service')->getData();
-//                $filters['adherent_intercommunal'] = $form->get('adherent_intercommunal')->getData();
-//                $filters['adherent_town'] = $form->get('adherent_town')->getData();
+                $filters['adherent'] = $form->get('adherent')->getData();
+                $filters['service'] = $form->get('service')->getData();
+                $filters['adherent_intercommunal'] = $form->get('adherent_intercommunal')->getData();
+                $filters['adherent_town'] = $form->get('adherent_town')->getData();
             }
 
             // check filters interval date
@@ -365,7 +364,7 @@ class MinuteController extends AbstractController
 
             $em->remove($minute);
             $em->flush();
-            $this->addFlash('danger', 'flash.minute.deletedSuccessfully');
+            $this->addFlash('success', 'flash.minute.deletedSuccessfully');
         }
 
         return $this->redirectToRoute('lucca_minute_index');

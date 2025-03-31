@@ -8,3 +8,7 @@ flash:
         widthMustBeDefined: "La largeur d'une marge 'gauche' / 'droite' doit être définie."
     model:
         accessDenied: "Vous n'avez pas accès à ce modèle."
+    print:
+        error:
+            header: "Erreur lors de l'impression de l'en-tête."
+            footer: "Erreur lors de l'impression du pied de page."

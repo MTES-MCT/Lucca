@@ -93,7 +93,7 @@ class ProfileController extends AbstractController
             $this->em->persist($adherent);
             $this->em->flush();
 
-            $this->addFlash('info', 'flash.adherent.updatedSuccessfully');
+            $this->addFlash('success', 'flash.adherent.updatedSuccessfully');
 
             return $this->redirectToRoute('lucca_adherent_profile_show');
         }

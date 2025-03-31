@@ -110,7 +110,7 @@ class ChecklistController extends AbstractController
             $this->em->persist($checklist);
             $this->em->flush();
 
-            $this->addFlash('info', 'flashes.updated_successfully');
+            $this->addFlash('success', 'flashes.updated_successfully');
 
             return $this->redirectToRoute('lucca_checklist_show', ['id' => $checklist->getId()]);
         }
@@ -137,7 +137,7 @@ class ChecklistController extends AbstractController
             $this->em->flush();
         }
 
-        $this->addFlash('danger', 'flashes.deleted_successfully');
+        $this->addFlash('success', 'flashes.deleted_successfully');
 
         return $this->redirectToRoute('lucca_checklist_index');
     }
@@ -163,7 +163,7 @@ class ChecklistController extends AbstractController
         $checklist->toggle();
         $this->em->flush();
 
-        $this->addFlash('info', 'flashes.toggled_successfully');
+        $this->addFlash('success', 'flashes.toggled_successfully');
 
         return $this->redirectToRoute('lucca_checklist_index');
     }

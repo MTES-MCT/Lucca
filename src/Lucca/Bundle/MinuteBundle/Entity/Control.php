@@ -86,7 +86,7 @@ class Control implements LoggableInterface
     #[ORM\ManyToOne(targetEntity: Department::class)]
     /** TODO: set nullable for migration */
     #[ORM\JoinColumn(nullable: true)]
-    private Department $department;
+    private ?Department $department = null;
 
     #[ORM\Column(length: 25)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
@@ -122,7 +122,7 @@ class Control implements LoggableInterface
     private ?\DateTime $dateControl = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
-    #[Assert\Time(message: 'constraint.time')]
+    #[Assert\Type('\DateTimeInterface')]
     private ?\DateTime $hourControl = null;
 
     #[ORM\Column(length: 60)]
@@ -513,14 +513,14 @@ class Control implements LoggableInterface
         return $this->editions;
     }
 
-    public function setDepartment(Department $department): self
+    public function setDepartment(?Department $department): self
     {
         $this->department = $department;
 
         return $this;
     }
 
-    public function getDepartment(): Department
+    public function getDepartment(): ?Department
     {
         return $this->department;
     }

@@ -48,7 +48,7 @@ class SubArea implements LoggableInterface
     #[ORM\ManyToOne(targetEntity: Department::class)]
     /** TODO: set nullable for migration */
     #[ORM\JoinColumn(nullable: true)]
-    private Department $department;
+    private ?Department $department = null;
 
     #[ORM\Column(length: 60, unique: true, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
@@ -57,7 +57,7 @@ class SubArea implements LoggableInterface
 
     #[ORM\Column(type: Types::SMALLINT)]
     #[Assert\Type(type: 'int', message: 'constraint.type')]
-    private int $position;
+    private int $position = 0;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotNull(message: 'constraint.not_null')]
@@ -151,12 +151,12 @@ class SubArea implements LoggableInterface
         return $this;
     }
 
-    public function getDepartment(): Department
+    public function getDepartment(): ?Department
     {
         return $this->department;
     }
 
-    public function setDepartment(Department $department): self
+    public function setDepartment(?Department $department): self
     {
         $this->department = $department;
 

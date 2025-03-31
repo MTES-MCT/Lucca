@@ -73,8 +73,8 @@ class PlotType extends AbstractType
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             $builder
                 ->add('town', EntityType::class, array(
-                    'class' => Town::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'chosen-select'),
-                    'multiple' => false, 'expanded' => false, 'label' => 'label.town', 'required' => true,
+                    'class' => Town::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'tom-select'),
+                    'label' => 'label.town', 'required' => true, 'autocomplete' => true,
                     'query_builder' => function (TownRepository $er) {
                         return $er->getValuesOrderedByName();
                     }
@@ -84,8 +84,8 @@ class PlotType extends AbstractType
 
             $builder
                 ->add('town', EntityType::class, array(
-                    'class' => Town::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'chosen-select'),
-                    'multiple' => false, 'expanded' => false, 'label' => 'label.town', 'required' => true,
+                    'class' => Town::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'tom-select'),
+                    'label' => 'label.town', 'required' => true, 'autocomplete' => true,
                     'query_builder' => function (TownRepository $er) use ($adherent) {
                         return $er->getTownByAdherent($adherent);
                     }

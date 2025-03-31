@@ -82,7 +82,7 @@ class Setting implements LoggableInterface
     #[ORM\ManyToOne(targetEntity: Department::class)]
     /** TODO: set nullable for migration */
     #[ORM\JoinColumn(nullable: true)]
-    private Department $department;
+    private ?Department $department = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $value = null;
@@ -122,7 +122,7 @@ class Setting implements LoggableInterface
     /**
      * Get value.
      */
-    public function getValue(): null|int|string|float
+    public function getValue(): null|int|string|float|bool
     {
         return self::castValue($this->type, $this->value);
     }
@@ -130,11 +130,11 @@ class Setting implements LoggableInterface
     /**
      * Cast value by type.
      */
-    static public function castValue(string $type, ?string $value): null|int|string|float
+    public static function castValue(string $type, ?string $value): null|int|string|float|bool
     {
         switch ($type) {
             case self::TYPE_BOOL:
-                $output = 1 === intval($value);
+                $output = !!intval($value);
                 break;
             case self::TYPE_INTEGER:
                 $output = intval($value);
@@ -226,12 +226,12 @@ class Setting implements LoggableInterface
         return $this;
     }
 
-    public function getDepartment(): Department
+    public function getDepartment(): ?Department
     {
         return $this->department;
     }
 
-    public function setDepartment(Department $department): self
+    public function setDepartment(?Department $department): self
     {
         $this->department = $department;
 

@@ -56,7 +56,7 @@ class MediaType extends AbstractType
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class, 'choice_label' => 'formLabel', 'required' => false,
-                'multiple' => false, 'expanded' => false, 'label' => 'label.category', 'attr' => ['class' => 'select2'],
+                'label' => 'label.category', 'attr' => ['class' => 'tom-select'], 'autocomplete' => true,
                 'query_builder' => function (CategoryRepository $repo): QueryBuilder {
                     return $repo->getValuesActive();
                 }

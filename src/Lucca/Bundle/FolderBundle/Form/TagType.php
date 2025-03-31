@@ -29,7 +29,7 @@ class TagType extends AbstractType
             ->add('proposals', CollectionType::class, array(
                 'label' => 'label.proposals', 'entry_type' => ProposalType::class,
                 'allow_add' => true, 'allow_delete' => true, 'delete_empty' => true,
-                'prototype' => true, 'required' => false, 'by_reference' => true,
+                'prototype' => true, 'required' => false, 'by_reference' => false,
                 'entry_options' => array('attr' => array('class' => 'element')),
                 'attr' => array('class' => 'table proposals-collection'),
             ))

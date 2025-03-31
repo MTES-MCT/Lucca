@@ -31,7 +31,7 @@ class UserType extends AbstractType
                 'type' => PasswordType::class,
                 'options' => array('translation_domain' => 'UserBundle'),
                 'first_options' => array('label' => 'label.password'),
-                'second_options' => array('label' => 'label.password_confirmation'),
+                'second_options' => array('label' => 'label.passwordConfirmation'),
                 'invalid_message' => 'user.password.mismatch',
                 'required' => false
             ))

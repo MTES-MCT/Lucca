@@ -41,15 +41,21 @@
                 <i class="fas fa-trash-alt"></i>
             </a>
 
-            {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {
-                'id': 'gallery-' ~ gallery.id,
-                'name': gallery.name,
-                'delForm': delete_form
-            } %}
         {% endif %}
     </div>
 
 {% endblock lucca_panels %}
+
+
+{% block lucca_modal %}
+    {{ parent() }}
+
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {
+        'id': 'gallery-' ~ gallery.id,
+        'name': gallery.name,
+        'delForm': delete_form
+    } %}
+{% endblock lucca_modal %}
 
 
 {% block lucca_js %}

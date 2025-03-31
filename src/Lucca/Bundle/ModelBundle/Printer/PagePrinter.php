@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\ModelBundle\Printer;
 
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment;
 use Twig\Error\Error;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -23,6 +24,7 @@ class PagePrinter
     public function __construct(
         private readonly Environment         $twig,
         private readonly TranslatorInterface $translator,
+        private readonly RequestStack        $requestStack,
     )
     {
         $this->options = [
@@ -79,19 +81,18 @@ class PagePrinter
         $header = "";
         try {
             $header = $this->twig->render('@LuccaModel/Printing/header.html.twig', $renderParameters);
-        } catch (Error $twig_Error) {
-
-            // todo use better fix when the $renderParameters have bad parameters (is not due to this new function)
-            echo 'Twig_Error has been thrown - Header model ' . $twig_Error->getMessage();
+        } catch (Error) {
+            $message = $this->translator->trans('flash.print.error.header', [], 'FlashMessages');
+            $this->requestStack->getSession()->getFlashBag()->add('danger', $message);
         }
         $this->options['header-html'] = $header;
 
         $footer = "";
         try {
             $footer = $this->twig->render('@LuccaModel/Printing/footer.html.twig', $renderParameters);
-        } catch (Error $twig_Error) {
-            // todo use better fix when the $renderParameters have bad parameters (is not due to this new function)
-            echo 'Twig_Error has been thrown - Footer Model ' . $twig_Error->getMessage();
+        } catch (Error) {
+            $message = $this->translator->trans('flash.print.error.footer', [], 'FlashMessages');
+            $this->requestStack->getSession()->getFlashBag()->add('danger', $message);
         }
 
         $this->options['footer-html'] = $footer;

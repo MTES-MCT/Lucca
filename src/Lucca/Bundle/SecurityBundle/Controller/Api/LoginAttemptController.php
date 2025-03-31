@@ -63,32 +63,4 @@ class LoginAttemptController extends AbstractController
         ]);
 
     }
-
-    #[Route(path: '/get-list-datatable', name: 'lucca_log_api_list_datatable', options: ['expose' => true], methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')]
-    public function getListDatatableAction(Request $request): JsonResponse
-    {
-        /** Get other filters */
-        $payload = $request->getPayload()->all();
-        $columns = $payload['columns'];
-        $order = $payload['order'];
-
-        $orderColumn = $columns[$order[0]['column']]['name'];
-        $orderDirection = $order[0]['dir'];
-
-        unset($payload['draw'], $payload['columns'], $payload['order'], $payload['search']);
-
-        ['count' => $count, 'data' => $data, 'recordsFiltered' => $recordsFiltered] = $this->em->getRepository(Log::class)
-            ->getDatatableData($orderColumn, $orderDirection, ...$payload);
-
-        foreach ($data as $key => $d) {
-            $data[$key]['status'] = $this->translator->trans($d['status'], [], 'LogBundle');
-        }
-
-        return new JsonResponse(array(
-            'data' => $data,
-            'recordsTotal' => $count,
-            'recordsFiltered' => $recordsFiltered,
-        ));
-    }
 }

@@ -101,7 +101,7 @@ class ServiceController extends AbstractController
             $this->em->persist($service);
             $this->em->flush();
 
-            $this->addFlash('info', 'flash.service.updatedSuccessfully');
+            $this->addFlash('success', 'flash.service.updatedSuccessfully');
 
             return $this->redirectToRoute('lucca_service_show', ['id' => $service->getId()]);
         }
@@ -128,7 +128,7 @@ class ServiceController extends AbstractController
             $this->em->flush();
         }
 
-        $this->addFlash('danger', 'flash.service.deletedSuccessfully');
+        $this->addFlash('success', 'flash.service.deletedSuccessfully');
 
         return $this->redirectToRoute('lucca_service_index');
     }
@@ -153,10 +153,10 @@ class ServiceController extends AbstractController
     {
         if ($service->isEnabled()) {
             $service->setEnabled(false);
-            $this->addFlash('info', 'flash.service.disabledSuccessfully');
+            $this->addFlash('success', 'flash.service.disabledSuccessfully');
         } else {
             $service->setEnabled(true);
-            $this->addFlash('info', 'flash.service.enabledSuccessfully');
+            $this->addFlash('success', 'flash.service.enabledSuccessfully');
         }
 
         $this->em->flush();

@@ -115,7 +115,7 @@ class AgentController extends AbstractController
             $this->em->flush();
         }
 
-        $this->addFlash('info', 'flash.agent.deletedSuccessfully');
+        $this->addFlash('success', 'flash.agent.deletedSuccessfully');
 
         return $this->redirectToRoute('lucca_adherent_show', ['id' => $adherent->getId()]);
     }
@@ -143,7 +143,7 @@ class AgentController extends AbstractController
     {
         if ($agent->isEnabled()) {
             $agent->setEnabled(false);
-            $this->addFlash('info', 'flash.agent.enabledSuccessfully');
+            $this->addFlash('success', 'flash.agent.enabledSuccessfully');
         } else {
             $agent->setEnabled(true);
             $this->addFlash('info', 'flash.agent.disabledSuccessfully');

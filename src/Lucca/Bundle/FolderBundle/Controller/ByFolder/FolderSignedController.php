@@ -81,7 +81,7 @@ class FolderSignedController extends AbstractController
             $this->em->persist($folder);
             $this->em->flush();
 
-            $this->addFlash('info', 'flash.folderSigned.updatedSuccessfully');
+            $this->addFlash('success', 'flash.folderSigned.updatedSuccessfully');
 
             return $this->redirectToRoute('lucca_minute_show', [
                 'id' => $minute->getId()
