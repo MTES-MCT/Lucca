@@ -70,7 +70,12 @@ class Group
 
     public function getRoles(): array
     {
-        return unserialize($this->roles);
+        $roles = unserialize($this->roles);
+        if (!is_array($roles)) {
+            return [];
+        }
+
+        return $roles;
     }
 
     public function setRoles(array $roles): self

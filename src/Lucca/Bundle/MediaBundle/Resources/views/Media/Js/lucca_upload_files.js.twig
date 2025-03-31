@@ -38,12 +38,14 @@ $(window).on('load', function () {
             dictRemoveFile: "{{ 'message.dropzone.removeFile'|trans|e('js') }}",
             dictMaxFilesExceeded: "{{ 'message.dropzone.maxFilesReached'|trans|e('js') }}",
             dictFileTooBig: "{{ 'message.dropzone.fileTooBig'|trans|e('js') }}",
-            hiddenFileInput: $(self.sDropzoneMediaTag)[index].children[0],
+            hiddenFileInput: $('#' + $(self.sDropzoneMediaTag)[index].id + ' input[type="file"]')[0],
             hiddenInputContainer: $(self.sDropzoneMediaTag)[index]
         });
-        $('#' + $(self.sDropzoneMediaTag)[index].id).append('<input id="' + $(self.sDropzoneMediaTag)[index].id + '_fileText" type="text" name="' + myDropzone.options.hiddenFileInput.name + '" hidden="hidden"/>');
-        myDropzone.options.hiddenFileInput.name = null;
 
+        if (myDropzone.options.hiddenFileInput) {
+            $('#' + $(self.sDropzoneMediaTag)[index].id).append('<input id="' + $(self.sDropzoneMediaTag)[index].id + '_fileText" type="text" name="' + myDropzone.options.hiddenFileInput.name + '" hidden="hidden"/>');
+            myDropzone.options.hiddenFileInput.name = null;
+        }
 
         // If files upload are processing, block the form submit
         myDropzone.on('sending', function () {
@@ -84,6 +86,11 @@ $(window).on('load', function () {
                 myDropzone.options.hiddenFileInput.remove();
             })
     }
+    // Remove all label from bootstrap4
+    $('.dropzoneMedia .custom-file .custom-file-label, .media-form-container .custom-file .custom-file-label').each(function (index) {
+        {#$(this).parents()[0].style.display = 'none'#}
+        $(this).parents()[0].style.display = 'none';
+    });
 
     // Change title of the dropzone
     for (let index = 0; index < $('.dz-button').length; index++) {
@@ -142,6 +149,7 @@ let media_form = {
      * Send files input to the server
      */
     uploadFiles: function (event, filesToUpload = null) {
+        console.log('uploadFiles');
         let self = this;
         let formData = new FormData();
         var files = null;
@@ -228,7 +236,7 @@ let media_form = {
           }else {
             // Add modal html code next to the target
             $(self.sModalTag).remove();
-            $('#' + event.target.closest('.js-media-parent').id).append(response);
+            $('.block-modals').append(response);
 
                         // Open modal
                         $(self.sModalTag).modal('show');

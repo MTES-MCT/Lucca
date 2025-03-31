@@ -16,7 +16,7 @@ interface FolderNamerInterface
 {
     /**
      * Service constant to Folder
-     * CAREFUL -- All of these name is declared in service.yml in MediaBundle
+     * CAREFUL -- All of these name is declared in service.yml in MediaBundle (not anymore)
      */
     const NAMER_FOLDER = 'lucca.namer.folder';
     const NAMER_FOLDER_BY_DATE = 'lucca.namer.folder_by_date';

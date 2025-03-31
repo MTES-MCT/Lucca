@@ -16,7 +16,7 @@ interface MediaNamerInterface
 {
     /**
      * Service constant to Media
-     * CAREFUL -- All of these name is declared in service.yml in MediaBundle
+     * CAREFUL -- All of these name is declared in service.yml in MediaBundle (not anymore)
      */
     const NAMER_MEDIA = 'lucca.namer.media';
 

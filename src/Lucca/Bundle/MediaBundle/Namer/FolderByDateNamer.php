@@ -15,7 +15,7 @@ use Lucca\Bundle\MediaBundle\Entity\{Category, Media, Folder};
 
 class FolderByDateNamer implements FolderNamerInterface
 {
-    private Folder $currentFolder;
+    private ?Folder $currentFolder = null;
 
     public function __construct(
         private readonly EntityManagerInterface $em,

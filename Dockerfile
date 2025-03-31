@@ -5,7 +5,8 @@ FROM php:8.4-fpm AS php-fpm
 WORKDIR /tmp
 
 RUN apt-get update && apt-get install -y \
-    libzip-dev libicu-dev libpng-dev \
+    libzip-dev libicu-dev \
+    libpng-dev libjpeg62-turbo-dev libfreetype6-dev \
     # Install minimal dependencies for wkhtmltopdf
     libxrender1 \
     libxext6 \
@@ -16,10 +17,10 @@ RUN apt-get update && apt-get install -y \
 	xfonts-100dpi \
 	xfonts-75dpi \
 	xfonts-base \
-	libjpeg62-turbo \
 	libpng16-16 \
 	# Configure PHP extensions
     && docker-php-ext-configure intl \
+    && docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_mysql zip intl gd \
     # Clean up
     && apt-get clean -y \
@@ -33,7 +34,7 @@ RUN curl -L https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-
 # Workdir after installation
 WORKDIR /srv/app
 
-ENV WKHTMLTOPDF_PATH=/usr/bin/wkhtmltopdf
+ENV WKHTMLTOPDF_PATH=/usr/local/bin/wkhtmltopdf
 
 # Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

@@ -11,7 +11,9 @@
 namespace Lucca\Bundle\MediaBundle\EventListener;
 
 use Doctrine\ORM\Event\PreRemoveEventArgs;
-use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\Events;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\Filesystem\Exception\IOException;
 
 use Lucca\Bundle\MediaBundle\Entity\Media;
 use Lucca\Bundle\MediaBundle\Manager\FileManager;
@@ -27,6 +29,7 @@ readonly class DoctrineEventListener
     /**
      * Pre remove event listener.
      */
+    #[AsEventListener(event: Events::preRemove)]
     public function preRemove(PreRemoveEventArgs $args): void
     {
         $entity = $args->getObject();
@@ -36,8 +39,8 @@ readonly class DoctrineEventListener
             try {
                 /** Remove file system and Media entity */
                 $this->fileManager->removeFile($entity);
-            } catch (ORMException $ORMException) {
-                echo 'Error when remove Media and his filesystem - ' . $ORMException->getMessage();
+            } catch (IOException $exception) {
+                echo 'Error when remove Media and his filesystem - ' . $exception->getMessage();
             }
         }
     }

@@ -95,6 +95,9 @@ class GroupController extends AbstractController
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $this->em->persist($group);
+            $this->em->flush();
+
             $this->addFlash('success', 'flashes.updated_successfully');
 
             return $this->redirectToRoute('lucca_user_group_show', ['id' => $group->getId()]);

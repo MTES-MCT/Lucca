@@ -14,19 +14,26 @@ use DateTime;
 use Exception;
 use Doctrine\ORM\{EntityManagerInterface, EntityNotFoundException};
 use Doctrine\ORM\Exception\ORMException;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Psr\Container\ContainerInterface;
 
 use Lucca\Bundle\MediaBundle\Entity\{Category, Media, Folder, Storager};
-use Lucca\Bundle\MediaBundle\Namer\{FolderNamerInterface, MediaNamerInterface};
+use Lucca\Bundle\MediaBundle\Namer\{FolderByDateNamer,
+    FolderNamer,
+    FolderNamerInterface,
+    MediaNamer,
+    MediaNamerInterface};
 use Lucca\Bundle\UserBundle\Entity\User;
 
-readonly class FileManager
+readonly class FileManager implements ServiceSubscriberInterface
 {
     public function __construct(
         private EntityManagerInterface  $em,
+        private ContainerInterface $locator,
         private TokenStorageInterface   $tokenStorage,
 
         #[Autowire(param: 'lucca_media.upload_directory')]
@@ -36,6 +43,15 @@ readonly class FileManager
         private string                 $upload_temp_dir,
     )
     {
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return [
+            'lucca.namer.media' => MediaNamer::class,
+            'lucca.namer.folder' => FolderNamer::class,
+            'lucca.namer.folder_by_date' => FolderByDateNamer::class,
+        ];
     }
 
     /**
@@ -51,7 +67,7 @@ readonly class FileManager
         /**
          * Step 1 - Find Category if Media has not Category directly associated
          */
-        if ($media->getCategory() === null) {
+//        if ($media->getCategory() === null) {
             /** Extract extension file */
             $extension = pathinfo($fileName, PATHINFO_EXTENSION);
 
@@ -65,7 +81,7 @@ readonly class FileManager
 
             /** Assign Category entity to the Media */
             $media->setCategory($category);
-        }
+//        }
 
         /**
          * Step 2 - Check if Category is configured and its Storager is configured
@@ -82,7 +98,7 @@ readonly class FileManager
          * Step 3 - Create Media Name
          */
         /** @var $serviceMediaNaming MediaNamerInterface */
-        $serviceMediaNaming = new ($storager->getServiceMediaNaming());
+        $serviceMediaNaming = $this->locator->get($storager->getServiceMediaNaming());
 
         /** Create names by a specific service */
         $media = $serviceMediaNaming->createMediaName($media, $fileName);
@@ -91,7 +107,7 @@ readonly class FileManager
          * Step 4 - Define the folder
          */
         /** @var $serviceFolderNaming FolderNamerInterface */
-        $serviceFolderNaming = new ($storager->getServiceFolderNaming());
+        $serviceFolderNaming = $this->locator->get($storager->getServiceFolderNaming());
 
         $folder = $serviceFolderNaming->searchFolder($media, $createdAt);
 
