@@ -51,6 +51,7 @@ RUN set -eux; \
     chmod +x bin/console; \
     bin/console fos:js-routing:dump --format=json --target=assets/routes.json; \
     bin/console assets:install; \
+    bin/console importmap:install; \
     bin/console asset-map:compile; \
     chown -R www-data:www-data /srv/app/var/cache /srv/app/var/log;
 
