@@ -98,6 +98,7 @@ class Courier implements LoggableInterface
     public function setFolder(Folder $folder): self
     {
         $this->folder = $folder;
+        $folder->setCourier($this);
 
         return $this;
     }

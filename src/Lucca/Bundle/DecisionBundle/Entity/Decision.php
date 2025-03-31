@@ -175,6 +175,7 @@ class Decision implements LoggableInterface
     public function setMinute(Minute $minute): self
     {
         $this->minute = $minute;
+        $minute?->addDecision($this);
 
         return $this;
     }
@@ -479,6 +480,7 @@ class Decision implements LoggableInterface
     public function setExpulsion(?Expulsion $expulsion): self
     {
         $this->expulsion = $expulsion;
+        $expulsion?->setDecision($this);
 
         return $this;
     }
@@ -491,6 +493,7 @@ class Decision implements LoggableInterface
     public function setDemolition(?Demolition $demolition): self
     {
         $this->demolition = $demolition;
+        $demolition?->setDecision($this);
 
         return $this;
     }

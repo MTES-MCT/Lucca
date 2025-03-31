@@ -45,7 +45,7 @@ class ControlController extends AbstractController
         $this->useRefreshAgentForRefreshSignature = SettingManager::get('setting.folder.useRefreshAgentForRefreshSignature.name');
     }
 
-    #[Route('"{id}/letter-access/edit-manually', name: 'lucca_control_access_manual', methods: ['GET', 'POST'])]
+    #[Route('{id}/letter-access/edit-manually', name: 'lucca_control_access_manual', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_LUCCA')]
     public function accessLetterAction(
         Request $request,

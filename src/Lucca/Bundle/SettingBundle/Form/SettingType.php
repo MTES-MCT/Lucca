@@ -82,6 +82,7 @@ class SettingType extends AbstractType
                             'label' => 'label.yesNo',
                             'required' => false,
                         ));
+                        $setting->setValue($setting->getValue());
                         break;
                     case Setting::TYPE_LIST :
                         $form->add('value', ChoiceType::class, array(

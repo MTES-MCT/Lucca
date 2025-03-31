@@ -122,7 +122,7 @@ class Setting implements LoggableInterface
     /**
      * Get value.
      */
-    public function getValue(): null|int|string|float
+    public function getValue(): null|int|string|float|bool
     {
         return self::castValue($this->type, $this->value);
     }
@@ -130,11 +130,11 @@ class Setting implements LoggableInterface
     /**
      * Cast value by type.
      */
-    static public function castValue(string $type, ?string $value): null|int|string|float
+    public static function castValue(string $type, ?string $value): null|int|string|float|bool
     {
         switch ($type) {
             case self::TYPE_BOOL:
-                $output = 1 === intval($value);
+                $output = !!intval($value);
                 break;
             case self::TYPE_INTEGER:
                 $output = intval($value);

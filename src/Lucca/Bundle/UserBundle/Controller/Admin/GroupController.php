@@ -47,7 +47,7 @@ class GroupController extends AbstractController
     /**
      * Show one group.
      */
-    #[Route(path: '/{id}', name: 'lucca_user_group_show', methods: ['GET'])]
+    #[Route(path: '-{id}', name: 'lucca_user_group_show', methods: ['GET'])]
     public function showAction(Group $group): Response
     {
         $deleteForm = $this->createDeleteForm($group);
@@ -86,7 +86,7 @@ class GroupController extends AbstractController
     /**
      * Edit one group, show the edit form.
      */
-    #[Route(path: '/{id}/edit', name: 'lucca_user_group_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '-{id}/edit', name: 'lucca_user_group_edit', methods: ['GET', 'POST'])]
     public function editAction(Request $request, Group $group): Response
     {
         $deleteForm = $this->createDeleteForm($group);
@@ -110,7 +110,7 @@ class GroupController extends AbstractController
     /**
      * Delete one group.
      */
-    #[Route(path: '/{id}', name: 'lucca_user_group_delete', methods: ['DELETE'])]
+    #[Route(path: '-{id}', name: 'lucca_user_group_delete', methods: ['DELETE'])]
     public function deleteAction(Request $request, Group $group): Response
     {
         $form = $this->createDeleteForm($group);

@@ -485,7 +485,11 @@
     {#-- empty --#}
 {% endblock lucca_datatables_js %}
 
-{% block lucca_modal %}{% endblock lucca_modal %}
+<div class="block-modals">
+    {% block lucca_modal %}
+
+    {% endblock lucca_modal %}
+</div>
 
 <script src="{{ asset('bundles/luccathemestreamdashboarduikit/js/main.js') }}"></script>
 </body>

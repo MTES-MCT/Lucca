@@ -53,15 +53,15 @@
             {% if margin.blocs | length > 0 %}
                 {% for key, bloc in margin.blocs %}
                     <div class="card card-default m-2">
-                        <div class="card-header hover-pointer" data-tool="card-collapse">
+                        <div class="card-header hover-pointer">
                             <strong class="ml-2">{{ 'label.bloc'|trans }} {{ key + 1 }}
                                 - {{ bloc.typeContent | trans }}</strong>
-                            <a class="float-right" data-tool="card-collapse" title="Collapse card">
+                            <a href="#blocCollapse" class="float-right" data-toggle="collapse">
                                 <em class="fa fa-plus"></em>
                             </a>
                         </div>
 
-                        <div class="card-wrapper collapse">
+                        <div id="blocCollapse" class="card-wrapper collapse">
                             <div class="card-body">
                                 <div>
                                     <table style="width: 100%;">

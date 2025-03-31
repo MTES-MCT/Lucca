@@ -49,7 +49,7 @@ class BrowserMinuteType extends AbstractType
             ))
             ->add('town', EntityType::class, array(
                 'class' => Town::class, 'choice_label' => 'formLabelInsee', 'required' => false,
-                'multiple' => true, 'label' => 'label.town',
+                'multiple' => true, 'label' => 'label.town', 'autocomplete' => true,
                 'attr' => array('class' => 'tom-select'),
                 'query_builder' => function (TownRepository $repo) {
                     return $repo->getValuesActive();
@@ -57,7 +57,7 @@ class BrowserMinuteType extends AbstractType
             ))
             ->add('townAdherent', EntityType::class, array(
                 'class' => Town::class, 'choice_label' => 'formLabelInsee', 'required' => false,
-                'multiple' => true, 'label' => 'label.town',
+                'multiple' => true, 'label' => 'label.town', 'autocomplete' => true,
                 'attr' => array('class' => 'tom-select'),
                 'query_builder' => function (TownRepository $repo) {
                     return $repo->getValuesActive();
