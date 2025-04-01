@@ -62,7 +62,6 @@ class MediaController extends AbstractController
             ($user === "anon." && !$media->getPublic()) ||
             ($user instanceof User && !$media->getPublic() && !$this->authorizationChecker->isGranted('ROLE_MEDIA_READ'))
         ) {
-            dump('anon');;
             throw new AccessDeniedException('');
         }
 
@@ -76,7 +75,7 @@ class MediaController extends AbstractController
                 ob_start();
                 $this->imageResizer->imagePrintAccordingToMime($media, $imageResized);
                 $str = ob_get_clean();
-dump($str);
+
                 return new Response($str, 200, $headers);
             }
         }
@@ -84,10 +83,9 @@ dump($str);
         /** Check if file exist */
         $fullFilePath = $this->upload_dir . $media->getFilePath();
         if (!file_exists($fullFilePath)) {
-            dump(null);
             throw new NotFoundHttpException('File not found', null, 404);
         }
-dump($fullFilePath);
+
         return new BinaryFileResponse($fullFilePath);
     }
 }
