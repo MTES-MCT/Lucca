@@ -20,7 +20,7 @@
 
         <div class="card card-default">
             <div class="card-header">
-                <a class="float-right" href="#" data-tool="card-collapse" data-toggle="tooltip" title="Collapse card">
+                <a class="float-right" href="#indexCard" data-toggle="collapse">
                     <em class="fa fa-minus"></em>
                 </a>
                 <div class="card-title">
@@ -30,7 +30,7 @@
                 </div>
             </div>
 
-            <div class="card-wrapper collapse show">
+            <div id="indexCard" class="card-wrapper collapse show">
                 <div class="card-body">
                     <div class="col-12">
                         {% block lucca_list %} {% endblock lucca_list %}

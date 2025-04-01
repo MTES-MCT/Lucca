@@ -34,14 +34,14 @@
     {#-- Panel - statistics params --#}
     <div class="col-12">
         <div class="card card-default">
-            <div class="card-header hover-pointer" data-tool="card-collapse">
+            <div class="card-header hover-pointer">
                 <strong>{{ 'statistics.filters'|trans }}</strong>
-                <a class="float-right" href="#" data-tool="card-collapse" title="Collapse card">
+                <a class="float-right" href="#statisticCard" data-toggle="collapse">
                     <em class="fa fa-plus"></em>
                 </a>
             </div>
 
-            <div class="card-wrapper collapse">
+            <div id="statisticCard" class="card-wrapper collapse">
                 <div class="card-body">
                     {{ form_start(form) }}
 
