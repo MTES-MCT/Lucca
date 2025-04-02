@@ -9,3 +9,9 @@
 .btn-warning {
     color: #fff !important;
 }
+
+.col-form-label.required::after {
+    content: '*';
+    color: #ff5050;
+    font-size: 1.1em;
+}

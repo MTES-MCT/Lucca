@@ -56,7 +56,7 @@ class TownRepository extends LuccaRepository
     /**
      * Get Town filter by Intercommunal
      */
-    public function findAllByIntercommunals(array $intercommunals, array $exclude_towns = []): QueryBuilder
+    public function findAllByIntercommunals(array $intercommunals, array $exclude_towns = []): array
     {
         $qb = $this->queryTown();
 

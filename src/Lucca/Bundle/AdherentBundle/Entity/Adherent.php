@@ -95,7 +95,7 @@ class Adherent implements LoggableInterface, MediaAsyncInterface
     #[ORM\Column]
     #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
-    protected bool $invitedByMail;
+    protected bool $invitedByMail = false;
 
     #[ORM\ManyToOne(targetEntity: Town::class)]
     private ?Town $town = null;

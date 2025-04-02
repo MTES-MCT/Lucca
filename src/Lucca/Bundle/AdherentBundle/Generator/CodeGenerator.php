@@ -41,7 +41,7 @@ readonly class CodeGenerator
             $baseCode = $entity->getTown()->getCode();
         } elseif ($entity->getIntercommunal()) {
             $baseCode = $entity->getIntercommunal()->getCode();
-        } elseif ($entity->getService()->getCode()) {
+        } elseif ($entity->getService()?->getCode()) {
             $baseCode = $entity->getService()->getCode();
         } else {
             throw new Exception('No code can be generated without location');
