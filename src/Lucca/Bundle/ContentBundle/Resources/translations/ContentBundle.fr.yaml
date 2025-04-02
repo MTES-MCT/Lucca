@@ -19,9 +19,9 @@ title:
 # Entity
 ########################
 entity:
-    area: "Zone|Zones"
-    subarea: "Sous zone|Sous zones"
-    page: "Page|Pages"
+    area: "Zone"
+    subarea: "Sous zone"
+    page: "Page"
 
 
 ########################

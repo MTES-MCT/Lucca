@@ -6,14 +6,14 @@
 ## Entity
 ###############
 entity:
-    media: "Média|Médias"
-    category: "Catégorie|Catégories"
-    gallery: "Galerie|Galeries"
-    extension: "Extension|Extensions"
-    storager: "Stockeur|Stockeurs"
-    metaDataModel: "Modèle de métadonnée|Modèles de métadonnée"
-    metaData: "Métadonnée|Métadonnées"
-    folder: "Dossier|Dossiers"
+    media: "Média"
+    category: "Catégorie"
+    gallery: "Galerie"
+    extension: "Extension"
+    storager: "Stockeur"
+    metaDataModel: "Modèle de métadonnée"
+    metaData: "Métadonnée"
+    folder: "Dossier"
 
 ###############
 ## label

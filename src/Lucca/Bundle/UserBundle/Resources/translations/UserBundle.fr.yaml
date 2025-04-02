@@ -13,8 +13,8 @@ meta:
 # Entity
 ########################
 entity:
-    user: "Utilisateur|Utilisateurs"
-    group: "Groupe|Groupes"
+    user: "Utilisateur"
+    group: "Groupe"
 
 ########################
 # Label

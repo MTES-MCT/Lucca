@@ -6,7 +6,7 @@
 # Entity
 ########################
 entity:
-    setting: "Paramètre|Paramètres"
+    setting: "Paramètre"
     import:
         setting: 'Importer des settings'
 
