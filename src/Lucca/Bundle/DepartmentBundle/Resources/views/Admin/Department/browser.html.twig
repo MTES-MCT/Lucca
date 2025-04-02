@@ -15,7 +15,7 @@
 
         {% block theme_embed_buttons_department %}
             {% if app.user and (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_USER_TOTAL")) %}
-                {% if department.enable %}
+                {% if department.enabled %}
                     <a href="{{ path('lucca_department_admin_disable', { 'id': department.id }) }}"
                        class="btn btn-primary btn-sm" title="{{ 'link.department.disable'|trans }}">
                         <i class="fas fa-toggle-on" aria-hidden="true"></i>

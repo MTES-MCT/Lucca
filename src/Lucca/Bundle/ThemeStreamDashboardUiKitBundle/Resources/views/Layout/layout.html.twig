@@ -417,9 +417,18 @@
                             </ul>
                         </li>
                         {#-- End Menu - Permission --#}
-                    {% endif %}
 
-                    {#-- Menu - Help --#}
+                        {#-- Menu - Department --#}
+                        <li class="u-sidebar-nav-menu__item {% if block("menuActive_department") %}u-sidebar-nav--opened{% endif %}">
+                            <a class="u-sidebar-nav-menu__link {% block menuActive_department %}{% endblock %}" href="{{ path('lucca_department_admin_index') }}"
+                               title="{{ 'menu.department'|trans }}">
+                                <i class="fas fa-map-pin u-sidebar-nav-menu__item-icon"></i>
+                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.department'|trans }}</span>
+                                <span class="u-sidebar-nav-menu__indicator"></span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {#-- End Menu - Department --#}
 
                     {#-- End - Menu --#}
                 </ul>

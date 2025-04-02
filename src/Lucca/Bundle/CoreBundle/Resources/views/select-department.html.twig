@@ -1,0 +1,68 @@
+{% extends "@LuccaThemeStreamDashboardUiKit/Page/angleLogin.html.twig" %}
+{% trans_default_domain 'CoreBundle' %}
+
+{% block lucca_title %}
+    <title>{{ 'setting.general.app.name'| setting }} | {{ 'title.selectDepartment'|trans }}</title>
+{% endblock lucca_title %}
+
+{% block lucca_header %}
+    {{ 'title.selectDepartment'|trans }}
+{% endblock lucca_header %}
+
+
+{% block lucca_page %}
+{#    {% include '@NwThemeColor/Flash/flashMessages.html.twig' %}#}
+    <div class="login-header">
+        <div class="brand">
+            <div class="d-flex align-items-center">
+                <img src="{{ asset('assets/logo/lucca-color.png') }}" alt="" class="logo-login" width="150" height="auto">
+
+            </div>
+            <small class="text-primary">
+                {{ 'login.introduction'|trans({}, 'CoreBundle') }}
+                <br>
+                {{ 'meta.project.description'|trans({}, 'CoreBundle') }}
+            </small>
+        </div>
+        <div class="icon">
+            <i class="fas fa-map"></i>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">{{ 'title.selectDepartment'|trans }}</h4>
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(form.department) }}
+                </div>
+
+                <div class="col-md-6 text-center align-self-center">
+                    {% if app.user and (is_granted("ROLE_ADMIN")) %}
+                        <button  type="submit" name="adminSpace" class="btn btn-xs btn-default">{{ 'title.adminScope'|trans({}, 'CoreBundle') }}</button>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block bg-success w-50">{{ 'text.validate'|trans }}</button>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock lucca_page %}
+
+
+{% block lucca_css %}
+
+    {{ parent() }}
+    <style>
+        .login-container {
+            max-width: 750px !important;
+        }
+    </style>
+{% endblock lucca_css %}
