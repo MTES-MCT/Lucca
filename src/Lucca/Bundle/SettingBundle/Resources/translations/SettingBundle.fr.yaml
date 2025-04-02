@@ -110,6 +110,9 @@ setting:
         departement:
             name: "Département"
             comment: "Indiquer ici le numéro du département."
+        bannerTop:
+            name: "Bannière en haut de la page"
+            comment: "Bannière affichée en haut de la page d'accueil de l'application."
         emailGlobal:
             name: "Email expéditeur"
             comment: "Email utilisé pour envoyer des mails"

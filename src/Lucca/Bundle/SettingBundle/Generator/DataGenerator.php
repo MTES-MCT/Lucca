@@ -18,37 +18,37 @@ class DataGenerator
 
     // Define all the categories needed /!\ don't forgot any category
     public array $categories = [
-        1 => [
+        [
             'name' => "setting.category.general.name",
             'icon' => "fas fa-wrench",
             'position' => 0,
             'comment' => "setting.category.general.comment"],
-        2 => [
+        [
             'name' => "setting.category.map.name",
             'icon' => "fas fa-map",
             'position' => 1,
             'comment' => "setting.category.map.comment"],
-        3 => [
+        [
             'name' => "setting.category.pdf.name",
             'icon' => "fas fa-file-pdf",
             'position' => 2,
             'comment' => "setting.category.pdf.comment"],
-        4 => [
+        [
             'name' => "setting.category.folder.name",
             'icon' => "fas fa-folder",
             'position' => 3,
             'comment' => "setting.category.folder.comment"],
-        5 => [
+        [
             'name' => "setting.category.courier.name",
             'icon' => "fas fa-envelope",
             'position' => 4,
             'comment' => "setting.category.courier.comment"],
-        6 => [
+        [
             'name' => "setting.category.control.name",
             'icon' => "fas fa-clipboard-check",
             'position' => 5,
             'comment' => "setting.category.control.comment"],
-        7 => [
+        [
             'name' => "setting.category.module.name",
             'icon' => "fas fa-chart-network",
             'position' => 6,
@@ -63,7 +63,7 @@ class DataGenerator
         //------------------------------
         // GENERAL SETTINGS
         //------------------------------
-        1 => [
+        [
             'name' => "setting.general.app.name",
             'type' => Setting::TYPE_TEXT,
             'category' => 'setting.category.general.name',
@@ -72,7 +72,16 @@ class DataGenerator
             'value' => 'Lucca',
             'valuesAvailable' => [],
             'comment' => 'setting.general.app.comment'],
-        2 => [
+        [
+            'name' => "setting.general.bannerTop.name",
+            'type' => Setting::TYPE_TEXT,
+            'category' => 'setting.category.general.name',
+            'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
+            'position' => 0,
+            'value' => '',
+            'valuesAvailable' => [],
+            'comment' => 'setting.general.bannerTop.comment'],
+        [
             'name' => "setting.general.departement.name",
             'type' => Setting::TYPE_LIST,
             'category' => 'setting.category.general.name',
@@ -81,7 +90,7 @@ class DataGenerator
             'value' => '66',
             'valuesAvailable' => ['66', '34', '12', '31', '33'],
             'comment' => 'setting.general.departement.comment'],
-        3 => [
+        [
             'name' => "setting.general.colorL.name",
             'type' => Setting::TYPE_COLOR,
             'category' => 'setting.category.general.name',
@@ -90,7 +99,7 @@ class DataGenerator
             'value' => '#23b7e5',
             'valuesAvailable' => [],
             'comment' => 'setting.general.colorL.comment'],
-        4 => [
+        [
             'name' => "setting.general.colorR.name",
             'type' => Setting::TYPE_COLOR,
             'category' => 'setting.category.general.name',
@@ -99,7 +108,7 @@ class DataGenerator
             'value' => '#51c6ea',
             'valuesAvailable' => [],
             'comment' => 'setting.general.colorR.comment'],
-        5 => [
+        [
             'name' => "setting.general.emailGlobal.name",
             'type' => Setting::TYPE_TEXT,
             'category' => 'setting.category.general.name',
@@ -108,7 +117,7 @@ class DataGenerator
             'value' => 'subscription@cabanisation66.fr',
             'valuesAvailable' => [],
             'comment' => 'setting.general.emailGlobal.comment'],
-        6 => [
+        [
             'name' => "setting.general.emailLegaleDepartement.name",
             'type' => Setting::TYPE_TEXT,
             'category' => 'setting.category.general.name',
@@ -117,7 +126,7 @@ class DataGenerator
             'value' => 'ddtm-cabanisation@pyrenees-orientales.gouv.fr',
             'valuesAvailable' => [],
             'comment' => 'setting.general.emailLegaleDepartement.comment'],
-        7 => [
+        [
             'name' => "setting.general.logo.name",
             'type' => Setting::TYPE_TEXT,
             'category' => 'setting.category.general.name',
@@ -126,7 +135,7 @@ class DataGenerator
             'value' => 'assets/logo/lucca-logo-texte-transparent.png',
             'valuesAvailable' => [],
             'comment' => 'setting.general.logo.comment'],
-        8 => [
+        [
             'name' => "setting.general.ddtName.name",
             'type' => Setting::TYPE_TEXT,
             'category' => 'setting.category.general.name',
@@ -138,7 +147,7 @@ class DataGenerator
         //------------------------------
         // CARTO SETTINGS
         //------------------------------
-        10 => [
+        [
             'name' => "setting.map.mapActive.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.map.name',
@@ -147,7 +156,7 @@ class DataGenerator
             'value' => true,
             'valuesAvailable' => [],
             'comment' => 'setting.map.mapActive.comment'],
-        11 => [
+        [
             'name' => "setting.map.mapKey.name",
             'type' => Setting::TYPE_TEXT,
             'category' => 'setting.category.map.name',
@@ -156,7 +165,7 @@ class DataGenerator
             'value' => 'AIzaSyBCaacz1oZPfGnmfX71aNm9dEpPII4CWOA',
             'valuesAvailable' => [],
             'comment' => 'setting.map.mapKey.comment'],
-        12 => [
+        [
             'name' => "setting.map.geocodeKey.name",
             'type' => Setting::TYPE_TEXT,
             'category' => 'setting.category.map.name',
@@ -165,7 +174,7 @@ class DataGenerator
             'value' => 'AIzaSyAQKSy-LJ-9IGhgDSx3FbdpyT8ZDuUI-xg',
             'valuesAvailable' => [],
             'comment' => 'setting.map.geocodeKey.comment'],
-        13 => [
+        [
             'name' => "setting.map.lat.name",
             'type' => Setting::TYPE_FLOAT,
             'category' => 'setting.category.map.name',
@@ -174,7 +183,7 @@ class DataGenerator
             'value' => '43.60347',
             'valuesAvailable' => [],
             'comment' => 'setting.map.lat.comment'],
-        14 => [
+        [
             'name' => "setting.map.lon.name",
             'type' => Setting::TYPE_FLOAT,
             'category' => 'setting.category.map.name',
@@ -186,7 +195,7 @@ class DataGenerator
         //------------------------------
         // PDF SETTINGS
         //------------------------------
-        15 => [
+        [
             'name' => "setting.pdf.logo.name",
             'type' => Setting::TYPE_TEXT,
             'category' => 'setting.category.pdf.name',
@@ -195,7 +204,7 @@ class DataGenerator
             'value' => '/assets/12/logo-marianne-pdf.jpg',
             'valuesAvailable' => [],
             'comment' => 'setting.pdf.logo.comment'],
-        16 => [
+        [
             'name' => "setting.pdf.logoInHeader.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.pdf.name',
@@ -207,7 +216,7 @@ class DataGenerator
         //------------------------------
         // FOLDER SETTINGS
         //------------------------------
-        17 => [
+        [
             'name' => "setting.folder.docFooterDueDate.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.folder.name',
@@ -216,7 +225,7 @@ class DataGenerator
             'value' => true,
             'valuesAvailable' => [],
             'comment' => 'setting.folder.docFooterDueDate.comment'],
-        18 => [
+        [
             'name' => "setting.folder.docContent.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.folder.name',
@@ -225,7 +234,7 @@ class DataGenerator
             'value' => true,
             'valuesAvailable' => [],
             'comment' => 'setting.folder.docContent.comment'],
-        19 => [
+        [
             'name' => "setting.folder.docContentObstacle.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.folder.name',
@@ -234,7 +243,7 @@ class DataGenerator
             'value' => true,
             'valuesAvailable' => [],
             'comment' => 'setting.folder.docContentObstacle.comment'],
-        20 => [
+        [
             'name' => "setting.folder.blockAttachmentToChecklist.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.folder.name',
@@ -243,7 +252,7 @@ class DataGenerator
             'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.folder.blockAttachmentToChecklist.comment'],
-        21 => [
+        [
             'name' => "setting.folder.useRefreshAgentForRefreshSignature.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.folder.name',
@@ -252,7 +261,7 @@ class DataGenerator
             'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.folder.useRefreshAgentForRefreshSignature.comment'],
-        22 => [
+        [
             'name' => "setting.folder.indexFilterByRollingOrCalendarYear.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.folder.name',
@@ -261,7 +270,7 @@ class DataGenerator
             'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.folder.indexFilterByRollingOrCalendarYear.comment'],
-        23 => [
+        [
             'name' => "setting.folder.presetFilterAdherentByConnectedUser.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.folder.name',
@@ -274,7 +283,7 @@ class DataGenerator
         //------------------------------
         // COURIER SETTINGS
         //------------------------------
-        24 => [
+        [
             'name' => "setting.courier.offenderContent.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.courier.name',
@@ -283,7 +292,7 @@ class DataGenerator
             'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.courier.offenderContent.comment'],
-        25 => [
+        [
             'name' => "setting.courier.ddtmContent.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.courier.name',
@@ -292,7 +301,7 @@ class DataGenerator
             'value' => true,
             'valuesAvailable' => [],
             'comment' => 'setting.courier.ddtmContent.comment'],
-        26 => [
+        [
             'name' => "setting.courier.judicialContent.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.courier.name',
@@ -301,7 +310,7 @@ class DataGenerator
             'value' => true,
             'valuesAvailable' => [],
             'comment' => 'setting.courier.judicialContent.comment'],
-        27 => [
+        [
             'name' => "setting.courier.mayorContent.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.courier.name',
@@ -313,7 +322,7 @@ class DataGenerator
         //------------------------------
         // CONTROL SETTINGS
         //------------------------------
-        28 => [
+        [
             'name' => "setting.control.footer.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.control.name',
@@ -322,7 +331,7 @@ class DataGenerator
             'value' => true,
             'valuesAvailable' => [],
             'comment' => 'setting.control.footer.comment'],
-        29 => [
+        [
             'name' => "setting.control.accessContent.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.control.name',
@@ -331,7 +340,7 @@ class DataGenerator
             'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.control.accessContent.comment'],
-        30 => [
+        [
             'name' => "setting.control.accessEmpty.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.control.name',
@@ -340,7 +349,7 @@ class DataGenerator
             'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.control.accessEmpty.comment'],
-        31 => [
+        [
             'name' => "setting.control.convocationContent.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.control.name',
@@ -352,7 +361,7 @@ class DataGenerator
         //------------------------------
         // GENERAL - URL SETTINGS
         //------------------------------
-        32 => [
+        [
             'name' => "setting.general.url.name",
             'type' => Setting::TYPE_TEXT,
             'category' => 'setting.category.general.name',
@@ -361,7 +370,7 @@ class DataGenerator
             'value' => "https://cabanisation66.fr",
             'valuesAvailable' => [],
             'comment' => 'setting.general.url.comment'],
-        33 => [
+        [
             'name' => "setting.general.urlGouv.name",
             'type' => Setting::TYPE_TEXT,
             'category' => 'setting.category.general.name',
@@ -370,7 +379,7 @@ class DataGenerator
             'value' => "https://www.pyrenees-orientales.gouv.fr/",
             'valuesAvailable' => [],
             'comment' => 'setting.general.urlGouv.comment'],
-        34 => [
+        [
             'name' => "setting.general.prefixUsername.name",
             'type' => Setting::TYPE_TEXT,
             'category' => 'setting.category.general.name',
@@ -379,8 +388,7 @@ class DataGenerator
             'value' => "lucca",
             'valuesAvailable' => [],
             'comment' => 'setting.general.prefixUsername.comment'],
-
-        35 => [
+        [
             'name' => "setting.map.maxResults.name",
             'type' => Setting::TYPE_INTEGER,
             'category' => 'setting.category.map.name',
@@ -389,7 +397,7 @@ class DataGenerator
             'value' => 100,
             'valuesAvailable' => [],
             'comment' => 'setting.map.maxResults.comment'],
-        36 => [
+        [
             'name' => "setting.general.ddtAcronym.name",
             'type' => Setting::TYPE_TEXT,
             'category' => 'setting.category.general.name',
@@ -398,7 +406,7 @@ class DataGenerator
             'value' => 'DDTM',
             'valuesAvailable' => ['DDT', 'DDTM'],
             'comment' => 'setting.general.ddtAcronym.comment'],
-        37 => [
+        [
             'name' => "setting.general.catchphrase1.name",
             'type' => Setting::TYPE_TEXT,
             'category' => 'setting.category.general.name',
@@ -407,7 +415,7 @@ class DataGenerator
             'value' => 'Lutte contre la cabanisation',
             'valuesAvailable' => [],
             'comment' => 'setting.general.catchphrase1.comment'],
-        38 => [
+        [
             'name' => "setting.general.catchphrase2.name",
             'type' => Setting::TYPE_TEXT,
             'category' => 'setting.category.general.name',
@@ -420,7 +428,7 @@ class DataGenerator
         //------------------------------
         // MODULE ACCESS SETTINGS
         //------------------------------
-        39 => [
+        [
             'name' => "setting.module.mayorletter.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.module.name',
@@ -429,7 +437,7 @@ class DataGenerator
             'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.module.mayorletter.comment'],
-        40 => [
+        [
             'name' => "setting.module.dashboardAdmin.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.module.name',
@@ -442,7 +450,7 @@ class DataGenerator
         //------------------------------
         // General URL converter PDF into JPEG
         //------------------------------
-        41 => [
+        [
             'name' => "setting.general.converterLink.name",
             'type' => Setting::TYPE_TEXT,
             'category' => 'setting.category.general.name',
@@ -455,7 +463,7 @@ class DataGenerator
         //------------------------------
         // Annexes in folder
         //------------------------------
-        42 => [
+        [
             'name' => "setting.module.annexes.name",
             'type' => Setting::TYPE_BOOL,
             'category' => 'setting.category.module.name',
@@ -464,7 +472,7 @@ class DataGenerator
             'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.module.annexes.comment'],
-        43 => [
+        [
             'name' => "setting.folder.annexesQuantity.name",
             'type' => Setting::TYPE_INTEGER,
             'category' => 'setting.category.folder.name',
@@ -473,7 +481,7 @@ class DataGenerator
             'value' => 3,
             'valuesAvailable' => [],
             'comment' => 'setting.folder.annexesQuantity.comment'],
-        45 => [
+        [
             'name' => "setting.folder.annexesMaxSize.name",
             'type' => Setting::TYPE_INTEGER,
             'category' => 'setting.category.folder.name',
