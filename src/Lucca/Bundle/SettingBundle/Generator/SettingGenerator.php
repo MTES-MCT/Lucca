@@ -69,7 +69,15 @@ class SettingGenerator
         if ($item->isHit()) {
             $aDictionary = $item->get();
 
-            if (isset($aDictionary[$name]) && $aDictionary[$name] !== $value) {
+            if (!array_key_exists($name, $aDictionary)) {
+                $aDictionary[$name] = $value;
+                $item->set($aDictionary);
+                $this->settingsCache->save($item);
+
+                return;
+            }
+
+            if ($aDictionary[$name] !== $value) {
                 $aDictionary[$name] = $value;
                 $item->set($aDictionary);
                 $this->settingsCache->save($item);
