@@ -35,7 +35,7 @@ class ContactInfosExtension extends AbstractExtension
      */
     public function getContactInfos($p_department): array
     {
-        return match ($p_department) {
+        return match (intval($p_department)) {
             66 => [
                 [
                     'mailto' => 'ddtm-cabanisation@pyrenees-orientales.gouv.fr',
@@ -84,7 +84,7 @@ class ContactInfosExtension extends AbstractExtension
      */
     public function getContactHelpControl($p_department): array
     {
-        return match ($p_department) {
+        return match (intval($p_department)) {
             66 => $this->getContactInfos(66),
             34 => [
                 [
