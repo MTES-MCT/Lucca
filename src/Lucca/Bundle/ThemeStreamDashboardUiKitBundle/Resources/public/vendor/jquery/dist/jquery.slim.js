@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 2025. Numeric Wave
- *
- * Afero General Public License (AGPL) v3
- *
- * For more information, please refer to the LICENSE file at the root of the project.
- */
-
 /*!
  * jQuery JavaScript Library v3.3.1 -ajax,-ajax/jsonp,-ajax/load,-ajax/parseXML,-ajax/script,-ajax/var/location,-ajax/var/nonce,-ajax/var/rquery,-ajax/xhr,-manipulation/_evalUrl,-event/ajax,-effects,-effects/Tween,-effects/animatedSelector
  * https://jquery.com/

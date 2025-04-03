@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 2025. Numeric Wave
- *
- * Afero General Public License (AGPL) v3
- *
- * For more information, please refer to the LICENSE file at the root of the project.
- */
-
 /* global Symbol */
 // Defining this global in .eslintrc.json would create a danger of using the global
 // unguarded in another place, it seems safer to define global only for this module

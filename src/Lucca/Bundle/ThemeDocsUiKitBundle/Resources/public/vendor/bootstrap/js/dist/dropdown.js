@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 2025. Numeric Wave
- *
- * Afero General Public License (AGPL) v3
- *
- * For more information, please refer to the LICENSE file at the root of the project.
- */
-
 /*!
   * Bootstrap dropdown.js v4.3.1 (https://getbootstrap.com/)
   * Copyright 2011-2019 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
