@@ -162,7 +162,7 @@ class DataGenerator
             'category' => 'setting.category.map.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 9,
-            'value' => 'AIzaSyBCaacz1oZPfGnmfX71aNm9dEpPII4CWOA',
+            'value' => '',
             'valuesAvailable' => [],
             'comment' => 'setting.map.mapKey.comment'],
         [
@@ -171,7 +171,7 @@ class DataGenerator
             'category' => 'setting.category.map.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 10,
-            'value' => 'AIzaSyAQKSy-LJ-9IGhgDSx3FbdpyT8ZDuUI-xg',
+            'value' => '',
             'valuesAvailable' => [],
             'comment' => 'setting.map.geocodeKey.comment'],
         [
