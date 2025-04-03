@@ -89,6 +89,7 @@ class FolderType extends AbstractType
                 'choices' => $choicesControl, 'autocomplete' => true,
                 'attr' => array(
                     'class' => 'tom-select js-control',
+                    'required' => true,
                     'data-placeholder' => $this->translator->trans('help.data.select', array(), 'FolderBundle'),
                 ),
                 'choice_attr' => function (Control $control) {

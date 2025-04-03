@@ -53,21 +53,21 @@ class AdherentType extends AbstractType
             ->add('mobile', TextType::class, array('label' => 'label.mobile', 'required' => false))
             ->add('town', EntityType::class, array(
                 'class' => Town::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'tom-select'),
-                'label' => 'label.town', 'required' => false, 'autocomplete' => true,
+                'label' => 'label.town', 'required' => false, 'autocomplete' => true, 'label_attr' => array('class' => 'required'),
                 'query_builder' => function (TownRepository $er) {
                     return $er->getValuesActive();
                 }
             ))
             ->add('service', EntityType::class, array(
                 'class' => Service::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'tom-select'),
-                'label' => 'label.service', 'required' => false, 'autocomplete' => true,
+                'label' => 'label.service', 'required' => false, 'autocomplete' => true, 'label_attr' => array('class' => 'required'),
                 'query_builder' => function (ServiceRepository $er) {
                     return $er->getValuesActive();
                 }
             ))
             ->add('intercommunal', EntityType::class, array(
                 'class' => Intercommunal::class, 'choice_label' => 'formLabel', 'attr' => array('class' => 'tom-select'),
-                'label' => 'label.intercommunal', 'required' => false, 'autocomplete' => true,
+                'label' => 'label.intercommunal', 'required' => false, 'autocomplete' => true, 'label_attr' => array('class' => 'required'),
                 'query_builder' => function (IntercommunalRepository $er) {
                     return $er->getValuesActive();
                 }

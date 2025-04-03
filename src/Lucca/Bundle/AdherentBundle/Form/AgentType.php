@@ -41,7 +41,8 @@ class AgentType extends AbstractType
                     Agent::FUNCTION_COUNTRY_GUARD => Agent::FUNCTION_COUNTRY_GUARD,
                     Agent::FUNCTION_COUNTRY_AGENT => Agent::FUNCTION_COUNTRY_AGENT,
                 ),
-                'label' => 'label.function', 'expanded' => false, 'multiple' => false,
+                'label' => 'label.function', 'autocomplete' => true,
+                'attr' => array('class' => 'tom-select', 'required' => true),
             ))
             ->add('commission', TextType::class, array('label' => 'label.commission', 'required' => false))
             ->add('tribunal', EntityType::class, array(

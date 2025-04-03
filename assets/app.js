@@ -6,3 +6,4 @@
  */
 
 import './bootstrap.js';
+import './js/tom-select-fix.js';
