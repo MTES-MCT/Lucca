@@ -188,8 +188,8 @@
                 <ul class="u-sidebar-nav-menu u-sidebar-nav-menu--top-level">
 
                     {#-- Menu - Public --#}
-                    <li class="u-sidebar-nav-menu__item">
-                        <span class="u-sidebar-nav-menu__item-title">{{ 'menu.public'|trans }}</span>
+                    <li class="u-sidebar-nav-menu__item bg-light bg-light py-3 rounded">
+                        <span class="u-sidebar-nav-menu__item-title mx-2">{{ 'menu.public'|trans }}</span>
                     </li>
 
                     <li class="u-sidebar-nav-menu__item">
@@ -203,8 +203,8 @@
 
 
                     {#-- Menu - Main --#}
-                    <li class="u-sidebar-nav-menu__item">
-                        <span class="u-sidebar-nav-menu__item-title">{{ 'menu.main'|trans }}</span>
+                    <li class="u-sidebar-nav-menu__item bg-light py-3 rounded">
+                        <span class="u-sidebar-nav-menu__item-title mx-2">{{ 'menu.main'|trans }}</span>
                     </li>
 
                     <li class="u-sidebar-nav-menu__item">
@@ -291,9 +291,9 @@
                     {#-- End Menu - Natinf --#}
 
                     {% if app.user and is_granted("ROLE_ADMIN") %}
-                        <li class="u-sidebar-nav-menu__item">
-                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.admin'|trans }}</span>
-                            <span class="badge badge-warning badge-xs float-right">{{ 'badge.admin'|trans }}</span>
+                        <li class="u-sidebar-nav-menu__item bg-light py-3 rounded">
+                            <span class="u-sidebar-nav-menu__item-title ml-2">{{ 'menu.admin'|trans }}</span>
+                            <span class="badge badge-warning badge-xs float-right mr-2">{{ 'badge.admin'|trans }}</span>
                         </li>
 
                         {#-- Menu - Dashboard Admin --#}
@@ -388,9 +388,9 @@
                     {% endif %}
 
                     {% if app.user and is_granted("ROLE_SUPER_ADMIN") %}
-                        <li class="u-sidebar-nav-menu__item">
-                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.super_admin'|trans }}</span>
-                            <span class="badge badge-danger badge-xs float-right">{{ 'badge.sa'|trans }}</span>
+                        <li class="u-sidebar-nav-menu__item bg-light py-3 rounded">
+                            <span class="u-sidebar-nav-menu__item-title ml-2">{{ 'menu.super_admin'|trans }}</span>
+                            <span class="badge badge-danger badge-xs float-right mr-2">{{ 'badge.sa'|trans }}</span>
                         </li>
 
                         {#-- Menu - Permission --#}
