@@ -6,7 +6,7 @@
 ## Entity
 ###############
 entity:
-    log: "Log|Logs"
+    log: "Log"
 
 ###############
 ## Label

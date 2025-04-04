@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 2025. Numeric Wave
- *
- * Afero General Public License (AGPL) v3
- *
- * For more information, please refer to the LICENSE file at the root of the project.
- */
-
 /*!
  * modernizr v3.11.3
  * Build https://modernizr.com/download?-bgpositionshorthand-bgpositionxy-bgrepeatspace_bgrepeatround-bgsizecover-borderradius-cssanimations-csscalc-csstransforms-csstransforms3d-csstransitions-flexboxtweener-fontface-inlinesvg-localstorage-multiplebgs-preserve3d-sessionstorage-smil-svg-svgasimg-svgclippaths-svgfilters-svgforeignobject-websqldatabase-setclasses-dontmin

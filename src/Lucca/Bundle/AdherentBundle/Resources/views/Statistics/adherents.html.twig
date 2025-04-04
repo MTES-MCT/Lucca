@@ -24,7 +24,7 @@
     </div> {#-- End Panel - description--#}
 
     {#-- Panel - statistics params --#}
-    <div class="col-12">
+    <div class="col-12 mt-3">
 
         <div class="card card-default">
             <div class="card-header hover-pointer">
@@ -67,7 +67,7 @@
     </div> {#-- End Panel - statistics params --#}
 
 
-    <div class="col-12 overall">
+    <div class="col-12 overall mt-3">
         <div class="row">
             <div class="col-6 mb-3">
 
@@ -76,24 +76,26 @@
 
                 {% set counterSpeed = 10000 %}
 
-                <div class="row jumbotron jumbotron-stats text-center">
-                    <div class="col-4 mb-3">
-                        <i class="fas fa-5x fa-user mb-lg"></i>
-                        <h2 class="timer counter alt-font appear"
-                            data-speed="{{ counterSpeed }}">{{ finalArray['countAdherent'] }}</h2>
-                        <div>{{ 'label.adherents' | trans }}</div>
-                    </div>
-                    <div class="col-4 mb-3 border-left-stats">
-                        <i class="fa fa-5x fa-road mb-lg"></i>
-                        <h2 class="timer counter alt-font appear"
-                            data-speed="{{ counterSpeed }}">{{ finalArray['countTownAdherent'] }}</h2>
-                        <div>{{ 'label.towns' | trans }}</div>
-                    </div>
-                    <div class="col-4 mb-3 border-left-stats">
-                        <i class="fa fa-5x fa-layer-group mb-lg"></i>
-                        <h2 class="timer counter alt-font appear"
-                            data-speed="{{ counterSpeed }}">{{ finalArray['countMinutes'] }}</h2>
-                        <div>{{ 'label.minutes' | trans({}, 'MinuteBundle') }}</div>
+                <div class="jumbotron jumbotron-stats">
+                    <div class="row text-center">
+                        <div class="col-4 mb-3">
+                            <i class="fas fa-5x fa-user mb-lg"></i>
+                            <h2 class="timer counter alt-font appear"
+                                data-speed="{{ counterSpeed }}">{{ finalArray['countAdherent'] }}</h2>
+                            <div>{{ 'label.adherents' | trans }}</div>
+                        </div>
+                        <div class="col-4 mb-3 border-left-stats">
+                            <i class="fa fa-5x fa-road mb-lg"></i>
+                            <h2 class="timer counter alt-font appear"
+                                data-speed="{{ counterSpeed }}">{{ finalArray['countTownAdherent'] }}</h2>
+                            <div>{{ 'label.towns' | trans }}</div>
+                        </div>
+                        <div class="col-4 mb-3 border-left-stats">
+                            <i class="fa fa-5x fa-layer-group mb-lg"></i>
+                            <h2 class="timer counter alt-font appear"
+                                data-speed="{{ counterSpeed }}">{{ finalArray['countMinutes'] }}</h2>
+                            <div>{{ 'label.minutes' | trans({}, 'MinuteBundle') }}</div>
+                        </div>
                     </div>
                 </div>
 

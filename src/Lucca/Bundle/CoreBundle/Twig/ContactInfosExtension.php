@@ -3,7 +3,7 @@
 /*
  * Copyright (c) 2025. Numeric Wave
  *
- * Afero General Public License (AGPL) v3
+ * Affero General Public License (AGPL) v3
  *
  * For more information, please refer to the LICENSE file at the root of the project.
  */
@@ -35,7 +35,7 @@ class ContactInfosExtension extends AbstractExtension
      */
     public function getContactInfos($p_department): array
     {
-        return match ($p_department) {
+        return match (intval($p_department)) {
             66 => [
                 [
                     'mailto' => 'ddtm-cabanisation@pyrenees-orientales.gouv.fr',
@@ -84,7 +84,7 @@ class ContactInfosExtension extends AbstractExtension
      */
     public function getContactHelpControl($p_department): array
     {
-        return match ($p_department) {
+        return match (intval($p_department)) {
             66 => $this->getContactInfos(66),
             34 => [
                 [

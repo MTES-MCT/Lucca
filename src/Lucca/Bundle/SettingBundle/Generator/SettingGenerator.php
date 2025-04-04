@@ -3,7 +3,7 @@
 /*
  * Copyright (c) 2025. Numeric Wave
  *
- * Afero General Public License (AGPL) v3
+ * Affero General Public License (AGPL) v3
  *
  * For more information, please refer to the LICENSE file at the root of the project.
  */
@@ -69,7 +69,15 @@ class SettingGenerator
         if ($item->isHit()) {
             $aDictionary = $item->get();
 
-            if (isset($aDictionary[$name]) && $aDictionary[$name] !== $value) {
+            if (!array_key_exists($name, $aDictionary)) {
+                $aDictionary[$name] = $value;
+                $item->set($aDictionary);
+                $this->settingsCache->save($item);
+
+                return;
+            }
+
+            if ($aDictionary[$name] !== $value) {
                 $aDictionary[$name] = $value;
                 $item->set($aDictionary);
                 $this->settingsCache->save($item);

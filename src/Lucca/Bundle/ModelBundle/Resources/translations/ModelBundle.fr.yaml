@@ -6,10 +6,10 @@
 # Entity
 ########################
 entity:
-    model: "Modèle|Modèles"
-    page: "Page|Pages"
-    margin: "Marge|Marges"
-    bloc: "Bloc|Blocs"
+    model: "Modèle"
+    page: "Page"
+    margin: "Marge"
+    bloc: "Bloc"
 
 ########################
 # Title

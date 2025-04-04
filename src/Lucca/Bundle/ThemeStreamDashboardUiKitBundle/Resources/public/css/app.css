@@ -1,0 +1,17 @@
+/*
+ * Copyright (c) 2025. Numeric Wave
+ *
+ * Affero General Public License (AGPL) v3
+ *
+ * For more information, please refer to the LICENSE file at the root of the project.
+ */
+
+.btn-warning {
+    color: #fff !important;
+}
+
+.col-form-label.required::after {
+    content: '*';
+    color: #ff5050;
+    font-size: 1.1em;
+}

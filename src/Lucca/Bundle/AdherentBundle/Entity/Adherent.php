@@ -3,7 +3,7 @@
 /*
  * Copyright (c) 2025. Numeric Wave
  *
- * Afero General Public License (AGPL) v3
+ * Affero General Public License (AGPL) v3
  *
  * For more information, please refer to the LICENSE file at the root of the project.
  */
@@ -96,7 +96,7 @@ class Adherent implements LoggableInterface, MediaAsyncInterface
     #[ORM\Column]
     #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
-    protected bool $invitedByMail;
+    protected bool $invitedByMail = false;
 
     #[ORM\ManyToOne(targetEntity: Town::class)]
     private ?Town $town = null;

@@ -3,7 +3,7 @@
 /*
  * Copyright (c) 2025. Numeric Wave
  *
- * Afero General Public License (AGPL) v3
+ * Affero General Public License (AGPL) v3
  *
  * For more information, please refer to the LICENSE file at the root of the project.
  */
@@ -56,7 +56,7 @@ class TownRepository extends LuccaRepository
     /**
      * Get Town filter by Intercommunal
      */
-    public function findAllByIntercommunals(array $intercommunals, array $exclude_towns = []): QueryBuilder
+    public function findAllByIntercommunals(array $intercommunals, array $exclude_towns = []): array
     {
         $qb = $this->queryTown();
 

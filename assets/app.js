@@ -1,8 +1,10 @@
 /*
- * Welcome to your app's main JavaScript file!
+ * Copyright (c) 2025. Numeric Wave
  *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
+ * Affero General Public License (AGPL) v3
+ *
+ * For more information, please refer to the LICENSE file at the root of the project.
  */
 
 import './bootstrap.js';
+import './js/tom-select-fix.js';
