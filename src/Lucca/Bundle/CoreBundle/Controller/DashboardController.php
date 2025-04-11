@@ -11,7 +11,6 @@
 namespace Lucca\Bundle\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -23,7 +22,7 @@ use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
 class DashboardController extends AbstractController
 {
     public function __construct(
-        private readonly AdherentFinder $adherentFinder
+        private readonly AdherentFinder $adherentFinder,
     )
     {
     }
@@ -33,10 +32,8 @@ class DashboardController extends AbstractController
      */
     #[Route(path: '/dashboard', name: 'lucca_core_dashboard', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
-    public function homeAction(Security $security): Response
+    public function homeAction(): Response
     {
-        dump($security->getUser()); dump($security->isGranted('ROLE_USER'));
-
         /** Who is connected ;) */
         $adherent = $this->adherentFinder->whoAmI();
 

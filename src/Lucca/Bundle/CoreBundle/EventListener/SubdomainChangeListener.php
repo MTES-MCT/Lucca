@@ -34,16 +34,16 @@ readonly class SubdomainChangeListener implements EventSubscriberInterface
         $routeName = $request->attributes->get('_route');
         $subDomainUrlKey = $this->extractSubdomainKey($request->getHost());
         $session = $this->requestStack->getSession();
-        $env =  $this->parameterBag->get('kernel.environment');
+        $env = $this->parameterBag->get('kernel.environment');
         $previousSubdomainKey = $session->get('subDomainKey');
 
         $routeWithoutSubdomainRoutes = [
-//            'lucca_user_security_login',
-//            'lucca_user_security_forget_password',
-//            'lucca_user_security_change_password',
-//            'lucca_user_security_activate_user',
-//            'lucca_user_security_logout',
-//            'lucca_core_portal'
+            'lucca_user_security_login',
+            'lucca_user_security_forget_password',
+            'lucca_user_security_change_password',
+            'lucca_user_security_activate_user',
+            'lucca_user_security_logout',
+            'lucca_core_portal'
         ];
 
         if ($subDomainUrlKey && in_array($routeName, $routeWithoutSubdomainRoutes)) {

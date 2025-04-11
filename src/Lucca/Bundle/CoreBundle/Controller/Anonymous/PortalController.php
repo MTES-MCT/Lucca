@@ -8,16 +8,17 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace App\Lucca\Bundle\CoreBundle\Controller\Anonymous;
+namespace Lucca\Bundle\CoreBundle\Controller\Anonymous;
 
 use Exception;
-use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
-use Lucca\Bundle\CoreBundle\Form\SelectDepartmentType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{RedirectResponse, Request, RequestStack, Response};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+
+use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
+use Lucca\Bundle\CoreBundle\Form\SelectDepartmentType;
 
 #[Route(path: '/')]
 #[IsGranted('ROLE_USER')]
@@ -43,9 +44,8 @@ class PortalController extends AbstractController
         } catch (Exception) {
         }
 
-        $departmentsIds = $adherent
-            ?->getDepartments()
-            ?->map(fn ($department) => $department->getId())
+        $departmentsIds = $adherent?->getDepartments()
+            ->map(fn ($department) => $department->getId())
             ->toArray()
         ?? [];
 

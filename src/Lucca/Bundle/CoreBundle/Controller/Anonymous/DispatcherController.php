@@ -39,8 +39,6 @@ class DispatcherController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function dispatchAction(Security $security): RedirectResponse|Response
     {
-        dump($security->getUser()); dump($security->isGranted('ROLE_USER'));
-
         $adherent = $this->em->getRepository(Adherent::class)->findOneBy(['user' =>  $this->getUser()]);
         $hasManyDepartments = $adherent?->getDepartments()->count() > 1;
 
@@ -49,7 +47,7 @@ class DispatcherController extends AbstractController
             return $this->redirectToRoute('lucca_core_portal');
         }
 
-        if ($adherent?->getDepartments()->count() === 1) {
+        if ($adherent?->getDepartments()->count() === 1 && !$security->isGranted('ROLE_ADMIN')) {
             $department = $adherent->getDepartments()->first();
 
             return $this->redirectToRoute('lucca_core_dashboard', ['subDomainKey' => $department->getCode()]);

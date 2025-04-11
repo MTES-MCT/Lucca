@@ -135,10 +135,6 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        // Enregistre le token dans la session
-//        $this->requestStack->getSession()->set('_security_' . $firewallName, serialize($token));
-//        $this->requestStack->getSession()->save();
-
         /**
          * Update last connection for this User
          *
@@ -186,6 +182,7 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
      */
     protected function getLoginUrl(Request $request): string
     {
+        dump($request->getSession());
         return $this->urlGenerator->generate($this->routeLogin);
     }
 
