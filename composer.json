@@ -9,6 +9,7 @@
         "php": ">=8.2",
         "ext-gd": "*",
         "ext-intl": "*",
+        "ext-pdo": "*",
         "ext-xml": "*",
         "doctrine/doctrine-bundle": "^2.14",
         "doctrine/doctrine-migrations-bundle": "^3.4",

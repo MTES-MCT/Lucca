@@ -9,7 +9,11 @@ framework:
     # Remove or comment this section to explicitly disable session support.
     session:
         storage_factory_id: session.storage.factory.native
+#        handler_id: Lucca\Bundle\CoreBundle\Session\CustomPdoSessionHandler
         handler_id: null
+#        save_path: 'mysql:host=%env(MYSQL_HOST)%;port=%env(MYSQL_PORT)%;dbname=%env(MYSQL_DATABASE)%'
+        cookie_domain: '%env(COOKIE_DOMAIN)%'
+        cookie_path: /
         cookie_secure: auto
         cookie_samesite: lax
         gc_maxlifetime: 1440
@@ -21,6 +25,16 @@ framework:
     #fragments: true
     php_errors:
         log: true
+        .
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
     ## Enable setting to work and store it in cache
     cache:
@@ -28,6 +42,11 @@ framework:
             setting.cache:
                 adapter: cache.adapter.filesystem
                 default_lifetime: 0
+
+    # the IP address (or range) of your proxy
+    trusted_proxies: '%env(TRUSTED_PROXIES)%'
+    # trust *all* "X-Forwarded-*" headers
+    trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port', 'x-forwarded-prefix', 'forwarded']
 
 when@test:
     framework:

@@ -8,17 +8,16 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\Bundle\CoreBundle\Controller;
+namespace App\Lucca\Bundle\CoreBundle\Controller\Anonymous;
 
 use Exception;
+use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
+use Lucca\Bundle\CoreBundle\Form\SelectDepartmentType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{RedirectResponse, Request, RequestStack, Response};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-
-use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
-use Lucca\Bundle\CoreBundle\Form\SelectDepartmentType;
 
 #[Route(path: '/')]
 #[IsGranted('ROLE_USER')]
@@ -35,7 +34,7 @@ class PortalController extends AbstractController
     /**
      * Select Department
      */
-    #[Route(path: '/select-department', name: 'sparky_core_portal', defaults: ['_locale' => 'fr'], methods: ['GET', 'POST'])]
+    #[Route(path: '/select-department', name: 'lucca_core_portal', defaults: ['_locale' => 'fr'], methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
     public function portalAction(Request $request): Response
     {
@@ -44,10 +43,14 @@ class PortalController extends AbstractController
         } catch (Exception) {
         }
 
-        $departmentsIds = $adherent?->getDepartments()?->map(fn ($department) => $department->getId()) ?? [];
+        $departmentsIds = $adherent
+            ?->getDepartments()
+            ?->map(fn ($department) => $department->getId())
+            ->toArray()
+        ?? [];
 
         $form = $this->createForm(SelectDepartmentType::class, null, [
-            'ids' => $adherent ? $departmentsIds : null,
+            'ids' => $departmentsIds,
         ]);
 
         $form->handleRequest($request);
@@ -56,14 +59,14 @@ class PortalController extends AbstractController
             $department = $form->get('department')->getData();
             $isForAdmin = $request->request->has('adminSpace');
             if ($department && !$isForAdmin) {
-                if ($this->getUser() && $this->getUser()->hasRole('ROLE_ADMIN')) {
+                if ($this->getUser() && $this->isGranted('ROLE_ADMIN')) {
                     return $this->redirectToRoute('lucca_core_parameter', ['subDomainKey' => $department->getCode()]);
                 }
 
                 return $this->redirectToRoute('lucca_core_dashboard', ['subDomainKey' => $department->getCode()]);
             }
 
-            if ($isForAdmin && $this->getUser() && $this->getUser()->hasRole('ROLE_ADMIN')) {
+            if ($isForAdmin && $this->getUser() && $this->isGranted('ROLE_ADMIN')) {
                 return $this->redirectToRoute('lucca_core_parameter');
             }
         }
@@ -91,7 +94,7 @@ class PortalController extends AbstractController
         /** set or reset the subDomainKey in the session */
         $this->requestStack->getSession()->set('subDomainKey', $subDomainKey);
 
-        $url = $this->getParameter('sparky_core.url');
+        $url = $this->getParameter('lucca_core.url');
 
         /** Generate url from route and subDomainKey */
         $url = str_replace('SUBDOMAINKEY', $subDomainKey, $url) . $this->router->generate($route, $parameters);

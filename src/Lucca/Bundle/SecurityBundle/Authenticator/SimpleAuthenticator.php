@@ -29,6 +29,8 @@ use Doctrine\ORM\EntityManagerInterface,
     Symfony\Component\Security\Http\Util\TargetPathTrait,
     Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 
 use Lucca\Bundle\SecurityBundle\Manager\LoginAttemptManager;
@@ -60,6 +62,8 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly UserPasswordHasher        $passwordHasher,
         private readonly LoginAttemptManager       $loginAttemptManager,
+
+        private TokenStorageInterface $tokenStorage, private RequestStack $requestStack,
 
         /** Define constant to name route called after a login */
         #[Autowire(param: 'lucca_security.default_url_after_login')]
@@ -114,7 +118,7 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
      */
     public function checkCredentials(mixed $credentials, UserInterface $user): bool
     {
-        return $this->passwordHasher->isPasswordValid($user, $credentials['password']);
+        return $this->passwordHasher->isPasswordValid($user, $credentials->getPassword());
     }
 
     /**
@@ -122,7 +126,7 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
      */
     public function getPassword(mixed $p_credentials): ?string
     {
-        return $p_credentials['password'];
+        return $p_credentials->getPassword();
     }
 
     /**
@@ -131,6 +135,10 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        // Enregistre le token dans la session
+//        $this->requestStack->getSession()->set('_security_' . $firewallName, serialize($token));
+//        $this->requestStack->getSession()->save();
+
         /**
          * Update last connection for this User
          *

@@ -4,11 +4,13 @@
 
 }
 
-{$SERVER_NAME} {
+{$SERVER_NAME}
+
+log
+
+route {
     root * /srv/app/public
     push
-
-    log
 
     php_fastcgi php:9000 {
         trusted_proxies private_ranges

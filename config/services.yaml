@@ -31,3 +31,20 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+#    Lucca\Bundle\CoreBundle\Session\CustomPdoSessionHandler:
+#        arguments:
+#            - '@request_stack'
+#            - '@pdo'
+#            - { db_table: lucca_sessions }
+#            # Autres paramètres nécessaires pour le PdoSessionHandler
+#        public: false
+#
+#    pdo:
+#        class: PDO
+#        arguments:
+#            - 'mysql:host=%env(MYSQL_HOST)%;port=%env(MYSQL_PORT)%;dbname=%env(MYSQL_DATABASE)%'
+#            - '%env(MYSQL_USER)%'
+#            - '%env(MYSQL_PASSWORD)%'
+#        calls:
+#            - [ setAttribute, [ 3, 2 ] ] # PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION

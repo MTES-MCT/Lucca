@@ -30,6 +30,11 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->scalarNode('url')
+                    ->info('Parameter used to url of application.')
+                    ->defaultValue('https://lucca.local')
+                    ->cannotBeEmpty()
+                ->end()
                 ->scalarNode('asset_version')
                     ->defaultValue('1.0')
                     ->info('Version applied on all assets sended by server. Which version of file has been deployed ?')

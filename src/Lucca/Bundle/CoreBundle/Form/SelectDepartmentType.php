@@ -13,11 +13,10 @@ namespace Lucca\Bundle\CoreBundle\Form;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
-use Symfony\Component\Form\ExtensionCore\Type\{TextType, MoneyType};
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Sparky\Bundle\AdherentBundle\Entity\Department;
-use Sparky\Bundle\AdherentBundle\Repository\DepartmentRepository;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
+use Lucca\Bundle\DepartmentBundle\Repository\DepartmentRepository;
 
 class SelectDepartmentType extends AbstractType
 {
@@ -29,7 +28,7 @@ class SelectDepartmentType extends AbstractType
         $builder
             ->add('department', EntityType::class, [
                 'class' => Department::class, 'choice_label' => 'formLabel', 'required' => true, 'autocomplete' => true,
-                'label' => 'text.selectDepartment', 'attr' => ['class' => 'tom-select'],
+                'label' => 'label.department', 'attr' => ['class' => 'tom-select mx-auto w-75'],
                 'query_builder' => function (DepartmentRepository $repo) use ($options): QueryBuilder {
                     return $repo->getByIds($options['ids']);
                 }
