@@ -8,6 +8,10 @@ flash:
         widthMustBeDefined: "La largeur d'une marge 'gauche' / 'droite' doit être définie."
     model:
         accessDenied: "Vous n'avez pas accès à ce modèle."
+        data:
+            notFound: "Le fichier de données models n'a pas été trouvé"
+            invalidJSON: "Le fichier de données models n'est pas un JSON valide"
+
     print:
         error:
             header: "Erreur lors de l'impression de l'en-tête."
