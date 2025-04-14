@@ -12,6 +12,7 @@ namespace Lucca\Bundle\SettingBundle\Repository;
 
 use Doctrine\ORM\{EntityRepository, NonUniqueResultException, QueryBuilder};
 
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Lucca\Bundle\SettingBundle\Entity\Setting;
 
 class SettingRepository extends EntityRepository
@@ -21,7 +22,7 @@ class SettingRepository extends EntityRepository
      * Override findAll method
      * with Setting dependencies
      */
-    public function findAllByRole(bool $isSuperAdmin = true): array
+    public function findAllByRole(Department|int $department, bool $isSuperAdmin = true): array
     {
         $qb = $this->querySetting();
 
@@ -30,17 +31,23 @@ class SettingRepository extends EntityRepository
                 ->setParameter(':q_accessType', Setting::ACCESS_TYPE_ADMIN);
         }
 
+        $qb->where($qb->expr()->eq('setting.department', ':q_department'))
+            ->setParameter(':q_department', $department);
+
         return $qb->getQuery()->getResult();
     }
 
     /**
      * Override findAll
      */
-    public function findAllOptimized(): array
+    public function findAllOptimized(Department|int $department): array
     {
         $qb = $this->createQueryBuilder('setting');
         $qb->select('PARTIAL setting.{id, type, name, value}');
         $qb->orderBy('setting.name', 'ASC');
+
+        $qb->where($qb->expr()->eq('setting.department', ':q_department'))
+            ->setParameter(':q_department', $department);
 
         return $qb->getQuery()->getArrayResult();
     }

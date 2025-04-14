@@ -12,6 +12,7 @@ namespace Lucca\Bundle\SettingBundle\Generator;
 
 use Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -62,9 +63,9 @@ class SettingGenerator
      *
      * @throws InvalidArgumentException
      */
-    public function updateCachedSetting(string $name, mixed $value): void
+    public function updateCachedSetting(string $name, mixed $value, Department $department): void
     {
-        $item = $this->settingsCache->getItem(self::SETTINGS_CACHE_KEY);
+        $item = $this->settingsCache->getItem(self::SETTINGS_CACHE_KEY . '.' . $department->getId());
 
         if ($item->isHit()) {
             $aDictionary = $item->get();
@@ -92,14 +93,15 @@ class SettingGenerator
      *
      * @throws InvalidArgumentException
      */
-    public function getCachedSettings(bool $bypassCache = false): array
+    public function getCachedSettings(string $departmentCode, bool $bypassCache = false): array
     {
-        $item = $this->settingsCache->getItem(self::SETTINGS_CACHE_KEY);
+        $department = $this->em->getRepository(Department::class)->findOneBy(['code' => $departmentCode]);
+        $item = $this->settingsCache->getItem(self::SETTINGS_CACHE_KEY . '.' . $department->getCode());
 
         if (!$item->isHit() || $bypassCache) {
             /** Check if all parameters exist in database in order to create them */
             try {
-                $aSettingDictionary = $this->generateMissingSettings();
+                $aSettingDictionary = $this->generateMissingSettings($department);
 
                 $item->set($aSettingDictionary);
                 $this->settingsCache->save($item);
@@ -122,15 +124,18 @@ class SettingGenerator
      *
      * @throws Exception
      */
-    public function generateMissingSettings(): array
+    public function generateMissingSettings(Department $department): array
     {
         $this->aOutputDictionary = []; // init output
         $this->aDatabaseSettingDictionary = [];
 
+        $department = $this->em->getRepository(Department::class)->findOneBy(['code' => $department->getCode()]);
+
         /** Try to get setting from datatable */
         try {
             if ($this->em instanceof EntityManagerInterface) {
-                $databaseResponse = $this->em->getRepository(Setting::class)->findAllOptimized();
+
+                $databaseResponse = $this->em->getRepository(Setting::class)->findAllOptimized($department);
 
                 // Ensure the database response is an array.
                 if (is_array($databaseResponse)) {
@@ -155,12 +160,12 @@ class SettingGenerator
         // Check all settings in the settings array
         foreach ($this->settings as $setting) {
             $this->insertOrUpdateSetting($setting['type'], $setting['category'], $setting['accessType'], $setting['position'],
-                $setting['name'], $setting['value'], $setting['comment'], $setting['valuesAvailable']
+                $setting['name'], $setting['value'], $setting['comment'], $department, $setting['valuesAvailable']
             );
         }
 
         // Update pre-existing settings based on a list of callback function.
-        $this->updateSettings();
+        $this->updateSettings($department);
 
         $aOutputDictionary = $this->aOutputDictionary;
         $this->aOutputDictionary = []; // empty for future output
@@ -199,7 +204,7 @@ class SettingGenerator
      *
      * @throws Exception
      */
-    private function insertOrUpdateSetting($type, $_category, $accessType, $position, $name, $value, $description, $values = null): bool
+    public function insertOrUpdateSetting($type, $_category, $accessType, $position, $name, $value, $description, $department, $values = null): bool
     {
         // Try to find the required category
         /** @var Category $category */
@@ -221,7 +226,7 @@ class SettingGenerator
             $this->em->persist($setting);
             $this->aOutputDictionary[$setting->getName()] = Setting::castValue($setting->getType(), $setting->getValue());
         } else {
-            $this->aSettingToUpdateCallbacks[$name] = function (Setting $setting) use ($name, $type, $category, $accessType, $position, $value, $description, $values) {
+            $this->aSettingToUpdateCallbacks[$name] = function (Setting $setting) use ($name, $type, $category, $accessType, $position, $value, $description, $values, $department) {
                 /** Update only the values that don't have an impact on given value */
                 $setting->setName($name);
                 $setting->setType($type);
@@ -229,6 +234,7 @@ class SettingGenerator
                 $setting->setAccessType($accessType);
                 $setting->setPosition($position);
                 $setting->setComment($description);
+                $setting->setDepartment($department);
                 if ($type === Setting::TYPE_LIST) {
                     $setting->setvaluesAvailable(implode(';', $values));
                 }
@@ -244,12 +250,12 @@ class SettingGenerator
     /**
      * Update pre-existing settings based on a list of callback function.
      */
-    private function updateSettings(): void
+    private function updateSettings(Department $department): void
     {
         if (is_array($this->aSettingToUpdateCallbacks) && $this->aSettingToUpdateCallbacks !== []) {
             // Find all settings to update
             $aSettingToUpdate = $this->em->getRepository(Setting::class)
-                ->findBy(['name' => array_keys($this->aSettingToUpdateCallbacks)]);
+                ->findBy(['department' => $department->getId(), 'name' => array_keys($this->aSettingToUpdateCallbacks)]);
 
             // Index all settings by name
             $aSettingToUpdateIndexedByName = array_combine(array_map(function (Setting $setting) {

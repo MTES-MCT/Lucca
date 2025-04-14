@@ -22,18 +22,18 @@ abstract class SettingManager
     /** Settings array loaded from cache */
     protected static array $settings = [];
 
-    public static function getAll(): array
+    public static function getAll(string $departmentCode): array
     {
-        return self::$settings;
+        return self::$settings[$departmentCode];
     }
 
-    public static function get(string $name, $default = null): mixed
+    public static function get(string $departmentCode, string $name, $default = null): mixed
     {
-        return self::$settings[$name] ?? $default;
+        return self::$settings[$departmentCode][$name] ?? $default;
     }
 
-    public static function setAll(array $settings): void
+    public static function setAll(string $departmentCode, array $settings): void
     {
-        self::$settings = $settings;
+        self::$settings[$departmentCode] = $settings;
     }
 }

@@ -11,6 +11,7 @@
 namespace Lucca\Bundle\SettingBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 use Lucca\Bundle\SettingBundle\Generator\SettingGenerator;
@@ -21,8 +22,9 @@ readonly class SettingsListener
     /**
      * RequestListener constructor.
      */
-    function __construct(
+    public function __construct(
         private SettingGenerator $settingGenerator,
+        private RequestStack     $requestStack,
     )
     {
     }
@@ -32,10 +34,24 @@ readonly class SettingsListener
      * Check LoginAttempts made with Ip on request
      */
     #[AsEventListener(event: 'kernel.request')]
-    public function onKernelRequest(RequestEvent $event): void
+    public function onKernelRequest(): void
     {
-        $settings = $this->settingGenerator->getCachedSettings();
+        // Retrieve the subdomain from the HTTP request
+        $currentRequest = $this->requestStack->getCurrentRequest();
+        $departmentCode = null;
+        if ($currentRequest) {
+            $hostParts = explode('.', $currentRequest->getHost());
+            if (count($hostParts) > 2) {
+                $departmentCode = $hostParts[0];
+            }
+        }
 
-        SettingManager::setAll($settings);
+        if (null === $departmentCode) {
+            $departmentCode = 'demo';
+        }
+
+        $settings = $this->settingGenerator->getCachedSettings($departmentCode);
+
+        SettingManager::setAll($departmentCode, $settings);
     }
 }
