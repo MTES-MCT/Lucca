@@ -6,6 +6,7 @@ use DateTime;
 use Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -30,7 +31,7 @@ class FolderByDateNamer implements FolderNamerInterface
     /**
      * Search and attributed Folder to a Media
      */
-    public function searchFolder(Media $media, ?DateTime $createdAt = null): Folder
+    public function searchFolder(Media $media, Department $department, ?DateTime $createdAt = null): Folder
     {
         /**
          * Step 1 - Build folder path
@@ -41,7 +42,7 @@ class FolderByDateNamer implements FolderNamerInterface
         } else {
             $date = new DateTime('now');
         }
-        $pathDate = $date->format('Y') . '/' . $date->format('W');
+        $pathDate = $department->getCode() . '/' . $date->format('Y') . '/' . $date->format('W');
 
         /**
          * Step 2 - Search Folder

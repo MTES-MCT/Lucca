@@ -18,6 +18,7 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 use Lucca\Bundle\CoreBundle\Utils\Canonalizer;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Lucca\Bundle\MediaBundle\Entity\{Category, Media, Folder};
 
 readonly class FolderNamer implements FolderNamerInterface
@@ -35,13 +36,13 @@ readonly class FolderNamer implements FolderNamerInterface
     /**
      * Search and attributed Folder to a Media
      */
-    public function searchFolder(Media $media, $object = null): Folder
+    public function searchFolder(Media $media, Department $department, $object = null): Folder
     {
         /**
          * Step 1 - Build folder path
          * Sort each file by Category / Extension
          */
-        $extensionPath = $this->canonalizer->slugify($media->getCategory()->getName());
+        $extensionPath = $department->getCode() . '/' . $this->canonalizer->slugify($media->getCategory()->getName());
         $extensionPath .= '/' . pathinfo($media->getNameOriginal(), PATHINFO_EXTENSION);
 
         /**
