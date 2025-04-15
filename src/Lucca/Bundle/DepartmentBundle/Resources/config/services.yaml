@@ -3,4 +3,6 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
         arguments:
-          [ '@request_stack', '@doctrine.orm.entity_manager' ]
+            - '@doctrine.orm.entity_manager'
+            - '@Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver'
+            - '@request_stack'

@@ -21,6 +21,10 @@ doctrine:
         validate_xml_mapping: true
         naming_strategy: Lucca\Bundle\CoreBundle\Doctrine\LuccaNamingStrategy
         auto_mapping: true
+        filters:
+            department_filter:
+                class: Lucca\Bundle\DepartmentBundle\Doctrine\Filter\DepartmentFilter
+                enabled: false
 
 when@prod:
     doctrine:

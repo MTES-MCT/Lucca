@@ -10,13 +10,73 @@
 
 namespace Lucca\Bundle\AdherentBundle\Repository;
 
-use Doctrine\ORM\{NonUniqueResultException, QueryBuilder};
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\{NonUniqueResultException, NoResultException, QueryBuilder};
 
-use Lucca\Bundle\CoreBundle\Repository\LuccaRepository;
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
 use Lucca\Bundle\UserBundle\Entity\User;
 
-class AdherentRepository extends LuccaRepository
+class AdherentRepository extends ServiceEntityRepository
 {
+    public function __construct(
+        ManagerRegistry                         $mr,
+        private readonly UserDepartmentResolver $userDepartmentResolver,
+    )
+    {
+        parent::__construct($mr, Adherent::class);
+    }
+
+    /*******************************************************************************************/
+    /********************* Basic functions from LuccaRepository *****/
+    /*******************************************************************************************/
+
+    /**
+     * Finds all enabled / disabled entities in the repository
+     */
+    public function findAllActive(bool $enabled = true): array
+    {
+        return $this->findBy([
+            'enabled' => $enabled
+        ]);
+    }
+
+    /**
+     * Find last code use for mix prefix / year
+     *
+     * @throws NonUniqueResultException
+     */
+    public function findMaxCode($year, $prefix): mixed
+    {
+        $qb = $this->queryAdherent();
+
+        $qb->where($qb->expr()->like('entity.id', ':q_code'))
+            ->setParameter('q_code', "%$prefix$year%");
+
+        $qb->select($qb->expr()->max('entity.id'));
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * Count all enabled / disabled entities in the repository
+     *
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function countActive(bool $enabled = true): int
+    {
+        $qb = $this->queryAdherent();
+
+        $qb->select($qb->expr()->count('entity'));
+
+        $qb->where($qb->expr()->eq('entity.enabled', ':q_state'))
+            ->setParameter(':q_state', $enabled);
+
+        return (int)$qb->getQuery()->getSingleScalarResult();
+    }
+
     /*******************************************************************************************/
     /********************* Stats methods *****/
     /*******************************************************************************************/
@@ -110,7 +170,7 @@ class AdherentRepository extends LuccaRepository
     {
         $qb = $this->queryAdherent();
 
-        $qb->where($qb->expr()->eq('user', ':q_user'))
+        $qb->andWhere($qb->expr()->eq('user', ':q_user'))
             ->setParameter('q_user', $user);
 
         try {
@@ -185,12 +245,18 @@ class AdherentRepository extends LuccaRepository
      */
     private function queryAdherent(): QueryBuilder
     {
-        return $this->createQueryBuilder('adherent')
+        $qb = $this->createQueryBuilder('adherent')
             ->leftJoin('adherent.user', 'user')->addSelect('user')
             ->leftJoin('user.groups', 'groups')->addSelect('groups')
             ->leftJoin('adherent.town', 'town')->addSelect('town')
             ->leftJoin('adherent.intercommunal', 'intercommunal')->addSelect('intercommunal')
             ->leftJoin('adherent.service', 'service')->addSelect('service')
+            ->leftJoin('adherent.departments', 'departments')
         ;
+
+        $qb->andWhere($qb->expr()->eq('departments', ':q_department'))
+            ->setParameter(':q_department', $this->userDepartmentResolver->getDepartment());
+
+        return $qb;
     }
 }

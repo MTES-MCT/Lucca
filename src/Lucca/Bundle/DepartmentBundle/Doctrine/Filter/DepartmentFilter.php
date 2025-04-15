@@ -12,53 +12,36 @@ namespace Lucca\Bundle\DepartmentBundle\Doctrine\Filter;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
-use Symfony\Component\HttpFoundation\RequestStack;
 
+/*
+ * This filter is used to filter entities based on the department they belong to.
+ * It is applied to all entities that have a "department" field.
+ */
 class DepartmentFilter extends SQLFilter
 {
-    // Stockage du RequestStack
-    private $requestStack;
+    private ?int $departmentId;
 
-    // Méthode d’injection du RequestStack (appelée depuis le container)
-    public function setRequestStack(RequestStack $requestStack): void
+    public function setDepartmentId(int $departmentId): void
     {
-        $this->requestStack = $requestStack;
+        $this->departmentId = $departmentId;
     }
 
-    /**
-     * Cette méthode est appelée pour ajouter une contrainte SQL sur la requête.
-     *
-     * @param ClassMetadata $targetEntity
-     * @param string $targetTableAlias
-     * @return string
-     */
-    public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias): string
+    public function addFilterConstraint(ClassMetadata $targetEntity, string $targetTableAlias): string
     {
-        // Appliquer le filtre uniquement sur l'entité concernée
-        if ($targetEntity->getReflectionClass()->getName() !== 'App\Entity\MyEntity') {
+        $associations = array_keys($targetEntity->getAssociationMappings());
+        if (!in_array('department', $associations) || !$this->departmentId) {
             return '';
         }
 
-        // Récupérer le sous-domaine depuis la requête HTTP via le RequestStack
-        $currentRequest = $this->requestStack->getCurrentRequest();
-        $subdomain = null;
-        if ($currentRequest) {
-            // Exemple : si le host est "blog.example.com", on considère "blog" comme sous-domaine
-            $hostParts = explode('.', $currentRequest->getHost());
-            if (count($hostParts) > 2) {
-                $subdomain = $hostParts[0];
-            }
-        }
-
-        // En cas d'absence de sous-domaine, utiliser une valeur par défaut
-        if (null === $subdomain) {
-            $subdomain = 'demo';
+        // Don't apply the filter on joins (often alias ≠ "t0")
+        if (!in_array($targetTableAlias, ['l0_', 't0', 'e0'])) {
+            return '';
         }
 
         // Ici on considère que votre entité possède un champ "subdomain".
         // Il est important d’échapper correctement la valeur.
-        $quotedSubdomain = $this->getConnection()->quote($subdomain);
+        $quotedDepartmentId = $this->getConnection()->quote($this->departmentId);
 
-        return sprintf('%s.subdomain = %s', $targetTableAlias, $quotedSubdomain);
+        return sprintf('%s.department_id = %s', $targetTableAlias, $quotedDepartmentId);
     }
 }
