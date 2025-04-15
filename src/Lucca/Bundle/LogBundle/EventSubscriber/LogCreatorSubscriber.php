@@ -133,6 +133,8 @@ readonly class LogCreatorSubscriber implements EventSubscriberInterface
                 $entityId = $element['id'];
             }
 
+            $user = $this->em->getReference(User::class, $user->getId());
+
             /** Check if Entity implements LoggableInterface and can be log */
             if (in_array(LoggableInterface::class, class_implements($entity), true)) {
 

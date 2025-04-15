@@ -13,7 +13,7 @@ with full [HTTP/2](https://symfony.com/doc/current/weblink.html), HTTP/3 and HTT
     3. Run `php bin/console fos:js-routing:dump --format=json --target=assets/routes.json`
     5. Run `php bin/console asset-map:compile`
     7. Run `php bin/console lucca:init:media`
-    8. Run `php bin/console lucca:init:settings`
+    8. Run `php bin/console lucca:init:department`
     9. Run `php bin/console doctrine:migrations:migrate`
 3. Create a new user and a new adherent in database
 4. Add lucca.local in your OS host file with 127.0.0.1

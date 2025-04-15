@@ -6,6 +6,7 @@ label:
     department: 'Département'
     comment: 'Commentaire'
     name: 'Nom'
+    towns: 'Communes'
     code: 'Code'
 link:
     department:
@@ -21,3 +22,13 @@ link:
 
 title:
     department: 'Département'
+
+help:
+    towns: |
+        Fichier au format CSV contenant la liste des communes
+        -- La première ligne doit contenir les en-têtes de colonnes
+        - 1ère colonne: code INSEE de la commune
+        - 2e colonne: code postal de la commune
+        - 3e colonne: nom de la commune
+        - 4e colonne: code INSEE de l'intercommunalité (si existante)
+        - 5e colonne: nom de l'intercommunalité (si existante)

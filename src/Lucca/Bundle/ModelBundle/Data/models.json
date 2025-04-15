@@ -2,9 +2,9 @@
     {
         "name": "Modèle controle",
         "layout": "choice.layout.simple",
-        "privacy": "[\"choice.documents.accessLetter\"]",
+        "documents": "[\"choice.documents.accessLetter\"]",
         "recto": {
-            "margin": [],
+            "margins": [],
             "marginUnit": "choice.marginUnit.px",
             "headerSize": 50,
             "footerSize": 20,
@@ -17,9 +17,9 @@
     {
         "name": "Modèle lettre convocation",
         "layout": "choice.layout.simple",
-        "privacy": "[\"choice.documents.convocationLetter\"]",
+        "documents": "[\"choice.documents.convocationLetter\"]",
         "recto": {
-            "margin": [
+            "margins": [
                 {
                     "position": "choice.position.top",
                     "height": 300,
@@ -38,9 +38,9 @@
     {
         "name": "Lettre au Parquet",
         "layout": "choice.layout.cover",
-        "privacy": "[\"choice.documents.judicialLetter\"]",
+        "documents": "[\"choice.documents.judicialLetter\"]",
         "recto": {
-            "margin": [
+            "margins": [
                 {
                     "position": "choice.position.top",
                     "height": 400,
@@ -73,9 +73,9 @@
     {
         "name": "PV",
         "layout": "choice.layout.cover",
-        "privacy": "[\"choice.documents.folder\"]",
+        "documents": "[\"choice.documents.folder\"]",
         "recto": {
-            "margin": [
+            "margins": [
                 {
                     "position": "choice.position.bottom",
                     "height": 50,
@@ -89,7 +89,7 @@
             "rightSize": 20
         },
         "verso": {
-            "margin": [
+            "margins": [
                 {
                     "position": "choice.position.top",
                     "height": 100,
@@ -111,9 +111,9 @@
     {
         "name": "Lettre à la DDTM",
         "layout": "choice.layout.simple",
-        "privacy": "[\"choice.documents.ddtmLetter\"]",
+        "documents": "[\"choice.documents.ddtmLetter\"]",
         "recto": {
-            "margin": [
+            "margins": [
                 {
                     "position": "choice.position.top",
                     "height": 300,
@@ -131,9 +131,9 @@
     {
         "name": "Modèle contrevenant",
         "layout": "choice.layout.simple",
-        "privacy": "[\"choice.documents.offender\"]",
+        "documents": "[\"choice.documents.offender\"]",
         "recto": {
-            "margin": [
+            "margins": [
                 {
                     "position": "choice.position.top",
                     "height": 300,

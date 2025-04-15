@@ -1,0 +1,242 @@
+[
+    {
+        "num": 1,
+        "name": "Construction",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 2,
+        "name": "Travaux",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 3,
+        "name": "Démolition",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 4,
+        "name": "Clôture",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 5,
+        "name": "Abattage d'arbre",
+        "category": "Local professionnel"
+    },
+    {
+        "num": 6,
+        "name": "Local professionnel",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 7,
+        "name": "Division foncière",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 8,
+        "name": "Affouillement",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 9,
+        "name": "Exhaussement",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 10,
+        "name": "Lotissement",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 11,
+        "name": "Zone d'aménagement concerté",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 12,
+        "name": "Remontées mécaniques",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 13,
+        "name": "Piste de ski",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 14,
+        "name": "Dépôt de véhicules",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 15,
+        "name": "Parc d'attraction, aire de jeux sports",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 16,
+        "name": "Terrain de sports loisirs motorisés",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 17,
+        "name": "Golf",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 18,
+        "name": "Remembrement",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 19,
+        "name": "Caravane",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 20,
+        "name": "Camping",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 21,
+        "name": "Yourte",
+        "category": null
+    },
+    {
+        "num": 22,
+        "name": "Résidence mobile de loisirs",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 23,
+        "name": "Habitation légère de loisirs",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 24,
+        "name": "Parc résidentiel de loisirs",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 25,
+        "name": "Poursuite travaux malgré interdiction",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 26,
+        "name": "Règlement national d'urbanisme",
+        "category": "choice.category.town"
+    },
+    {
+        "num": 27,
+        "name": "Carte communale",
+        "category": "choice.category.town"
+    },
+    {
+        "num": 28,
+        "name": "Plan local d'urbanisme",
+        "category": "choice.category.town"
+    },
+    {
+        "num": 29,
+        "name": "Plan de prévention des risques",
+        "category": "choice.category.town"
+    },
+    {
+        "num": 30,
+        "name": "Arrêté municipal interdisant le camping",
+        "category": "choice.category.town"
+    },
+    {
+        "num": 31,
+        "name": "Site inscrit",
+        "category": "choice.category.town"
+    },
+    {
+        "num": 32,
+        "name": "Site classé",
+        "category": "choice.category.town"
+    },
+    {
+        "num": 33,
+        "name": "Espace boisé classé",
+        "category": "choice.category.town"
+    },
+    {
+        "num": 34,
+        "name": "Espace naturel sensible",
+        "category": "choice.category.town"
+    },
+    {
+        "num": 35,
+        "name": "Site patrimonial remarquable",
+        "category": "choice.category.town"
+    },
+    {
+        "num": 36,
+        "name": "Monument historique",
+        "category": "choice.category.town"
+    },
+    {
+        "num": 37,
+        "name": "Réserve naturelle",
+        "category": "choice.category.town"
+    },
+    {
+        "num": 38,
+        "name": "Parc national",
+        "category": "choice.category.town"
+    },
+    {
+        "num": 39,
+        "name": "Espace à préserver",
+        "category": "choice.category.town"
+    },
+    {
+        "num": 40,
+        "name": "Loi littoral",
+        "category": "choice.category.town"
+    },
+    {
+        "num": 41,
+        "name": "Loi montagne",
+        "category": "choice.category.town"
+    },
+    {
+        "num": 42,
+        "name": "Directives territoriales d'aménagement",
+        "category": "choice.category.town"
+    },
+    {
+        "num": 43,
+        "name": "Captage d'eau",
+        "category": "choice.category.town"
+    },
+    {
+        "num": 44,
+        "name": "Association foncière",
+        "category": "choice.category.town"
+    },
+    {
+        "num": 45,
+        "name": "Récidive",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 46,
+        "name": "Personne morale",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 47,
+        "name": "Autres dépôts",
+        "category": "choice.category.nature"
+    },
+    {
+        "num": 48,
+        "name": "Piscine",
+        "category": "choice.category.nature"
+    }
+]

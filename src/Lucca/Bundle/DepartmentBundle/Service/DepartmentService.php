@@ -10,6 +10,12 @@ use Lucca\Bundle\ParameterBundle\Entity\{Intercommunal, Town};
 
 readonly class DepartmentService
 {
+    const TOWN_INSEE = 0;
+    const TOWN_ZIP = 1;
+    const TOWN_NAME = 2;
+    const INTER_INSEE = 3;
+    const INTER_NAME = 4;
+
     public function __construct(
         private EntityManagerInterface $em,
     )
@@ -18,42 +24,96 @@ readonly class DepartmentService
 
     public function createTownsFromFile(UploadedFile $file, Department $department): void
     {
+        $towns = $this->readTowns($file);
+
+        // Insert intercommunals before town to link them more easily
+        $intercommunals = $this->insertIntercommunals($department, $towns);
+        $this->insertTowns($department, $towns, $intercommunals);
+    }
+
+    public function readTowns(UploadedFile $file): array
+    {
         $rows = [];
-        if (($handle = fopen($file->getPathname(), 'r')) !== false) {
+        $handle = fopen($file->getPathname(), 'r');
+        if ($handle !== false) {
+            // Skip the BOM if present
+            $bom = fread($handle, 3);
+            if ($bom !== "\xEF\xBB\xBF") {
+                rewind($handle); // Go back to the beginning if no BOM
+            }
+
             while (($data = fgetcsv($handle)) !== false) {
-                $rows[] = $data;
+                $convertedRow = array_map(fn($val) => mb_convert_encoding($val, 'UTF-8', ['Windows-1252', 'ISO-8859-1', 'UTF-8']), $data);
+                $rows[] = $convertedRow;
             }
             fclose($handle);
         }
 
+        // Remove the first row (header)
+        if (count($rows) > 0) {
+            array_shift($rows);
+        }
+
+        return $rows;
+    }
+
+    private function insertTowns(Department $department, array $towns, array $intercommunals): void {
         // Proceed data with a batch to avoid memory issues
-        $batchSize = 40;
-        for ($i = 0; $i < count($rows); ++$i) {
-            if (empty($rows[$i][0]) || empty($rows[$i][1])) {
-                continue; // Skip empty rows
+        $townChunks = array_chunk($towns, 40);
+        foreach ($townChunks as $townChunk) {
+            // Re-attach the department entity if detached by a clean
+            $department = $this->em->getReference(Department::class, $department->getId());
+
+            foreach ($townChunk as $town) {
+                if (empty($town[self::TOWN_INSEE]) || empty($town[self::TOWN_ZIP]) || empty($town[self::TOWN_NAME])) {
+                    continue; // Skip empty rows
+                }
+
+                $newTown = new Town();
+                $newTown->setCode((string)$town[self::TOWN_INSEE]);
+                $newTown->setZipcode((string)$town[self::TOWN_ZIP]);
+                $newTown->setName($town[self::TOWN_NAME]);
+                $newTown->setOffice($town[self::TOWN_NAME]);
+                $newTown->setDepartment($department);
+
+                if (!empty($town[self::INTER_INSEE]) && !empty($towns[self::INTER_NAME])) {
+                    $newTown->setIntercommunal($intercommunals[$town[self::INTER_INSEE]]);
+                }
+
+                $this->em->persist($newTown);
             }
 
-            $town = new Town();
-            $town->setCode($rows[$i][0]);
-            $town->setName($rows[$i][1]);
+            $this->em->flush();
+            $this->em->clear(); // Detaches all objects from Doctrine!
+        }
+    }
 
-            if (!empty($rows[$i][2]) && !empty($rows[$i][3])) {
-                $intercommunal = new Intercommunal();
-                $intercommunal->setCode($rows[$i][2]);
-                $intercommunal->setName($rows[$i][2]);
-                $intercommunal->setDepartment($department);
-                $town->setIntercommunal($intercommunal);
-                $this->em->persist($intercommunal);
-            }
+    private function insertIntercommunals(Department $department, array $towns): array
+    {
+        $intercommunalGrouped = [];
+        $persistedIntercommunals = [];
 
-            $this->em->persist($town);
-            if (($i % $batchSize) === 0) {
-                $this->em->flush();
-                $this->em->clear(); // Detaches all objects from Doctrine!
+        foreach ($towns as $town) {
+            if (!empty($town[self::INTER_INSEE]) && !empty($town[self::INTER_NAME])) {
+                $intercommunalGrouped[$town[self::INTER_INSEE]] = $town[self::INTER_NAME];
             }
         }
 
-        $this->em->flush(); // Persist objects that did not make up an entire batch
+        // Re-attach the department entity if detached by a clean
+        $department = $this->em->getReference(Department::class, $department->getId());
+        foreach ($intercommunalGrouped as $code => $intercommunal) {
+            $newIntercommunal = new Intercommunal();
+            $newIntercommunal->setCode((string)$code);
+            $newIntercommunal->setName($intercommunal);
+            $newIntercommunal->setDepartment($department);
+
+            $this->em->persist($newIntercommunal);
+            $persistedIntercommunals[$newIntercommunal->getCode()] = $newIntercommunal;
+        }
+
+        $this->em->flush();
         $this->em->clear();
+
+        return $persistedIntercommunals;
     }
 }

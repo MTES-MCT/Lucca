@@ -8,15 +8,15 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\Bundle\SettingBundle\Service;
+namespace Lucca\Bundle\FolderBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-use Lucca\Bundle\FolderBundle\Entity\Natinf;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
+use Lucca\Bundle\FolderBundle\Entity\Natinf;
 
 readonly class NatinfService
 {
@@ -65,24 +65,24 @@ readonly class NatinfService
     private function insertWithoutParent(Department $department, array $natinfs): void
     {
         // Proceed data with a batch to avoid memory issues
-        $batchSize = 40;
-        for ($i = 0; $i < count($natinfs); ++$i) {
-            $natinf = new Natinf();
-            $natinf->setNum($natinfs['num']);
-            $natinf->setQualification($natinf['qualification']);
-            $natinf->setDefinedBy($natinf['definedBy']);
-            $natinf->setRepressedBy($natinf['repressedBy']);
-            $natinf->setDepartment($department);
+        $natinfChunks = array_chunk($natinfs, 40);
+        foreach ($natinfChunks as $natinfChunk) {
+            // Re-attach the department entity if detached by a clean
+            $department = $this->em->getReference(Department::class, $department->getId());
+            foreach ($natinfChunk as $natinf) {
+                $newNatinf = new Natinf();
+                $newNatinf->setNum($natinf['num']);
+                $newNatinf->setQualification($natinf['qualification']);
+                $newNatinf->setDefinedBy($natinf['definedBy']);
+                $newNatinf->setRepressedBy($natinf['repressedBy']);
+                $newNatinf->setDepartment($department);
 
-            $this->em->persist($natinf);
-            if (($i % $batchSize) === 0) {
-                $this->em->flush();
-                $this->em->clear(); // Detaches all objects from Doctrine!
+                $this->em->persist($newNatinf);
             }
-        }
 
-        $this->em->flush(); // Persist objects that did not make up an entire batch
-        $this->em->clear();
+            $this->em->flush();
+            $this->em->clear(); // Detaches all objects from Doctrine!
+        }
     }
 
     private function updateParents(Department $department, array $natinfs): void
@@ -90,28 +90,26 @@ readonly class NatinfService
         $dbNatinfs = $this->em->getRepository(Natinf::class)->getIdentifiers($department);
 
         // Proceed data with a batch to avoid memory issues
-        $batchSize = 40;
-        for ($i = 0; $i < count($natinfs); ++$i) {
-            if (empty($natinf['parent_num'])) {
-                continue;
+        $natinfChunks = array_chunk($natinfs, 40);
+        foreach ($natinfChunks as $natinfChunk) {
+            foreach ($natinfChunk as $natinf) {
+                if (empty($natinf['parent_num'])) {
+                    continue;
+                }
+
+                $dbNatinf = array_find($dbNatinfs, fn($dbNatinf) => $dbNatinf['num'] === $natinf['parent_num']);
+                if (!$dbNatinf) {
+                    continue;
+                }
+
+                $natinf = new Natinf();
+                $natinf->setParent($dbNatinf['num']);
+
+                $this->em->persist($natinf);
             }
 
-            $dbNatinf = array_find($dbNatinfs, fn ($dbNatinf) => $dbNatinf['num'] === $natinf['parent_num']);
-            if (!$dbNatinf) {
-                continue;
-            }
-
-            $natinf = new Natinf();
-            $natinf->setParent($dbNatinf['num']);
-
-            $this->em->persist($natinf);
-            if (($i % $batchSize) === 0) {
-                $this->em->flush();
-                $this->em->clear(); // Detaches all objects from Doctrine!
-            }
+            $this->em->flush();
+            $this->em->clear(); // Detaches all objects from Doctrine!
         }
-
-        $this->em->flush(); // Persist objects that did not make up an entire batch
-        $this->em->clear();
     }
 }

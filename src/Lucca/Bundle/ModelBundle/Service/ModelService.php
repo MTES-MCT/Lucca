@@ -11,14 +11,12 @@
 namespace Lucca\Bundle\ModelBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Lucca\Bundle\ChecklistBundle\Entity\Checklist;
-use Lucca\Bundle\ChecklistBundle\Entity\Element;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-use Lucca\Bundle\FolderBundle\Entity\Natinf;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
+use Lucca\Bundle\ModelBundle\Entity\{Margin, Model, Page};
 
 readonly class ModelService
 {
@@ -65,7 +63,52 @@ readonly class ModelService
 
     private function insertFromData(Department $department, array $models): void
     {
-        // TODO
+        // Re-attach the department entity if detached by a clean
+        $department = $this->em->getReference(Department::class, $department->getId());
+
+        foreach ($models as $model) {
+            $newModel = new Model();
+            $newModel->setName($model['name']);
+            $newModel->setType(Model::TYPE_ORIGIN);
+            $newModel->setLayout($model['layout']);
+            $newModel->setDocuments(json_decode($model['documents']));
+            $newModel->setDepartment($department);
+
+            $this->em->persist($newModel);
+
+            foreach (['recto', 'verso'] as $side) {
+                if (!$model[$side]) continue;
+
+                $newSide = new Page();
+                $newSide->setMarginUnit($model[$side]['marginUnit']);
+                $newSide->setHeaderSize($model[$side]['headerSize']);
+                $newSide->setFooterSize($model[$side]['footerSize']);
+                $newSide->setLeftSize($model[$side]['leftSize']);
+                $newSide->setRightSize($model[$side]['rightSize']);
+                $newSide->setDepartment($department);
+
+                $setter = 'set' . ucwords($side);
+                $newModel->$setter($newSide);
+
+                $this->em->persist($newSide);
+
+                foreach ($model[$side]['margins'] as $margin) {
+                    $newMargin = new Margin();
+                    $newMargin->setPosition($margin['position']);
+                    $newMargin->setHeight($margin['height']);
+                    $newMargin->setWidth($margin['width']);
+                    $newMargin->setDepartment($department);
+
+                    $choice = explode('.', $margin['position']);
+                    $position = array_pop($choice);
+
+                    $setter = 'setMargin' . ucwords($position);
+                    $newSide->$setter($newMargin);
+
+                    $this->em->persist($newSide);
+                }
+            }
+        }
 
         $this->em->flush();
         $this->em->clear();

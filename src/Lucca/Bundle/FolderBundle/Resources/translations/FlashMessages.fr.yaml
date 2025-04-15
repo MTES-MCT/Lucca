@@ -8,6 +8,9 @@ flash:
         createdSuccessfully: "Le mot clé a bien été créé."
         updatedSuccessfully: "Le mot clé a bien été modifié."
         deletedSuccessfully: "Le mot clé a bien été supprimé."
+        data:
+            notFound: "Le fichier de données tags n'a pas été trouvé"
+            invalidJSON: "Le fichier de données tags n'est pas un JSON valide"
 
     control:
         needed: "Avant de créer un PV, veuillez créer un contrôle."
@@ -49,6 +52,9 @@ flash:
         deletedSuccessfully: "Le natinf a bien été supprimé."
         disabledSuccessfully: "Le natinf a bien été désactivé."
         enabledSuccessfully: "Le natinf a bien été activé."
+        data:
+            notFound: "Le fichier de données natinfs n'a pas été trouvé"
+            invalidJSON: "Le fichier de données natinfs n'est pas un JSON valide"
 
     folderSigned:
         createdSuccessfully: "Le PV signé a bien été ajouté."
