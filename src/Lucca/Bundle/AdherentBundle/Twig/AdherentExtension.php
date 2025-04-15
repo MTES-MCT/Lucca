@@ -43,7 +43,7 @@ class AdherentExtension extends AbstractExtension
     {
         $adherent = $this->em->getRepository(Adherent::class)->findOneByUser($user);
 
-        if ($adherent->getFunction() == Adherent::FUNCTION_COUNTRY_AGENT){
+        if ($adherent?->getFunction() == Adherent::FUNCTION_COUNTRY_AGENT){
             return true;
         }
 

@@ -115,7 +115,7 @@ class Model implements LoggableInterface
     #[ORM\ManyToOne(targetEntity: Page::class, cascade: ['persist', 'remove'])]
     private ?Page $verso = null;
 
-    #[ORM\Column(name: 'privacy', type: Types::JSON)]
+    #[ORM\Column(type: Types::JSON)]
     private array $documents = [];
 
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
