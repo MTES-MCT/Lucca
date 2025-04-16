@@ -1,0 +1,11 @@
+####################################
+## Domain : validators
+## Lang : FR
+####################################
+
+constraint:
+    user:
+        currentPassword:
+            invalid: "Le mot de passe actuel est faux."
+        password:
+            mismatch: "Les mots de passe doivent être équivalents."

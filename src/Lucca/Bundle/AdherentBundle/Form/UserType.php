@@ -32,7 +32,7 @@ class UserType extends AbstractType
                 'options' => array('translation_domain' => 'UserBundle'),
                 'first_options' => array('label' => 'label.password'),
                 'second_options' => array('label' => 'label.passwordConfirmation'),
-                'invalid_message' => 'user.password.mismatch',
+                'invalid_message' => 'constraint.user.password.mismatch',
                 'required' => false
             ))
             ->add('groups', EntityType::class, array(

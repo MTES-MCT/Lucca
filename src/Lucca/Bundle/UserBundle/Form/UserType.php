@@ -40,7 +40,7 @@ class UserType extends AbstractType
                 'type' => PasswordType::class, 'required' => false,
                 'first_options' => ['label' => 'label.password'],
                 'second_options' => ['label' => 'label.passwordConfirmation'],
-                'invalid_message' => 'user.password.mismatch',
+                'invalid_message' => 'constraint.user.password.mismatch',
             ])
             ->add('name', TextType::class, ['label' => 'label.name', 'required' => false]);
 
