@@ -92,6 +92,13 @@ class Closure implements LoggableInterface
 
     /************************************************************************ Custom functions ************************************************************************/
 
+    public function getLogName(): string
+    {
+        return 'Cloture';
+    }
+
+    /********************************************************************* Manual Getters & Setters *********************************************************************/
+
     public function setMinute(Minute $minute): self
     {
         $this->minute = $minute;
@@ -107,11 +114,6 @@ class Closure implements LoggableInterface
         $minute->setIsClosed(false);
 
         return $this;
-    }
-
-    public function getLogName(): string
-    {
-        return 'Cloture';
     }
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/

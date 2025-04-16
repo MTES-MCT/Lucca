@@ -171,22 +171,6 @@ class Control implements LoggableInterface
         return 'Contrôle non défini';
     }
 
-    public function addEdition(ControlEdition $edition): self
-    {
-        $this->editions[] = $edition;
-        $edition->setControl($this);
-
-        return $this;
-    }
-
-    public function setMinute(Minute $minute): self
-    {
-        $this->minute = $minute;
-        $minute->addControl($this);
-
-        return $this;
-    }
-
     public function getLogName(): string
     {
         return 'Contrôle';
@@ -258,6 +242,24 @@ class Control implements LoggableInterface
                     ->addViolation();
             }
         }
+    }
+
+    /********************************************************************* Manual Getters & Setters *********************************************************************/
+
+    public function addEdition(ControlEdition $edition): self
+    {
+        $this->editions[] = $edition;
+        $edition->setControl($this);
+
+        return $this;
+    }
+
+    public function setMinute(Minute $minute): self
+    {
+        $this->minute = $minute;
+        $minute->addControl($this);
+
+        return $this;
     }
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/

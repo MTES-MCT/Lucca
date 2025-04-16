@@ -83,6 +83,26 @@ class Courier implements LoggableInterface
         return 'Courrier';
     }
 
+    /********************************************************************* Manual Getters & Setters *********************************************************************/
+
+    public function addHumansEdition(CourierHumanEdition $humanEdition): self
+    {
+        if (!$this->humansEditions->contains($humanEdition)) {
+            $this->humansEditions[] = $humanEdition;
+            $humanEdition->setCourier($this);
+        }
+
+        return $this;
+    }
+
+    public function setFolder(Folder $folder): self
+    {
+        $this->folder = $folder;
+        $folder->setCourier($this);
+
+        return $this;
+    }
+
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
     public function getId(): ?int
@@ -93,14 +113,6 @@ class Courier implements LoggableInterface
     public function getFolder(): Folder
     {
         return $this->folder;
-    }
-
-    public function setFolder(Folder $folder): self
-    {
-        $this->folder = $folder;
-        $folder->setCourier($this);
-
-        return $this;
     }
 
     public function getDepartment(): ?Department
@@ -202,16 +214,6 @@ class Courier implements LoggableInterface
     public function getHumansEditions(): Collection
     {
         return $this->humansEditions;
-    }
-
-    public function addHumansEdition(CourierHumanEdition $humanEdition): self
-    {
-        if (!$this->humansEditions->contains($humanEdition)) {
-            $this->humansEditions[] = $humanEdition;
-            $humanEdition->setCourier($this);
-        }
-
-        return $this;
     }
 
     public function removeHumansEdition(CourierHumanEdition $humanEdition): void

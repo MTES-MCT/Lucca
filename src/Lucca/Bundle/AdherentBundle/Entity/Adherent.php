@@ -330,7 +330,7 @@ class Adherent implements LoggableInterface, MediaAsyncInterface
         return $this->departments;
     }
 
-    public function addGroup(Department $department): self
+    public function addDepartment(Department $department): self
     {
         if (!$this->departments->contains($department)) {
             $this->departments[] = $department;
@@ -339,7 +339,7 @@ class Adherent implements LoggableInterface, MediaAsyncInterface
         return $this;
     }
 
-    public function removeGroup(Department $department): self
+    public function removeDepartment(Department $department): self
     {
         $this->departments->removeElement($department);
 

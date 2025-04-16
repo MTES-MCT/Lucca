@@ -199,24 +199,6 @@ class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncIn
         return false;
     }
 
-    public function addElement(ElementChecked $elementChecked): self
-    {
-        if (!$this->elements->contains($elementChecked)) {
-            $this->elements[] = $elementChecked;
-        }
-
-        return $this;
-    }
-
-    public function addNatinf(Natinf $natinf): self
-    {
-        if (!$this->natinfs->contains($natinf)) {
-            $this->natinfs[] = $natinf;
-        }
-
-        return $this;
-    }
-
     /**
      * Set media by asynchronous method.
      */
@@ -269,6 +251,26 @@ class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncIn
         return 'Procès verbal';
     }
 
+    /********************************************************************* Manual Getters & Setters *********************************************************************/
+
+    public function addElement(ElementChecked $elementChecked): self
+    {
+        if (!$this->elements->contains($elementChecked)) {
+            $this->elements[] = $elementChecked;
+            $elementChecked->setFolder($this);
+        }
+
+        return $this;
+    }
+
+    public function setControl(Control $control): self
+    {
+        $this->control = $control;
+        $control->setFolder($this);
+
+        return $this;
+    }
+
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
     public function getId(): ?int
@@ -305,21 +307,16 @@ class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncIn
         return $this->control;
     }
 
-    public function setControl(Control $control): self
-    {
-        $this->control = $control;
-
-        return $this;
-    }
-
     public function getNatinfs(): Collection
     {
         return $this->natinfs;
     }
 
-    public function setNatinfs(Collection $natinfs): self
+    public function addNatinf(Natinf $natinf): self
     {
-        $this->natinfs = $natinfs;
+        if (!$this->natinfs->contains($natinf)) {
+            $this->natinfs[] = $natinf;
+        }
 
         return $this;
     }
