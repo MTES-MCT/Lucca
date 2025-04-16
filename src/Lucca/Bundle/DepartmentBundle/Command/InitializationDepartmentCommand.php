@@ -16,12 +16,18 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Lucca\Bundle\ChecklistBundle\Service\ChecklistService;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
+use Lucca\Bundle\FolderBundle\Service\NatinfService;
+use Lucca\Bundle\ModelBundle\Service\ModelService;
 
 class InitializationDepartmentCommand extends Command
 {
     public function __construct(
+        private readonly ChecklistService  $checklistService,
         private readonly EntityManagerInterface $em,
+        private readonly ModelService      $modelService,
+        private readonly NatinfService     $natinfService,
     )
     {
         parent::__construct();
@@ -84,9 +90,16 @@ class InitializationDepartmentCommand extends Command
         $demoDepartment->setName('Démo');
         $demoDepartment->setCode('demo');
 
-        // TODO call services
-
+        $this->em->persist($demoDepartment);
         $this->em->flush();
-        $this->em->clear();
+
+        // Natinf creation from JSON data file
+        $this->natinfService->createForDepartment($demoDepartment);
+
+        // Checklist creation from JSON data file
+        $this->checklistService->createForDepartment($demoDepartment);
+
+        // Model creation from JSON data file
+        $this->modelService->createForDepartment($demoDepartment);
     }
 }
