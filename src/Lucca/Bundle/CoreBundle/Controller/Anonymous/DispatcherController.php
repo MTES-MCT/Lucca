@@ -13,7 +13,7 @@ namespace Lucca\Bundle\CoreBundle\Controller\Anonymous;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\HttpFoundation\{RedirectResponse, RequestStack, Response};
+use Symfony\Component\HttpFoundation\{RedirectResponse, Response};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -26,7 +26,6 @@ class DispatcherController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly RequestStack $requestStack,
         private readonly RouterInterface $router,
     )
     {
@@ -53,7 +52,7 @@ class DispatcherController extends AbstractController
             return $this->redirectToRoute('lucca_core_dashboard', ['subDomainKey' => $department->getCode()]);
         }
 
-        /** else redirect to admin dashboard */
+        /** else redirect to department selection */
         return $this->redirectToRoute('lucca_core_portal');
     }
 
@@ -71,9 +70,6 @@ class DispatcherController extends AbstractController
 
         /** unset the subDomainKey from the parameters */
         unset ($parameters['subDomainKey']);
-
-        /** set or reset the subDomainKey in the session */
-        $this->requestStack->getSession()->set('subDomainKey', $subDomainKey);
 
         $url = $this->getParameter('lucca_core.url');
 

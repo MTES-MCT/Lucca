@@ -40,7 +40,7 @@ class SettingRepository extends EntityRepository
     /**
      * Override findAll
      */
-    public function findAllOptimized(Department|int $department): array
+    public function findAllOptimized(null|Department|int $department): array
     {
         $qb = $this->createQueryBuilder('setting');
         $qb->select('PARTIAL setting.{id, type, name, value}');

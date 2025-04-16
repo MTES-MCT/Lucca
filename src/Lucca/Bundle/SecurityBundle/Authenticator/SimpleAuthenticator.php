@@ -182,7 +182,6 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
      */
     protected function getLoginUrl(Request $request): string
     {
-        dump($request->getSession());
         return $this->urlGenerator->generate($this->routeLogin);
     }
 

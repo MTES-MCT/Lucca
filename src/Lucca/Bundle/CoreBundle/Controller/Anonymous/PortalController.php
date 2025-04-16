@@ -11,8 +11,9 @@
 namespace Lucca\Bundle\CoreBundle\Controller\Anonymous;
 
 use Exception;
+use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\{RedirectResponse, Request, RequestStack, Response};
+use Symfony\Component\HttpFoundation\{RedirectResponse, Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -25,9 +26,9 @@ use Lucca\Bundle\CoreBundle\Form\SelectDepartmentType;
 class PortalController extends AbstractController
 {
     public function __construct(
-        private readonly AdherentFinder  $adherentFinder,
-        private readonly RequestStack    $requestStack,
-        private readonly RouterInterface $router,
+        private readonly AdherentFinder         $adherentFinder,
+        private readonly RouterInterface        $router,
+        private readonly UserDepartmentResolver $userDepartmentResolver,
     )
     {
     }
@@ -68,7 +69,7 @@ class PortalController extends AbstractController
             }
 
             if ($isForAdmin && $this->getUser() && $this->isGranted('ROLE_ADMIN')) {
-                return $this->redirectToRoute('lucca_core_parameter');
+                return $this->redirectToRoute('lucca_core_parameter', ['subDomainKey' => 'admin']);
             }
         }
 
@@ -91,9 +92,6 @@ class PortalController extends AbstractController
 
         /** unset the subDomainKey from the parameters */
         unset ($parameters['subDomainKey']);
-
-        /** set or reset the subDomainKey in the session */
-        $this->requestStack->getSession()->set('subDomainKey', $subDomainKey);
 
         $url = $this->getParameter('lucca_core.url');
 

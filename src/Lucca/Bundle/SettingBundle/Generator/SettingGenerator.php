@@ -96,7 +96,7 @@ class SettingGenerator
     public function getCachedSettings(string $departmentCode, bool $bypassCache = false): array
     {
         $department = $this->em->getRepository(Department::class)->findOneBy(['code' => $departmentCode]);
-        $item = $this->settingsCache->getItem(self::SETTINGS_CACHE_KEY . '.' . $department->getCode());
+        $item = $this->settingsCache->getItem(self::SETTINGS_CACHE_KEY . '.' . $department?->getCode());
 
         if (!$item->isHit() || $bypassCache) {
             /** Check if all parameters exist in database in order to create them */
@@ -124,12 +124,10 @@ class SettingGenerator
      *
      * @throws Exception
      */
-    public function generateMissingSettings(Department $department): array
+    public function generateMissingSettings(?Department $department): array
     {
         $this->aOutputDictionary = []; // init output
         $this->aDatabaseSettingDictionary = [];
-
-        $department = $this->em->getRepository(Department::class)->findOneBy(['code' => $department->getCode()]);
 
         /** Try to get setting from datatable */
         try {
@@ -250,12 +248,12 @@ class SettingGenerator
     /**
      * Update pre-existing settings based on a list of callback function.
      */
-    private function updateSettings(Department $department): void
+    private function updateSettings(?Department $department): void
     {
         if (is_array($this->aSettingToUpdateCallbacks) && $this->aSettingToUpdateCallbacks !== []) {
             // Find all settings to update
             $aSettingToUpdate = $this->em->getRepository(Setting::class)
-                ->findBy(['department' => $department->getId(), 'name' => array_keys($this->aSettingToUpdateCallbacks)]);
+                ->findBy(['department' => $department?->getId(), 'name' => array_keys($this->aSettingToUpdateCallbacks)]);
 
             // Index all settings by name
             $aSettingToUpdateIndexedByName = array_combine(array_map(function (Setting $setting) {
