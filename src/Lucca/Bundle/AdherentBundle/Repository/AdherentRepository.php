@@ -51,7 +51,7 @@ class AdherentRepository extends ServiceEntityRepository
     {
         $qb = $this->queryAdherent();
 
-        $qb->where($qb->expr()->like('entity.id', ':q_code'))
+        $qb->andWhere($qb->expr()->like('entity.id', ':q_code'))
             ->setParameter('q_code', "%$prefix$year%");
 
         $qb->select($qb->expr()->max('entity.id'));
@@ -71,7 +71,7 @@ class AdherentRepository extends ServiceEntityRepository
 
         $qb->select($qb->expr()->count('entity'));
 
-        $qb->where($qb->expr()->eq('entity.enabled', ':q_state'))
+        $qb->andWhere($qb->expr()->eq('entity.enabled', ':q_state'))
             ->setParameter(':q_state', $enabled);
 
         return (int)$qb->getQuery()->getSingleScalarResult();
@@ -129,7 +129,7 @@ class AdherentRepository extends ServiceEntityRepository
     {
         $qb = $this->queryAdherent();
 
-        $qb->where($qb->expr()->like('user.username', ':username'))
+        $qb->andWhere($qb->expr()->like('user.username', ':username'))
             ->setParameter('username', '%' . $prefix . '%');
 
         $qb->select($qb->expr()->max('user.username'));
@@ -151,7 +151,7 @@ class AdherentRepository extends ServiceEntityRepository
     {
         $qb = $this->queryAdherent();
 
-        $qb->where($qb->expr()->eq('user.email', ':email'))
+        $qb->andWhere($qb->expr()->eq('user.email', ':email'))
             ->setParameter('email', $email);
 
         try {
@@ -195,7 +195,7 @@ class AdherentRepository extends ServiceEntityRepository
 
         $qb->orderBy('adherent.name', 'ASC');
 
-        $qb->where($qb->expr()->eq('adherent.enabled', ':q_enabled'))
+        $qb->andWhere($qb->expr()->eq('adherent.enabled', ':q_enabled'))
             ->setParameter('q_enabled', $enabled);
 
         return $qb;
@@ -224,7 +224,7 @@ class AdherentRepository extends ServiceEntityRepository
     {
         $qb = $this->queryAdherent();
 
-        $qb->where($qb->expr()->eq('adherent.id', ':q_adherent'))
+        $qb->andWhere($qb->expr()->eq('adherent.id', ':q_adherent'))
             ->setParameter(':q_adherent', $id);
 
         try {

@@ -27,5 +27,5 @@ interface FolderNamerInterface
      * Each service can have a different logic
      * If Folder does not exist - Create a new Folder Entity and new filesystem
      */
-    public function searchFolder(Media $media, Department $department): mixed;
+    public function searchFolder(Media $media): mixed;
 }

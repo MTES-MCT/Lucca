@@ -13,6 +13,7 @@ namespace Lucca\Bundle\MediaBundle\Namer;
 use Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
+use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -26,6 +27,7 @@ readonly class FolderNamer implements FolderNamerInterface
     public function __construct(
         private EntityManagerInterface $em,
         private Canonalizer            $canonalizer,
+        private UserDepartmentResolver $userDepartmentResolver,
 
         #[Autowire(param: 'lucca_media.upload_directory')]
         private string                 $upload_dir,
@@ -36,8 +38,10 @@ readonly class FolderNamer implements FolderNamerInterface
     /**
      * Search and attributed Folder to a Media
      */
-    public function searchFolder(Media $media, Department $department, $object = null): Folder
+    public function searchFolder(Media $media, $object = null): Folder
     {
+        $department = $this->userDepartmentResolver->getDepartment();
+
         /**
          * Step 1 - Build folder path
          * Sort each file by Category / Extension
