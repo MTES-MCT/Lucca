@@ -227,11 +227,11 @@ class Adherent implements LoggableInterface, MediaAsyncInterface
             return $this->getTown()->getOffice();
         }
 
-        if ($this->getIntercommunal()) {
+        if ($this->getIntercommunal()?->getOffice()) {
             return $this->getIntercommunal()->getOffice()->getName();
         }
 
-        return $this->getService()->getOffice()->getName();
+        return $this->getService()?->getOffice()?->getName() ?? '';
     }
 
     /**

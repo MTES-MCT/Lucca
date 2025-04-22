@@ -254,8 +254,11 @@ class AdherentRepository extends ServiceEntityRepository
             ->leftJoin('adherent.departments', 'departments')
         ;
 
-        $qb->andWhere($qb->expr()->eq('departments', ':q_department'))
-            ->setParameter(':q_department', $this->userDepartmentResolver->getDepartment());
+        $department = $this->userDepartmentResolver->getDepartment();
+        if ($department) {
+            $qb->andWhere($qb->expr()->eq('departments', ':q_department'))
+                ->setParameter(':q_department', $department);
+        }
 
         return $qb;
     }

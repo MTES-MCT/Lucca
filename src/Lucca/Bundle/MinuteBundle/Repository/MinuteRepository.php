@@ -380,7 +380,7 @@ class MinuteRepository extends EntityRepository
             'partial folder63.{id, dateClosure, num}',
             'partial service.{id, name}',
             'partial town.{id, name}',
-            'partial intercommunal.{id}',
+            'partial intercommunal.{id, name}',
         ]);
 
         return $qb->getQuery()->getResult();
