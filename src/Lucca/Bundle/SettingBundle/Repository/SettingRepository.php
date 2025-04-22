@@ -22,7 +22,7 @@ class SettingRepository extends EntityRepository
      * Override findAll method
      * with Setting dependencies
      */
-    public function findAllByRole(Department|int $department, bool $isSuperAdmin = true): array
+    public function findAllByRole(bool $isSuperAdmin = true): array
     {
         $qb = $this->querySetting();
 
@@ -30,9 +30,6 @@ class SettingRepository extends EntityRepository
             $qb->andWhere($qb->expr()->eq('setting.accessType', ':q_accessType'))
                 ->setParameter(':q_accessType', Setting::ACCESS_TYPE_ADMIN);
         }
-
-        $qb->where($qb->expr()->eq('setting.department', ':q_department'))
-            ->setParameter(':q_department', $department);
 
         return $qb->getQuery()->getResult();
     }
