@@ -25,6 +25,7 @@ services:
             - "@security.csrf.token_manager"
             - "@security.user_password_hasher"
             - "@lucca.security.manager.login_attempt"
+            - '@Lucca\Bundle\AdherentBundle\Finder\AdherentFinder'
             - '@security.token_storage'
             - '@request_stack'
             - '%env(DEFAULT_URL_AFTER_LOGIN)%'

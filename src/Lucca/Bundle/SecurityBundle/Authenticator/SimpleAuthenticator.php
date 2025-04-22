@@ -32,7 +32,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-
+use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
 use Lucca\Bundle\SecurityBundle\Manager\LoginAttemptManager;
 use Lucca\Bundle\SecurityBundle\Exception\LoginWithoutSessionException;
 use Lucca\Bundle\UserBundle\Entity\User;
@@ -62,6 +62,7 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly UserPasswordHasher        $passwordHasher,
         private readonly LoginAttemptManager       $loginAttemptManager,
+        private readonly AdherentFinder            $adherentFinder,
 
         private TokenStorageInterface $tokenStorage, private RequestStack $requestStack,
 
@@ -153,9 +154,19 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
         $session = $request->getSession();
         $session->set(SecurityRequestAttributes::LAST_USERNAME, $user->getEmail());
 
-        /** Redirect to the last page visited before login */
+        /** Redirect to the last page visited before login if user is part of the department */
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-            return new RedirectResponse($targetPath);
+            $adherent = $this->adherentFinder->whoAmI();
+
+            $targetPathUrl = parse_url($targetPath);
+            [$department] = explode('.', $targetPathUrl['host']);
+            $hasDepartment = $adherent->getDepartments()
+                ->map(fn ($department) => $department->getCode())
+                ->contains($department);
+
+            if ($hasDepartment) {
+                return new RedirectResponse($targetPath);
+            }
         }
 
         return new RedirectResponse($this->urlGenerator->generate($this->routeAfterLogin));
