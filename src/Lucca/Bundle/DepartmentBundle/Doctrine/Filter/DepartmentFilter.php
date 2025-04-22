@@ -33,11 +33,6 @@ class DepartmentFilter extends SQLFilter
             return '';
         }
 
-        // Don't apply the filter on joins (often alias ≠ "t0")
-        if (!in_array($targetTableAlias, ['l0_', 't0', 'e0'])) {
-            return '';
-        }
-
         // Ici on considère que votre entité possède un champ "subdomain".
         // Il est important d’échapper correctement la valeur.
         $quotedDepartmentId = $this->getConnection()->quote($this->departmentId);
