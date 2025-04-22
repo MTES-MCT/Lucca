@@ -157,7 +157,7 @@ class LogRepository extends EntityRepository
     private function queryLog(): QueryBuilder
     {
         return $this->createQueryBuilder('log')
-            ->innerJoin('log.user', 'user')->addSelect('user')
+            ->leftJoin('log.user', 'user')->addSelect('user')
         ;
     }
 }
