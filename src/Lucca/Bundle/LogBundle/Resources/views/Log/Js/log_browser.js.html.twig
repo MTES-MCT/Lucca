@@ -13,7 +13,7 @@
             }
         },
         columns: [
-            {data: 'user.username', name: 'username'},
+            {data: 'user.username', name: 'username', render: (data) => data ?? ''},
             {data: 'status', name: 'status', searchable: true},
             {data: 'shortMessage', name: 'shortMessage'},
             {data: 'classname', name: 'classname'},

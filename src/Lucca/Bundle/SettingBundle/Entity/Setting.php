@@ -20,6 +20,9 @@ use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\SettingBundle\Repository\SettingRepository;
 
 #[ORM\Entity(repositoryClass: SettingRepository::class)]
+#[ORM\UniqueConstraint(
+    columns: ['name', 'department_id']
+)]
 #[ORM\Table(name: 'lucca_setting')]
 class Setting implements LoggableInterface
 {
@@ -45,7 +48,7 @@ class Setting implements LoggableInterface
     #[ORM\GeneratedValue]
     private ?int $id = null;
 
-    #[ORM\Column(unique: true)]
+    #[ORM\Column]
     #[Assert\NotNull(message: 'constraint.not_null')]
     private string $name;
 

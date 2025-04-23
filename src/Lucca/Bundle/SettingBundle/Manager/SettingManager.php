@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\SettingBundle\Manager;
 
+use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
 use Lucca\Bundle\SettingBundle\Generator\SettingGenerator;
 
 /**
@@ -22,18 +23,27 @@ abstract class SettingManager
     /** Settings array loaded from cache */
     protected static array $settings = [];
 
+    protected static ?string $departmentCode = null;
+
+    public function __construct(
+        private readonly UserDepartmentResolver $userDepartmentResolver,
+    )
+    {
+        self::$departmentCode = $this->userDepartmentResolver->getDepartmentCode();
+    }
+
     public static function getAll(): array
     {
-        return self::$settings;
+        return self::$settings[self::$departmentCode];
     }
 
     public static function get(string $name, $default = null): mixed
     {
-        return self::$settings[$name] ?? $default;
+        return self::$settings[self::$departmentCode][$name] ?? $default;
     }
 
     public static function setAll(array $settings): void
     {
-        self::$settings = $settings;
+        self::$settings[self::$departmentCode] = $settings;
     }
 }

@@ -1,0 +1,151 @@
+[
+    {
+        "name": "Modèle controle",
+        "layout": "choice.layout.simple",
+        "documents": "[\"choice.documents.accessLetter\"]",
+        "recto": {
+            "margins": [],
+            "marginUnit": "choice.marginUnit.px",
+            "headerSize": 50,
+            "footerSize": 20,
+            "leftSize": 20,
+            "rightSize": 20
+
+        },
+        "verso": null
+    },
+    {
+        "name": "Modèle lettre convocation",
+        "layout": "choice.layout.simple",
+        "documents": "[\"choice.documents.convocationLetter\"]",
+        "recto": {
+            "margins": [
+                {
+                    "position": "choice.position.top",
+                    "height": 300,
+                    "width": 975
+                }
+            ],
+            "marginUnit": "choice.marginUnit.px",
+            "headerSize": null,
+            "footerSize": 150,
+            "leftSize": 20,
+            "rightSize": 20
+
+        },
+        "verso": null
+    },
+    {
+        "name": "Lettre au Parquet",
+        "layout": "choice.layout.cover",
+        "documents": "[\"choice.documents.judicialLetter\"]",
+        "recto": {
+            "margins": [
+                {
+                    "position": "choice.position.top",
+                    "height": 400,
+                    "width": 975
+                },
+                {
+                    "position": "choice.position.bottom",
+                    "height": 200,
+                    "width": 975
+                },
+                {
+                    "position": "choice.position.left",
+                    "height": 778,
+                    "width": 100
+                },
+                {
+                    "position": "choice.position.right",
+                    "height": 778,
+                    "width": 100
+                }
+            ],
+            "marginUnit": "choice.marginUnit.px",
+            "headerSize": null,
+            "footerSize": null,
+            "leftSize": null,
+            "rightSize": null
+        },
+        "verso": null
+    },
+    {
+        "name": "PV",
+        "layout": "choice.layout.cover",
+        "documents": "[\"choice.documents.folder\"]",
+        "recto": {
+            "margins": [
+                {
+                    "position": "choice.position.bottom",
+                    "height": 50,
+                    "width": 975
+                }
+            ],
+            "marginUnit": "choice.marginUnit.px",
+            "headerSize": 10,
+            "footerSize": null,
+            "leftSize": 20,
+            "rightSize": 20
+        },
+        "verso": {
+            "margins": [
+                {
+                    "position": "choice.position.top",
+                    "height": 100,
+                    "width": 975
+                },
+                {
+                    "position": "choice.position.bottom",
+                    "height": 50,
+                    "width": 975
+                }
+            ],
+            "marginUnit": "choice.marginUnit.px",
+            "headerSize": null,
+            "footerSize": null,
+            "leftSize": 20,
+            "rightSize": 20
+        }
+    },
+    {
+        "name": "Lettre à la DDTM",
+        "layout": "choice.layout.simple",
+        "documents": "[\"choice.documents.ddtmLetter\"]",
+        "recto": {
+            "margins": [
+                {
+                    "position": "choice.position.top",
+                    "height": 300,
+                    "width": 975
+                }
+            ],
+            "marginUnit": "choice.marginUnit.px",
+            "headerSize": null,
+            "footerSize": 50,
+            "leftSize": 20,
+            "rightSize": 20
+        },
+        "verso": null
+    },
+    {
+        "name": "Modèle contrevenant",
+        "layout": "choice.layout.simple",
+        "documents": "[\"choice.documents.offender\"]",
+        "recto": {
+            "margins": [
+                {
+                    "position": "choice.position.top",
+                    "height": 300,
+                    "width": 975
+                }
+            ],
+            "marginUnit": "choice.marginUnit.px",
+            "headerSize": null,
+            "footerSize": 50,
+            "leftSize": 20,
+            "rightSize": 20
+        },
+        "verso": null
+    }
+]

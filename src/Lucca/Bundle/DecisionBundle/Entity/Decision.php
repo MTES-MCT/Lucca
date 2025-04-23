@@ -160,6 +160,32 @@ class Decision implements LoggableInterface
         return 'Décision';
     }
 
+    /********************************************************************* Manual Getters & Setters *********************************************************************/
+
+    public function setExpulsion(?Expulsion $expulsion): self
+    {
+        $this->expulsion = $expulsion;
+        $expulsion?->setDecision($this);
+
+        return $this;
+    }
+
+    public function setDemolition(?Demolition $demolition): self
+    {
+        $this->demolition = $demolition;
+        $demolition?->setDecision($this);
+
+        return $this;
+    }
+
+    public function setMinute(Minute $minute): self
+    {
+        $this->minute = $minute;
+        $minute->addDecision($this);
+
+        return $this;
+    }
+
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
     public function getId(): ?int
@@ -170,14 +196,6 @@ class Decision implements LoggableInterface
     public function getMinute(): Minute
     {
         return $this->minute;
-    }
-
-    public function setMinute(Minute $minute): self
-    {
-        $this->minute = $minute;
-        $minute?->addDecision($this);
-
-        return $this;
     }
 
     public function getTribunal(): ?Tribunal
@@ -477,24 +495,8 @@ class Decision implements LoggableInterface
         return $this->expulsion;
     }
 
-    public function setExpulsion(?Expulsion $expulsion): self
-    {
-        $this->expulsion = $expulsion;
-        $expulsion?->setDecision($this);
-
-        return $this;
-    }
-
     public function getDemolition(): ?Demolition
     {
         return $this->demolition;
-    }
-
-    public function setDemolition(?Demolition $demolition): self
-    {
-        $this->demolition = $demolition;
-        $demolition?->setDecision($this);
-
-        return $this;
     }
 }

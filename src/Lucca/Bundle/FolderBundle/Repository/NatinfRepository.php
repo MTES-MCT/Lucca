@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\FolderBundle\Repository;
 
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Doctrine\ORM\{QueryBuilder, EntityRepository, NonUniqueResultException};
 
 use Lucca\Bundle\CoreBundle\Repository\ToggleableRepository;
@@ -48,6 +49,20 @@ class NatinfRepository extends EntityRepository
             $qb->where($qb->expr()->eq('natinf.enabled', ':q_enabled'))
                 ->setParameter(':q_enabled', $status);
         }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getIdentifiers(Department $department): array
+    {
+        $qb = $this->createQueryBuilder('natinf');
+
+        $qb->select([
+            'partial natinf.{id, num}'
+        ]);
+
+        $qb->where($qb->expr()->eq('natinf.department', ':q_department'))
+            ->setParameter(':q_department', $department);
 
         return $qb->getQuery()->getResult();
     }

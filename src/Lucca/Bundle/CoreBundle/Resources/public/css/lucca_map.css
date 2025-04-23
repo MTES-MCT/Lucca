@@ -160,3 +160,15 @@
 .mapMinute {
     min-height: 65px !important;
 }
+
+/** Close button */
+.gm-style-iw-chr button {
+    left: 12px !important;
+    width: 18px !important;
+    height: 18px !important;
+}
+.gm-style-iw-chr button span {
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 !important;
+}

@@ -147,7 +147,7 @@
 
                 <div class="card-wrapper">
                     <div class="card-body text-center">
-                        <embed src="{{ path('lucca_model_print', { 'id': model.id }) }}" width="500" height="600"
+                        <embed src="{{ absolute_url(path('lucca_model_print', { 'id': model.id })) }}" width="500" height="600"
                                type='application/pdf'>
                     </div>
                 </div>
@@ -156,7 +156,7 @@
         {#-- End Panel - main --#}
     </div>
 
-    <div class="row">
+    <div class="row mt-3">
         {% if verso is not null and model.layout is same as constant('LAYOUT_COVER', model) %}
             {#-- Panel - Page --#}
             {#-- Embed view - params and block --#}

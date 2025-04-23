@@ -3,3 +3,5 @@ lucca_core:
     asset_version: "%env(LUCCA_STRATEGY_ASSET_VERSION)%"
     asset_forceRefresh: "%env(LUCCA_STRATEGY_ASSET_FORCE_REFRESH)%"
     google_analytics_id: "%env(LUCCA_GOOGLE_ANALYTICS_ID)%"
+    lucca_unit_test_dep_code: '%env(LUCCA_UNIT_TEST_DEP_CODE)%'
+    url: '%env(LUCCA_URL)%'

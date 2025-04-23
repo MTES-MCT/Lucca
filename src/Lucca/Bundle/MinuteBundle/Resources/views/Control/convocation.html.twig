@@ -52,13 +52,16 @@
             {% endfor %}
         {% endif %}
 
+    </div>
+
+
+    <div class="col-12 mt-3">
         <a class="btn btn-secondary btn-lg" href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"
            title="{{ 'link.back'|trans }}"><i class="fa fa-reply"></i></a>
 
         <a class="btn btn-info btn-lg"
            href="{{ path('lucca_control_letter_print', { 'minute_id': minute.id, 'id': control.id }) }}"
            title="{{ 'link.print'|trans }}"><i class="fa fa-print"></i></a>
-
     </div>
     {#-- End Panel - main --#}
 

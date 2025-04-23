@@ -22,7 +22,7 @@ use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
 class DashboardController extends AbstractController
 {
     public function __construct(
-        private readonly AdherentFinder $adherentFinder
+        private readonly AdherentFinder $adherentFinder,
     )
     {
     }

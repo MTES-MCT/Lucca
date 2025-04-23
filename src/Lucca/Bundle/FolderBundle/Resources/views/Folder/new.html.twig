@@ -49,7 +49,7 @@
                                         {{ 'label.humanRefusedControl'|trans }}
                                     {% else %}
                                         <span class="human-present-label">{{ 'label.humanPresent'|trans }}</span>
-                                        <span class="human-refused-control-label text-hidden">{{ 'label.humanRefusedControl'|trans }}</span>
+                                        <span class="human-refused-control-label d-none">{{ 'label.humanRefusedControl'|trans }}</span>
                                     {% endif %}
                                 </label>
 
@@ -156,6 +156,7 @@
             after_add: function (collection, element) {
                 element.find(".js-name").prop("readonly", null);
                 element.find(".js-state").prop("checked", true);
+                element.find(".custom-file").hide();
             },
         });
         {#End - Collection form#}

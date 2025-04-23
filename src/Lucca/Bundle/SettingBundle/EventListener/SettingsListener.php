@@ -11,8 +11,8 @@
 namespace Lucca\Bundle\SettingBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
 
+use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
 use Lucca\Bundle\SettingBundle\Generator\SettingGenerator;
 use Lucca\Bundle\SettingBundle\Manager\SettingManager;
 
@@ -21,8 +21,9 @@ readonly class SettingsListener
     /**
      * RequestListener constructor.
      */
-    function __construct(
-        private SettingGenerator $settingGenerator,
+    public function __construct(
+        private SettingGenerator       $settingGenerator,
+        private UserDepartmentResolver $userDepartmentResolver,
     )
     {
     }
@@ -32,9 +33,10 @@ readonly class SettingsListener
      * Check LoginAttempts made with Ip on request
      */
     #[AsEventListener(event: 'kernel.request')]
-    public function onKernelRequest(RequestEvent $event): void
+    public function onKernelRequest(): void
     {
-        $settings = $this->settingGenerator->getCachedSettings();
+        $departmentCode = $this->userDepartmentResolver->getDepartmentCode();
+        $settings = $this->settingGenerator->getCachedSettings($departmentCode);
 
         SettingManager::setAll($settings);
     }

@@ -26,6 +26,8 @@ title:
     statistics: "Statistiques"
     tools: "Fiches outils de l'application"
     results: "Résultat(s) de recherche :"
+    selectDepartment: "Sélection du département"
+    adminScope: "Se rendre sur l'interface d'administration"
 
 ###############
 ## Label
@@ -51,6 +53,7 @@ label:
     loginAttempt: "Tentative de login"
     media: "Media"
     setting: "Paramètres d'application"
+    department: "Département"
 
     filters:
         minutesSpotted: "Signalement"
@@ -79,6 +82,7 @@ badge:
 text:
     noFoldersFound: "Aucun dossier trouvé !"
     createFolderGeolocalized: "Voulez vous créer un dossier ici : "
+    validate: "Valider"
 
 ###############
 ## Link

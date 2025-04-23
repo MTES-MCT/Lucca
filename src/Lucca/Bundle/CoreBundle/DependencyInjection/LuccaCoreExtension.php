@@ -32,11 +32,11 @@ class LuccaCoreExtension extends Extension implements PrependExtensionInterface
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-        $container->setParameter('lucca_security', $config);
+        $container->setParameter('lucca_core', $config);
 
         /** Path parameters to register */
         foreach ($config as $parameter => $value) {
-            $container->setParameter(sprintf('lucca_security.%s', $parameter), $value);
+            $container->setParameter(sprintf('lucca_core.%s', $parameter), $value);
         }
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

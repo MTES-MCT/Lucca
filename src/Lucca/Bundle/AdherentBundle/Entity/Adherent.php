@@ -67,10 +67,11 @@ class Adherent implements LoggableInterface, MediaAsyncInterface
     #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private string $function;
 
-    #[ORM\ManyToOne(targetEntity: Department::class)]
-    /** TODO: set nullable for migration */
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Department $department = null;
+    #[ORM\JoinTable(name: 'lucca_adherent_linked_department')]
+    #[ORM\JoinColumn(name: 'adherent_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'department_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: Department::class)]
+    private Collection $departments;
 
     #[ORM\Column(length: 60, nullable: true)]
     #[Assert\Length(min: 2, max: 60, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
@@ -125,6 +126,7 @@ class Adherent implements LoggableInterface, MediaAsyncInterface
     public function __construct()
     {
         $this->agents = new ArrayCollection();
+        $this->departments = new ArrayCollection();
     }
 
     /**
@@ -225,11 +227,11 @@ class Adherent implements LoggableInterface, MediaAsyncInterface
             return $this->getTown()->getOffice();
         }
 
-        if ($this->getIntercommunal()) {
+        if ($this->getIntercommunal()?->getOffice()) {
             return $this->getIntercommunal()->getOffice()->getName();
         }
 
-        return $this->getService()->getOffice()->getName();
+        return $this->getService()?->getOffice()?->getName() ?? '';
     }
 
     /**
@@ -323,14 +325,23 @@ class Adherent implements LoggableInterface, MediaAsyncInterface
         return $this;
     }
 
-    public function getDepartment(): ?Department
+    public function getDepartments(): Collection
     {
-        return $this->department;
+        return $this->departments;
     }
 
-    public function setDepartment(?Department $department): self
+    public function addDepartment(Department $department): self
     {
-        $this->department = $department;
+        if (!$this->departments->contains($department)) {
+            $this->departments[] = $department;
+        }
+
+        return $this;
+    }
+
+    public function removeDepartment(Department $department): self
+    {
+        $this->departments->removeElement($department);
 
         return $this;
     }

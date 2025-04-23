@@ -6,7 +6,7 @@
 
 {#-- Parameters --#}
 {% set entity_trans='label.department'|trans %}
-{% set menuActive = "ma_adm_department" %}
+{% block menuActive_department %}active{% endblock %}
 
 
 {% block lucca_panels %}
@@ -55,14 +55,14 @@
                             {% endif %}
 
                             {% if app.user and (is_granted("ROLE_SUPER_ADMIN")) %}
-                                {% if department.enable %}
+                                {% if department.enabled %}
                                     <a href="{{ path('lucca_department_admin_disable', { 'id': department.id }) }}"
                                        class="btn btn-primary btn-lg float-right" title="{{ 'link.department.disable'|trans }}">
                                         <i class="fas fa-toggle-on" aria-hidden="true"></i>
                                     </a>
                                 {% else %}
-                                    <a class="btn btn-danger btn-lg float-right" data-bs-toggle="modal"
-                                       data-bs-target=".delWin" title="{{ 'link.department.delete'|trans }}">
+                                    <a class="btn btn-danger btn-lg float-right" data-toggle="modal"
+                                       data-target=".delWin" title="{{ 'link.department.delete'|trans }}">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
 

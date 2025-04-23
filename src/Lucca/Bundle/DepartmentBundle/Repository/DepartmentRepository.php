@@ -45,10 +45,10 @@ class DepartmentRepository extends EntityRepository
     /********************* Filter methods *****/
     /*******************************************************************************************/
 
-    public function getActiveDepartments(QueryBuilder $qb, bool $enable = true): QueryBuilder
+    public function getActiveDepartments(QueryBuilder $qb, bool $enabled = true): QueryBuilder
     {
-        $qb->andWhere($qb->expr()->eq('department.enable', ':q_enable'))
-            ->setParameter(':q_enable', $enable);
+        $qb->andWhere($qb->expr()->eq('department.enabled', ':q_enabled'))
+            ->setParameter(':q_enabled', $enabled);
 
         return $qb;
     }

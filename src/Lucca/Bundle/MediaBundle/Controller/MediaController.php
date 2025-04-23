@@ -51,7 +51,7 @@ class MediaController extends AbstractController
         /**
          * @var User $user Current user connected
          */
-        $user = $this->tokenStorage->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()?->getUser() ?? 'anon.';
 
         /**
          * If media is null or

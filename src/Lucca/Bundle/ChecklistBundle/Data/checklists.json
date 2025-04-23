@@ -1,0 +1,146 @@
+[
+    {
+        "name": "Liste PV",
+        "status": "choice.status.minute",
+        "children": [
+            {
+                "name": "Relevé de propriété de la parcelle visée",
+                "position": 1
+            },
+            {
+                "name": "Extrait de plan cadastral",
+                "position": 2
+            },
+            {
+                "name": "Plan de situation (localisation des installations/constructions (plan schématique et/ou photo aérienne)",
+                "position": 3
+            },
+            {
+                "name": "Planche photographique",
+                "position": 4
+            },
+            {
+                "name": "Extrait du règlement et du zonage du document d’urbanisme applicable",
+                "position": 5
+            },
+            {
+                "name": "Extrait du règlement et du zonage du Plan de Prévention des Risques applicable",
+                "position": 6
+            },
+            {
+                "name": "Autorisation d’accès à la propriété",
+                "position": 7
+            },
+            {
+                "name": "Refus d’accès à la propriété",
+                "position": 8
+            },
+            {
+                "name": "Carte de commissionnement de l'agent verbalisateur",
+                "position": 9
+            },
+            {
+                "name": "Courrier à l'intéressé informant de la visite",
+                "position": 10
+            },
+            {
+                "name": "Courrier de mise en demeure à l'intéressé après clôture du PV",
+                "position": 11
+            },
+            {
+                "name": "Législation applicable aux structures de loisirs",
+                "position": 12
+            },
+            {
+                "name": "Autorisation d'urbanisme (DP ou PC délivrés ou refusés)",
+                "position": 13
+            },
+            {
+                "name": "Délibération du conseil municipal",
+                "position": 14
+            },
+            {
+                "name": "Liste des emplacements réservés",
+                "position": 15
+            },
+            {
+                "name": "Arrêté municipal interdisant le stationnement de caravanes",
+                "position": 16
+            },
+            {
+                "name": "Courrier de mise en demeure",
+                "position": 17
+            },
+            {
+                "name": "Courriers antérieurs à la visite",
+                "position": 18
+            },
+            {
+                "name": "Extrait du code de l'urbanisme",
+                "position": 19
+            },
+            {
+                "name": "Contraintes spécifiques liés au terrain",
+                "position": 20
+            },
+            {
+                "name": "Courrier de l'intéressé s'opposant au contrôle",
+                "position": 21
+            }
+        ]
+    },
+    {
+        "name": "Liste Actualisation",
+        "status": "choice.status.updating",
+        "children": [
+            {
+                "name": "Relevé de propriété",
+                "position": 1
+            },
+            {
+                "name": "Extrait de plan cadastral",
+                "position": 2
+            },
+            {
+                "name": "Plan de situation",
+                "position": 3
+            },
+            {
+                "name": "Planche photographique",
+                "position": 4
+            },
+            {
+                "name": "Extrait du règlement et du plan de la zone concernée du document d’urbanisme",
+                "position": 5
+            },
+            {
+                "name": "Extrait du règlement et du plan de la zone concernée règlement du Plan de Prévention des Risques",
+                "position": 6
+            },
+            {
+                "name": "Plan de localisation des installations/constructions (plan schématique et/ou photo aérienne)",
+                "position": 7
+            },
+            {
+                "name": "Autorisation d’accès à la propriété",
+                "position": 8
+            },
+            {
+                "name": "Carte de commissionnement de l'agent verbalisateur",
+                "position": 9
+            },
+            {
+                "name": "Courrier à l'intéressé informant de la visite",
+                "position": 10
+            },
+            {
+                "name": "Courrier de mise en demeure à l'intéressé après clôture du PV",
+                "position": 11
+            },
+            {
+                "name": "Refus d’accès à la propriété",
+                "position": 12
+            }
+        ]
+    }
+]

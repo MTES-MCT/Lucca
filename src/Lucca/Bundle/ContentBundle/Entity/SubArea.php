@@ -21,6 +21,9 @@ use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 #[ORM\Entity(repositoryClass: SubAreaRepository::class)]
+#[ORM\UniqueConstraint(
+    columns: ['code', 'department_id']
+)]
 #[ORM\Table(name: 'lucca_content_subarea')]
 class SubArea implements LoggableInterface
 {
@@ -50,7 +53,7 @@ class SubArea implements LoggableInterface
     #[ORM\JoinColumn(nullable: true)]
     private ?Department $department = null;
 
-    #[ORM\Column(length: 60, unique: true, nullable: true)]
+    #[ORM\Column(length: 60, nullable: true)]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 60, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
     private ?string $code = null;

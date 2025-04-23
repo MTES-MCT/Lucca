@@ -32,6 +32,7 @@ menu:
     changePassword: "Changement mot de passe"
     group: "Groupe"
     permissions: "Permissions"
+    department: "Départements"
     content: "Contenu"
     area: "Zone"
     subarea: "Sous zone"

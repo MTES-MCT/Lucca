@@ -12,51 +12,45 @@
 
     <div class="u-login-form">
         <form class="mb-3" id="loginForm" role="form" method="post">
-            <div class="mb-3">
-                <div class="card-card-header text-center bg-dark">
-                    <a href="{{ path('lucca_content_dashboard') }}">
-                        <img src="{{ asset('/assets/logo/lucca-logo-transparent.png') }}" alt="Image"
-                             class="img-responsive block-center img-rounded mh50"
-                             style="max-width: 50px; max-height: 50px;">
-                    </a>
-                </div>
-                <h1 class="h2">{{ 'setting.general.app.name'| setting }}</h1>
-                <p class="small">{{ 'label.connection'|trans }}</p>
-                {% if error %}
-                    <div class="alert alert-danger alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span></button>
-                        {{ error.messageKey|trans(error.messageData, 'security') }}
-                    </div>
-                {% endif %}
-
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <div class="card-card-header text-center mb-3">
+                <a href="{{ path('lucca_content_dashboard') }}">
+                    <img src="{{ asset('/assets/logo/lucca-logo-transparent.png') }}" alt="Image"
+                         class="img-responsive block-center img-rounded mh50"
+                         style="max-width: 50px; max-height: 50px;">
+                </a>
             </div>
+            <h1 class="h2">{{ 'setting.general.app.name'| setting }}</h1>
+            <p class="small">{{ 'label.connection'|trans }}</p>
+            {% if error %}
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+            {% endif %}
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
             <div class="form-group mb-4">
-                <div class="input-group with-focus">
-                    <label for="username"></label>
+                <label for="username"></label>
+                <span class="form-icon-wrapper">
+                    <span class="form-icon form-icon--right">
+                          <i class="fa fa-envelope form-icon__item"></i>
+                    </span>
                     <input id="username" type="text" name="username" required="required"
-                           placeholder="{{ 'label.username'|trans }}" class="form-control border-right-0">
-                    <div class="input-group-append">
-                   <span class="input-group-text text-muted bg-transparent border-left-0">
-                      <em class="fa fa-envelope"></em>
-                   </span>
-                    </div>
-                </div>
+                           placeholder="{{ 'label.username'|trans }}" class="form-control form-icon-input-right">
+                </span>
             </div>
 
             <div class="form-group mb-4">
-                <div class="input-group with-focus">
-                    <label for="password"></label>
+                <label for="password"></label>
+                <span class="form-icon-wrapper">
+                    <span class="form-icon form-icon--right">
+                          <i class="fa fa-lock form-icon__item"></i>
+                    </span>
                     <input id="password" type="password" name="password" required="required"
-                           placeholder="{{ 'label.password'|trans }}" class="form-control border-right-0">
-                    <div class="input-group-append">
-                       <span class="input-group-text text-muted bg-transparent border-left-0">
-                          <em class="fa fa-lock"></em>
-                       </span>
-                    </div>
-                </div>
+                           placeholder="{{ 'label.password'|trans }}" class="form-control form-icon-input-right">
+                </span>
             </div>
 
             <button class="btn btn-primary btn-block" type="submit">{{ 'label.login'|trans }}</button>

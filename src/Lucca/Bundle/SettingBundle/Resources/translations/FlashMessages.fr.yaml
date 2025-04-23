@@ -10,4 +10,3 @@ flashes:
         createdSuccessfully: "L'import a réussi !"
         createdPartial: "L'import a en parti réussis, vérifier les setting ayant remonté des erreurs"
         badFormat: "Attention le fichier n'as pas le bon format"
-

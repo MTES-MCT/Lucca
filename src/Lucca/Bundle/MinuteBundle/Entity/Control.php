@@ -164,27 +164,20 @@ class Control implements LoggableInterface
 
     public function getFormLabel(): string
     {
-        if ($this->getDateControl() && $this->getHourControl()) {
-            return $this->getDateControl()->format('d/m/Y') . ' ' . $this->getHourControl()->format('H:i');
+        $result = '';
+        if ($this->getDateControl() ) {
+            $result .= $this->getDateControl()->format('d/m/Y');
         }
 
-        return 'Contrôle non défini';
-    }
+        if ($this->getHourControl()) {
+            $result .= $this->getHourControl()->format('H:i');
+        }
 
-    public function addEdition(ControlEdition $edition): self
-    {
-        $this->editions[] = $edition;
-        $edition->setControl($this);
+        if (!$result) {
+            return 'Contrôle non défini';
+        }
 
-        return $this;
-    }
-
-    public function setMinute(Minute $minute): self
-    {
-        $this->minute = $minute;
-        $minute->addControl($this);
-
-        return $this;
+        return $result;
     }
 
     public function getLogName(): string
@@ -258,6 +251,24 @@ class Control implements LoggableInterface
                     ->addViolation();
             }
         }
+    }
+
+    /********************************************************************* Manual Getters & Setters *********************************************************************/
+
+    public function addEdition(ControlEdition $edition): self
+    {
+        $this->editions[] = $edition;
+        $edition->setControl($this);
+
+        return $this;
+    }
+
+    public function setMinute(Minute $minute): self
+    {
+        $this->minute = $minute;
+        $minute->addControl($this);
+
+        return $this;
     }
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/

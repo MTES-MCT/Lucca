@@ -13,3 +13,5 @@ flash:
         deleted:
             success: 'Département supprimé'
             error: 'Erreur lors de la suppression du département'
+        disabledSuccessfully: 'Le département a bien été désactivé.'
+        enabledSuccessfully: 'Le département a bien été activé.'

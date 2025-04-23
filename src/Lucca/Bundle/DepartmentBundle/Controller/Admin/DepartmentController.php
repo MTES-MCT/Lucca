@@ -14,14 +14,21 @@ use Doctrine\Persistence\ManagerRegistry;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+use Lucca\Bundle\ChecklistBundle\Service\ChecklistService;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Lucca\Bundle\DepartmentBundle\Form\DepartmentType;
+use Lucca\Bundle\DepartmentBundle\Service\DepartmentService;
+use Lucca\Bundle\ModelBundle\Service\ModelService;
+use Lucca\Bundle\FolderBundle\Service\NatinfService;
 
 /**
  * Class DepartmentController
@@ -37,6 +44,10 @@ class DepartmentController extends AbstractController
      * DepartmentController constructor.
      */
     public function __construct(
+        private readonly ChecklistService  $checklistService,
+        private readonly DepartmentService $departmentService,
+        private readonly NatinfService     $natinfService,
+        private readonly ModelService      $modelService,
     )
     {
     }
@@ -64,7 +75,7 @@ class DepartmentController extends AbstractController
      */
     #[Route(path: '/new', name: 'lucca_department_admin_new', defaults: ['_locale' => 'fr'], methods: ['GET', 'POST'])]
     #[IsGranted("ROLE_SUPER_ADMIN")]
-    public function newAction(Request $request, ManagerRegistry $doctrine): Response
+    public function newAction(Request $request, ManagerRegistry $doctrine, ValidatorInterface $validator): Response
     {
         $department = new Department();
         $em = $doctrine->getManager();
@@ -72,9 +83,42 @@ class DepartmentController extends AbstractController
         $form = $this->createForm(DepartmentType::class, $department);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $uploadedFile */
+            $uploadedFile = $request->files->get('lucca_departmentBundle_department')['towns'];
+            $violations = $validator->validate(
+                $uploadedFile,
+                new File([
+                    'mimeTypes' => ['text/csv']
+                ])
+            );
+
+            if ($violations->count() > 0) {
+                foreach ($violations as $violation) {
+                    $this->addFlash('danger', $violation->getMessage());
+                }
+
+                return $this->render('@LuccaDepartment/Admin/Department/new.html.twig', [
+                    'form' => $form->createView(),
+                ]);
+            }
+
             $em->persist($department);
             $em->flush();
+
+            // Towns CSV parsing
+            $this->departmentService->createTownsFromFile($uploadedFile, $department);
+
+            // Natinf creation from JSON data file
+            $this->natinfService->createForDepartment($department);
+
+            // Checklist creation from JSON data file
+            $this->checklistService->createForDepartment($department);
+
+            // Model creation from JSON data file
+            $this->modelService->createForDepartment($department);
+
             $this->addFlash('success', 'flash.department.create.success');
+
             return $this->redirectToRoute('lucca_department_admin_show', ['id' => $department->getId()]);
         }
 
@@ -165,12 +209,12 @@ class DepartmentController extends AbstractController
     {
         $em = $doctrine->getManager();
 
-        if ($department->getEnable()) {
-            $department->setEnable(false);
-            $this->addFlash('success', 'flash.user.disabledSuccessfully');
+        if ($department->getEnabled()) {
+            $department->setEnabled(false);
+            $this->addFlash('success', 'flash.department.disabledSuccessfully');
         } else {
-            $department->setEnable(true);
-            $this->addFlash('success', 'flash.user.enabledSuccessfully');
+            $department->setEnabled(true);
+            $this->addFlash('success', 'flash.department.enabledSuccessfully');
         }
 
         $em->persist($department);

@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\MediaBundle\Namer;
 
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Lucca\Bundle\MediaBundle\Entity\Media;
 
 interface FolderNamerInterface

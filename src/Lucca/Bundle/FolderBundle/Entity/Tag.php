@@ -77,7 +77,19 @@ class Tag implements LoggableInterface
         return 'Mot clé';
     }
 
-    /********************************************************************* Automatic Getters & Setters *********************************************************************/
+    /********************************************************************* Manual Getters & Setters *********************************************************************//********************************************************************* Automatic Getters & Setters *********************************************************************/
+
+    public function addProposal(Proposal $proposal): self
+    {
+        if (!$this->proposals->contains($proposal)) {
+            $this->proposals[] = $proposal;
+            $proposal->setTag($this);
+        }
+
+        return $this;
+    }
+
+    /********************************************************************* Automatic Getters & Setters *********************************************************************//********************************************************************* Automatic Getters & Setters *********************************************************************/
 
 
     public function getId(): ?int
@@ -148,16 +160,6 @@ class Tag implements LoggableInterface
     public function getProposals(): Collection
     {
         return $this->proposals;
-    }
-
-    public function addProposal(Proposal $proposal): self
-    {
-        if (!$this->proposals->contains($proposal)) {
-            $this->proposals[] = $proposal;
-            $proposal->setTag($this);
-        }
-
-        return $this;
     }
 
     public function removeProposal(Proposal $proposal): void

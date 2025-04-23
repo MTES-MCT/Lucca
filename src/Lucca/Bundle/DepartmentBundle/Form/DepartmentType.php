@@ -11,18 +11,14 @@
 namespace Lucca\Bundle\DepartmentBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\{FileType, TextareaType, TextType};
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
-/**
- * Class DepartmentType
- *
- * @package Lucca\Bundle\DepartmentBundle\Form
- */
 class DepartmentType extends AbstractType
 {
     /**
@@ -35,6 +31,15 @@ class DepartmentType extends AbstractType
             ->add('code', TextType::class, array('label' => 'label.code', 'required' => true, 'attr' => array('required' => true)))
             ->add('name', TextType::class, array('label' => 'label.name', 'required' => true))
             ->add('comment', TextareaType::class, array('label' => 'label.comment', 'required' => false, 'attr' => array('class' => 'summernote6')));
+
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+            $data = $event->getData();
+            $form = $event->getForm();
+
+            if ($data->getId() === null) {
+                $form->add('towns', FileType::class, array('label' => 'label.towns', 'required' => true, 'mapped' => false, 'help' => 'help.towns', 'attr' => array('accept' => '.csv')));
+            }
+        });
     }
 
     /**

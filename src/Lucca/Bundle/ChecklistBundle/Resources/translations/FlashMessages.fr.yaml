@@ -1,0 +1,9 @@
+####################################
+## Flash Domain
+####################################
+
+flashes:
+    checklist:
+        data:
+            notFound: "Le fichier de données checklists n'a pas été trouvé"
+            invalidJSON: "Le fichier de données checklists n'est pas un JSON valide"

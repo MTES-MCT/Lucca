@@ -72,14 +72,6 @@ class Updating implements LoggableInterface
         $this->controls = new ArrayCollection();
     }
 
-    public function setMinute(Minute $minute): self
-    {
-        $this->minute = $minute;
-        $minute->addUpdating($this);
-
-        return $this;
-    }
-
     public function getControlsForFolder(): array
     {
         $result = [];
@@ -97,6 +89,16 @@ class Updating implements LoggableInterface
     public function getLogName(): string
     {
         return 'Actualisation';
+    }
+
+    /********************************************************************* Manual Getters & Setters *********************************************************************/
+
+    public function setMinute(Minute $minute): self
+    {
+        $this->minute = $minute;
+        $minute->addUpdating($this);
+
+        return $this;
     }
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/

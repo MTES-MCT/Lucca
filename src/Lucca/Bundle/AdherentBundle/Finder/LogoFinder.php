@@ -14,15 +14,8 @@ use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\MediaBundle\Entity\Media;
 use Lucca\Bundle\SettingBundle\Manager\SettingManager;
 
-class LogoFinder
+readonly class LogoFinder
 {
-    private ?string $officialLogo;
-
-    public function __construct()
-    {
-        $this->officialLogo = SettingManager::get('setting.pdf.logo.name');
-    }
-
     /**
      * Define specific logo who was used
      */
@@ -32,8 +25,9 @@ class LogoFinder
             return $adherent->getLogo();
         }
 
-        if ($this->officialLogo) {
-            return $this->officialLogo;
+        $officialLogo = SettingManager::get('setting.pdf.logo.name');
+        if ($officialLogo) {
+            return $officialLogo;
         }
 
         return null;
