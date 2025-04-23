@@ -47,9 +47,7 @@ class UserDepartmentResolver
         $departmentCode = null;
         if ($currentRequest) {
             $hostParts = explode('.', $currentRequest->getHost());
-            if (count($hostParts) > 2) {
-                $departmentCode = $hostParts[0];
-            }
+            [$departmentCode] = $hostParts;
         }
 
         $this->departmentCode = $departmentCode;

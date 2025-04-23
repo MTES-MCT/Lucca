@@ -63,7 +63,7 @@ class DispatcherController extends AbstractController
     {
         /** If subDomainKey is not in parameter, use basic method */
         if (!isset($parameters['subDomainKey'])) {
-            return $this->redirect($this->generateUrl($route, $parameters), $status);
+            return parent::redirectToRoute($route, $parameters, $status);
         }
 
         $subDomainKey = $parameters['subDomainKey'];
@@ -76,13 +76,7 @@ class DispatcherController extends AbstractController
         /** Generate url from route and subDomainKey */
         $url = str_replace('SUBDOMAINKEY', $subDomainKey, $url) . $this->router->generate($route, $parameters);
 
-        /** url cleaner */
-        $url = str_replace('https://.', 'https://', $url);
-        $url = str_replace('https://-', 'https://', $url);
-        $url = str_replace('..', '.', $url);
-        $url = str_replace('-.', '.', $url);
-
         /** return the redirect response with subDomainKey */
-        return new RedirectResponse($url, $status);
+        return $this->redirect($url, $status);
     }
 }

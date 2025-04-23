@@ -11,7 +11,6 @@
 namespace Lucca\Bundle\CoreBundle\Controller\Anonymous;
 
 use Exception;
-use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{RedirectResponse, Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
@@ -28,7 +27,6 @@ class PortalController extends AbstractController
     public function __construct(
         private readonly AdherentFinder         $adherentFinder,
         private readonly RouterInterface        $router,
-        private readonly UserDepartmentResolver $userDepartmentResolver,
     )
     {
     }
@@ -85,7 +83,7 @@ class PortalController extends AbstractController
     {
         /** If subDomainKey is not in parameter, use basic method */
         if (!isset($parameters['subDomainKey'])) {
-            return $this->redirect($this->generateUrl($route, $parameters), $status);
+            return parent::redirectToRoute($route, $parameters, $status);
         }
 
         $subDomainKey = $parameters['subDomainKey'];
@@ -98,13 +96,7 @@ class PortalController extends AbstractController
         /** Generate url from route and subDomainKey */
         $url = str_replace('SUBDOMAINKEY', $subDomainKey, $url) . $this->router->generate($route, $parameters);
 
-        /** url cleaner */
-        $url = str_replace('https://.', 'https://', $url);
-        $url = str_replace('https://-', 'https://', $url);
-        $url = str_replace('..', '.', $url);
-        $url = str_replace('-.', '.', $url);
-
         /** return the redirect response with subDomainKey */
-        return new RedirectResponse($url, $status);
+        return $this->redirect($url);
     }
 }
