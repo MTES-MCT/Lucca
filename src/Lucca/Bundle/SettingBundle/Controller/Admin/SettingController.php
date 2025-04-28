@@ -11,6 +11,7 @@
 namespace Lucca\Bundle\SettingBundle\Controller\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -26,6 +27,7 @@ use Lucca\Bundle\SettingBundle\Generator\SettingGenerator;
 class SettingController extends AbstractController
 {
     public function __construct(
+        private readonly UserDepartmentResolver        $userDepartmentResolver,
         private readonly EntityManagerInterface        $em,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly SettingGenerator              $generatorSetting,
@@ -91,7 +93,9 @@ class SettingController extends AbstractController
             $this->em->persist($setting);
             $this->em->flush();
 
-            $this->generatorSetting->updateCachedSetting($setting->getName(), $setting->getValue());
+            $department = $this->userDepartmentResolver->getDepartment();
+
+            $this->generatorSetting->updateCachedSetting($setting->getName(), $setting->getValue(), $department);
 
             $this->addFlash('success', 'flashes.setting.updatedSuccessfully');
 
