@@ -1,6 +1,6 @@
 <?php
 
-namespace Lucca\Bundle\SettingBundle\Service;
+namespace Lucca\Bundle\FolderBundle\Service;
 
 use Exception;
 use Doctrine\ORM\EntityManagerInterface;
