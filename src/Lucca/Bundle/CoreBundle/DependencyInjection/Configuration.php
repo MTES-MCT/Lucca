@@ -30,9 +30,9 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('url')
-                    ->info('Parameter used to url of application.')
-                    ->defaultValue('https://lucca.local')
+                ->scalarNode('admin_domain_name')
+                    ->info('Parameter used to admin url of application.')
+                    ->defaultValue('admin-lucca.local')
                     ->cannotBeEmpty()
                 ->end()
                 ->scalarNode('asset_version')

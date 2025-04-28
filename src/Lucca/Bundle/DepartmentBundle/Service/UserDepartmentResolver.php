@@ -19,7 +19,7 @@ use Lucca\Bundle\DepartmentBundle\Entity\Department;
 class UserDepartmentResolver
 {
     private ?string $luccaUnitTestDepCode;
-    private ?string $departmentCode = null;
+    private ?Department $department = null;
 
     public function __construct(
         private readonly EntityManagerInterface $em,
@@ -30,40 +30,26 @@ class UserDepartmentResolver
         $this->luccaUnitTestDepCode = $this->parameterBag->get('lucca_core.lucca_unit_test_dep_code');
     }
 
-    /** Get current department */
-    public function getDepartmentCode(): ?string
-    {
-        /** If in case of unit test get the department by code */
-        if ($this->luccaUnitTestDepCode !== 'null') {
-            return $this->luccaUnitTestDepCode;
-        }
-
-        if ($this->departmentCode) {
-            return $this->departmentCode;
-        }
-
-        // Retrieve the subdomain from the HTTP request
-        $currentRequest = $this->requestStack?->getCurrentRequest();
-        $departmentCode = null;
-        if ($currentRequest) {
-            $hostParts = explode('.', $currentRequest->getHost());
-            if (count($hostParts) > 2) {
-                $departmentCode = $hostParts[0];
-            }
-        }
-
-        $this->departmentCode = $departmentCode;
-
-        return $departmentCode;
-    }
-
     public function getDepartment(): ?Department
     {
-        $departmentCode = $this->getDepartmentCode();
-        if (!$departmentCode) {
+        if ($this->department) {
+            return $this->department;
+        }
+
+        /** If in case of unit test get the department by code */
+        if ($this->luccaUnitTestDepCode !== 'null') {
+            $this->department = $this->em->getRepository(Department::class)->findOneBy(['code' => $this->luccaUnitTestDepCode]);
+
+            return $this->department;
+        }
+
+        $currentRequest = $this->requestStack?->getCurrentRequest();
+        $this->department = $this->em->getRepository(Department::class)->findOneBy(['domainName' => $currentRequest?->getHost()]);
+
+        if (!$this->department) {
             return null;
         }
 
-        return $this->em->getRepository(Department::class)->findOneBy(['code' => $departmentCode]);
+        return $this->department;
     }
 }

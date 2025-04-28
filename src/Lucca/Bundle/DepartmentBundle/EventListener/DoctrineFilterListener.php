@@ -32,14 +32,12 @@ readonly class DoctrineFilterListener
     #[AsEventListener(event: 'kernel.request')]
     public function onKernelRequest(RequestEvent $event): void
     {
-        $departmentCode = $this->userDepartmentResolver->getDepartmentCode();
-        if ($departmentCode !== null) {
+        $department = $this->userDepartmentResolver->getDepartment();
+        if ($department !== null) {
             // We make sure we are working on the main request.
             if (!$event->isMainRequest()) {
                 return;
             }
-
-            $department = $this->em->getRepository(Department::class)->findOneBy(['code' => $departmentCode]);
 
             if ($department) {
                 $filter = $this->em->getFilters()->enable('department_filter');
