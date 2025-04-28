@@ -1,14 +1,22 @@
 <?php
 
-namespace Sparky\Bundle\CoreBundle\Voter;
+/*
+ * Copyright (c) 2025. Numeric Wave
+ *
+ * Affero General Public License (AGPL) v3
+ *
+ * For more information, please refer to the LICENSE file at the root of the project.
+ */
 
+namespace Lucca\Bundle\DepartmentBundle\Voter;
+
+use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Sparky\Bundle\AdherentBundle\Entity\Department;
-use Sparky\Bundle\AdherentBundle\Utils\AdherentUtils;
 
 /**
  * Class departmentAccessVoter
@@ -28,12 +36,12 @@ class departmentAccessVoter extends Voter
      * ScopeCompanyVoter constructor
      *
      * @param RequestStack $requestStack
-     * @param AdherentUtils $adherentUtils
+     * @param AdherentFinder $adherentFinder
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         private readonly RequestStack                  $requestStack,
-        private readonly AdherentUtils                 $adherentUtils,
+        private readonly AdherentFinder                 $adherentFinder,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly ParameterBagInterface         $parameterBag
     )
@@ -84,7 +92,7 @@ class departmentAccessVoter extends Voter
         if ($subDomainKey === null)
             return false;
 
-        $currentAdherent = $this->adherentUtils->getCurrentAdherent();
+        $currentAdherent = $this->adherentFinder->whoAmI();
 
         if (!$isAdmin) {
             if ($currentAdherent === null)
