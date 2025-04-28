@@ -46,7 +46,7 @@ class departmentAccessVoter extends Voter
         private readonly ParameterBagInterface         $parameterBag
     )
     {
-        $this->sparkyUnitTestDepCode = $this->parameterBag->get('sparky_core.sparky_unit_test_dep_code');
+        $this->sparkyUnitTestDepCode = $this->parameterBag->get('lucca_core.lucca_unit_test_dep_code');
     }
 
     /**
