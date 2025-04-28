@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250422074825 extends AbstractMigration
+final class Version20250428082436 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -48,7 +48,7 @@ final class Version20250422074825 extends AbstractMigration
             CREATE TABLE lucca_content_subarea (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(50) NOT NULL, code VARCHAR(60) DEFAULT NULL, position SMALLINT NOT NULL, width VARCHAR(100) NOT NULL, color VARCHAR(20) NOT NULL, title VARCHAR(50) NOT NULL, enabled TINYINT(1) NOT NULL, createdAt DATETIME NOT NULL, updatedAt DATETIME DEFAULT NULL, area_id INT NOT NULL, department_id INT DEFAULT NULL, INDEX IDX_80F3844BBD0F409C (area_id), INDEX IDX_80F3844BAE80F5DF (department_id), UNIQUE INDEX UNIQ_80F3844B77153098AE80F5DF (code, department_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci`
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE lucca_department (id INT AUTO_INCREMENT NOT NULL, code VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, comment LONGTEXT DEFAULT NULL, createdAt DATETIME NOT NULL, updatedAt DATETIME DEFAULT NULL, enabled TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_72A0ED2677153098 (code), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci`
+            CREATE TABLE lucca_department (id INT AUTO_INCREMENT NOT NULL, code VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, domainName VARCHAR(255) NOT NULL, comment LONGTEXT DEFAULT NULL, createdAt DATETIME NOT NULL, updatedAt DATETIME DEFAULT NULL, enabled TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_72A0ED2677153098 (code), UNIQUE INDEX UNIQ_72A0ED268DFE9A8 (domainName), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci`
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE lucca_log (id INT AUTO_INCREMENT NOT NULL, objectId INT DEFAULT NULL, classname VARCHAR(255) NOT NULL, status VARCHAR(20) NOT NULL, createdAt DATETIME NOT NULL, shortMessage VARCHAR(255) NOT NULL, message LONGTEXT DEFAULT NULL, user_id INT DEFAULT NULL, INDEX IDX_CB9222B8A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci`

@@ -54,7 +54,7 @@ class GenerateSettingsCommand extends Command
             '-----------------------------------------------',
         ]);
 
-        $aDictionary = $this->settingGenerator->getCachedSettings(true);
+        $aDictionary = $this->settingGenerator->getCachedSettings(null, true);
 
         // Success
         $output->writeln(sprintf('%d settings generated or updated.', count($aDictionary)));

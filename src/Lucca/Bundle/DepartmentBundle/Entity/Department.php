@@ -36,6 +36,9 @@ class Department implements LoggableInterface
     #[ORM\Column]
     private string $name;
 
+    #[ORM\Column(unique: true)]
+    private string $domainName;
+
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment = null;
 
@@ -87,6 +90,18 @@ class Department implements LoggableInterface
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getDomainName(): string
+    {
+        return $this->domainName;
+    }
+
+    public function setDomainName(string $domainName): self
+    {
+        $this->domainName = $domainName;
 
         return $this;
     }

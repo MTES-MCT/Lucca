@@ -12,7 +12,7 @@ framework:
 #        handler_id: Lucca\Bundle\CoreBundle\Session\CustomPdoSessionHandler
         handler_id: null
 #        save_path: 'mysql:host=%env(MYSQL_HOST)%;port=%env(MYSQL_PORT)%;dbname=%env(MYSQL_DATABASE)%'
-        cookie_domain: '%env(COOKIE_DOMAIN)%'
+#        cookie_domain: '%env(COOKIE_DOMAIN)%'
         cookie_path: /
         cookie_secure: auto
         cookie_samesite: lax

@@ -35,8 +35,8 @@ readonly class SettingsListener
     #[AsEventListener(event: 'kernel.request')]
     public function onKernelRequest(): void
     {
-        $departmentCode = $this->userDepartmentResolver->getDepartmentCode();
-        $settings = $this->settingGenerator->getCachedSettings($departmentCode);
+        $department = $this->userDepartmentResolver->getDepartment();
+        $settings = $this->settingGenerator->getCachedSettings($department);
 
         SettingManager::setAll($settings);
     }

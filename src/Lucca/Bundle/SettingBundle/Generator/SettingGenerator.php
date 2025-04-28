@@ -93,9 +93,8 @@ class SettingGenerator
      *
      * @throws InvalidArgumentException
      */
-    public function getCachedSettings(string $departmentCode, bool $bypassCache = false): array
+    public function getCachedSettings(?Department $department, bool $bypassCache = false): array
     {
-        $department = $this->em->getRepository(Department::class)->findOneBy(['code' => $departmentCode]);
         $item = $this->settingsCache->getItem(self::SETTINGS_CACHE_KEY . '.' . $department?->getCode());
 
         if (!$item->isHit() || $bypassCache) {

@@ -30,6 +30,7 @@ class DepartmentType extends AbstractType
         $builder
             ->add('code', TextType::class, array('label' => 'label.code', 'required' => true, 'attr' => array('required' => true)))
             ->add('name', TextType::class, array('label' => 'label.name', 'required' => true))
+            ->add('domainName', TextType::class, array('label' => 'label.domainName', 'required' => true, 'attr' => array('required' => true)))
             ->add('comment', TextareaType::class, array('label' => 'label.comment', 'required' => false, 'attr' => array('class' => 'summernote6')));
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {

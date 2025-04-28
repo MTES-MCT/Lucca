@@ -60,14 +60,14 @@ class PortalController extends AbstractController
             $isForAdmin = $request->request->has('adminSpace');
             if ($department && !$isForAdmin) {
                 if ($this->getUser() && $this->isGranted('ROLE_ADMIN')) {
-                    return $this->redirectToRoute('lucca_core_parameter', ['subDomainKey' => $department->getCode()]);
+                    return $this->redirectToRoute('lucca_core_parameter', ['domainName' => $department->getDomainName()]);
                 }
 
-                return $this->redirectToRoute('lucca_core_dashboard', ['subDomainKey' => $department->getCode()]);
+                return $this->redirectToRoute('lucca_core_dashboard', ['domainName' => $department->getDomainName()]);
             }
 
             if ($isForAdmin && $this->getUser() && $this->isGranted('ROLE_ADMIN')) {
-                return $this->redirectToRoute('lucca_core_parameter', ['subDomainKey' => 'admin']);
+                return $this->redirectToRoute('lucca_core_parameter', ['domainName' => $this->getParameter('lucca_core.admin_domain_name')]);
             }
         }
 
@@ -77,26 +77,24 @@ class PortalController extends AbstractController
     }
 
     /**
-     * Override the render method to add the subDomainKey in the parameters if it exists to generate the URL with it
+     * Override the render method to add the domainName in the parameters if it exists to generate the URL with it
      */
     protected function redirectToRoute(string $route, array $parameters = [], int $status = 302): RedirectResponse
     {
-        /** If subDomainKey is not in parameter, use basic method */
-        if (!isset($parameters['subDomainKey'])) {
+        /** If domainName is not in parameter, use basic method */
+        if (!isset($parameters['domainName'])) {
             return parent::redirectToRoute($route, $parameters, $status);
         }
 
-        $subDomainKey = $parameters['subDomainKey'];
+        $domainName = $parameters['domainName'];
 
-        /** unset the subDomainKey from the parameters */
-        unset ($parameters['subDomainKey']);
+        /** unset the domainName from the parameters */
+        unset ($parameters['domainName']);
 
-        $url = $this->getParameter('lucca_core.url');
+        /** Generate url from route and domainName */
+        $url = 'https://' . $domainName . $this->router->generate($route, $parameters);
 
-        /** Generate url from route and subDomainKey */
-        $url = str_replace('SUBDOMAINKEY', $subDomainKey, $url) . $this->router->generate($route, $parameters);
-
-        /** return the redirect response with subDomainKey */
+        /** return the redirect response with domainName */
         return $this->redirect($url);
     }
 }
