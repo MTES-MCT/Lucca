@@ -28,6 +28,10 @@ class DepartmentFilter extends SQLFilter
 
     public function addFilterConstraint(ClassMetadata $targetEntity, string $targetTableAlias): string
     {
+        if (!isset($this->departmentId)) {
+            return '';
+        }
+
         $associations = array_keys($targetEntity->getAssociationMappings());
         if (!in_array('department', $associations) || !$this->departmentId) {
             return '';

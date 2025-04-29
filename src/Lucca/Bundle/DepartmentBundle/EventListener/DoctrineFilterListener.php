@@ -14,7 +14,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
-use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
 
 readonly class DoctrineFilterListener

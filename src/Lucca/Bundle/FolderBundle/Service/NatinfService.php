@@ -97,19 +97,22 @@ readonly class NatinfService
                     continue;
                 }
 
-                $dbNatinf = array_find($dbNatinfs, fn($dbNatinf) => $dbNatinf['num'] === $natinf['parent_num']);
+                $dbNatinf = array_find($dbNatinfs, fn($dbNatinf) => $dbNatinf->getNum() === $natinf['parent_num']);
                 if (!$dbNatinf) {
                     continue;
                 }
 
-                $natinf = new Natinf();
-                $natinf->setParent($dbNatinf['num']);
+                $newNatinf = new Natinf();
+                $newNatinf->setNum($natinf['num']);
+                $newNatinf->setQualification($natinf['qualification']);
+                $newNatinf->setDefinedBy($natinf['definedBy']);
+                $newNatinf->setRepressedBy($natinf['repressedBy']);
+                $newNatinf->setParent($dbNatinf);
 
-                $this->em->persist($natinf);
+                $this->em->persist($newNatinf);
             }
 
             $this->em->flush();
-            $this->em->clear(); // Detaches all objects from Doctrine!
         }
     }
 }

@@ -41,7 +41,12 @@ class AreaRepository extends LuccaRepository
             $qb->andWhere($qb->expr()->eq('area.position', ':position'))
                 ->setParameter(':position', $position);
 
-            return $qb->getQuery()->getOneOrNullResult();
+            try {
+                return $qb->getQuery()->getOneOrNullResult();
+            } catch (NonUniqueResultException) {
+                // Return null to avoid throwing an exception when there is no department filter
+                return null;
+            }
         }
 
         return $qb->getQuery()->getResult();
