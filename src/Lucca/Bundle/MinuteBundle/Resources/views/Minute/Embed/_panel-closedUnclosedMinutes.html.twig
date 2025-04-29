@@ -3,7 +3,7 @@
 <div class="row align-items-center {% block lucca_class %}{% endblock %}">
     {% if nbOpen is defined and nbClosed is defined %}
         <div class="col-4 text-center folder-totalCounter">
-            <i class="fa fa-8x fa-folder"></i>
+            <i class="fa fa-10x fa-folder"></i>
             <div class="folder-total">
                 <h1 class="timer counter alt-font appear"
                     data-speed="7000">
@@ -24,7 +24,7 @@
         </div>
     {% endif %}
     <div class="col-4 text-center folder-closed">
-        <i class="fa fa-8x fa-folder"></i>
+        <i class="fa fa-10x fa-folder"></i>
         <div class="folder-total">
             <h1 class="timer counter alt-font appear" data-speed="7000">
                 {% if stories is defined and 'totalClosed' in stories|keys %}
@@ -41,7 +41,7 @@
         </div>
     </div>
     <div class="col-4 text-center folder-rapport">
-        <i class="fa fa-8x fa-folder"></i>
+        <i class="fa fa-10x fa-folder"></i>
         <div class="folder-total">
             <h1 class="timer counter alt-font appear" data-speed="7000">
                 {% if nbFolderWithEmptyNatinfs is defined %}

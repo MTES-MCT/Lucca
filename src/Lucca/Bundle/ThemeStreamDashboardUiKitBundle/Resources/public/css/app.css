@@ -15,3 +15,110 @@
     color: #ff5050;
     font-size: 1.1em;
 }
+
+.card-header {
+    padding: 0.5rem 1rem;
+}
+
+
+/**********************************
+ * Custom jumbotron
+ **********************************/
+.jumbotron-warning {
+    border: none;
+    background-color: #fb93310d;
+    padding: 1rem 1rem;
+    border-radius: 10px;
+}
+
+.jumbotron-stats {
+    background-color: #31236617;
+    margin-left: 0;
+    margin-right: 0;
+    color: #352063;
+}
+
+/********************
+ * Admin
+ ********************/
+.div-admin {
+    display: inline-block;
+    border: 1px dashed #f0ad4e;
+    padding: 5px;
+    margin: 5px;
+    float: right;
+}
+
+.label-admin {
+    position: relative;
+    float: right;
+    top: -15px;
+    right: -10px;
+    display: inline;
+    margin-bottom: 5px;
+}
+
+/***** Admin dashboard ****/
+.date-filters {
+    color: #312366;
+}
+
+.folder-rapport > i {
+    color: #23b7e5;
+}
+
+.folder-closed > i {
+    color: #23c054;
+}
+
+.folder-totalCounter > i {
+    color: #312366;
+}
+
+.folder-rapport, .folder-closed, .folder-totalCounter {
+    border-left: 0.1em solid #e4eaec;
+    border-radius: 3px;
+}
+
+.folder-total > h1 {
+    margin-bottom: 0;
+}
+
+.folder-closed > div, .folder-rapport > div, .folder-totalCounter > div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: 600;
+    width: 100%;
+}
+
+.folder-total > span {
+    font-size: 11pt;
+    font-weight: bold;
+}
+
+
+/**********************************
+ * Stats
+ **********************************/
+.overall h2 {
+    color: #312366;
+}
+
+.stats-buttons {
+    background: #e3e4ed;
+    margin: 0.1em;
+    border: transparent;
+    border-radius: 5px;
+}
+
+.overall .folder-rapport, .overall .folder-closed {
+    border-left: 0.1em solid #312366;
+    border-radius: 3px;
+}
+
+.border-left-stats {
+    border-left: 1px solid #312366 !important;
+}

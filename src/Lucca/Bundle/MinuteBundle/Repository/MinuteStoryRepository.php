@@ -42,12 +42,13 @@ class MinuteStoryRepository extends EntityRepository
         $qb->andWhere($qb->expr()->eq('minuteStory.status', ':q_status'))
             ->setParameter(':q_status', MinuteStory::STATUS_CLOSURE);
 
-        $qb->select([
-            'partial minuteStory.{id, dateUpdate, status}',
-            'partial minute.{id, num, closure}',
-            'partial closure.{id, status}',
-            'partial updatingBy.{id}',
-        ]);
+//        TODO Temporary comment it to make the stat working but we need to fix it to make it work with lot of datas
+//        $qb->select([
+//            'partial minuteStory.{id, dateUpdate, status}',
+//            'partial minute.{id, num, closure}',
+//            'partial closure.{id, status}',
+//            'partial updatingBy.{id}',
+//        ]);
 
         return $qb->getQuery()->getResult();
     }

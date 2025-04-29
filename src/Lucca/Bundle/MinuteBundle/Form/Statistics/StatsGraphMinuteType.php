@@ -70,7 +70,7 @@ class StatsGraphMinuteType extends AbstractType
             ))
             ->add('service', EntityType::class, array(
                 'class' => Service::class, 'choice_label' => 'name', 'required' => false,
-                'multiple' => true, 'label' => 'label.service',
+                'multiple' => true, 'expanded' => false, 'label' => 'label.service', 'autocomplete' => true,
                 'attr' => array('class' => 'tom-select'),
                 'query_builder' => function (ServiceRepository $repo) {
                     return $repo->getValuesActive();
