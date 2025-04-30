@@ -43,7 +43,7 @@ readonly class NatinfService
         $filePath = $projectDir . '/src/Lucca/Bundle/FolderBundle/Data/natinfs.json';
 
         if (!file_exists($filePath)) {
-            $message = $this->translator->trans('flashes.natinf.data.notFound', [], 'FlashMessages');
+            $message = $this->translator->trans('flash.natinf.data.notFound', [], 'FlashMessages');
             $this->requestStack->getSession()->getFlashBag()->add('error', $message);
 
             return null;
@@ -53,7 +53,7 @@ readonly class NatinfService
         $data = json_decode($jsonContent, true);
 
         if (json_last_error() !== JSON_ERROR_NONE || !is_array($data)) {
-            $message = $this->translator->trans('flashes.natinf.data.invalidJSON', [], 'FlashMessages');
+            $message = $this->translator->trans('flash.natinf.data.invalidJSON', [], 'FlashMessages');
             $this->requestStack->getSession()->getFlashBag()->add('error', $message);
 
             return null;
@@ -88,31 +88,19 @@ readonly class NatinfService
     private function updateParents(Department $department, array $natinfs): void
     {
         $dbNatinfs = $this->em->getRepository(Natinf::class)->getIdentifiers($department);
-
-        // Proceed data with a batch to avoid memory issues
-        $natinfChunks = array_chunk($natinfs, 40);
-        foreach ($natinfChunks as $natinfChunk) {
-            foreach ($natinfChunk as $natinf) {
-                if (empty($natinf['parent_num'])) {
-                    continue;
-                }
-
-                $dbNatinf = array_find($dbNatinfs, fn($dbNatinf) => $dbNatinf->getNum() === $natinf['parent_num']);
-                if (!$dbNatinf) {
-                    continue;
-                }
-
-                $newNatinf = new Natinf();
-                $newNatinf->setNum($natinf['num']);
-                $newNatinf->setQualification($natinf['qualification']);
-                $newNatinf->setDefinedBy($natinf['definedBy']);
-                $newNatinf->setRepressedBy($natinf['repressedBy']);
-                $newNatinf->setParent($dbNatinf);
-
-                $this->em->persist($newNatinf);
+        foreach ($natinfs as $natinf) {
+            if (empty($natinf['parent_num'])) {
+                continue;
             }
 
-            $this->em->flush();
+            $childNatinf = array_find($dbNatinfs, fn($n) => $n->getNum() === (int)$natinf['num']);
+            $parentNatinf = array_find($dbNatinfs, fn($n) => $n->getNum() === (int)$natinf['parent_num']);
+
+            $childNatinf->setParent($parentNatinf);
+
+            $this->em->persist($childNatinf);
         }
+
+        $this->em->flush();
     }
 }

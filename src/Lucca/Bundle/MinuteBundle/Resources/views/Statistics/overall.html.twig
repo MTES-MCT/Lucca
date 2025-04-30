@@ -32,7 +32,7 @@
     </div> {#-- End Panel - description--#}
 
     {#-- Panel - statistics params --#}
-    <div class="col-12 mb-2">
+    <div class="col-12 mt-3">
         <div class="card card-default">
             <div class="card-header hover-pointer">
                 <strong>{{ 'statistics.filters'|trans }}</strong>
@@ -81,10 +81,10 @@
     </div> {#-- End Panel - statistics params --#}
 
 
-    <div class="col-12 overall">
+    <div class="col-12 overall mt-3">
         <div class="row">
 
-            <div class="col-6 mb-3">
+            <div class="col-6">
 
                 {% embed "@LuccaCore/_panel-filters.html.twig" with { 'filters': filters, 'transDomain': 'MinuteBundle' } %}
                 {% endembed %}
@@ -97,7 +97,7 @@
             </div>
 
             {#Pannel - Reason of closure in circular diagram#}
-            <div class="col-6 mb-3">
+            <div class="col-6">
                 <div class="card card-default full-height">
                     <div class="card-header ">
                         <h2>{{ 'statistics.minutesReasonClosure.title' | trans }}
@@ -125,7 +125,7 @@
 
         <div class="row">
             {#Pannel - Historic in histogram#}
-            <div class="col-6 mb-3">
+            <div class="col-6">
                 <div class="card card-default full-height">
                     <div class="card-header">
                         <h2>{{ 'statistics.historicStats.title' | trans }}
