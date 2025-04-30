@@ -12,6 +12,7 @@ twig:
         avoid_break_page: '%env(LUCCA_AVOID_BREAK_PAGE)%'
         maxFilesize: '%env(LUCCA_UPLOAD_MAX_FILE_SIZE)%'
         maxCollectionFiles: '%env(LUCCA_UPLOAD_MAX_COLLECTION_SIZE)%'
+        adminDomainName: '%env(LUCCA_ADMIN_DOMAIN)%'
 
     ## Use for this mailer logic
     paths:

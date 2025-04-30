@@ -187,108 +187,112 @@
             <nav class="u-sidebar-nav">
                 <ul class="u-sidebar-nav-menu u-sidebar-nav-menu--top-level">
 
-                    {#-- Menu - Public --#}
-                    <li class="u-sidebar-nav-menu__item bg-light bg-light py-3 rounded">
-                        <span class="u-sidebar-nav-menu__item-title mx-2">{{ 'menu.public'|trans }}</span>
-                    </li>
+                    {% if app.request.headers.get('host') is not same as adminDomainName %}
 
-                    <li class="u-sidebar-nav-menu__item">
-                        <a class="u-sidebar-nav-menu__link" href="{{ path('lucca_content_dashboard') }}"
-                           title="{{ 'menu.website'|trans }}">
-                            <i class="fas fa-star u-sidebar-nav-menu__item-icon"></i>
-                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.website'|trans }}</span>
-                        </a>
-                    </li>
-                    {#-- End Menu - Public --#}
+                        {#-- Menu - Public --#}
+                        <li class="u-sidebar-nav-menu__item bg-light bg-light py-3 rounded">
+                            <span class="u-sidebar-nav-menu__item-title mx-2">{{ 'menu.public'|trans }}</span>
+                        </li>
 
-
-                    {#-- Menu - Main --#}
-                    <li class="u-sidebar-nav-menu__item bg-light py-3 rounded">
-                        <span class="u-sidebar-nav-menu__item-title mx-2">{{ 'menu.main'|trans }}</span>
-                    </li>
-
-                    <li class="u-sidebar-nav-menu__item">
-                        <a class="u-sidebar-nav-menu__link {% block menuActive_dashboard %}{% endblock %}"
-                           href="{{ path('lucca_core_dashboard') }}" title="{{ 'menu.dashboard'|trans }}">
-                            <i class="fas fa-tachometer-alt u-sidebar-nav-menu__item-icon"></i>
-                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.dashboard'|trans }}</span>
-                        </a>
-                    </li>
-                    {#-- End Menu - Main --#}
-
-                    {#-- Menu - Map --#}
-                    <li class="u-sidebar-nav-menu__item">
-                        <a class="u-sidebar-nav-menu__link {% block menuActive_map %}{% endblock %}"
-                           href="{{ path('lucca_core_map') }}" title="{{ 'menu.map'|trans }}">
-                            <i class="fas fa-map-marked-alt u-sidebar-nav-menu__item-icon"></i>
-                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.map'|trans }}</span>
-                        </a>
-                    </li>
-                    {#-- End Menu - Map --#}
-
-                    {#-- Menu - Minute --#}
-                    <li class="u-sidebar-nav-menu__item">
-                        <a class="u-sidebar-nav-menu__link {% block menuActive_minute %}{% endblock %}"
-                           href="{{ path('lucca_minute_index') }}" title="{{ 'menu.minute'|trans }}">
-                            <i class="fas fa-layer-group u-sidebar-nav-menu__item-icon"></i>
-                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.minute'|trans }}</span>
-                        </a>
-                    </li>
-                    {#-- End Menu - Minute --#}
-
-
-                    {#-- Menu - Folder --#}
-                    <li class="u-sidebar-nav-menu__item">
-                        <a class="u-sidebar-nav-menu__link {% block menuActive_folder %}{% endblock %}"
-                           href="{{ path('lucca_folder_dashboard') }}" title="{{ 'menu.folder'|trans }}">
-                            <i class="fas fa-file-contract u-sidebar-nav-menu__item-icon"></i>
-                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.folder'|trans }}</span>
-                        </a>
-                    </li>
-                    {#-- End Menu - Folder --#}
-
-                    {#-- Menu - Mayor Letter --#}
-                    {% if 'setting.module.mayorletter.name'|setting
-                        and app.user|isCountryAgent %}
                         <li class="u-sidebar-nav-menu__item">
-                            <a class="u-sidebar-nav-menu__link {% block menuActive_mayorLetter %}{% endblock %}"
-                               href="{{ path('lucca_mayor_letter_edit') }}" title="{{ 'menu.mayorLetter'|trans }}">
-                                <i class="fas fa-envelope-open u-sidebar-nav-menu__item-icon"></i>
-                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.mayorLetter'|trans }}</span>
+                            <a class="u-sidebar-nav-menu__link" href="{{ path('lucca_content_dashboard') }}"
+                               title="{{ 'menu.website'|trans }}">
+                                <i class="fas fa-star u-sidebar-nav-menu__item-icon"></i>
+                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.website'|trans }}</span>
                             </a>
                         </li>
+                        {#-- End Menu - Public --#}
+
+
+                        {#-- Menu - Main --#}
+                        <li class="u-sidebar-nav-menu__item bg-light py-3 rounded">
+                            <span class="u-sidebar-nav-menu__item-title mx-2">{{ 'menu.main'|trans }}</span>
+                        </li>
+
+                        <li class="u-sidebar-nav-menu__item">
+                            <a class="u-sidebar-nav-menu__link {% block menuActive_dashboard %}{% endblock %}"
+                               href="{{ path('lucca_core_dashboard') }}" title="{{ 'menu.dashboard'|trans }}">
+                                <i class="fas fa-tachometer-alt u-sidebar-nav-menu__item-icon"></i>
+                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.dashboard'|trans }}</span>
+                            </a>
+                        </li>
+                        {#-- End Menu - Main --#}
+
+                        {#-- Menu - Map --#}
+                        <li class="u-sidebar-nav-menu__item">
+                            <a class="u-sidebar-nav-menu__link {% block menuActive_map %}{% endblock %}"
+                               href="{{ path('lucca_core_map') }}" title="{{ 'menu.map'|trans }}">
+                                <i class="fas fa-map-marked-alt u-sidebar-nav-menu__item-icon"></i>
+                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.map'|trans }}</span>
+                            </a>
+                        </li>
+                        {#-- End Menu - Map --#}
+
+                        {#-- Menu - Minute --#}
+                        <li class="u-sidebar-nav-menu__item">
+                            <a class="u-sidebar-nav-menu__link {% block menuActive_minute %}{% endblock %}"
+                               href="{{ path('lucca_minute_index') }}" title="{{ 'menu.minute'|trans }}">
+                                <i class="fas fa-layer-group u-sidebar-nav-menu__item-icon"></i>
+                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.minute'|trans }}</span>
+                            </a>
+                        </li>
+                        {#-- End Menu - Minute --#}
+
+
+                        {#-- Menu - Folder --#}
+                        <li class="u-sidebar-nav-menu__item">
+                            <a class="u-sidebar-nav-menu__link {% block menuActive_folder %}{% endblock %}"
+                               href="{{ path('lucca_folder_dashboard') }}" title="{{ 'menu.folder'|trans }}">
+                                <i class="fas fa-file-contract u-sidebar-nav-menu__item-icon"></i>
+                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.folder'|trans }}</span>
+                            </a>
+                        </li>
+                        {#-- End Menu - Folder --#}
+
+                        {#-- Menu - Mayor Letter --#}
+                        {% if 'setting.module.mayorletter.name'|setting
+                            and app.user|isCountryAgent %}
+                            <li class="u-sidebar-nav-menu__item">
+                                <a class="u-sidebar-nav-menu__link {% block menuActive_mayorLetter %}{% endblock %}"
+                                   href="{{ path('lucca_mayor_letter_edit') }}" title="{{ 'menu.mayorLetter'|trans }}">
+                                    <i class="fas fa-envelope-open u-sidebar-nav-menu__item-icon"></i>
+                                    <span class="u-sidebar-nav-menu__item-title">{{ 'menu.mayorLetter'|trans }}</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {#-- End Menu - Mayor Letter --#}
+
+                        {#-- Menu - MyAgent --#}
+                        <li class="u-sidebar-nav-menu__item">
+                            <a class="u-sidebar-nav-menu__link {% block menuActive_myAgent %}{% endblock %}"
+                               href="{{ path('lucca_myagent_index') }}" title="{{ 'menu.myAgent'|trans }}">
+                                <i class="fa fa-user u-sidebar-nav-menu__item-icon"></i>
+                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.myAgent'|trans }}</span>
+                            </a>
+                        </li>
+                        {#-- End Menu - MyAgent --#}
+
+                        {#-- Menu - Tools --#}
+                        <li class="u-sidebar-nav-menu__item">
+                            <a class="u-sidebar-nav-menu__link {% block menuActive_tools %}{% endblock %}"
+                               href="{{ path('lucca_core_page_tools') }}" title="{{ 'menu.tools'|trans }}">
+                                <i class="fas fa-wrench u-sidebar-nav-menu__item-icon"></i>
+                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.tools'|trans }}</span>
+                            </a>
+                        </li>
+                        {#-- End Menu - Tools --#}
+
+                        {#-- Menu - Natinf --#}
+                        <li class="u-sidebar-nav-menu__item">
+                            <a class="u-sidebar-nav-menu__link {% block menuActive_natinf %}{% endblock %}"
+                               href="{{ path('lucca_natinf_index') }}" title="{{ 'menu.natinf'|trans }}">
+                                <i class="fa fa-puzzle-piece u-sidebar-nav-menu__item-icon"></i>
+                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.natinf'|trans }}</span>
+                            </a>
+                        </li>
+                        {#-- End Menu - Natinf --#}
+
                     {% endif %}
-                    {#-- End Menu - Mayor Letter --#}
-
-                    {#-- Menu - MyAgent --#}
-                    <li class="u-sidebar-nav-menu__item">
-                        <a class="u-sidebar-nav-menu__link {% block menuActive_myAgent %}{% endblock %}"
-                           href="{{ path('lucca_myagent_index') }}" title="{{ 'menu.myAgent'|trans }}">
-                            <i class="fa fa-user u-sidebar-nav-menu__item-icon"></i>
-                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.myAgent'|trans }}</span>
-                        </a>
-                    </li>
-                    {#-- End Menu - MyAgent --#}
-
-                    {#-- Menu - Tools --#}
-                    <li class="u-sidebar-nav-menu__item">
-                        <a class="u-sidebar-nav-menu__link {% block menuActive_tools %}{% endblock %}"
-                           href="{{ path('lucca_core_page_tools') }}" title="{{ 'menu.tools'|trans }}">
-                            <i class="fas fa-wrench u-sidebar-nav-menu__item-icon"></i>
-                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.tools'|trans }}</span>
-                        </a>
-                    </li>
-                    {#-- End Menu - Tools --#}
-
-                    {#-- Menu - Natinf --#}
-                    <li class="u-sidebar-nav-menu__item">
-                        <a class="u-sidebar-nav-menu__link {% block menuActive_natinf %}{% endblock %}"
-                           href="{{ path('lucca_natinf_index') }}" title="{{ 'menu.natinf'|trans }}">
-                            <i class="fa fa-puzzle-piece u-sidebar-nav-menu__item-icon"></i>
-                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.natinf'|trans }}</span>
-                        </a>
-                    </li>
-                    {#-- End Menu - Natinf --#}
 
                     {% if app.user and is_granted("ROLE_ADMIN") %}
                         <li class="u-sidebar-nav-menu__item bg-light py-3 rounded">
@@ -296,98 +300,102 @@
                             <span class="badge badge-warning badge-xs float-right mr-2">{{ 'badge.admin'|trans }}</span>
                         </li>
 
-                        {#-- Menu - Dashboard Admin --#}
-                        {% if 'setting.module.dashboardAdmin.name'|setting == true
-                            and app.user|isCountryAgent %}
+                        {% if app.request.headers.get('host') is not same as adminDomainName %}
+                            {#-- Menu - Dashboard Admin --#}
+                            {% if 'setting.module.dashboardAdmin.name'|setting == true
+                                and app.user|isCountryAgent %}
+                                <li class="u-sidebar-nav-menu__item">
+                                    <a class="u-sidebar-nav-menu__link {% block menuActive_admin_dashboard %}{% endblock %}"
+                                       href="{{ path('lucca_admin_dashboard') }}" title="{{ 'menu.dashboard'|trans }}">
+                                        <i class="fa fa-tachometer-alt u-sidebar-nav-menu__item-icon"></i>
+                                        <span class="u-sidebar-nav-menu__item-title">{{ 'menu.dashboard'|trans }}</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {#-- End Menu - Dashboard Admin --#}
+
+                            {#-- Menu - Model --#}
                             <li class="u-sidebar-nav-menu__item">
-                                <a class="u-sidebar-nav-menu__link {% block menuActive_admin_dashboard %}{% endblock %}"
-                                   href="{{ path('lucca_admin_dashboard') }}" title="{{ 'menu.dashboard'|trans }}">
-                                    <i class="fa fa-tachometer-alt u-sidebar-nav-menu__item-icon"></i>
-                                    <span class="u-sidebar-nav-menu__item-title">{{ 'menu.dashboard'|trans }}</span>
+                                <a class="u-sidebar-nav-menu__link {% block menuActive_model %}{% endblock %}"
+                                   href="{{ path('lucca_model_index') }}" title="{{ 'menu.model'|trans }}">
+                                    <i class="fa fa-file-invoice u-sidebar-nav-menu__item-icon"></i>
+                                    <span class="u-sidebar-nav-menu__item-title">{{ 'menu.model'|trans }}</span>
+                                </a>
+                            </li>
+                            {#-- End Menu - Model --#}
+
+
+
+
+                            {#-- Menu - Content --#}
+                            <li class="u-sidebar-nav-menu__item {% if block("menuActive_area") or block("menuActive_subarea") or block("menuActive_page") %}u-sidebar-nav--opened{% endif %}">
+                                <a class="u-sidebar-nav-menu__link" href="#subMenuContent" data-target="#subMenuContent"
+                                   title="{{ 'menu.content'|trans }}">
+                                    <i class="fas fa-copy u-sidebar-nav-menu__item-icon"></i>
+                                    <span class="u-sidebar-nav-menu__item-title">{{ 'menu.content'|trans }}</span>
+                                    <span class="u-sidebar-nav-menu__indicator"></span>
+                                </a>
+
+                                <ul id="subMenuContent" class="u-sidebar-nav-menu u-sidebar-nav-menu--second-level"
+                                    style="display: {% if block("menuActive_area") or block("menuActive_subarea") or block("menuActive_page") %}block{% else %}none{% endif %};">
+                                    <!-- Components -->
+                                    <li class="u-sidebar-nav-menu__item">
+                                        <a class="u-sidebar-nav-menu__link {% block menuActive_page %}{% endblock %}"
+                                           href="{{ path('lucca_page_index') }}" title="{{ 'menu.page'|trans }}">
+                                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.page'|trans }}</span>
+                                        </a>
+                                    </li>
+                                    <li class="u-sidebar-nav-menu__item">
+                                        <a class="u-sidebar-nav-menu__link {% block menuActive_subarea %}{% endblock %}"
+                                           href="{{ path('lucca_subarea_index') }}" title="{{ 'menu.subarea'|trans }}">
+                                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.subarea'|trans }}</span>
+                                        </a>
+                                    </li>
+                                    <li class="u-sidebar-nav-menu__item">
+                                        <a class="u-sidebar-nav-menu__link {% block menuActive_area %}{% endblock %}"
+                                           href="{{ path('lucca_area_index') }}" title="{{ 'menu.area'|trans }}">
+                                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.area'|trans }}</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            {#-- End Menu - Content --#}
+
+                            {#-- Menu - Adherent --#}
+                            <li class="u-sidebar-nav-menu__item">
+                                <a class="u-sidebar-nav-menu__link {% block menuActive_adherent %}{% endblock %}"
+                                   href="{{ path('lucca_adherent_index') }}" title="{{ 'menu.adherent'|trans }}">
+                                    <i class="fas fa-user u-sidebar-nav-menu__item-icon"></i>
+                                    <span class="u-sidebar-nav-menu__item-title">{{ 'menu.adherent'|trans }}</span>
+                                </a>
+                            </li>
+                            {#-- End Menu - Adherent --#}
+
+                            {#-- Menu - Statistics --#}
+                            <li class="u-sidebar-nav-menu__item">
+                                <a class="u-sidebar-nav-menu__link {% block menuActive_statistics %}{% endblock %}"
+                                   href="{{ path('lucca_core_statistics') }}" title="{{ 'menu.statistics'|trans }}">
+                                    <i class="fas fa-chart-bar u-sidebar-nav-menu__item-icon"></i>
+                                    <span class="u-sidebar-nav-menu__item-title">{{ 'menu.statistics'|trans }}</span>
+                                </a>
+                            </li>
+                            {#-- End Menu - Statistics --#}
+
+                        {% else %}
+                            {#-- Menu - Parameters --#}
+                            <li class="u-sidebar-nav-menu__item">
+                                <a class="u-sidebar-nav-menu__link {% block menuActive_parameter %}{% endblock %}"
+                                   href="{{ path('lucca_core_parameter') }}" title="{{ 'menu.parameters'|trans }}">
+                                    <i class="fas fa-wrench u-sidebar-nav-menu__item-icon"></i>
+                                    <span class="u-sidebar-nav-menu__item-title">{{ 'menu.parameters'|trans }}</span>
                                 </a>
                             </li>
                         {% endif %}
-                        {#-- End Menu - Dashboard Admin --#}
 
-                        {#-- Menu - Model --#}
-                        <li class="u-sidebar-nav-menu__item">
-                            <a class="u-sidebar-nav-menu__link {% block menuActive_model %}{% endblock %}"
-                               href="{{ path('lucca_model_index') }}" title="{{ 'menu.model'|trans }}">
-                                <i class="fa fa-file-invoice u-sidebar-nav-menu__item-icon"></i>
-                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.model'|trans }}</span>
-                            </a>
-                        </li>
-                        {#-- End Menu - Model --#}
-
-
-
-
-                        {#-- Menu - Content --#}
-                        <li class="u-sidebar-nav-menu__item {% if block("menuActive_area") or block("menuActive_subarea") or block("menuActive_page") %}u-sidebar-nav--opened{% endif %}">
-                            <a class="u-sidebar-nav-menu__link" href="#subMenuContent" data-target="#subMenuContent"
-                               title="{{ 'menu.content'|trans }}">
-                                <i class="fas fa-copy u-sidebar-nav-menu__item-icon"></i>
-                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.content'|trans }}</span>
-                                <span class="u-sidebar-nav-menu__indicator"></span>
-                            </a>
-
-                            <ul id="subMenuContent" class="u-sidebar-nav-menu u-sidebar-nav-menu--second-level"
-                                style="display: {% if block("menuActive_area") or block("menuActive_subarea") or block("menuActive_page") %}block{% else %}none{% endif %};">
-                                <!-- Components -->
-                                <li class="u-sidebar-nav-menu__item">
-                                    <a class="u-sidebar-nav-menu__link {% block menuActive_page %}{% endblock %}"
-                                       href="{{ path('lucca_page_index') }}" title="{{ 'menu.page'|trans }}">
-                                        <span class="u-sidebar-nav-menu__item-title">{{ 'menu.page'|trans }}</span>
-                                    </a>
-                                </li>
-                                <li class="u-sidebar-nav-menu__item">
-                                    <a class="u-sidebar-nav-menu__link {% block menuActive_subarea %}{% endblock %}"
-                                       href="{{ path('lucca_subarea_index') }}" title="{{ 'menu.subarea'|trans }}">
-                                        <span class="u-sidebar-nav-menu__item-title">{{ 'menu.subarea'|trans }}</span>
-                                    </a>
-                                </li>
-                                <li class="u-sidebar-nav-menu__item">
-                                    <a class="u-sidebar-nav-menu__link {% block menuActive_area %}{% endblock %}"
-                                       href="{{ path('lucca_area_index') }}" title="{{ 'menu.area'|trans }}">
-                                        <span class="u-sidebar-nav-menu__item-title">{{ 'menu.area'|trans }}</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        {#-- End Menu - Content --#}
-
-                        {#-- Menu - Adherent --#}
-                        <li class="u-sidebar-nav-menu__item">
-                            <a class="u-sidebar-nav-menu__link {% block menuActive_adherent %}{% endblock %}"
-                               href="{{ path('lucca_adherent_index') }}" title="{{ 'menu.adherent'|trans }}">
-                                <i class="fas fa-user u-sidebar-nav-menu__item-icon"></i>
-                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.adherent'|trans }}</span>
-                            </a>
-                        </li>
-                        {#-- End Menu - Adherent --#}
-
-                        {#-- Menu - Statistics --#}
-                        <li class="u-sidebar-nav-menu__item">
-                            <a class="u-sidebar-nav-menu__link {% block menuActive_statistics %}{% endblock %}"
-                               href="{{ path('lucca_core_statistics') }}" title="{{ 'menu.statistics'|trans }}">
-                                <i class="fas fa-chart-bar u-sidebar-nav-menu__item-icon"></i>
-                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.statistics'|trans }}</span>
-                            </a>
-                        </li>
-                        {#-- End Menu - Statistics --#}
-
-                        {#-- Menu - Parameters --#}
-                        <li class="u-sidebar-nav-menu__item">
-                            <a class="u-sidebar-nav-menu__link {% block menuActive_parameter %}{% endblock %}"
-                               href="{{ path('lucca_core_parameter') }}" title="{{ 'menu.parameters'|trans }}">
-                                <i class="fas fa-wrench u-sidebar-nav-menu__item-icon"></i>
-                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.parameters'|trans }}</span>
-                            </a>
-                        </li>
                         {#-- End Menu - Parameters --#}
                     {% endif %}
 
-                    {% if app.user and is_granted("ROLE_SUPER_ADMIN") %}
+                    {% if app.user and is_granted("ROLE_SUPER_ADMIN") and app.request.headers.get('host') is same as adminDomainName %}
                         <li class="u-sidebar-nav-menu__item bg-light py-3 rounded">
                             <span class="u-sidebar-nav-menu__item-title ml-2">{{ 'menu.super_admin'|trans }}</span>
                             <span class="badge badge-danger badge-xs float-right mr-2">{{ 'badge.sa'|trans }}</span>

@@ -9,21 +9,23 @@
 
 
     {#-- Param - Media --#}
-    <div class="col-3">
-        <div class="card card-default">
-            <div class="card-wrapper text-center">
-                <div class="card-body">
-                    <a href="{{ path('lucca_media_index') }}" class="link-unstyled text-blue-dark">
-                        <em class="fas fa-image fa-3x mb-lg"></em>
-                        <br>
-                        <span class="h4">{{ 'entity.media'|trans }}</span>
-                        <br>
-                        <small class="text-muted">{{ 'parameters.seeList'|trans }} →</small>
-                    </a>
+    {% if app.request.headers.get('host') is not same as adminDomainName %}
+        <div class="col-3">
+            <div class="card card-default">
+                <div class="card-wrapper text-center">
+                    <div class="card-body">
+                        <a href="{{ path('lucca_media_index') }}" class="link-unstyled text-blue-dark">
+                            <em class="fas fa-image fa-3x mb-lg"></em>
+                            <br>
+                            <span class="h4">{{ 'entity.media'|trans }}</span>
+                            <br>
+                            <small class="text-muted">{{ 'parameters.seeList'|trans }} →</small>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    {% endif %}
     {#-- End Param - Media --#}
 
     {#-- Param - Gallery --#}
