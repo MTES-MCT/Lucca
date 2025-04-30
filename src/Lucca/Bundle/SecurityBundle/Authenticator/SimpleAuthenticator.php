@@ -11,7 +11,7 @@
 namespace Lucca\Bundle\SecurityBundle\Authenticator;
 
 use Doctrine\ORM\EntityManagerInterface,
-    Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher,
+    Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface,
     Symfony\Component\HttpFoundation\RedirectResponse,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\Response,
@@ -20,7 +20,6 @@ use Doctrine\ORM\EntityManagerInterface,
     Symfony\Component\Security\Core\Exception\AuthenticationException,
     Symfony\Component\Security\Http\SecurityRequestAttributes,
     Symfony\Component\Security\Core\User\UserInterface,
-    Symfony\Component\Security\Csrf\CsrfTokenManagerInterface,
     Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge,
     Symfony\Component\Security\Http\Authenticator\Passport\Passport,
     Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator,
@@ -29,10 +28,10 @@ use Doctrine\ORM\EntityManagerInterface,
     Symfony\Component\Security\Http\Util\TargetPathTrait,
     Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
+use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
+use Lucca\Bundle\SecurityBundle\Authenticator\Badge\DepartmentBadge;
 use Lucca\Bundle\SecurityBundle\Manager\LoginAttemptManager;
 use Lucca\Bundle\SecurityBundle\Exception\LoginWithoutSessionException;
 use Lucca\Bundle\UserBundle\Entity\User;
@@ -57,18 +56,16 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
      * SimpleAuthenticator constructor
      */
     public function __construct(
-        private readonly EntityManagerInterface    $em,
-        private readonly UrlGeneratorInterface     $urlGenerator,
-        private readonly CsrfTokenManagerInterface $csrfTokenManager,
-        private readonly UserPasswordHasher        $passwordHasher,
-        private readonly LoginAttemptManager       $loginAttemptManager,
-        private readonly AdherentFinder            $adherentFinder,
-
-        private TokenStorageInterface $tokenStorage, private RequestStack $requestStack,
+        private readonly EntityManagerInterface      $em,
+        private readonly UrlGeneratorInterface       $urlGenerator,
+        private readonly UserPasswordHasherInterface $passwordHasher,
+        private readonly LoginAttemptManager         $loginAttemptManager,
+        private readonly AdherentFinder              $adherentFinder,
+        private readonly UserDepartmentResolver      $userDepartmentResolver,
 
         /** Define constant to name route called after a login */
         #[Autowire(param: 'lucca_security.default_url_after_login')]
-        private readonly string                    $routeAfterLogin,
+        private readonly string                      $routeAfterLogin,
     )
     {
     }
@@ -92,6 +89,15 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
             throw new LoginWithoutSessionException("Request cannot have session - fix this if you want to perform login action");
         }
 
+        // Check if the user is part of the department
+        $department = $this->userDepartmentResolver->getDepartment();
+        $departmentBadge = new DepartmentBadge($department);
+
+        $user = $this->em->getRepository(User::class)->loadUserByIdentifier($identifier);
+        if ($user?->getDepartments()->contains($department)) {
+            $departmentBadge->markResolved(); // mark the badge as resolved if the user is part of the department
+        }
+
         /**
          * Create a new Passport to transport these data
          *
@@ -102,6 +108,7 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
         return new Passport(
             new UserBadge($identifier),
             new PasswordCredentials($password),
+            [$departmentBadge]
         );
     }
 
@@ -160,9 +167,7 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
 
             $targetPathUrl = parse_url($targetPath);
             [$department] = explode('.', $targetPathUrl['host']);
-            $hasDepartment = $adherent->getDepartments()
-                ->map(fn ($department) => $department->getCode())
-                ->contains($department);
+            $hasDepartment = !!$adherent->getDepartment();
 
             if ($hasDepartment) {
                 return new RedirectResponse($targetPath);

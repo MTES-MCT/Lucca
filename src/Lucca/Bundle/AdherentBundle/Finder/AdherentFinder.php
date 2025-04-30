@@ -11,6 +11,7 @@
 namespace Lucca\Bundle\AdherentBundle\Finder;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -23,6 +24,7 @@ readonly class AdherentFinder
     public function __construct(
         private EntityManagerInterface $em,
         private TokenStorageInterface  $tokenStorage,
+        private UserDepartmentResolver $userDepartmentResolver,
     )
     {
     }
@@ -35,8 +37,10 @@ readonly class AdherentFinder
         /** @var $user User -- Get current user connected */
         $user = $this->tokenStorage->getToken()->getUser();
 
+        $department = $this->userDepartmentResolver->getDepartment();
+
         /** Find adherent linked to this User */
-        $adherent = $this->em->getRepository(Adherent::class)->findOneByUser($user);
+        $adherent = $this->em->getRepository(Adherent::class)->findOneBy(['user' => $user, 'department' => $department]);
 
         if (!$adherent) {
             throw new AuthenticationException('No adherent entity has been found');

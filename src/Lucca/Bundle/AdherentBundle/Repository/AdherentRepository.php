@@ -251,12 +251,12 @@ class AdherentRepository extends ServiceEntityRepository
             ->leftJoin('adherent.town', 'town')->addSelect('town')
             ->leftJoin('adherent.intercommunal', 'intercommunal')->addSelect('intercommunal')
             ->leftJoin('adherent.service', 'service')->addSelect('service')
-            ->leftJoin('adherent.departments', 'departments')
+            ->leftJoin('adherent.department', 'department')
         ;
 
         $department = $this->userDepartmentResolver->getDepartment();
         if ($department) {
-            $qb->andWhere($qb->expr()->eq('departments', ':q_department'))
+            $qb->andWhere($qb->expr()->eq('department', ':q_department'))
                 ->setParameter(':q_department', $department);
         }
 

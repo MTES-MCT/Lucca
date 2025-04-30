@@ -3,9 +3,3 @@ lucca_core_bundle:
     resource: "@LuccaCoreBundle/Controller/"
     type:     attribute
     prefix:   /back-office
-
-# LuccaCoreBundle Routing - Anonymous
-lucca_core_bundle_anonymous:
-    resource: "@LuccaCoreBundle/Controller/Anonymous"
-    type:     attribute
-    prefix:   /

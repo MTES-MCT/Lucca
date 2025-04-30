@@ -18,6 +18,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\{PasswordAuthenticatedUserInterface, UserInterface};
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\UserBundle\Repository\UserRepository;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -36,6 +37,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     #[ORM\GeneratedValue]
     private ?int $id = null;
+
+    #[ORM\OneToMany(targetEntity: Adherent::class, mappedBy: 'user')]
+    private Collection $adherents;
 
     #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Length(min: 2, max: 50, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
@@ -105,6 +109,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->groups = new ArrayCollection();
+        $this->adherents = new ArrayCollection();
 
         $this->setEnabled(true);
     }
@@ -195,11 +200,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return 'Utilisateur';
     }
 
+    /******************************************************************************* Custom functions *************************************************/
+
+    public function getDepartments(): Collection
+    {
+        return $this->getAdherents()->map(fn(Adherent $adherent) => $adherent->getDepartment());
+    }
+
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getAdherents(): Collection
+    {
+        return $this->adherents;
+    }
+
+    public function addAdherent(Adherent $adherent): self
+    {
+        if (!$this->adherents->contains($adherent)) {
+            $this->adherents[] = $adherent;
+            $adherent->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdherent(Adherent $adherent): self
+    {
+        $this->adherents->removeElement($adherent);
+
+        return $this;
     }
 
     public function getName(): ?string

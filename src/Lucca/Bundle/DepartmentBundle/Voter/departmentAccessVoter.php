@@ -82,30 +82,29 @@ class departmentAccessVoter extends Voter
         $isAdmin = $this->authorizationChecker->isGranted('ROLE_ADMIN');
 
         /** If in case of not in unit test */
-        if ($this->sparkyUnitTestDepCode !== 'null')
+        if ($this->sparkyUnitTestDepCode !== 'null') {
             return true;
+        }
 
         $masterRequest = $this->requestStack->getMainRequest();
         $subDomainKey = $masterRequest->getSession()->get('subDomainKey');
 
         /** Check if subDomainKey exists */
-        if ($subDomainKey === null)
+        if ($subDomainKey === null) {
             return false;
+        }
 
         $currentAdherent = $this->adherentFinder->whoAmI();
 
         if (!$isAdmin) {
-            if ($currentAdherent === null)
+            if ($currentAdherent === null) {
                 return false;
-
-            if ($currentAdherent->getDepartments()->isEmpty())
-                return false;
+            }
 
             /** Check if current adherent has a department */
             /** @var Department $department */
-            foreach ($currentAdherent->getDepartments() as $department) {
-                if ($department->getCode() === $subDomainKey)
-                    return true;
+            if ($currentAdherent->getDepartment()->getCode() === $subDomainKey) {
+                return true;
             }
         } else {
             return true;
