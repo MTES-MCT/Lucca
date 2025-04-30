@@ -12,6 +12,8 @@ namespace Lucca\Bundle\DepartmentBundle\Controller\Admin;
 
 use Doctrine\Persistence\ManagerRegistry;
 
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\AdherentBundle\Manager\AdherentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -47,7 +49,7 @@ class DepartmentController extends AbstractController
         private readonly ChecklistService  $checklistService,
         private readonly DepartmentService $departmentService,
         private readonly NatinfService     $natinfService,
-        private readonly ModelService      $modelService,
+        private readonly ModelService      $modelService, private readonly AdherentManager $adherentManager,
     )
     {
     }
@@ -116,6 +118,13 @@ class DepartmentController extends AbstractController
 
             // Model creation from JSON data file
             $this->modelService->createForDepartment($department);
+
+            /** Find Adherent by connected User */
+//            $user = $this->getUser();
+//            $adherent = $em->getRepository(Adherent::class)->findOneBy([
+//                'user' => $user
+//            ]);
+//            $this->adherentManager->cloneAdherent($adherent, $department);
 
             $this->addFlash('success', 'flash.department.create.success');
 

@@ -77,7 +77,8 @@ readonly class DepartmentService
                 $newTown->setDepartment($department);
 
                 if (!empty($town[self::INTER_INSEE]) && !empty($towns[self::INTER_NAME])) {
-                    $newTown->setIntercommunal($intercommunals[$town[self::INTER_INSEE]]);
+                    $interco = $this->em->getReference(Intercommunal::class, $intercommunals[$town[self::INTER_INSEE]]->getId());
+                    $newTown->setIntercommunal($interco);
                 }
 
                 $this->em->persist($newTown);

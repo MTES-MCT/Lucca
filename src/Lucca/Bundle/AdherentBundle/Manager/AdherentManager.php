@@ -13,8 +13,8 @@ namespace Lucca\Bundle\AdherentBundle\Manager;
 use Exception;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\EntityManagerInterface;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\AdherentBundle\Generator\CodeGenerator;
@@ -112,5 +112,29 @@ readonly class AdherentManager
 
         /** Return true if a dangerous message has been found in Session */
         return !$this->requestStack->getSession()->getFlashBag()->has('danger');
+    }
+
+    /**
+     * Clone an adherent to use it in the new department
+     */
+    public function cloneAdherent(Adherent $adherent, Department $department): Adherent
+    {
+        $newAdherent = clone $adherent;
+        $newAdherent->setDepartment($department);
+        $newAdherent->setService(null);
+        $newAdherent->setTown(null);
+        $newAdherent->setIntercommunal(null);
+
+        if($adherent->getService()) {
+            $newService = clone $adherent->getService();
+            $newService->setDepartment($department);
+            $this->em->persist($newService);
+            $newAdherent->setService($newService);
+        }
+
+        $this->em->persist($newAdherent);
+        $this->em->flush();
+
+        return $newAdherent;
     }
 }
