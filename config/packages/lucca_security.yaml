@@ -1,6 +1,7 @@
 lucca_security:
     type: form
     default_url_after_login: '%env(DEFAULT_URL_AFTER_LOGIN)%'
+    default_admin_url_after_login: '%env(DEFAULT_ADMIN_URL_AFTER_LOGIN)%'
 
     protection:
         period_max_in_min: 15

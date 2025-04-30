@@ -16,6 +16,47 @@
     font-size: 1.1em;
 }
 
+/***** Admin dashboard ****/
+.date-filters {
+    color: #312366;
+}
+
+.folder-rapport > i {
+    color: #23b7e5;
+}
+
+.folder-closed > i {
+    color: #23c054;
+}
+
+.folder-totalCounter > i {
+    color: #312366;
+}
+
+.folder-rapport, .folder-closed, .folder-totalCounter {
+    border-left: 0.1em solid #e4eaec;
+    border-radius: 3px;
+}
+
+.folder-total > h1 {
+    margin-bottom: 0;
+}
+
+.folder-closed > div, .folder-rapport > div, .folder-totalCounter > div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: 600;
+    width: 100%;
+}
+
+.folder-total > span {
+    font-size: 11pt;
+    font-weight: bold;
+}
+
 .card-header {
     padding: 0.5rem 1rem;
 }

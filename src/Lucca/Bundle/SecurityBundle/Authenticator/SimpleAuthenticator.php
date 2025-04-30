@@ -27,6 +27,7 @@ use Doctrine\ORM\EntityManagerInterface,
     Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken,
     Symfony\Component\Security\Http\Util\TargetPathTrait,
     Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Lucca\Bundle\SecurityBundle\Authenticator\Badge\SuperAdminBadge;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
@@ -35,6 +36,7 @@ use Lucca\Bundle\SecurityBundle\Authenticator\Badge\DepartmentBadge;
 use Lucca\Bundle\SecurityBundle\Manager\LoginAttemptManager;
 use Lucca\Bundle\SecurityBundle\Exception\LoginWithoutSessionException;
 use Lucca\Bundle\UserBundle\Entity\User;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * Class SimpleAuthenticator
@@ -62,10 +64,13 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
         private readonly LoginAttemptManager         $loginAttemptManager,
         private readonly AdherentFinder              $adherentFinder,
         private readonly UserDepartmentResolver      $userDepartmentResolver,
+        private readonly ParameterBagInterface       $parameterBag,
 
         /** Define constant to name route called after a login */
         #[Autowire(param: 'lucca_security.default_url_after_login')]
         private readonly string                      $routeAfterLogin,
+        #[Autowire(param: 'lucca_security.default_admin_url_after_login')]
+        private readonly string                      $adminRouteAfterLogin,
     )
     {
     }
@@ -89,11 +94,26 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
             throw new LoginWithoutSessionException("Request cannot have session - fix this if you want to perform login action");
         }
 
+        $user = $this->em->getRepository(User::class)->loadUserByIdentifier($identifier);
+
+        // Don't use the department badge if the request is from the admin domain
+        if ($this->parameterBag->get('lucca_core.admin_domain_name') === $request->headers->get('host')) {
+            $superAdminBadge = new SuperAdminBadge();
+            if ($user->hasRole('ROLE_SUPER_ADMIN')) {
+                $superAdminBadge->markResolved(); // mark the badge as resolved if the user is a super admin
+            }
+
+            return new Passport(
+                new UserBadge($identifier),
+                new PasswordCredentials($password),
+                [$superAdminBadge]
+            );
+        }
+
         // Check if the user is part of the department
         $department = $this->userDepartmentResolver->getDepartment();
         $departmentBadge = new DepartmentBadge($department);
 
-        $user = $this->em->getRepository(User::class)->loadUserByIdentifier($identifier);
         if ($user?->getDepartments()->contains($department)) {
             $departmentBadge->markResolved(); // mark the badge as resolved if the user is part of the department
         }
@@ -161,17 +181,9 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
         $session = $request->getSession();
         $session->set(SecurityRequestAttributes::LAST_USERNAME, $user->getEmail());
 
-        /** Redirect to the last page visited before login if user is part of the department */
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-            $adherent = $this->adherentFinder->whoAmI();
-
-            $targetPathUrl = parse_url($targetPath);
-            [$department] = explode('.', $targetPathUrl['host']);
-            $hasDepartment = !!$adherent->getDepartment();
-
-            if ($hasDepartment) {
-                return new RedirectResponse($targetPath);
-            }
+        if ($this->parameterBag->get('lucca_core.admin_domain_name') === $request->headers->get('host')) {
+            // Redirect to the admin route after login
+            return new RedirectResponse($this->urlGenerator->generate($this->adminRouteAfterLogin));
         }
 
         return new RedirectResponse($this->urlGenerator->generate($this->routeAfterLogin));
