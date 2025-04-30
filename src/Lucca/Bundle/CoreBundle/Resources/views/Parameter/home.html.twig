@@ -183,6 +183,7 @@
                     {#-- End Param - Partner --#}
                 {% endif %}
 
+                {% if app.request.headers.get('host') is same as adminDomainName %}
                 {#-- Param - Log --#}
                 <div class="col-3">
                     <div class="card card-default">
@@ -219,9 +220,11 @@
                         </div>
                     </div>
                 </div> {#-- End Param - LoginAttempt --#}
+                {% endif %}
 
+                {% if app.request.headers.get('host') is not same as adminDomainName %}
                 {#-- Param - Setting --#}
-                <div class="col-3 mt-3">
+                <div class="col-3">
                     <div class="card card-default">
                         <div class="card-wrapper text-center">
                             <div class="card-body">
@@ -238,6 +241,7 @@
                         </div>
                     </div>
                 </div> {#-- End Param - Setting --#}
+                {% endif %}
 
                 {#-- Param - Media --#}
                 {% include '@LuccaMedia/panel-parameters.html.twig' %}

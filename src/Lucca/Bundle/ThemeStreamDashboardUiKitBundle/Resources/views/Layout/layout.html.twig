@@ -103,7 +103,8 @@
 
     <div class="u-header-left">
         <a class="u-header-logo mx-auto" href="{{ path('lucca_core_dashboard') }}">
-            <img class="u-logo-desktop" src="{{ asset('setting.general.logo.name'|setting) }}" width="50" alt="{{ 'setting.general.app.name'| setting }}">
+            <img class="u-logo-desktop" src="{{ asset('setting.general.logo.name'|setting) }}" width="50"
+                 alt="{{ 'setting.general.app.name'| setting }}">
         </a>
     </div>
 
@@ -122,7 +123,7 @@
                aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">
                 <i class="fas fa-user-cog text-white mr-3"></i>
                 <span class="text-white d-none d-sm-inline-block">{{ 'menu.profile'|trans }}<small
-                            class="fa fa-angle-down text-white ml-1"></small>
+                        class="fa fa-angle-down text-white ml-1"></small>
                         </span>
             </a>
 
@@ -136,7 +137,7 @@
                                 <a class="d-flex align-items-center link-dark"
                                    href="{{ path('lucca_adherent_profile_show') }}">
                                     <span class="h3 mb-0"><i
-                                                class="fas fa-address-card text-muted mr-3"></i></span> {{ 'menu.profile'|trans }}
+                                            class="fas fa-address-card text-muted mr-3"></i></span> {{ 'menu.profile'|trans }}
                                 </a>
                             </li>
                             <li class="mb-4">
@@ -145,7 +146,7 @@
                                 <a class="d-flex align-items-center link-dark"
                                    href="{{ path('lucca_user_profile_changePassword') }}">
                                     <span class="h3 mb-0"><i
-                                                class="fas fa-key text-muted mr-3"></i></span> {{ 'menu.changePassword'|trans }}
+                                            class="fas fa-key text-muted mr-3"></i></span> {{ 'menu.changePassword'|trans }}
                                 </a>
                             </li>
                             <li>
@@ -153,7 +154,7 @@
                                 <a class="d-flex align-items-center link-dark "
                                    href="{{ path('lucca_user_security_logout') }}">
                                     <span class="h3 mb-0"><i
-                                                class="fas fa-share-square text-muted mr-3"></i></span> {{ 'menu.logout'|trans }}
+                                            class="fas fa-share-square text-muted mr-3"></i></span> {{ 'menu.logout'|trans }}
                                 </a>
                             </li>
                         </ul>
@@ -325,8 +326,6 @@
                             {#-- End Menu - Model --#}
 
 
-
-
                             {#-- Menu - Content --#}
                             <li class="u-sidebar-nav-menu__item {% if block("menuActive_area") or block("menuActive_subarea") or block("menuActive_page") %}u-sidebar-nav--opened{% endif %}">
                                 <a class="u-sidebar-nav-menu__link" href="#subMenuContent" data-target="#subMenuContent"
@@ -348,7 +347,8 @@
                                     <li class="u-sidebar-nav-menu__item">
                                         <a class="u-sidebar-nav-menu__link {% block menuActive_subarea %}{% endblock %}"
                                            href="{{ path('lucca_subarea_index') }}" title="{{ 'menu.subarea'|trans }}">
-                                            <span class="u-sidebar-nav-menu__item-title">{{ 'menu.subarea'|trans }}</span>
+                                            <span
+                                                class="u-sidebar-nav-menu__item-title">{{ 'menu.subarea'|trans }}</span>
                                         </a>
                                     </li>
                                     <li class="u-sidebar-nav-menu__item">
@@ -381,16 +381,15 @@
                             </li>
                             {#-- End Menu - Statistics --#}
 
-                        {% else %}
-                            {#-- Menu - Parameters --#}
-                            <li class="u-sidebar-nav-menu__item">
-                                <a class="u-sidebar-nav-menu__link {% block menuActive_parameter %}{% endblock %}"
-                                   href="{{ path('lucca_core_parameter') }}" title="{{ 'menu.parameters'|trans }}">
-                                    <i class="fas fa-wrench u-sidebar-nav-menu__item-icon"></i>
-                                    <span class="u-sidebar-nav-menu__item-title">{{ 'menu.parameters'|trans }}</span>
-                                </a>
-                            </li>
                         {% endif %}
+                        {#-- Menu - Parameters --#}
+                        <li class="u-sidebar-nav-menu__item">
+                            <a class="u-sidebar-nav-menu__link {% block menuActive_parameter %}{% endblock %}"
+                               href="{{ path('lucca_core_parameter') }}" title="{{ 'menu.parameters'|trans }}">
+                                <i class="fas fa-wrench u-sidebar-nav-menu__item-icon"></i>
+                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.parameters'|trans }}</span>
+                            </a>
+                        </li>
 
                         {#-- End Menu - Parameters --#}
                     {% endif %}
@@ -431,7 +430,8 @@
 
                         {#-- Menu - Department --#}
                         <li class="u-sidebar-nav-menu__item {% if block("menuActive_department") %}u-sidebar-nav--opened{% endif %}">
-                            <a class="u-sidebar-nav-menu__link {% block menuActive_department %}{% endblock %}" href="{{ path('lucca_department_admin_index') }}"
+                            <a class="u-sidebar-nav-menu__link {% block menuActive_department %}{% endblock %}"
+                               href="{{ path('lucca_department_admin_index') }}"
                                title="{{ 'menu.department'|trans }}">
                                 <i class="fas fa-map-pin u-sidebar-nav-menu__item-icon"></i>
                                 <span class="u-sidebar-nav-menu__item-title">{{ 'menu.department'|trans }}</span>
@@ -484,12 +484,15 @@
 
 {% block lucca_js %}
     <!-- Global Vendor -->
-    <script src="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/jquery-migrate/jquery-migrate.min.js') }}"></script>
-    <script src="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/popper.js/dist/umd/popper.min.js') }}"></script>
+    <script
+        src="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/jquery-migrate/jquery-migrate.min.js') }}"></script>
+    <script
+        src="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/popper.js/dist/umd/popper.min.js') }}"></script>
     <script src="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/bootstrap/bootstrap.min.js') }}"></script>
 
     <!-- Plugins -->
-    <script src="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js') }}"></script>
+    <script
+        src="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js') }}"></script>
     <script src="{{ asset('bundles/luccathemestreamdashboarduikit/vendor/chart.js/dist/Chart.min.js') }}"></script>
 
     <!-- Initialization  -->

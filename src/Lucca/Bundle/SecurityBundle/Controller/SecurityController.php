@@ -38,6 +38,10 @@ class SecurityController extends AbstractController
         $routeAfterLogin = $this->getParameter('lucca_security.default_url_after_login');
 
         // if user is already logged in, don't display the login page again
+        if ($this->getParameter('lucca_core.admin_domain_name') === $request->headers->get('host')) {
+            $routeAfterLogin = $this->getParameter('lucca_security.default_admin_url_after_login');
+        }
+
         if ($user) {
             return $this->redirectToRoute($routeAfterLogin);
         }

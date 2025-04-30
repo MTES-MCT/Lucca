@@ -9,7 +9,7 @@
 
 
     {#-- Param - Media --#}
-    {% if app.request.headers.get('host') is not same as adminDomainName %}
+    {% if app.request.headers.get('host') is same as adminDomainName %}
         <div class="col-3">
             <div class="card card-default">
                 <div class="card-wrapper text-center">
