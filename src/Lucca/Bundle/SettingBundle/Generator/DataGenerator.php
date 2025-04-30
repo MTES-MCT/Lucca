@@ -231,7 +231,7 @@ class DataGenerator
             'category' => 'setting.category.folder.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 16,
-            'value' => true,
+            'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.folder.docContent.comment'],
         [
@@ -240,7 +240,7 @@ class DataGenerator
             'category' => 'setting.category.folder.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 17,
-            'value' => true,
+            'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.folder.docContentObstacle.comment'],
         [
@@ -298,7 +298,7 @@ class DataGenerator
             'category' => 'setting.category.courier.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 19,
-            'value' => true,
+            'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.courier.ddtmContent.comment'],
         [
@@ -307,7 +307,7 @@ class DataGenerator
             'category' => 'setting.category.courier.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 20,
-            'value' => true,
+            'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.courier.judicialContent.comment'],
         [
@@ -316,7 +316,7 @@ class DataGenerator
             'category' => 'setting.category.courier.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 21,
-            'value' => true,
+            'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.courier.mayorContent.comment'],
         //------------------------------
@@ -355,7 +355,7 @@ class DataGenerator
             'category' => 'setting.category.control.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 24,
-            'value' => true,
+            'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.control.convocationContent.comment'],
         //------------------------------

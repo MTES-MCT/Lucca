@@ -37,8 +37,7 @@ label:
     login: "Connexion"
     rememberMe: "Se souvenir de moi"
     forgotPassword: "Mot de passe oublié ?"
-    legalMention: "Tous droits réservés à Numeric Wave"
-    legalMention66: "Titulaire en l’espèce DDTM66"
+    legalMention: "Créé par Numeric Wave"
 
 ########################
 # Choice
