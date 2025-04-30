@@ -10,7 +10,7 @@
 
 namespace Lucca\Bundle\LogBundle\Form;
 
-use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
+use Symfony\Component\Form\{AbstractType, Extension\Core\Type\TextType, FormBuilderInterface};
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,7 +28,11 @@ class LogFilterType extends AbstractType
                     Log::STATUS_REMOVE => Log::STATUS_REMOVE,
                     Log::STATUS_CONNECTION => Log::STATUS_CONNECTION,
                 ),
-                'label' => 'label.status', 'expanded' => false
+                'label' => 'label.status', 'expanded' => false,
+                'required' => false,
+            ))
+            ->add('shortMessage', TextType::class, array(
+                'label' => 'label.short_message', 'required' => false,
             ));
     }
 

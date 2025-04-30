@@ -85,7 +85,16 @@ class InitializationCommand extends Command
     protected function initModelBundle(InputInterface $input, OutputInterface $output): void
     {
         // Turning off doctrine default logs queries for saving memory
-        $this->em->getConfiguration()->setSQLLogger(null);
+        $connection = $this->em->getConnection();
+
+        if (method_exists($connection, 'getConfiguration')) {
+            $config = $connection->getConfiguration();
+
+            if (method_exists($config, 'setSQLLogger')) {
+                // Ne rien logger du tout
+                $config->setSQLLogger(null);
+            }
+        }
 
         foreach (Model::getDocumentsChoice() as $document) {
             /** Search if model exist for this document - Do request in loop because we know the end of the loop */

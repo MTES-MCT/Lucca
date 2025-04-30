@@ -69,8 +69,8 @@ class LogRepository extends EntityRepository
     /********************* Browse Product *****/
     /*******************************************************************************************/
 
-    public function getDatatableData(string $orderColumn, string $orderDirection, ?string $start = '0', ?string $length = '10',
-                                        ?string $status = null): array
+    public function getDatatableData(string  $orderColumn, string $orderDirection, ?string $start = '0', ?string $length = '10',
+                                     ?string $status = null, ?string $shortMessage = null): array
     {
         $recordsQB = $this->createQueryBuilder('log')
             ->select('COUNT(log)');
@@ -89,6 +89,15 @@ class LogRepository extends EntityRepository
 
             $recordsQB->andWhere($recordsQB->expr()->eq('log.status', ':q_status'))
                 ->setParameter('q_status', $status);
+        }
+
+        if ($shortMessage) {
+            $qb->andWhere($qb->expr()->like('log.shortMessage', ':q_shortMessage'))
+                ->setParameter('q_shortMessage', '%' . $shortMessage . '%');
+
+            $recordsQB->andWhere($recordsQB->expr()->like('log.shortMessage', ':q_shortMessage'))
+                ->setParameter('q_shortMessage', '%' . $shortMessage . '%');
+
         }
 
         $recordsQB = $recordsQB->getQuery()->getSingleScalarResult();
@@ -157,7 +166,6 @@ class LogRepository extends EntityRepository
     private function queryLog(): QueryBuilder
     {
         return $this->createQueryBuilder('log')
-            ->leftJoin('log.user', 'user')->addSelect('user')
-        ;
+            ->leftJoin('log.user', 'user')->addSelect('user');
     }
 }

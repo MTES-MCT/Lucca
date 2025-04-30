@@ -121,6 +121,11 @@ class UpdatingControlController extends AbstractController
         if ($control->getAgent())
             $editForm->get('agent')->setData($control->getAgent());
 
+        if ($control->getAgent() === $updating->getMinute()->getAgent())
+            $editForm->get('sameAgent')->setData(true);
+        else
+            $editForm->get('sameAgent')->setData(false);
+
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

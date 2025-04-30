@@ -85,7 +85,16 @@ class InitializationCommand extends Command
         $em = $this->em;
 
         // Turning off doctrine default logs queries for saving memory
-        $em->getConfiguration()->setSQLLogger(null);
+        $connection = $this->em->getConnection();
+
+        if (method_exists($connection, 'getConfiguration')) {
+            $config = $connection->getConfiguration();
+
+            if (method_exists($config, 'setSQLLogger')) {
+                // Ne rien logger du tout
+                $config->setSQLLogger(null);
+            }
+        }
 
         /** Search default Category - if not create it */
         $category = $em->getRepository(Category::class)->findDefaultCategory();

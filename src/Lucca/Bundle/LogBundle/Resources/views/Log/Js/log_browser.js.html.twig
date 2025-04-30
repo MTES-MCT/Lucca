@@ -10,12 +10,13 @@
             dataType: "JSON",
             data: function (d) {
                 d.status = $('#lucca_folderBundle_logFilter_status').val();
+                d.shortMessage = $('#lucca_folderBundle_logFilter_shortMessage').val();
             }
         },
         columns: [
             {data: 'user.username', name: 'username', render: (data) => data ?? ''},
             {data: 'status', name: 'status', searchable: true},
-            {data: 'shortMessage', name: 'shortMessage'},
+            {data: 'shortMessage', name: 'shortMessage', searchable: true},
             {data: 'classname', name: 'classname'},
             {data: 'objectId', name: 'objectId'},
             {data: 'createdAt', name: 'createdAt', render: (data) => {

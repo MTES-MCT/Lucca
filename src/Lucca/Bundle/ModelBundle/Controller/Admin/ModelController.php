@@ -92,7 +92,7 @@ class ModelController extends AbstractController
     /**
      * Finds and displays a Model entity.
      */
-    #[Route(path: '/-{id}', name: 'lucca_model_show', methods: ['GET'])]
+    #[Route(path: '-{id}', name: 'lucca_model_show', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
     public function showAction(Model $model): Response
     {

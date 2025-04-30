@@ -31,7 +31,7 @@ class PenaltyType extends AbstractType
             ->add('dateFolder', HtmlDateType::class, [
                 'label' => 'label.dateFolder6', 'required' => true
             ])
-            ->add('preparedBy', TextType::class, ['label' => 'label.preparedBy'])
+            ->add('preparedBy', TextType::class, ['label' => 'label.preparedBy', 'attr' => ['required' => 'required']])
             ->add('nature', ChoiceType::class, [
                 'choices' => [
                     Penalty::NATURE_REGULARIZED => Penalty::NATURE_REGULARIZED,
