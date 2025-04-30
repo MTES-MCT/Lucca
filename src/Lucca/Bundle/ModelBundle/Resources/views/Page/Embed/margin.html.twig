@@ -56,12 +56,12 @@
                         <div class="card-header hover-pointer">
                             <strong class="ml-2">{{ 'label.bloc'|trans }} {{ key + 1 }}
                                 - {{ bloc.typeContent | trans }}</strong>
-                            <a href="#blocCollapse" class="float-right" data-toggle="collapse">
+                            <a href="#blocCollapse{{ key + 1 }}" class="float-right" data-toggle="collapse">
                                 <em class="fa fa-plus"></em>
                             </a>
                         </div>
 
-                        <div id="blocCollapse" class="card-wrapper collapse">
+                        <div id="blocCollapse{{ key + 1 }}" class="card-wrapper collapse">
                             <div class="card-body">
                                 <div>
                                     <table style="width: 100%;">
