@@ -26,7 +26,9 @@ services:
             - "@lucca.security.manager.login_attempt"
             - '@Lucca\Bundle\AdherentBundle\Finder\AdherentFinder'
             - '@Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver'
+            - '@parameter_bag'
             - '%env(DEFAULT_URL_AFTER_LOGIN)%'
+            - '%env(DEFAULT_ADMIN_URL_AFTER_LOGIN)%'
 
     #################################################################
     ## Security
