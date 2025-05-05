@@ -34,6 +34,13 @@ services:
     image: mariadb:${MYSQL_VERSION}-noble-rc
     networks:
       - lucca-network
+    environment:
+        APP_SECRET: ${APP_SECRET}
+        MYSQL_HOST: ${MYSQL_HOST}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
 
   ###< doctrine/doctrine-bundle ###
 
