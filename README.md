@@ -35,6 +35,7 @@ with full [HTTP/2](https://symfony.com/doc/current/weblink.html), HTTP/3 and HTT
 2. [Container network](docs/docker_network_developper.md)
 3. [Email configuration](docs/email.md)
 4. [Deploy container](docs/production_deploy.md)
+5. [Environment vars](docs/env_vars.md)
 
 **Lucca command :**
 

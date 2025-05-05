@@ -78,7 +78,7 @@ class ModelController extends AbstractController
             $this->em->persist($model);
             $this->em->flush();
 
-            $this->addFlash('success', 'flashes.created_successfully');
+            $this->addFlash('success', 'flash.created_successfully');
 
             return $this->redirectToRoute('lucca_model_show', ['id' => $model->getId()]);
         }
@@ -138,7 +138,7 @@ class ModelController extends AbstractController
             $this->em->persist($model);
             $this->em->flush();
 
-            $this->addFlash('success', 'flashes.created_successfully');
+            $this->addFlash('success', 'flash.created_successfully');
 
             return $this->redirectToRoute('lucca_model_show', ['id' => $model->getId()]);
         }
@@ -167,7 +167,7 @@ class ModelController extends AbstractController
             $this->em->flush();
         }
 
-        $this->addFlash('success', 'flashes.deleted_successfully');
+        $this->addFlash('success', 'flash.deleted_successfully');
 
         return $this->redirectToRoute('lucca_model_index');
     }
@@ -194,7 +194,7 @@ class ModelController extends AbstractController
 
         $this->em->flush();
 
-        $this->addFlash('success', 'flashes.toggled_successfully');
+        $this->addFlash('success', 'flash.toggled_successfully');
 
         return $this->redirectToRoute('lucca_model_show', ['id' => $model->getId()]);
     }

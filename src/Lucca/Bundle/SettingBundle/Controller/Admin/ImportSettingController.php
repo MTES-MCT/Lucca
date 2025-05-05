@@ -53,7 +53,7 @@ class ImportSettingController extends AbstractController
                 $file = $form->getData()['file'];
                 $mimes = ['application/vnd.ms-excel', 'text/plain', 'text/csv', 'text/tsv', 'application/octet-stream'];
                 if (!in_array($file->getClientMimeType(), $mimes)) {
-                    $this->addFlash('danger', 'flashes.import.badFormat');
+                    $this->addFlash('danger', 'flash.import.badFormat');
 
                     return $this->redirectToRoute('lucca_setting_import');
                 }
@@ -62,9 +62,9 @@ class ImportSettingController extends AbstractController
                 $nbFail = $this->import($file->getPathname());
 
                 if ($nbFail == 0) {
-                    $this->addFlash('success', 'flashes.import.createdSuccessfully');
+                    $this->addFlash('success', 'flash.import.createdSuccessfully');
                 } else {
-                    $this->addFlash('warning', 'flashes.import.createdPartial');
+                    $this->addFlash('warning', 'flash.import.createdPartial');
                 }
 
                 return $this->redirectToRoute('lucca_setting_index');

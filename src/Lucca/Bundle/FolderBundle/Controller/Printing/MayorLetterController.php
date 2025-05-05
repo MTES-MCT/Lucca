@@ -132,7 +132,7 @@ class MayorLetterController extends AbstractController
         $filesNames[] = $filePath;
 
         /** Store file in temp folder */
-        $filesystem->appendToFile($filePath, $generatedPDFLetter);
+        $filesystem->dumpFile($filePath, $generatedPDFLetter);
         $pdf->addPDF($filePath, PdfFile::ALL_PAGES, PdfFile::ORIENTATION_PORTRAIT);
 
         foreach ($mayorLetter->getFolders() as $folder) {
@@ -167,7 +167,8 @@ class MayorLetterController extends AbstractController
             $filesNames[] = $filePath;
 
             /** Store file in temp folder */
-            $filesystem->appendToFile($filePath, $generatedPdf);
+            $filesystem->dumpFile($filePath, $generatedPdf);
+
 
             /** Add pdf to the final var */
             $pdf->addPDF($filePath, PdfFile::ALL_PAGES, PdfFile::ORIENTATION_PORTRAIT);

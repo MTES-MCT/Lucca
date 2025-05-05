@@ -50,6 +50,10 @@ class Intercommunal implements LoggableInterface
     private ?Town $office = null;
 
     /************************************************************************ Custom functions ************************************************************************/
+    public function __toString(): string
+    {
+        return $this->name;
+    }
 
     /**
      * Get label display on form

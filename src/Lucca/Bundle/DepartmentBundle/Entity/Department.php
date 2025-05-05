@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\DepartmentBundle\Entity;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,6 +20,7 @@ use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
 
 #[ORM\Entity(repositoryClass: DepartmentRepository::class)]
 #[ORM\Table(name: 'lucca_department')]
+#[UniqueEntity(fields: ['code'], message: 'constraint.unique.department.code', errorPath: 'code')]
 class Department implements LoggableInterface
 {
     /** Traits */

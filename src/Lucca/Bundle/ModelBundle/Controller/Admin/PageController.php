@@ -68,7 +68,7 @@ class PageController extends AbstractController
                 $this->em->persist($pageManaged);
                 $this->em->flush();
 
-                $this->addFlash('success', 'flashes.created_successfully');
+                $this->addFlash('success', 'flash.created_successfully');
 
                 return $this->redirectToRoute('lucca_model_show', ['id' => $model->getId()]);
             }

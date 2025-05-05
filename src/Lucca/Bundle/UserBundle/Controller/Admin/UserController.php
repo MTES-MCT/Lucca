@@ -64,7 +64,7 @@ class UserController extends AbstractController
             $this->em->persist($user);
             $this->em->flush();
 
-            $this->addFlash('success', 'flashes.created_successfully');
+            $this->addFlash('success', 'flash.created_successfully');
 
             return $this->redirectToRoute('lucca_user_show', ['id' => $user->getId()]);
         }
@@ -108,7 +108,7 @@ class UserController extends AbstractController
             $this->em->persist($user);
             $this->em->flush();
 
-            $this->addFlash('success', 'flashes.updated_successfully');
+            $this->addFlash('success', 'flash.updated_successfully');
 
             return $this->redirectToRoute('lucca_user_show', ['id' => $user->getId()]);
         }
@@ -134,9 +134,9 @@ class UserController extends AbstractController
             $this->em->remove($user);
             $this->em->flush();
 
-            $this->addFlash('success', 'flashes.deleted_successfully');
+            $this->addFlash('success', 'flash.deleted_successfully');
         } else {
-            $this->addFlash('danger', 'flashes.deletedCancelled');
+            $this->addFlash('danger', 'flash.deletedCancelled');
         }
 
         return $this->redirectToRoute('lucca_user_index');
@@ -171,7 +171,7 @@ class UserController extends AbstractController
         $this->em->persist($user);
         $this->em->flush();
 
-        $this->addFlash('success', 'flashes.toggled_successfully');
+        $this->addFlash('success', 'flash.toggled_successfully');
 
         return $this->redirectToRoute('lucca_user_index');
     }

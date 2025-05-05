@@ -69,7 +69,7 @@ class GroupController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->addFlash('success', 'flashes.created_successfully');
+            $this->addFlash('success', 'flash.created_successfully');
 
             $this->em->persist($group);
             $this->em->flush();
@@ -98,7 +98,7 @@ class GroupController extends AbstractController
             $this->em->persist($group);
             $this->em->flush();
 
-            $this->addFlash('success', 'flashes.updated_successfully');
+            $this->addFlash('success', 'flash.updated_successfully');
 
             return $this->redirectToRoute('lucca_user_group_show', ['id' => $group->getId()]);
         }
@@ -124,7 +124,7 @@ class GroupController extends AbstractController
             $this->em->flush();
         }
 
-        $this->addFlash('success', 'flashes.deleted_successfully');
+        $this->addFlash('success', 'flash.deleted_successfully');
 
         return $this->redirectToRoute('lucca_user_group_index');
     }

@@ -1,7 +1,7 @@
-{#- - Extends view - -#}
+{#-- Extends view --#}
 {% extends "@LuccaThemeStreamDashboardUiKit/Layout/printLayout.html.twig" %}
 
-{#- - Translation domain - -#}
+{#-- Translation domain --#}
 {% trans_default_domain 'ModelBundle' %}
 
 {% if adherent is not defined %}
@@ -14,7 +14,7 @@
         {% include '@LuccaModel/Margin/Embed/_pdf-margin.html.twig' with { 'margin': page.marginTop, 'var': var, 'adherent': adherent } %}
     {% endif %}
 
-    {% if cover is defined %}
+    {% if cover is defined and coverPage is defined and coverPage.marginTop is defined %}
         {% if coverPage.marginTop %}
             {% include '@LuccaModel/Margin/Embed/_pdf-margin.html.twig' with { 'margin': coverPage.marginTop, 'var': var, 'adherent': adherent } %}
         {% endif %}
@@ -43,12 +43,14 @@
                 for (var j = 0; j < elem.length; ++j) {
                     elem[j].textContent = urlParamsList[pagingElements[i]];
                     {% if cover is defined and page.marginTop %}
-                    if (urlParamsList[pagingElements[i]] == 1) {
-                        document.getElementById("margin-{{ page.marginTop.id }}").style.display = 'none';
-                    }
-                    if (urlParamsList[pagingElements[i]] != 1 && pagingElements[i] == 'page') {
-                        document.getElementById("margin-{{ coverPage.marginTop.id }}").style.display = 'none';
-                    }
+                        if (urlParamsList[pagingElements[i]] == 1) {
+                            document.getElementById("margin-{{ page.marginTop.id }}").style.display = 'none';
+                        }
+                        {% if coverPage is defined  and coverPage.marginTop is defined %}
+                            if (urlParamsList[pagingElements[i]] != 1 && pagingElements[i] == 'page') {
+                                document.getElementById("margin-{{ coverPage.marginTop.id }}").style.display = 'none';
+                            }
+                        {% endif %}
                     {% endif %}
                 }
             }

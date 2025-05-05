@@ -148,7 +148,6 @@ class SettingGenerator
         } catch (Exception $e) {
             // An error occurred, do nothing
         }
-
         // Check all category in the categories array
         foreach ($this->categories as $category) {
             $this->insertOrUpdateCategory($category['name'], $category['icon'], $category['position'], $category['comment']);
@@ -163,6 +162,7 @@ class SettingGenerator
 
         // Update pre-existing settings based on a list of callback function.
         $this->updateSettings($department);
+        $this->em->flush();
 
         $aOutputDictionary = $this->aOutputDictionary;
         $this->aOutputDictionary = []; // empty for future output
@@ -219,6 +219,7 @@ class SettingGenerator
         if (!is_array($this->aDatabaseSettingDictionary) || array_key_exists($name, $this->aDatabaseSettingDictionary) === false) {
             // Insert the new Setting
             $setting = new Setting($name, $type, $category, $accessType, $position, $value, $description, $values);
+            $setting->setDepartment($department);
 
             $this->em->persist($setting);
             $this->aOutputDictionary[$setting->getName()] = Setting::castValue($setting->getType(), $setting->getValue());

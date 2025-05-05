@@ -87,8 +87,15 @@ class DataGenerator
             'category' => 'setting.category.general.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 1,
-            'value' => '66',
-            'valuesAvailable' => ['66', '34', '12', '31', '33'],
+            'value' => 'A renseigner dans les paramètres',
+            'valuesAvailable' => [
+                '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17',
+                '18', '19', '2A', '2B', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33',
+                '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49', '50',
+                '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61', '62', '63', '64', '65', '66', '67',
+                '68', '69', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '80', '81', '82', '83', '84',
+                '85', '86', '87', '88', '89', '90', '91', '92', '93', '94', '95', '971', '972', '973', '974', '976'
+            ],
             'comment' => 'setting.general.departement.comment'],
         [
             'name' => "setting.general.colorL.name",
@@ -114,7 +121,7 @@ class DataGenerator
             'category' => 'setting.category.general.name',
             'accessType' => Setting::ACCESS_TYPE_ADMIN,
             'position' => 4,
-            'value' => 'subscription@cabanisation66.fr',
+            'value' => 'A renseigner dans les paramètres',
             'valuesAvailable' => [],
             'comment' => 'setting.general.emailGlobal.comment'],
         [
@@ -123,7 +130,7 @@ class DataGenerator
             'category' => 'setting.category.general.name',
             'accessType' => Setting::ACCESS_TYPE_ADMIN,
             'position' => 5,
-            'value' => 'ddtm-cabanisation@pyrenees-orientales.gouv.fr',
+            'value' => 'A renseigner dans les paramètres',
             'valuesAvailable' => [],
             'comment' => 'setting.general.emailLegaleDepartement.comment'],
         [
@@ -141,7 +148,7 @@ class DataGenerator
             'category' => 'setting.category.general.name',
             'accessType' => Setting::ACCESS_TYPE_ADMIN,
             'position' => 7,
-            'value' => 'DDT 66 des Pyrenees Orientales',
+            'value' => 'A renseigner dans les paramètres',
             'valuesAvailable' => [],
             'comment' => 'setting.general.ddtName.comment'],
         //------------------------------
@@ -201,7 +208,7 @@ class DataGenerator
             'category' => 'setting.category.pdf.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 13,
-            'value' => '/assets/12/logo-marianne-pdf.jpg',
+            'value' => '/assets/logo/logo-color.png',
             'valuesAvailable' => [],
             'comment' => 'setting.pdf.logo.comment'],
         [
@@ -231,7 +238,7 @@ class DataGenerator
             'category' => 'setting.category.folder.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 16,
-            'value' => true,
+            'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.folder.docContent.comment'],
         [
@@ -240,7 +247,7 @@ class DataGenerator
             'category' => 'setting.category.folder.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 17,
-            'value' => true,
+            'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.folder.docContentObstacle.comment'],
         [
@@ -298,7 +305,7 @@ class DataGenerator
             'category' => 'setting.category.courier.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 19,
-            'value' => true,
+            'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.courier.ddtmContent.comment'],
         [
@@ -307,7 +314,7 @@ class DataGenerator
             'category' => 'setting.category.courier.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 20,
-            'value' => true,
+            'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.courier.judicialContent.comment'],
         [
@@ -316,7 +323,7 @@ class DataGenerator
             'category' => 'setting.category.courier.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 21,
-            'value' => true,
+            'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.courier.mayorContent.comment'],
         //------------------------------
@@ -328,7 +335,7 @@ class DataGenerator
             'category' => 'setting.category.control.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 21,
-            'value' => true,
+            'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.control.footer.comment'],
         [
@@ -355,7 +362,7 @@ class DataGenerator
             'category' => 'setting.category.control.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 24,
-            'value' => true,
+            'value' => false,
             'valuesAvailable' => [],
             'comment' => 'setting.control.convocationContent.comment'],
         //------------------------------
@@ -367,7 +374,7 @@ class DataGenerator
             'category' => 'setting.category.general.name',
             'accessType' => Setting::ACCESS_TYPE_ADMIN,
             'position' => 26,
-            'value' => "https://cabanisation66.fr",
+            'value' => "A renseigner dans les paramètres",
             'valuesAvailable' => [],
             'comment' => 'setting.general.url.comment'],
         [
@@ -376,7 +383,7 @@ class DataGenerator
             'category' => 'setting.category.general.name',
             'accessType' => Setting::ACCESS_TYPE_ADMIN,
             'position' => 27,
-            'value' => "https://www.pyrenees-orientales.gouv.fr/",
+            'value' => "A renseigner dans les paramètres",
             'valuesAvailable' => [],
             'comment' => 'setting.general.urlGouv.comment'],
         [
@@ -443,7 +450,7 @@ class DataGenerator
             'category' => 'setting.category.module.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 13,
-            'value' => false,
+            'value' => true,
             'valuesAvailable' => [],
             'comment' => 'setting.module.dashboardAdmin.comment'],
 

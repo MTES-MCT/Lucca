@@ -36,14 +36,19 @@ readonly class DepartmentService
         $rows = [];
         $handle = fopen($file->getPathname(), 'r');
         if ($handle !== false) {
-            // Skip the BOM if present
+            // Skip UTF-8 BOM if present
             $bom = fread($handle, 3);
             if ($bom !== "\xEF\xBB\xBF") {
                 rewind($handle); // Go back to the beginning if no BOM
             }
 
             while (($data = fgetcsv($handle)) !== false) {
-                $convertedRow = array_map(fn($val) => mb_convert_encoding($val, 'UTF-8', ['Windows-1252', 'ISO-8859-1', 'UTF-8']), $data);
+                // Convert each field to UTF-8 if needed
+                $convertedRow = array_map(function ($value) {
+                    $encoding = mb_detect_encoding($value, ['UTF-8', 'ISO-8859-1', 'Windows-1252'], true);
+                    return $encoding !== 'UTF-8' ? mb_convert_encoding($value, 'UTF-8', $encoding) : $value;
+                }, $data);
+
                 $rows[] = $convertedRow;
             }
             fclose($handle);
@@ -77,7 +82,8 @@ readonly class DepartmentService
                 $newTown->setDepartment($department);
 
                 if (!empty($town[self::INTER_INSEE]) && !empty($towns[self::INTER_NAME])) {
-                    $newTown->setIntercommunal($intercommunals[$town[self::INTER_INSEE]]);
+                    $interco = $this->em->getReference(Intercommunal::class, $intercommunals[$town[self::INTER_INSEE]]->getId());
+                    $newTown->setIntercommunal($interco);
                 }
 
                 $this->em->persist($newTown);
