@@ -103,7 +103,7 @@
 
     <div class="u-header-left">
         <a class="u-header-logo mx-auto" href="{{ path('lucca_core_dashboard') }}">
-            <img class="u-logo-desktop" src="{{ asset('setting.general.logo.name'|setting) }}" width="50"
+            <img class="u-logo-desktop" src="{{ asset('setting.general.logo.name'|setting) }}" width="100"
                  alt="{{ 'setting.general.app.name'| setting }}">
         </a>
     </div>
@@ -456,7 +456,7 @@
 
                 {% endblock lucca_header %}
             </h2>
-            <ul id="overallIncomeTabsControl" class="nav nav-tabs card-header-tabs ml-md-auto mt-3 mt-md-0">
+            <ul id="overallIncomeTabsControl" class="nav nav-tabs card-header-tabs ml-md-auto mt-3 md-0 mt-auto mb-auto">
                 <li class="nav-item mr-4">
                     {% block lucca_header_badge %}
                         <div class="px-2 badge badge-primary">{{ 'company.version'|trans }}</div>

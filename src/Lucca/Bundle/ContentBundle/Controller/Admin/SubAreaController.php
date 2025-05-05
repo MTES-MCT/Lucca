@@ -67,7 +67,7 @@ class SubAreaController extends AbstractController
 
             $this->em->flush();
 
-            $this->addFlash('success', 'flashes.created_successfully');
+            $this->addFlash('success', 'flash.created_successfully');
 
             return $this->redirectToRoute('lucca_subarea_show', ['id' => $subArea->getId()]);
         }
@@ -115,7 +115,7 @@ class SubAreaController extends AbstractController
             $this->em->persist($subArea);
             $this->em->flush();
 
-            $this->addFlash('success', 'flashes.updated_successfully');
+            $this->addFlash('success', 'flash.updated_successfully');
 
             return $this->redirectToRoute('lucca_subarea_show', ['id' => $subArea->getId()]);
         }
@@ -142,7 +142,7 @@ class SubAreaController extends AbstractController
             $this->em->flush();
         }
 
-        $this->addFlash('success', 'flashes.deleted_successfully');
+        $this->addFlash('success', 'flash.deleted_successfully');
 
         return $this->redirectToRoute('lucca_subarea_index');
     }
@@ -169,7 +169,7 @@ class SubAreaController extends AbstractController
 
         $this->em->flush();
 
-        $this->addFlash('success', 'flashes.toggled_successfully');
+        $this->addFlash('success', 'flash.toggled_successfully');
 
         return $this->redirectToRoute('lucca_subarea_index');
     }

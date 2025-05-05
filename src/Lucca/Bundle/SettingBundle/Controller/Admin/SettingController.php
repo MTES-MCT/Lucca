@@ -63,7 +63,7 @@ class SettingController extends AbstractController
     public function showAction(Setting $setting): Response
     {
         if (str_contains($setting->getAccessType(), 'superAdmin') && !$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
-            $this->addFlash('danger', 'flashes.setting.accessDenied');
+            $this->addFlash('danger', 'flash.setting.accessDenied');
 
             return $this->redirectToRoute('lucca_setting_index');
         }
@@ -81,7 +81,7 @@ class SettingController extends AbstractController
     public function editAction(Request $request, Setting $setting): Response
     {
         if (str_contains($setting->getAccessType(), 'superAdmin') && !$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
-            $this->addFlash('danger', 'flashes.setting.accessDenied');
+            $this->addFlash('danger', 'flash.setting.accessDenied');
 
             return $this->redirectToRoute('lucca_setting_index');
         }
@@ -97,7 +97,7 @@ class SettingController extends AbstractController
 
             $this->generatorSetting->updateCachedSetting($setting->getName(), $setting->getValue(), $department);
 
-            $this->addFlash('success', 'flashes.setting.updatedSuccessfully');
+            $this->addFlash('success', 'flash.setting.updatedSuccessfully');
 
             return $this->redirectToRoute('lucca_setting_show', ['id' => $setting->getId()]);
         }

@@ -2,7 +2,7 @@
 ## Flash Domain
 ####################################
 
-flashes:
+flash:
     checklist:
         data:
             notFound: "Le fichier de données checklists n'a pas été trouvé"

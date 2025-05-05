@@ -119,6 +119,7 @@ readonly class AdherentManager
      */
     public function cloneAdherent(Adherent $adherent, Department $department): Adherent
     {
+        $department = $this->em->getReference(Department::class, $department->getId());
         $newAdherent = clone $adherent;
         $newAdherent->setDepartment($department);
         $newAdherent->setService(null);

@@ -44,7 +44,7 @@ readonly class ChecklistService
         $filePath = $projectDir . '/src/Lucca/Bundle/ChecklistBundle/Data/checklists.json';
 
         if (!file_exists($filePath)) {
-            $message = $this->translator->trans('flashes.checklist.data.notFound', [], 'FlashMessages');
+            $message = $this->translator->trans('flash.checklist.data.notFound', [], 'FlashMessages');
             $this->requestStack->getSession()->getFlashBag()->add('error', $message);
 
             return null;
@@ -54,7 +54,7 @@ readonly class ChecklistService
         $data = json_decode($jsonContent, true);
 
         if (json_last_error() !== JSON_ERROR_NONE || !is_array($data)) {
-            $message = $this->translator->trans('flashes.checklist.data.invalidJSON', [], 'FlashMessages');
+            $message = $this->translator->trans('flash.checklist.data.invalidJSON', [], 'FlashMessages');
             $this->requestStack->getSession()->getFlashBag()->add('error', $message);
 
             return null;

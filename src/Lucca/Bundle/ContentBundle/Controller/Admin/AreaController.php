@@ -60,7 +60,7 @@ class AreaController extends AbstractController
             $this->em->persist($area);
             $this->em->flush();
 
-            $this->addFlash('success', 'flashes.created_successfully');
+            $this->addFlash('success', 'flash.created_successfully');
 
             return $this->redirectToRoute('lucca_area_show', ['id' => $area->getId()]);
         }
@@ -106,7 +106,7 @@ class AreaController extends AbstractController
             $this->em->persist($area);
             $this->em->flush();
 
-            $this->addFlash('success', 'flashes.updated_successfully');
+            $this->addFlash('success', 'flash.updated_successfully');
 
             return $this->redirectToRoute('lucca_area_show', ['id' => $area->getId()]);
         }
@@ -133,7 +133,7 @@ class AreaController extends AbstractController
             $this->em->flush();
         }
 
-        $this->addFlash('success', 'flashes.deleted_successfully');
+        $this->addFlash('success', 'flash.deleted_successfully');
 
         return $this->redirectToRoute('lucca_area_index');
     }
@@ -159,7 +159,7 @@ class AreaController extends AbstractController
         $area->toggle();
         $this->em->flush();
 
-        $this->addFlash('success', 'flashes.toggled_successfully');
+        $this->addFlash('success', 'flash.toggled_successfully');
 
         return $this->redirectToRoute('lucca_area_index');
     }

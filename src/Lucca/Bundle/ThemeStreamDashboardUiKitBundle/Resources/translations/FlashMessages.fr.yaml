@@ -7,9 +7,9 @@ info: "Information"
 success: "Succès"
 
 ###############
-## Flashes message
+## flash message
 ###############
-flashes:
+flash:
     created_successfully: "L'objet a bien été créé"
     updated_successfully: "L'objet a bien été modifié"
     deleted_successfully: "L'objet a bien été supprimé"

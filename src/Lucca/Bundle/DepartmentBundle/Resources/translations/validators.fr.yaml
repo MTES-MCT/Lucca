@@ -2,3 +2,7 @@
 ## Domain : FormValidators
 ## Lang : FR
 ####################################
+constraint:
+    unique:
+        department:
+            code: "Un département avec ce code existe déja."

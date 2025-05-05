@@ -12,8 +12,7 @@ namespace Lucca\Bundle\DepartmentBundle\Controller\Admin;
 
 use Doctrine\Persistence\ManagerRegistry;
 
-use Lucca\Bundle\AdherentBundle\Entity\Adherent;
-use Lucca\Bundle\AdherentBundle\Manager\AdherentManager;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -31,6 +30,9 @@ use Lucca\Bundle\DepartmentBundle\Form\DepartmentType;
 use Lucca\Bundle\DepartmentBundle\Service\DepartmentService;
 use Lucca\Bundle\ModelBundle\Service\ModelService;
 use Lucca\Bundle\FolderBundle\Service\NatinfService;
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
+use Lucca\Bundle\AdherentBundle\Manager\AdherentManager;
+use Lucca\Bundle\SettingBundle\Generator\SettingGenerator;
 
 /**
  * Class DepartmentController
@@ -49,7 +51,9 @@ class DepartmentController extends AbstractController
         private readonly ChecklistService  $checklistService,
         private readonly DepartmentService $departmentService,
         private readonly NatinfService     $natinfService,
-        private readonly ModelService      $modelService, private readonly AdherentManager $adherentManager,
+        private readonly ModelService      $modelService,
+        private readonly AdherentManager   $adherentManager,
+        private readonly SettingGenerator  $settingGenerator,
     )
     {
     }
@@ -73,7 +77,9 @@ class DepartmentController extends AbstractController
      * Creates a new Department entity.
      * @param Request $request
      * @param ManagerRegistry $doctrine
+     * @param ValidatorInterface $validator
      * @return Response
+     * @throws Exception
      */
     #[Route(path: '/new', name: 'lucca_department_admin_new', defaults: ['_locale' => 'fr'], methods: ['GET', 'POST'])]
     #[IsGranted("ROLE_SUPER_ADMIN")]
@@ -120,11 +126,11 @@ class DepartmentController extends AbstractController
             $this->modelService->createForDepartment($department);
 
             /** Find Adherent by connected User */
-//            $user = $this->getUser();
-//            $adherent = $em->getRepository(Adherent::class)->findOneBy([
-//                'user' => $user
-//            ]);
-//            $this->adherentManager->cloneAdherent($adherent, $department);
+            $user = $this->getUser();
+            $adherent = $em->getRepository(Adherent::class)->findOneBy([
+                'user' => $user
+            ]);
+            $this->adherentManager->cloneAdherent($adherent, $department);
 
             $this->addFlash('success', 'flash.department.create.success');
 

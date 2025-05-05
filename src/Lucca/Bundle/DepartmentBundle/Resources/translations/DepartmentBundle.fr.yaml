@@ -20,16 +20,33 @@ link:
         backList: 'Retour à la liste des départements'
         new: 'Nouveau département'
         create: 'Créer un département'
+        generateSettings: 'Générer les paramètres manquants'
 
 title:
     department: 'Département'
+    nextSteps: "Étapes suivantes"
 
 help:
     towns: |
-        Fichier au format CSV contenant la liste des communes
+        Fichier au format CSV séparé par des virgules contenant la liste des communes
         -- La première ligne doit contenir les en-têtes de colonnes
         - 1ère colonne: code INSEE de la commune
         - 2e colonne: code postal de la commune
         - 3e colonne: nom de la commune
         - 4e colonne: code INSEE de l'intercommunalité (si existante)
         - 5e colonne: nom de l'intercommunalité (si existante)
+
+nextSteps:
+    createDomainName: >
+        Demander à votre service technique de créer le nom de domaine et les clefs APi pour Google Map.
+    createSetting: >
+        Cliquer sur le bouton pour générer les paramètres manquants. 
+        Ce bouton reste visible pour vous permettre de générer les nouveaux qui pourraient être ajoutés plus tard.
+    updateSettings: >
+        Mettre à jour les paramètres du département en vous rendant sur le nouveau nom de domaine que vous avez créé.
+        Si vous souhaitez activer des paramètres contenant la mention "Utilisez le fichier texte personnalisé",
+        une intervention d’un développeur sera nécessaire. Il en va de même pour l’ajout d’un logo
+        ou la configuration du contact affiché dans le tableau de bord.
+    assignUsers: >
+        Créer et configurer les utilisateurs du département.
+
