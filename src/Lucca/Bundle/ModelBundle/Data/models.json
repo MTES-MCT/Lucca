@@ -37,7 +37,7 @@
     },
     {
         "name": "Lettre au Parquet",
-        "layout": "choice.layout.cover",
+        "layout": "choice.layout.simple",
         "documents": "[\"choice.documents.judicialLetter\"]",
         "recto": {
             "margins": [

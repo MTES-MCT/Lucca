@@ -3,37 +3,39 @@
 
 Dropzone.autoDiscover = false;
 
-toastr.options = {
-    "closeButton": true, "debug": false, "progressBar": true, "preventDuplicates": true,
-    "positionClass": "toast-top-center", "onclick": null,
-    "showDuration": "400", "hideDuration": "1000", "timeOut": "4000", "extendedTimeOut": "1000",
-    "showEasing": "swing", "hideEasing": "linear", "showMethod": "fadeIn", "hideMethod": "fadeOut"
-};
+function showAlert(message, type = 'success', timeout = 4000) {
+    const container = document.getElementById('alert-container');
+    if (!container) return;
+
+    const alert = document.createElement('div');
+    alert.className = `alert alert-${type} alert-dismissible fade show shadow position-relative`;
+    alert.role = 'alert';
+    alert.innerHTML = `
+        <div>${message}</div>
+        <button type="button" class="btn border-0 bg-transparent p-0 position-absolute top-0 end-0 m-2" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    `;
+
+    container.appendChild(alert);
+
+    setTimeout(() => {
+        alert.classList.remove('show');
+        alert.classList.add('hide');
+        setTimeout(() => alert.remove(), 200);
+    }, timeout);
+}
 
 $(window).on('load', function () {
     let self = media_form;
 
-    /** Init dropzone configuration */
     for (let index = 0; index < $(self.sDropzoneMediaTag).length; index++) {
-
-        /**
-         * parallelUploads : let it to 1 due to the maxFilesize event listener
-         *
-         * maxFilesize : a twig global parameter
-         *
-         * maxFiles = maxCollectionFiles a twig global parameter - the number of gallery media
-         *
-         * dictCancelUpload, dictRemoveFile, dictMaxFilesExceeded, dictFileTooBig : translation
-         *
-         * hiddenFileInput : the input type file
-         */
         var myDropzone = new Dropzone('#' + $(self.sDropzoneMediaTag)[index].id, {
             url: Routing.generate('lucca_media_api_upload_files'),
             addRemoveLinks: true,
             uploadMultiple: true,
             parallelUploads: 1,
             maxFilesize: {{ maxFilesize }},
-            maxFiles: {{ maxCollectionFiles }} -$(self.sDropzoneMediaTag)[index].dataset['countFile'],
+            maxFiles: {{ maxCollectionFiles }} - $(self.sDropzoneMediaTag)[index].dataset['countFile'],
             dictCancelUpload: "{{ 'message.dropzone.cancelUpload'|trans|e('js') }}",
             dictRemoveFile: "{{ 'message.dropzone.removeFile'|trans|e('js') }}",
             dictMaxFilesExceeded: "{{ 'message.dropzone.maxFilesReached'|trans|e('js') }}",
@@ -47,60 +49,44 @@ $(window).on('load', function () {
             myDropzone.options.hiddenFileInput.name = null;
         }
 
-        // If files upload are processing, block the form submit
         myDropzone.on('sending', function () {
-            // Add an event listener on submit
             $('#' + myDropzone.element.id).closest('form').on('submit', function (event) {
                 event.preventDefault();
-                toastr.error("{{ 'message.media.mediaProcessing'|trans|e('js') }}");
+                showAlert("{{ 'message.media.mediaProcessing'|trans|e('js') }}", "danger");
             });
         });
 
-        // If files are uploaded, remove the event listener
         myDropzone.on('queuecomplete', function () {
             $('#' + myDropzone.element.id).closest('form').off('submit');
         });
 
-        // If the number of files drop seleted or draged are greater then the config maxFiles
         myDropzone.on('maxfilesreached', function () {
-            toastr.error("{{ 'message.dropzone.maxFilesReached'|trans|e('js') }}", "{{ 'message.media.titleUpload'|trans|e('js') }}");
+            showAlert("{{ 'message.dropzone.maxFilesReached'|trans|e('js') }}", "danger");
         });
 
         $(document)
             .on('submit', $('#' + myDropzone.element.id).closest('form'), function (event) {
-                // On submit get files uploaded
                 let files = myDropzone.options.hiddenFileInput.files;
-                // get the input type text submited
                 let fileText = $('#' + $(self.sDropzoneMediaTag)[index].id + '_fileText');
                 fileText[0].value = '';
-                /**
-                 *  Change the value of the input type text with this structure
-                 *  FileName;;FileType;;;FileName2;;FileType2;;;[...]
-                 *  used in DropzoneFormListener.php
-                 */
                 for (let index = 0; index < files.length; index++) {
                     const element = files[index];
                     fileText[0].value += element.name + ';;' + element.type + ';;;';
                 }
-                // Remove the input type file to not send files to the server
                 myDropzone.options.hiddenFileInput.remove();
-            })
+            });
     }
-    // Remove all label from bootstrap4
-    $('.dropzoneMedia .custom-file .custom-file-label, .media-form-container .custom-file .custom-file-label').each(function (index) {
-        {#$(this).parents()[0].style.display = 'none'#}
+
+    $('.dropzoneMedia .custom-file .custom-file-label, .media-form-container .custom-file .custom-file-label').each(function () {
         $(this).parents()[0].style.display = 'none';
     });
 
-    // Change title of the dropzone
     for (let index = 0; index < $('.dz-button').length; index++) {
-        const element = $('.dz-button')[index];
-        element.innerHTML = "{{ 'message.dropzone.title'|trans|e('js') }}";
+        $('.dz-button')[index].innerHTML = "{{ 'message.dropzone.title'|trans|e('js') }}";
     }
 });
 
 let media_form = {
-
     sAllMediaTag: '.mediaFile',
     sAllMediaGroupTag: '.media-form-container',
     sAllMediaRemoveBtnTag: '.media-remove-btn',
@@ -111,28 +97,12 @@ let media_form = {
     sModalConfirmRemoveTag: '#modal-confirm-remove',
     sDropzoneMediaTag: '.dropzoneMedia',
 
-    /**
-     * @private
-     */
     _init: function () {
-
-        /** Init variables */
-        let self = this;
-
-        /** Init listeners */
         this._addListeners();
     },
 
-    /**
-     * Add all listener for each field
-     * onChange Listener on files
-     * click Listener on remove button
-     *
-     * @private
-     */
     _addListeners: function () {
         let self = this;
-
         $(document)
             .on('change', self.sAllMediaTag, function (event) {
                 self.uploadFiles(event);
@@ -145,32 +115,16 @@ let media_form = {
             });
     },
 
-    /**
-     * Send files input to the server
-     */
     uploadFiles: function (event, filesToUpload = null) {
-        console.log('uploadFiles');
         let self = this;
         let formData = new FormData();
-        var files = null;
+        let files = event?.target?.files || filesToUpload;
 
-        // Get files to upload them
-        if (event && event.target.value !== null) {
-            // From event on input type file
-            files = event.target.files;
-        } else {
-            // Or from filesToUpload with the dropzone event
-            files = filesToUpload;
-        }
-
-        // Check files selected or not
         if (files && files.length > 0) {
-            // Add file to FormData
-            for (let index = 0; index < files.length; index++) {
-                formData.append(files[index].name, files[index]);
+            for (let file of files) {
+                formData.append(file.name, file);
             }
 
-            // Send files to the server
             $.ajax({
                 type: "POST",
                 url: Routing.generate('lucca_media_api_upload_files'),
@@ -179,74 +133,46 @@ let media_form = {
                 contentType: false,
                 processData: false,
                 success: function (response) {
-                    for (let index = 0; index < response.length; index++) {
-                        // Show a toast alert if files are uploaded or not
-                        if (response[index].isUploaded)
-                            toastr.success("{{ 'message.media.successUpload'|trans|e('js') }}", "{{ 'message.media.titleUpload'|trans|e('js') }}");
+                    for (let res of response) {
+                        if (res.isUploaded)
+                            showAlert("{{ 'message.media.successUpload'|trans|e('js') }}", "success");
                         else
-                            toastr.error("{{ 'message.media.failedUpload'|trans|e('js') }}", "{{ 'message.media.titleUpload'|trans|e('js') }}");
+                            showAlert("{{ 'message.media.failedUpload'|trans|e('js') }}", "danger");
                     }
                 }
             });
         }
     },
 
-    /**
-     * Get Delete Modal of a media
-     *
-     * @param {*} event
-     */
     getDeleteModal: function (event) {
         let self = this;
+        let mediaId = event.target.dataset['mediaId'];
+        let entityParent = event.target.dataset['entityParent'];
+        let idParent = event.target.dataset['entityParentId'];
+        let varsMedia = event.target.dataset['mediaVars'];
 
-        // Get id media to remove
-        var mediaIdToRemove = event.target.dataset['mediaId'];
+        if (mediaId) {
+            $.ajax({
+                type: "GET",
+                url: Routing.generate('lucca_media_api_get_delete_modal'),
+                data: { id: mediaId, entityParent, idParent, varsMedia },
+                success: function (response) {
+                    if ([ -1, 2, 3 ].includes(response)) {
+                        showAlert("{{ 'message.media.mediaNotFound'|trans|e('js') }}", "warning");
+                    } else {
+                        $(self.sModalTag).remove();
+                        $('.block-modals').append(response);
+                        $(self.sModalConfirmRemoveTag)
+                            .data('media-id', mediaId)
+                            .data('entity-parent', entityParent)
+                            .data('entity-parent-id', idParent)
+                            .data('media-vars', varsMedia);
 
-        // Get entity Parent to remove the media into it
-        let entityParentMediaToRemove = event.target.dataset['entityParent'];
-        let idParentMediaToRemove = event.target.dataset['entityParentId'];
-        let varsMediaToRemove = event.target.dataset['mediaVars'];
-
-        // Make sure we are sending an id not null
-        if (mediaIdToRemove !== null || mediaIdToRemove !== '') {
-
-      // Send files to the server
-      $.ajax({
-        type: "GET",
-        url: Routing.generate('lucca_media_api_get_delete_modal'),
-        data: {
-          id: mediaIdToRemove,
-          entityParent: entityParentMediaToRemove,
-          idParent: idParentMediaToRemove,
-          varsMedia: varsMediaToRemove,
-        },
-        success: function (response) {
-          // Code -1 is id null given so event.target.dataset['mediaId'] is null
-          if(response === -1){
-            toastr.warning("{{ 'message.media.mediaNotFound'|trans|e('js') }}");
-
-            // Code 2 is media not found
-          }else if (response === 2){
-            toastr.warning("{{ 'message.media.mediaNotFound'|trans|e('js') }}");
-
-          // Code 3 is media empty
-          }else if (response === 3){
-            toastr.warning("{{ 'message.media.mediaNotFound'|trans|e('js') }}");
-
-          }else {
-            // Add modal html code next to the target
-            $(self.sModalTag).remove();
-            $('.block-modals').append(response);
-
-                        // Open modal
                         $(self.sModalTag).modal('show');
 
-                        // On confirm delete modal button click
-                        $(self.sModalConfirmRemoveTag).on('click', function () {
-                            // Hide modal
+                        $(self.sModalConfirmRemoveTag).off('click').on('click', function () {
                             $(self.sModalTag).modal('hide');
-                            // Remove media function call
-                            self.removeMedia(event);
+                            self.removeMedia(this);
                         });
                     }
                 }
@@ -254,105 +180,61 @@ let media_form = {
         }
     },
 
-    /**
-     * Remove Media
-     *
-     * @param {*} event
-     */
-    removeMedia: function (event) {
+    removeMedia: function (trigger) {
         let self = this;
+        let mediaId = $(trigger).data('media-id');
+        let entityParent = $(trigger).data('entity-parent');
+        let idParent = $(trigger).data('entity-parent-id');
+        let varsMedia = $(trigger).data('media-vars');
 
-        // Get id media to remove
-        let mediaIdToRemove = event.target.dataset['mediaId'];
-
-        // Get entity Parent to remove the media into it
-        let entityParentMediaToRemove = event.target.dataset['entityParent'];
-        let idParentMediaToRemove = event.target.dataset['entityParentId'];
-        let varsMediaToRemove = event.target.dataset['mediaVars'];
-
-        // Make sure we are sending an id not null
-        if (mediaIdToRemove !== null || mediaIdToRemove !== '') {
-
-            // Send id media to the server
+        if (mediaId) {
             $.ajax({
                 type: "DELETE",
                 url: Routing.generate('lucca_media_api_remove_media'),
-                data: {
-                    id: mediaIdToRemove,
-                    entityParent: entityParentMediaToRemove,
-                    idParent: idParentMediaToRemove,
-                    varsMedia: varsMediaToRemove,
-                },
+                data: { id: mediaId, entityParent, idParent, varsMedia },
                 dataType: 'json',
                 success: function (response) {
-                    // Code -1 is id null given so event.target.dataset['mediaId'] is null
-                    if (response === -1) {
-                        toastr.warning("{{ 'message.media.mediaNotFound'|trans|e('js') }}");
-
-                        // Code 0 is a failure on remove media
+                    if (response === -1 || response === 2) {
+                        showAlert("{{ 'message.media.mediaNotFound'|trans|e('js') }}", "warning");
                     } else if (response === 0) {
-                        toastr.error("{{ 'message.media.failedRemoveMedia'|trans|e('js') }}");
-
-                        // Code 1 is a success on remove media
+                        showAlert("{{ 'message.media.failedRemoveMedia'|trans|e('js') }}", "danger");
                     } else if (response === 1) {
-                        let rowMedia = $(self.sMediaRemoveBtnTag + mediaIdToRemove)[0];
+                        let rowMedia = $(self.sMediaRemoveBtnTag + mediaId)[0];
                         let dropzoneElement = rowMedia.parentElement.lastChild;
-                        // Find the dropzone instance to increment the maxFiles option due to the remove
-                        let instanceDropzone = Dropzone.instances.find(instance => instance.element.id === dropzoneElement.id);
-                        if (instanceDropzone)
-                            instanceDropzone.options = {
-                                ...instanceDropzone.options,
-                                maxFiles: instanceDropzone.options.maxFiles + 1,
-                            }
-                        // Remove the row of the media
+                        let instance = Dropzone.instances.find(i => i.element.id === dropzoneElement.id);
+                        if (instance) instance.options.maxFiles++;
                         rowMedia.remove();
-                        toastr.success("{{ 'message.media.removeMedia'|trans|e('js') }}");
-
-                        // Code 2 is media not found
-                    } else if (response === 2) {
-                        toastr.warning("{{ 'message.media.mediaNotFound'|trans|e('js') }}");
-
-                        // Code 3 is media empty
+                        showAlert("{{ 'message.media.removeMedia'|trans|e('js') }}", "success");
                     } else if (response === 3) {
-                        toastr.warning("{{ 'message.media.mediaEmpty'|trans|e('js') }}");
+                        showAlert("{{ 'message.media.mediaEmpty'|trans|e('js') }}", "warning");
                     }
                 }
             });
         }
     },
 
-    /**
-     * Show the remove button link to the input file
-     *
-     * @param {*} event
-     */
     showRemoveFileButton: function (event) {
         let self = this;
         let button = $("#" + event.currentTarget.id.replace('file-input', 'file-remove'));
         if (button.length > 0) {
             button[0].hidden = false;
-            $(document).on('click', self.sFileRemoveBtnTag, function (event) {
-                self.emptyFileInput(event);
+            $(document).on('click', self.sFileRemoveBtnTag, function (e) {
+                self.emptyFileInput(e);
             });
         }
     },
 
-    /**
-     * Empty the input file link to the remove button
-     *
-     * @param {*} event
-     */
     emptyFileInput: function (event) {
-        // Remove files
-        if (event.currentTarget) {
-            // From event on input type file
-            let inputFile = $("#" + event.currentTarget.id.replace('file-remove', 'file-input') + ">input");
-            if (inputFile.length > 0 && inputFile[0].files.length > 0) {
-                inputFile[0].value = null;
-                inputFile[0].dispatchEvent(new Event('change'));
-                event.target.hidden = true;
-            }
+        let inputId = event.currentTarget.id.replace('file-remove', 'file-input');
+        let inputFile = $('#' + inputId).find("input[type='file']");
+
+        if (inputFile.length > 0 && inputFile[0].files.length > 0) {
+            inputFile[0].value = null;
+            inputFile[0].dispatchEvent(new Event('change'));
+            event.currentTarget.hidden = true;
+            showAlert("Suppression OK", "success");
         }
     }
 };
+
 media_form._init();
