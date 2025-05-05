@@ -12,6 +12,13 @@ FROM php:8.4-fpm AS php-fpm
 # Workdir during installation
 WORKDIR /tmp
 
+ENV APP_SECRET=${APP_SECRET}
+ENV MYSQL_DATABASE=${MYSQL_DATABASE}
+ENV MYSQL_USER=${MYSQL_USER}
+ENV MYSQL_PASSWORD=${MYSQL_PASSWORD}
+ENV MYSQL_HOST=${MYSQL_HOST}
+ENV MYSQL_PORT=${MYSQL_PORT}
+
 RUN apt-get update && apt-get install -y \
     libzip-dev libicu-dev \
     libpng-dev libjpeg62-turbo-dev libfreetype6-dev \
