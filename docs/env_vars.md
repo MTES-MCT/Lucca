@@ -28,16 +28,16 @@ Below is a categorized explanation of each available variable.
 
 ## 🗄️ Database (Doctrine / MariaDB)
 
-| Variable              | Description |
-|------------------------|-------------|
-| `MYSQL_HOST`           | Hostname of the database container |
-| `MYSQL_PORT`           | Port used to connect to the DB |
-| `MYSQL_DATABASE`       | Name of the database |
-| `MYSQL_USER`           | Username for DB access |
-| `MYSQL_PASSWORD`       | Password for the DB user |
-| `MYSQL_ROOT_PASSWORD`  | Root password for MariaDB |
-| `MYSQL_VERSION`        | MariaDB version used |
-| `MYSQL_FULL_VERSION`   | Full MariaDB version string (e.g. `11.8.1-MariaDB`) |
+| Variable              | Description                                                                  |
+|------------------------|------------------------------------------------------------------------------|
+| `MYSQL_HOST`           | Hostname of the database container. Must be defined on vars gitlab / github. |
+| `MYSQL_PORT`           | Port used to connect to the DB                                               |
+| `MYSQL_DATABASE`       | Name of the database. Must be defined on vars gitlab / github.                                                         |
+| `MYSQL_USER`           | Username for DB access. Must be defined on vars gitlab / github.                                                       |
+| `MYSQL_PASSWORD`       | Password for the DB user. Must be defined on vars gitlab / github.                                                     |
+| `MYSQL_ROOT_PASSWORD`  | Root password for MariaDB. Must be defined on vars gitlab / github.                                                    |
+| `MYSQL_VERSION`        | MariaDB version used                                                         |
+| `MYSQL_FULL_VERSION`   | Full MariaDB version string (e.g. `11.8.1-MariaDB`)                          |
 
 > 🔗 Used to compose the `DATABASE_URL` in Symfony.
 

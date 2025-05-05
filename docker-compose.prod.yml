@@ -13,8 +13,11 @@ services:
       - lucca-network
     environment:
       APP_SECRET: ${APP_SECRET}
-      MYSQL_HOST: db_lucca_prod
-      PHP_LISTENNING: 9000
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
 
   caddy:
     container_name: caddy_lucca_prod
