@@ -8,7 +8,15 @@ variables:
     CADDY_BRANCH: 'main'
     MAIN_VERSION: '8.2-2'
     PHP_MEMORY_LIMIT: '512M'
-
+    
+    # These should be defined in GitLab CI/CD settings (masked if sensitive)
+    APP_SECRET: ${APP_SECRET}
+    MYSQL_DATABASE: ${MYSQL_DATABASE}
+    MYSQL_USER: ${MYSQL_USER}
+    MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    MYSQL_HOST: ${MYSQL_HOST}
+    MYSQL_PORT: ${MYSQL_PORT}
 
 stages:
     - build
