@@ -29,6 +29,27 @@ with full [HTTP/2](https://symfony.com/doc/current/weblink.html), HTTP/3 and HTT
 - To see the status of your migrations, run `php bin/console doctrine:migrations:status`
 - To see the list of migrations, run `php bin/console doctrine:migrations:list`
 
+## Unit test
+- To run unit test use `php -d memory_limit=-1 bin/phpunit src`
+
+OR 
+
+- To run unit test use `php -d memory_limit=-1 bin/phpunit src/Lucca/Bundle/AdherentBundle`
+- To run unit test use `php -d memory_limit=-1 bin/phpunit src/Lucca/Bundle/ChecklistBundle`
+- To run unit test use `php -d memory_limit=-1 bin/phpunit src/Lucca/Bundle/ContentBundle`
+- To run unit test use `php -d memory_limit=-1 bin/phpunit src/Lucca/Bundle/CoreBundle`
+- To run unit test use `php -d memory_limit=-1 bin/phpunit src/Lucca/Bundle/DecisionBundle`
+- To run unit test use `php -d memory_limit=-1 bin/phpunit src/Lucca/Bundle/DepartmentBundle`
+- To run unit test use `php -d memory_limit=-1 bin/phpunit src/Lucca/Bundle/FolderBundle`
+- To run unit test use `php -d memory_limit=-1 bin/phpunit src/Lucca/Bundle/LogBundle`
+- To run unit test use `php -d memory_limit=-1 bin/phpunit src/Lucca/Bundle/MediaBundle`
+- To run unit test use `php -d memory_limit=-1 bin/phpunit src/Lucca/Bundle/MinuteBundle`
+- To run unit test use `php -d memory_limit=-1 bin/phpunit src/Lucca/Bundle/ModelBundle`
+- To run unit test use `php -d memory_limit=-1 bin/phpunit src/Lucca/Bundle/ParameterBundle`
+- To run unit test use `php -d memory_limit=-1 bin/phpunit src/Lucca/Bundle/SecurityBundle`
+- To run unit test use `php -d memory_limit=-1 bin/phpunit src/Lucca/Bundle/SettingBundle`
+- To run unit test use `php -d memory_limit=-1 bin/phpunit src/Lucca/Bundle/UserBundle`
+
 ## Docs
 
 1. [Initialization project](docs/initialization_lucca.md)
