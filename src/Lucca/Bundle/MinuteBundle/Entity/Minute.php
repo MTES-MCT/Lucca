@@ -139,7 +139,7 @@ class Minute implements LoggableInterface
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
     private bool $isClosed = false;
 
-    #[ORM\OneToOne(targetEntity: Closure::class, inversedBy: 'minute')]
+    #[ORM\OneToOne(targetEntity: Closure::class)]
     #[ORM\JoinColumn]
     private ?Closure $closure = null;
 

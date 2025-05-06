@@ -65,6 +65,23 @@
     padding-top: 15px;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+
 /************************************************************
  * Custom class
  ************************************************************/
@@ -115,7 +132,18 @@ textarea {
 }
 
 .wrapper {
-    background: url("../img/wallpaper-wall.jpg");
+    background: url("../img/wallpaper-wall.jpg") repeat-y top center;
+    background-size: 100%;
+}
+
+.alert-light{
+    background-color: white;
+    text-align: center;
+    justify-content: center;
+}
+
+.alert-warning, .alert-danger, .alert-dark, .alert-success{
+    justify-content: center;
 }
 
 /********************
@@ -214,6 +242,7 @@ a .logo-header:hover {
 
 .column-title h2 {
     margin: auto 0;
+    font-size: 1.5rem;
 }
 
 .column {
@@ -282,9 +311,11 @@ a:hover,
  ********************/
 .div-admin {
     display: inline-block;
-    border: 1px dashed #f0ad4e;
-    padding: 5px;
+    border: 1px dashed #d99a35;
+    border-radius: 4px;
+    padding: 5px 10px;
     margin: 5px;
+    font-weight: bold;
     float: right;
 }
 
@@ -295,7 +326,14 @@ a:hover,
     right: -10px;
     display: inline;
     margin-bottom: 5px;
+    background-color: #fff;
+    color: #f0ad4e;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 2px 6px;
+    font-size: 0.85rem;
 }
+
 
 /********************
  * Error

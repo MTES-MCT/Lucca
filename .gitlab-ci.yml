@@ -39,4 +39,7 @@ include:
         file: '/tests/docker_paratest.yml'
     -   project: 'nw/gitlab-ci'
         ref: main
+        file: '/tests/docker_phpunit.yml'
+    -   project: 'nw/gitlab-ci'
+        ref: main
         file: '/production/docker_build_push_prod.yml'
