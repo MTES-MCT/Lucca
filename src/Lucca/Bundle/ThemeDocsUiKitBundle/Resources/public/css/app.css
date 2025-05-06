@@ -7,8 +7,8 @@
  */
 
 body {
-    background: url('../img/wallpaper-wall.jpg') no-repeat;
-    background-size: cover;
+    background: url("../img/wallpaper-wall.jpg") repeat-y top center;
+    background-size: 100%;
 }
 
 header {
@@ -34,10 +34,10 @@ header {
 }
 
 #footerLogo {
-    min-height: 250px;
+    min-height: 150px;
     width: 100%;
     background: url("/assets/logo/lucca-monochrome.png") no-repeat right top;
-    background-size: 20em;
+    background-size: 10em;
     position: absolute;
     opacity: 0.5;
 }

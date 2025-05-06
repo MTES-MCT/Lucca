@@ -33,6 +33,8 @@ flash:
         markAsReRead: "Le procès verbal a été marqué comme relu."
         markAsUnReRead: "Le procès verbal a été marqué comme non relu."
         cannotPrint: "Le PDF ne peut être généré pour le PV demandé. Veuillez vérifier l'intégrité des images fournies."
+        markAsReReaded: "Le PV a bien été marqué en relu."
+        markAsUnReReaded: "Le PV n'est plus marqué en relu."
 
     courier:
         offenderDate: "Les courriers aux contrevenant seront datés d'aujourd'hui."

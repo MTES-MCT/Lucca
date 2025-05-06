@@ -13,123 +13,113 @@ namespace Lucca\Bundle\MediaBundle\EventListener;
 use Doctrine\ORM\Exception\ORMException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Form\{FormEvent, FormEvents};
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
-use Lucca\Bundle\MediaBundle\Entity\{Media, MediaListAsyncInterface};
+use Lucca\Bundle\MediaBundle\Entity\Media;
+use Lucca\Bundle\MediaBundle\Entity\MediaListAsyncInterface;
 use Lucca\Bundle\MediaBundle\Manager\FileManager;
 
 readonly class DropzoneFormListener implements EventSubscriberInterface
 {
     public function __construct(
-        private FileManager   $fileManager,
+        private FileManager $fileManager
     )
     {
     }
 
     public static function getSubscribedEvents(): array
     {
-        return array(
-            'onPostSetData' => FormEvents::POST_SET_DATA,
-            'onPreSubmit' => FormEvents::PRE_SUBMIT,
-        );
+        return [
+            FormEvents::POST_SET_DATA => 'onPostSetData',
+            FormEvents::PRE_SUBMIT => 'onPreSubmit',
+        ];
     }
 
     /**
-     * On form load the file if we are on an edit
+     * On form load, load files if we are editing
      */
-    public function onPostSetData(FormEvent $event): ?array
+    public function onPostSetData(FormEvent $event): void
     {
         $form = $event->getForm()->getParent();
 
+        if (!$form) {
+            return;
+        }
+
+        $data = $form->getData();
+
+        if (!$data || !in_array(MediaListAsyncInterface::class, class_implements($data))) {
+            return;
+        }
+
         $filesystem = new Filesystem();
+        $medias = $data->getAsyncMedias();
+        $files = [];
 
-        // Test if the form class implement MediaListAsyncInterface to get function as addMedia, removeMedia, getMedias ...
-        if (in_array(MediaListAsyncInterface::class, class_implements($form->getData()))) {
-
-            // Medias is medias of the form
-            $medias = $form->getData()->getAsyncMedias();
-            $files = [];
-
-            /** If the Media exists find it and find its path.
-             * If it does not then return null.
-             */
-            if (!($medias !== null && count($medias) > 0 )) {
-                return null;
-            }
-
-            // For each Medias, test if the file exist
+        if ($medias && count($medias) > 0) {
             foreach ($medias as $media) {
                 if ($media instanceof Media) {
                     $filePath = $this->fileManager->getMediaPath($media);
-
-                    /** If the the file or the media does not exist continue */
-                    if (!$filesystem->exists($filePath)) {
-                        continue;
+                    if ($filesystem->exists($filePath)) {
+                        $files[] = $media;
                     }
-
-                    $files[] = $media;
                 }
             }
-            $event->getForm()->get('file')->setData($files);
-
-            return $files;
         }
 
-        return null;
+        if (!empty($files)) {
+            $event->getForm()->get('file')->setData($files);
+        }
     }
 
     /**
-     * On submit get all files sent on tmp folder and create medias.
+     * On submit, create media from uploaded temp files
      *
      * @throws ORMException
      */
-    public function onPreSubmit(FormEvent $event): ?FormEvent
+    public function onPreSubmit(FormEvent $event): void
     {
-        /**
-        * Get File in tmp Folder
-        */
-        /** @var string $filesString */
-        $filesString = $event->getData()['file'][0];
+        $data = $event->getData();
 
-        // Create an array with this filesString
-        /** @var array $files */
-        $files = explode(';;;', $filesString);
-        array_pop($files);
-
-        // Get form parent of the dropzone
-        $parentForm = $event->getForm()->getParent();
-
-        // Test if the form class implement MediaListAsyncInterface to get function as addMedia, removeMedia, getMedias ...
-        if (in_array(MediaListAsyncInterface::class, class_implements($parentForm->getData()))) {
-
-            /** If the dropzone does not exist do nothing. The form is probably a new form */
-            if ($files === null) {
-                return null;
-            }
-
-            $filesystem = new Filesystem();
-
-            foreach ($files as $file) {
-                /**
-                 * $file = 'fileName;fileType'
-                 * $fileObject[0] = fileName
-                 * $fileObject[1] = fileType
-                 */
-                $fileObject = explode(';;', $file);
-                if ($filesystem->exists($this->fileManager->getTmpPath() . '/' . $fileObject[0]) && array_key_exists(1, $fileObject)) {
-                    // Create new uploadedFile with file params
-                    $fileToUpload = new UploadedFile($this->fileManager->getTmpPath() . '/' . $fileObject[0],
-                    $fileObject[0],
-                    $fileObject[1]);
-
-                    /** With any post method upload the file */
-                    $media = $this->fileManager->uploadFile($fileToUpload, new Media());
-                    $parentForm->getData()->addAsyncMedia($media);
-                }
-            }
+        if (!isset($data['file'][0]) || empty($data['file'][0])) {
+            return;
         }
 
-        return $event;
+        $filesString = $data['file'][0];
+        $files = explode(';;;', $filesString);
+        array_pop($files); // Remove last empty element if any
+
+        $parentForm = $event->getForm()->getParent();
+
+        if (!$parentForm) {
+            return;
+        }
+
+        $formData = $parentForm->getData();
+
+        if (!$formData || !in_array(MediaListAsyncInterface::class, class_implements($formData))) {
+            return;
+        }
+
+        $filesystem = new Filesystem();
+
+        foreach ($files as $file) {
+            $fileObject = explode(';;', $file);
+
+            if (
+                isset($fileObject[0], $fileObject[1]) &&
+                $filesystem->exists($this->fileManager->getTmpPath() . '/' . $fileObject[0])
+            ) {
+                $fileToUpload = new UploadedFile(
+                    $this->fileManager->getTmpPath() . '/' . $fileObject[0],
+                    $fileObject[0],
+                    $fileObject[1]
+                );
+
+                $media = $this->fileManager->uploadFile($fileToUpload, new Media());
+                $formData->addAsyncMedia($media);
+            }
+        }
     }
 }
