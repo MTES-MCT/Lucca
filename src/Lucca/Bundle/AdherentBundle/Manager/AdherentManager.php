@@ -46,7 +46,7 @@ readonly class AdherentManager
         /** Generate Username user */
         $adherent->getUser()->setUsername($this->codeGenerator->generate($adherent));
 
-        $this->userManager->updateUser($adherent->getUser(), false);
+        $this->userManager->updateUser($adherent->getUser());
 
         return $adherent;
     }
@@ -100,18 +100,32 @@ readonly class AdherentManager
     /**
      * Check if an Adherent entity was correctly configured
      */
-    public function checkPrerequisites(Adherent $adherent): bool
+    public function checkPrerequisites(Adherent $adherent, Department $department, bool $isNew = false): bool
     {
+        if ($isNew && $adherent->getUser()->getPlainPassword() === null) {
+            $this->requestStack->getSession()->getFlashBag()->add('danger', 'flash.adherent.missingPassword');
+            return false;
+        }
+
         $userExisting = $this->em->getRepository(User::class)->findOneBy(array(
             'email' => $adherent->getUser()->getEmail()
         ));
 
-        if ($userExisting !== null && $userExisting !== $adherent->getUser()) {
-            $this->requestStack->getSession()->getFlashBag()->add('danger', 'flash.adherent.userAlreadyExist');
+        if ($userExisting) {
+            $adherentExisting = $this->em->getRepository(Adherent::class)->findOneBy(array(
+                'user' => $userExisting, 'department' => $department->getId()
+            ));
+
+            if ($adherentExisting !== null && $adherentExisting->getUser() !== $adherent->getUser()) {
+                $this->requestStack->getSession()->getFlashBag()->add('danger', 'flash.adherent.userAlreadyExist');
+
+                return false;
+            }
+
+            $adherent->setUser($userExisting);
         }
 
-        /** Return true if a dangerous message has been found in Session */
-        return !$this->requestStack->getSession()->getFlashBag()->has('danger');
+        return true;
     }
 
     /**
@@ -126,7 +140,7 @@ readonly class AdherentManager
         $newAdherent->setTown(null);
         $newAdherent->setIntercommunal(null);
 
-        if($adherent->getService()) {
+        if ($adherent->getService()) {
             $newService = clone $adherent->getService();
             $newService->setDepartment($department);
             $this->em->persist($newService);

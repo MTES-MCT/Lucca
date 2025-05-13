@@ -22,15 +22,17 @@ use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\AdherentBundle\Form\{AdherentType, AdherentEditType};
 use Lucca\Bundle\AdherentBundle\Mailer\SummaryAdherentSubscriptionMailer;
 use Lucca\Bundle\AdherentBundle\Manager\AdherentManager;
+use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
 
 #[Route(path: '/adherent')]
 #[IsGranted('ROLE_ADMIN')]
 class AdherentController extends AbstractController
 {
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly AdherentManager $adherentManager,
+        private readonly EntityManagerInterface            $em,
+        private readonly AdherentManager                   $adherentManager,
         private readonly SummaryAdherentSubscriptionMailer $mailer,
+        private readonly UserDepartmentResolver            $userDepartmentResolver,
     )
     {
     }
@@ -59,12 +61,14 @@ class AdherentController extends AbstractController
     public function newAction(Request $request): Response
     {
         $adherent = new Adherent();
+        $department = $this->userDepartmentResolver->getDepartment();
 
         $form = $this->createForm(AdherentType::class, $adherent);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid() &&
-            $this->adherentManager->checkPrerequisites($adherent)) {
+            $this->adherentManager->checkPrerequisites($adherent, $department, true)) {
+
             $this->adherentManager->initNewAdherent($adherent);
 
             /** Send Email Subscription with new password - get the plain password filled in form */
@@ -110,9 +114,10 @@ class AdherentController extends AbstractController
     {
         $editForm = $this->createForm(AdherentEditType::class, $adherent);
         $editForm->handleRequest($request);
+        $department = $this->userDepartmentResolver->getDepartment();
 
         if ($editForm->isSubmitted() && $editForm->isValid() &&
-            $this->adherentManager->checkPrerequisites($adherent)) {
+            $this->adherentManager->checkPrerequisites($adherent, $department)) {
             $this->adherentManager->editAdherent($adherent);
 
             $this->em->persist($adherent);

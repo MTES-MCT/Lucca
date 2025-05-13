@@ -10,6 +10,7 @@ flash:
         disabledSuccessfully: "L'adhérent a bien été désactivé."
         enabledSuccessfully: "L'adhérent a bien été activé."
         userAlreadyExist: "Un adhérent avec cet email existe déjà."
+        missingPassword: "Veuillez renseigner un mot de passe."
         accessDenied: "Vous n'avez pas accès à cette fonctionalitée."
 
     agent:

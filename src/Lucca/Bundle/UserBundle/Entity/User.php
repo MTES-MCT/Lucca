@@ -152,6 +152,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = unserialize($this->roles);
+        if($this->roles === ''){
+            $roles = [];
+        }
 
         /** Add each role contained in Group entities on this list */
         foreach ($this->getGroups() as $group) {
