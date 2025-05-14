@@ -53,6 +53,7 @@ label:
     media: "Media"
     setting: "Paramètres d'application"
     department: "Département"
+    filetype: "Parcourir"
 
     filters:
         minutesSpotted: "Signalement"

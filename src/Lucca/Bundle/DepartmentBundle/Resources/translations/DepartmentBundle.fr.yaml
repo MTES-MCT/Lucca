@@ -9,6 +9,7 @@ label:
     towns: 'Communes'
     code: 'Code'
     domainName: 'Nom de domaine'
+    lastSyncSetting: 'Dernière synchronisation des paramètres'
 link:
     department:
         show: 'Voir le département'

@@ -20,19 +20,19 @@
                 : {{ folder.num }}
 
                 {% if folder.dateClosure is null %}
-                    <span class="badge badge-warning float-right mr15">
+                    <span class="badge badge-warning float-right mr-1">
                     {{ 'text.folder.not_closed'|trans }}</span>
 
                     {% if folder.isReReaded %}
-                        <span class="badge badge-success float-right mr10">
+                        <span class="badge badge-success float-right mr-1">
                         {{ 'text.folder.isReReaded'|trans }}</span>
                     {% else %}
-                        <span class="badge badge-warning float-right mr10">
+                        <span class="badge badge-warning float-right mr-1">
                         {{ 'text.folder.isNotReReaded'|trans }}</span>
                     {% endif %}
                 {% else %}
                     - {{ folder.dateClosure|date('d/m/Y') }}
-                    <span class="badge badge-success float-right mr15">
+                    <span class="badge badge-success float-right mr-1">
                     {{ 'text.folder.closed'|trans }}</span>
                 {% endif %}
             </h4>
@@ -180,7 +180,7 @@
                     <tr>
                         <th>{{ 'label.annexes'|trans }}</th>
                         <td>
-                            <span class="badge badge-info mr15">
+                            <span class="badge badge-info mr-1">
                                 {{ folder.annexes|length }} {{ 'label.elements' |trans }}
                             </span>
                             <a href="{{ path('lucca_annexes_edit', {'minute_id': minute.id, 'folder_id': folder.id }) }}"

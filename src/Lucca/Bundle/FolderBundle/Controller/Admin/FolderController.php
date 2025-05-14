@@ -77,6 +77,11 @@ class FolderController extends AbstractController
                 /** Create folder num */
                 $folder->setNum($this->numFolderGenerator->generate($folder));
 
+                // TODO Fix the collection and remove this temp fix
+                foreach ($folder->getElements() as $element) {
+                    $element->setFolder($folder);
+                }
+
                 /** Create / update / delete editions if needed */
                 $this->folderEditionManager->manageEditionsOnFormSubmission($folder);
 
@@ -290,6 +295,13 @@ class FolderController extends AbstractController
 
             /** update status of the minute */
             $this->minuteStoryManager->manage($minute);
+
+            // TODO Fix the collection and remove this temp fix
+            foreach ($editForm->get('elements')->getData() as $element) {
+                $element->setFolder($folder);
+            }
+
+            $folder->setElements($editForm->get('elements')->getData());
 
             $this->em->persist($folder);
             $this->em->flush();

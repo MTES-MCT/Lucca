@@ -9,6 +9,7 @@
         <th>{{ 'label.department'|trans }}</th>
         <th>{{ 'label.code'|trans }}</th>
         <th>{{ 'label.domainName'|trans }}</th>
+        <th>{{ 'label.lastSyncSetting'|trans }}</th>
         <th>{{ 'label.actions'|trans({}, 'CoreBundle') }}</th>
     </tr>
     </thead>
@@ -24,11 +25,12 @@
             </td>
             <td>{{ department.code }}</td>
             <td>{{ department.domainName }}</td>
+            <td>{% if department.lastSyncSetting %}{{ department.lastSyncSetting | date('d/m/Y') }}{% endif %}</td>
             <td>
-            {#-- Block embed --#}
-            {% block theme_embed_buttons_department %}
+                {#-- Block embed --#}
+                {% block theme_embed_buttons_department %}
 
-            {% endblock %} {#-- End Block embed --#}
+                {% endblock %} {#-- End Block embed --#}
             </td>
         </tr>
     {% endfor %}

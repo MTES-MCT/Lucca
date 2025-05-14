@@ -15,32 +15,32 @@
                 {% if control.dateControl %} - {{ control.dateControl|date('d/m/Y') }}{% endif %}
 
                 {% if control.accepted is constant('ACCEPTED_NOK', control) %}
-                    <span class="badge badge-danger float-right mr15">
+                    <span class="badge badge-danger float-right mr-1">
                     {{ 'text.control.refused'|trans }}</span>
                 {% elseif control.accepted is constant('ACCEPTED_OK', control) %}
-                    <span class="badge badge-success float-right mr15">
-                    {{ 'text.control.acceptd'|trans }}</span>
+                    <span class="badge badge-success float-right mr-1">
+                    {{ 'text.control.accepted'|trans }}</span>
                 {% else %}
                     {% if control.reason in [
                         constant('REASON_ERROR_ADRESS', control),
                         constant('REASON_UNKNOW_ADRESS', control),
                     ] %}
-                        <span class="badge badge-warning float-right mr15">
+                        <span class="badge badge-warning float-right mr-1">
                         {{ 'text.control.not_completed'|trans }}</span>
                     {% elseif control.reason in [
                         constant('REASON_REFUSED_LETTER', control),
                         constant('REASON_UNCLAIMED_LETTER', control),
                     ] %}
-                        <span class="badge badge-warning float-right mr15">
+                        <span class="badge badge-warning float-right mr-1">
                         {{ 'text.control.refused'|trans }}</span>
 
                     {% elseif control.accepted is constant('ACCEPTED_NONE', control) %}
-                        <span class="badge badge-warning float-right mr15">
+                        <span class="badge badge-warning float-right mr-1">
                         {{ 'text.control.not_completed'|trans }}</span>
                     {% endif %}
                 {% endif %}
 
-                <span class="badge badge-info float-right mr15">
+                <span class="badge badge-info float-right mr-1">
                     {{ control.stateControl|trans }}
                 </span>
             </h4>

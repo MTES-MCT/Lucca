@@ -103,6 +103,8 @@
     </div>
     {#-- End Panel - tags --#}
 
+    <hr class="mt-5">
+
     <div class="row mt-4">
 
         <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
@@ -203,8 +205,8 @@
     <script src="{{ asset('plugins/dataTables/datatables.js') }}"></script>
 
     <script src="{{ asset('plugins/datatables.net-bs4/js/dataTables.bootstrap4.js') }}"></script>
-{#    <script src="{{ asset('plugins/datatables.net-buttons/js/dataTables.buttons.js') }}"></script>#}
-{#    <script src="{{ asset('plugins/datatables.net-buttons-bs/js/buttons.bootstrap.js') }}"></script>#}
+    {#<script src="{{ asset('plugins/datatables.net-buttons/js/dataTables.buttons.js') }}"></script>#}
+    {#<script src="{{ asset('plugins/datatables.net-buttons-bs/js/buttons.bootstrap.js') }}"></script>#}
 
     <script src="{{ asset('plugins/datatables.net-keytable/js/dataTables.keyTable.js') }}"></script>
     <script src="{{ asset('plugins/datatables.net-responsive/js/dataTables.responsive.js') }}"></script>
@@ -215,9 +217,9 @@
             $('.dataTables').DataTable({
                 pageLength: 10,
                 responsive: true,
-                {#"language": {#}
-                {#    "url": "{{ asset('bundles/luccathemeangle/plugins/datatables.net/lang/dataTables.fr.json') }}"#}
-                {#},#}
+                "language": {
+                    "url": "{{ asset('plugins/dataTables/lang/dataTables.fr.json') }}"
+                },
             });
         });
     </script>

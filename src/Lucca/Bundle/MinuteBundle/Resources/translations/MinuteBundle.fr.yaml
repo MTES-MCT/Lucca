@@ -306,7 +306,7 @@ text:
         noDate: "Aucune date"
     control:
         refused: "Refusé"
-        acceptd: "Validé"
+        accepted: "Accepté"
         not_completed: "Non abouti"
         access: "Accepté"
         refuse: "Refusé"

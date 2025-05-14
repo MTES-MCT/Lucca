@@ -38,7 +38,10 @@ class DepartmentType extends AbstractType
             $form = $event->getForm();
 
             if ($data->getId() === null) {
-                $form->add('towns', FileType::class, array('label' => 'label.towns', 'required' => true, 'mapped' => false, 'help' => 'help.towns', 'attr' => array('accept' => '.csv')));
+                $form->add('towns', FileType::class, array(
+                    'label' => 'label.towns', 'required' => true, 'mapped' => false, 'help' => 'help.towns',
+                    'attr' => array('accept' => '.csv', 'class' => 'custom-file'),
+                ));
             }
         });
     }

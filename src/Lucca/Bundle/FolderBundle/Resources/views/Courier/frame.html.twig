@@ -10,7 +10,7 @@
                 <h4>
                     {{ loop.index }} ) {{ 'entity.courier'|trans }} {{ 'help.courier.joined_at'|trans }}
                     : {{ folder.num }}
-                    <span class="badge badge-warning float-right mr15">
+                    <span class="badge badge-warning float-right mr-1">
                 {{ 'text.courier.folder_not_close'|trans }}</span>
                 </h4>
             </a>
@@ -22,11 +22,11 @@
                     : {{ folder.num }}
 
                     {% if not frame_update or folder.nature is constant('NATURE_OBSTACLE', folder) %}
-                        <span class="badge {% if courier.dateOffender is null %}badge-warning{% else %}badge-success{% endif %} float-right mr15">{{ 'text.courier.offender_name'|trans }}</span>
-                        <span class="badge {% if courier.dateDdtm is null %}badge-warning{% else %}badge-success{% endif %} float-right mr15">{{ 'text.courier.ddtm_name'|trans( {'%DDTM%': 'setting.general.ddtAcronym.name'|setting } ) }}</span>
-                        <span class="badge {% if courier.dateJudicial is null %}badge-warning{% else %}badge-success{% endif %} float-right mr15">{{ 'text.courier.judicial_name'|trans }}</span>
+                        <span class="badge {% if courier.dateOffender is null %}badge-warning{% else %}badge-success{% endif %} float-right mr-1">{{ 'text.courier.offender_name'|trans }}</span>
+                        <span class="badge {% if courier.dateDdtm is null %}badge-warning{% else %}badge-success{% endif %} float-right mr-1">{{ 'text.courier.ddtm_name'|trans( {'%DDTM%': 'setting.general.ddtAcronym.name'|setting } ) }}</span>
+                        <span class="badge {% if courier.dateJudicial is null %}badge-warning{% else %}badge-success{% endif %} float-right mr-1">{{ 'text.courier.judicial_name'|trans }}</span>
                     {% else %}
-                        <span class="badge {% if courier.dateDdtm is null %}badge-warning{% else %}badge-success{% endif %} float-right mr15">{{ 'text.courier.ddtm_name'|trans( {'%DDTM%': 'setting.general.ddtAcronym.name'|setting }  ) }}</span>
+                        <span class="badge {% if courier.dateDdtm is null %}badge-warning{% else %}badge-success{% endif %} float-right mr-1">{{ 'text.courier.ddtm_name'|trans( {'%DDTM%': 'setting.general.ddtAcronym.name'|setting }  ) }}</span>
                     {% endif %}
                 </h4>
             </a>

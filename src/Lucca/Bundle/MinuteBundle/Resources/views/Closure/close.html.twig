@@ -20,6 +20,11 @@
 
             <div class="card-wrapper">
                 <div class="card-body">
+
+                    <div class="text-center text-danger mb-2 font-size-18">
+                        {{ 'help.closure.closure_close_all_data'|trans }}
+                    </div>
+
                     <div class="bool-inline">
                         {{ form_row(form.status) }}
                     </div>
@@ -36,11 +41,6 @@
                     </div>
 
                     {{ form_row(form.observation) }}
-
-                    <div class="text-left text-warning">
-                        {{ 'help.closure.closure_close_all_data'|trans }}
-                        <br>
-                    </div>
 
                     <a class="btn btn-secondary btn-lg" href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"
                        title="{{ 'link.backMinute'|trans }}"><i class="fa fa-reply"></i></a>
@@ -95,7 +95,7 @@
         {#-- End --#}
 
         {#-- Custom JS --#}
-        $('input[name="lucca_minutebundle_closure[status]"]').click(function () {
+        $('input[name="lucca_minuteBundle_closure[status]"]').click(function () {
             $(".block-other").hide('slow');
             $(".block-regularized").hide('slow');
 

@@ -18,11 +18,11 @@
     {{ parent() }}
 
     {% if not closure %}
-        <span class="badge badge-info mr15">
+        <span class="badge badge-info mr-1">
             {{ 'text.minute.pending'|trans }}
         </span>
     {% else %}
-        <span class="badge badge-success mr15">
+        <span class="badge badge-success mr-1">
                 {{ closure.status|trans }}
             </span>
     {% endif %}

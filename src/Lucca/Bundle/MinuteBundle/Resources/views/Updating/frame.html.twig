@@ -37,15 +37,15 @@
                 {% endif %}
 
                 {% if updating.nature is constant('NATURE_AGGRAVATED', updating) %}
-                    <span class="badge badge-danger float-right mr15">
+                    <span class="badge badge-danger float-right mr-1">
                         {{ updating.nature|trans({}, 'UpdateBundle') }}
                     </span>
                 {% elseif updating.nature is constant('NATURE_UNCHANGED', updating) %}
-                    <span class="badge badge-info float-right mr15">
+                    <span class="badge badge-info float-right mr-1">
                         {{ updating.nature|trans({}, 'UpdateBundle') }}
                     </span>
                 {% elseif updating.nature is constant('NATURE_REGULARIZED', updating) %}
-                    <span class="badge badge-success float-right mr15">
+                    <span class="badge badge-success float-right mr-1">
                         {{ updating.nature|trans({}, 'UpdateBundle') }}
                     </span>
                 {% endif %}
@@ -81,15 +81,15 @@
                         <th>
                             {{ 'label.nature_updating'|trans }}<br>
                             {% if updating.nature is constant('NATURE_AGGRAVATED', updating) %}
-                                <span class="badge badge-danger mr15">
+                                <span class="badge badge-danger mr-1">
                                     {{ updating.nature|trans({}, 'UpdateBundle') }}
                                 </span>
                             {% elseif updating.nature is constant('NATURE_UNCHANGED', updating) %}
-                                <span class="badge badge-info mr15">
+                                <span class="badge badge-info mr-1">
                                     {{ updating.nature|trans({}, 'UpdateBundle') }}
                                 </span>
                             {% elseif updating.nature is constant('NATURE_REGULARIZED', updating) %}
-                                <span class="badge badge-success mr15">
+                                <span class="badge badge-success mr-1">
                                     {{ updating.nature|trans({}, 'UpdateBundle') }}
                                 </span>
                             {% endif %}

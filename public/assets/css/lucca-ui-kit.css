@@ -45,7 +45,7 @@
     margin-bottom: 25px;
 }
 
-.mr15 {
+.mr-1 {
     margin-right: 15px;
 }
 
@@ -144,6 +144,33 @@ textarea {
 
 .alert-warning, .alert-danger, .alert-dark, .alert-success{
     justify-content: center;
+}
+
+.u-main {
+    min-height: unset;
+}
+
+.btn-secondary, .btn-primary, .badge-warning{
+    color: white !important;
+}
+
+/********************
+ * Form
+ ********************/
+.bool-inline .form-check {
+    display: inline-block;
+    margin-right: 40px;
+    margin-bottom: 10px;
+}
+.bool-inline fieldset {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.bool-inline .radio,
+.bool-inline .checkbox {
+    display: inline-block;
+    margin-right: 30px;
 }
 
 /********************
@@ -340,4 +367,27 @@ a:hover,
  ********************/
 .error-height {
     min-height: 15em;
+}
+
+/********************
+ * Model page copy shortcut
+ ********************/
+.copy-text {
+    cursor: pointer;
+}
+
+/* The actual popup */
+.popup .popuptext {
+    display: none;
+    width: 160px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 35%;
+    left: 50%;
+    margin-left: -80px;
 }

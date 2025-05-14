@@ -12,7 +12,7 @@
     {{ form_start(form) }}
     {{ form_errors(form) }}
 
-    {# Form theme apply for child only #}
+    {#Form theme apply for child only#}
     {% form_theme form '@LuccaThemeStreamDashboardUiKit/Form/jquery.collection.html.twig' %}
     {% form_theme form.editions '@LuccaMinute/ControlEdition/editionConvocation-theme.html.twig' %}
 
@@ -32,7 +32,8 @@
                         <a class="btn btn-secondary btn-lg" href="{{ path('lucca_minute_show', { 'id': minute.id }) }}"
                            title="{{ 'link.backMinute'|trans }}"><i class="fa fa-reply"></i></a>
 
-                        <button type="submit" class="btn btn-success btn-lg" title="{{ 'link.control.manual.convocationUpdate'|trans }}">
+                        <button type="submit" class="btn btn-success btn-lg"
+                                title="{{ 'link.control.manual.convocationUpdate'|trans }}">
                             <i class="fa fa-check"></i></button>
 
                     </div>
@@ -49,6 +50,18 @@
 
 {% endblock lucca_panels %}
 
+{% block lucca_css %}
+    {{ parent() }}
+    <style>
+
+        {# Used to avoid difficulties to read text in summernote#}
+        .note-editor .row {
+            margin-right: 0 !important;
+            margin-left: 0 !important;;
+        }
+    </style>
+{% endblock lucca_css %}
+
 {% block lucca_js %}
     {{ parent() }}
 
@@ -56,7 +69,7 @@
 
     <script>
 
-        {# Collection form #}
+        {#Collection form#}
         $('.editions-collection').collection({
             allow_duplicate: false, allow_up: false, allow_down: false, allow_add: false, allow_delete: false,
         });

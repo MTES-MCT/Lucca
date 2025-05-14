@@ -24,8 +24,8 @@ class MinuteHumanType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class, array('label' => 'label.name'))
-            ->add('firstname', TextType::class, array('label' => 'label.firstname'))
+            ->add('name', TextType::class, array('label' => 'label.name', 'attr' => ['required' => 'required']))
+            ->add('firstname', TextType::class, array('label' => 'label.firstname', 'attr' => ['required' => 'required']))
             ->add('gender', ChoiceType::class, array(
                 'choices' => array(
                     Human::GENDER_MALE => Human::GENDER_MALE,

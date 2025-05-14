@@ -85,6 +85,10 @@
                                     {{ form_row(form.appealCommission.dateExecution) }}
                                     {{ form_row(form.appealCommission.amountPenalty) }}
                                 </div>
+
+                                <div class="bool-inline">
+                                    {{ form_row(form.cassationComplaint) }}
+                                </div>
                             </div>
 
                         </div>
@@ -126,10 +130,6 @@
                                         {{ form_row(form.cassationComission.restitution) }}
                                         {{ form_row(form.cassationComission.dateExecution) }}
                                         {{ form_row(form.cassationComission.amountPenalty) }}
-                                    </div>
-
-                                    <div class="bool-inline">
-                                        {{ form_row(form.cassationComplaint) }}
                                     </div>
                                 </div>
 

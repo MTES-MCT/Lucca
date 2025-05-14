@@ -184,68 +184,70 @@
                 {% endif %}
 
                 {% if app.request.headers.get('host') is same as adminDomainName %}
-                {#-- Param - Log --#}
-                <div class="col-3">
-                    <div class="card card-default">
-                        <div class="card-wrapper text-center">
-                            <div class="card-body">
-                                <a href="{{ path('lucca_log_index') }}" class="link-unstyled text-warning">
-                                    <em class="fas fa-5x fa-tasks mb-lg"></em>
-                                    <br>
-                                    <span class="h4">{{ 'label.log'|trans }}</span>
-                                    <br>
-                                    <small class="text-muted">{{ 'label.see_list'|trans }} →</small>
-                                </a>
+                    {#-- Param - Log --#}
+                    <div class="col-3">
+                        <div class="card card-default">
+                            <div class="card-wrapper text-center">
+                                <div class="card-body">
+                                    <a href="{{ path('lucca_log_index') }}" class="link-unstyled text-warning">
+                                        <em class="fas fa-5x fa-tasks mb-lg"></em>
+                                        <br>
+                                        <span class="h4">{{ 'label.log'|trans }}</span>
+                                        <br>
+                                        <small class="text-muted">{{ 'label.see_list'|trans }} →</small>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                {#-- End Param - Log --#}
+                    {#-- End Param - Log --#}
 
-                {#-- Param - LoginAttempt --#}
-                <div class="col-3">
-                    <div class="card card-default">
-                        <div class="card-wrapper text-center">
-                            <div class="card-body">
+                    {#-- Param - LoginAttempt --#}
+                    <div class="col-3">
+                        <div class="card card-default">
+                            <div class="card-wrapper text-center">
+                                <div class="card-body">
 
-                                <a href="{{ path('lucca_security_login_attempt_index') }}"
-                                   class="link-unstyled text-danger">
-                                    <em class="fas fa-5x fa-book-dead mb-lg"></em>
-                                    <br>
-                                    <span class="h4">{{ 'label.loginAttempt'|trans }}</span>
-                                    <br>
-                                    <small class="text-muted">{{ 'label.see_list'|trans }} →</small>
-                                </a>
+                                    <a href="{{ path('lucca_security_login_attempt_index') }}"
+                                       class="link-unstyled text-danger">
+                                        <em class="fas fa-5x fa-book-dead mb-lg"></em>
+                                        <br>
+                                        <span class="h4">{{ 'label.loginAttempt'|trans }}</span>
+                                        <br>
+                                        <small class="text-muted">{{ 'label.see_list'|trans }} →</small>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div> {#-- End Param - LoginAttempt --#}
+                    </div> {#-- End Param - LoginAttempt --#}
                 {% endif %}
 
                 {% if app.request.headers.get('host') is not same as adminDomainName %}
-                {#-- Param - Setting --#}
-                <div class="col-3">
-                    <div class="card card-default">
-                        <div class="card-wrapper text-center">
-                            <div class="card-body">
+                    {#-- Param - Setting --#}
+                    <div class="col-3">
+                        <div class="card card-default">
+                            <div class="card-wrapper text-center">
+                                <div class="card-body">
 
-                                <a href="{{ path('lucca_setting_index') }}"
-                                   class="link-unstyled text-warning">
-                                    <em class="fas fa-5x fa-cogs mb-lg"></em>
-                                    <br>
-                                    <span class="h4">{{ 'label.setting'|trans }}</span>
-                                    <br>
-                                    <small class="text-muted">{{ 'label.see_list'|trans }} →</small>
-                                </a>
+                                    <a href="{{ path('lucca_setting_index') }}"
+                                       class="link-unstyled text-warning">
+                                        <em class="fas fa-5x fa-cogs mb-lg"></em>
+                                        <br>
+                                        <span class="h4">{{ 'label.setting'|trans }}</span>
+                                        <br>
+                                        <small class="text-muted">{{ 'label.see_list'|trans }} →</small>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div> {#-- End Param - Setting --#}
+                    </div> {#-- End Param - Setting --#}
                 {% endif %}
 
-                {#-- Param - Media --#}
-                {% include '@LuccaMedia/panel-parameters.html.twig' %}
-                {#-- End Param - Media --#}
+                {% if app.request.headers.get('host') is same as adminDomainName %}
+                    {#-- Param - Media --#}
+                    {% include '@LuccaMedia/panel-parameters.html.twig' %}
+                    {#-- End Param - Media --#}
+                {% endif %}
             </div>
         </div>
 

@@ -25,3 +25,9 @@ phpstan.neon
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+
+###> Dev only migrate prod scripts ###
+migration prod
+migration_prod
+###< symfony/asset-mapper ###

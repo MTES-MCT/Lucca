@@ -5,7 +5,7 @@
 flash:
     settings:
         updatedSuccessfully: "Paramètres mis à jour avec succès !"
-        createdError: "Erreur dans la mise à jour des paramètres."
+        updatedError: "Erreur dans la mise à jour des paramètres."
     setting:
         updatedSuccessfully: "Le paramètre a bien été modifié."
         accessDenied: "Vous n'avez pas accès à ce paramètre."

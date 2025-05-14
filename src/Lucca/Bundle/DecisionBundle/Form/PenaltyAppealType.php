@@ -26,7 +26,7 @@ class PenaltyAppealType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('juridiction', TextType::class, ['label' => 'label.juridiction'])
+            ->add('juridiction', TextType::class, ['label' => 'label.juridiction', 'attr' => ['required' => 'required']])
             ->add('dateDecision', HtmlDateType::class, [
                 'label' => 'label.dateDecision', 'required' => true
             ])

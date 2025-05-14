@@ -31,6 +31,12 @@
     {#-- Plugin - Summernote --#}
     {% include "@LuccaThemeStreamDashboardUiKit/Plugins/summernote.css.html.twig" %}
 
+    <style>
+        .custom-file-label::after {
+            content: '{{ 'label.filetype' | trans({}, 'CoreBundle') }}' !important;
+        }
+    </style>
+
 {% endblock lucca_css %}
 
 

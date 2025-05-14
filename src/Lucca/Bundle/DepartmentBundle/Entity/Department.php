@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\DepartmentBundle\Entity;
 
+use DateTime;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -44,6 +45,8 @@ class Department implements LoggableInterface
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?DateTime $lastSyncSetting = null;
 
     /************************************************************************** Custom function ************************************************************************/
 
@@ -118,5 +121,15 @@ class Department implements LoggableInterface
         $this->comment = $comment;
 
         return $this;
+    }
+
+    public function getLastSyncSetting(): ?DateTime
+    {
+        return $this->lastSyncSetting;
+    }
+
+    public function setLastSyncSetting(?DateTime $lastSyncSetting): void
+    {
+        $this->lastSyncSetting = $lastSyncSetting;
     }
 }

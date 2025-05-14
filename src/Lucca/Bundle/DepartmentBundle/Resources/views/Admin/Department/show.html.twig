@@ -37,6 +37,12 @@
                                     <td>{{ department.domainName }}</td>
                                 </tr>
                                 <tr>
+                                    <th>{{ 'label.lastSyncSetting'|trans }}</th>
+                                    <td>
+                                        {% if department.lastSyncSetting %}{{  department.lastSyncSetting | date('d/m/Y') }}{% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th>{{ 'label.comment'|trans }}</th>
                                     <td>
                                         <div>{{ department.comment | raw }}</div>

@@ -147,7 +147,7 @@
 
                 <div class="card-wrapper">
                     <div class="card-body text-center">
-                        <embed src="{{ absolute_url(path('lucca_model_print', { 'id': model.id })) }}" width="500" height="600"
+                        <embed src="{{ relative_path(path('lucca_model_print', { 'id': model.id })) }}" width="500" height="600"
                                type='application/pdf'>
                     </div>
                 </div>
