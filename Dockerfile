@@ -74,7 +74,7 @@ RUN set -eux; \
     bin/console asset-map:compile; \
     chown -R www-data:www-data /srv/app/var/cache /srv/app/var/log;
 
-RUN mkdir -p /srv/docs/Media /srv/docs/tmpFiles && \
+RUN mkdir -p /srv/docs/Media /srv/docs/media /srv/docs/tmpFiles && \
     chown -R www-data:www-data /srv/docs
 
 EXPOSE 9000

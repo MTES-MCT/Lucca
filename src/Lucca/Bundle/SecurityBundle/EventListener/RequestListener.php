@@ -58,7 +58,8 @@ class RequestListener
             $event->getRequest()->getClientIp(), $now->modify('-' . $periodScanLimit . ' minutes')
         );
 
-        if ($loginsAttempt === null) {
+
+        if ($loginsAttempt === []) {
             return;
         }
 

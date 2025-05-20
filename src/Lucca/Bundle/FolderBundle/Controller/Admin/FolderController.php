@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-use Lucca\Bundle\FolderBundle\Entity\{Folder, Natinf, Tag};
+use Lucca\Bundle\FolderBundle\Entity\{ElementChecked, Folder, Natinf, Tag};
 use Lucca\Bundle\FolderBundle\Form\{FolderStep1Type, FolderStep2Type, FolderStep3Type, FolderType};
 use Lucca\Bundle\FolderBundle\Generator\NumFolderGenerator;
 use Lucca\Bundle\FolderBundle\Utils\{FolderEditionManager, FolderManager};
@@ -76,11 +76,6 @@ class FolderController extends AbstractController
             } else {
                 /** Create folder num */
                 $folder->setNum($this->numFolderGenerator->generate($folder));
-
-                // TODO Fix the collection and remove this temp fix
-                foreach ($folder->getElements() as $element) {
-                    $element->setFolder($folder);
-                }
 
                 /** Create / update / delete editions if needed */
                 $this->folderEditionManager->manageEditionsOnFormSubmission($folder);

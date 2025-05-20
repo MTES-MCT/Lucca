@@ -130,7 +130,7 @@ class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncIn
     #[ORM\OneToOne(targetEntity: FolderEdition::class, cascade: ["persist", "remove"])]
     private ?FolderEdition $edition = null;
 
-    #[ORM\OneToMany(targetEntity: ElementChecked::class, mappedBy: "folder", cascade: ["persist", "remove"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: ElementChecked::class, mappedBy: "folder", cascade: ["persist", "remove"])]
     #[ORM\OrderBy(["position" => "ASC"])]
     private Collection $elements;
 

@@ -1,0 +1,7 @@
+####################################
+## Flash Domain
+####################################
+
+flash:
+    settings:
+        passwordUpdatedSuccessfully: "Mot de passe mis à jour avec succès !"

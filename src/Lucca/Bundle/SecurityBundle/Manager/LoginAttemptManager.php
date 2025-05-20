@@ -59,26 +59,43 @@ readonly class LoginAttemptManager
         /** Create a LoginAttempt and register all information request */
         $loginAttempt = new LoginAttempt();
 
-        $loginAttempt->setRequestIp($p_request->getClientIp());
+        $xForwardedForStr = $p_request->headers->get('x-forwarded-for');
+
+        /** keep the first IP address in the list if exist (the first IP is the public client IP address) */
+        if ($xForwardedForStr)
+            $requestIp = explode(',', $xForwardedForStr)[0] ?? $p_request->getClientIp();
+        else
+            $requestIp = $p_request->getClientIp();
+
+        $loginAttempt->setRequestIp($requestIp);
         $loginAttempt->setClientIps(json_encode($p_request->getClientIps()));
 
         $loginAttempt->setRequestUri($p_request->getRequestUri());
         $loginAttempt->setRequestedAt(new \DateTime('now'));
 
-        if ($p_request->request->has('username')) {
+        if ($p_request->request->has('username'))
             $loginAttempt->setUsername($p_request->request->get('username'));
-        }
 
         $loginAttempt->setControllerAsked($p_request->attributes->get('_controller'));
         $loginAttempt->setFirewall($p_request->attributes->get('_firewall_context'));
 
         $loginAttempt->setAgent($p_request->server->get('HTTP_USER_AGENT'));
         $loginAttempt->setHost($p_request->server->get('HTTP_HOST'));
-        $loginAttempt->setSystem($p_request->server->get('SystemRoot'));
 
         $loginAttempt->setSoftware($p_request->server->get('SERVER_SOFTWARE'));
-        $loginAttempt->setAddress($p_request->server->get('SERVER_NAME'));
         $loginAttempt->setPort($p_request->server->get('SERVER_PORT'));
+
+        /** Server address */
+        if ($p_request->headers->get('x-forwarded-for'))
+            $address = $p_request->headers->get('x-forwarded-for');
+        else if ($p_request->server->get('HEADER_X_FORWARDED_FOR'))
+            $address = $p_request->server->get('HEADER_X_FORWARDED_FOR');
+        else if ($p_request->server->get('HEADER_X_FORWARDED_HOST'))
+            $address = $p_request->server->get('HEADER_X_FORWARDED_HOST');
+        else
+            $address = $p_request->server->get('SERVER_NAME');
+
+        $loginAttempt->setAddress($address);
 
         $loginAttempt->setAddressRemote($p_request->server->get('REMOTE_ADDR'));
         $loginAttempt->setPortRemote($p_request->server->get('REMOTE_PORT'));

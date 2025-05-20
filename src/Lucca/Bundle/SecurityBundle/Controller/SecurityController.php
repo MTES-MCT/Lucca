@@ -19,10 +19,18 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 use Lucca\Bundle\UserBundle\Entity\User;
+use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
 
 class SecurityController extends AbstractController
 {
     use TargetPathTrait;
+
+
+    public function __construct(
+        private readonly UserDepartmentResolver $userDepartmentResolver,
+    )
+    {
+    }
 
     /**
      * Display a login form to authenticate an anonymous user
@@ -41,6 +49,13 @@ class SecurityController extends AbstractController
         if ($this->getParameter('lucca_core.admin_domain_name') === $request->headers->get('host')) {
             $routeAfterLogin = $this->getParameter('lucca_security.default_admin_url_after_login');
         }
+
+        $department = $this->userDepartmentResolver->getDepartment();
+
+        if($department === null && $this->getParameter('lucca_core.admin_domain_name') !== $request->headers->get('host')){
+            return $this->render('@LuccaUser/Security/badDepartment.html.twig');
+        }
+
 
         if ($user) {
             return $this->redirectToRoute($routeAfterLogin);
