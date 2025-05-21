@@ -116,7 +116,7 @@ class MayorLetterController extends AbstractController
         $filesNames = [];
 
         /** Store filename that will be used for the final pdf */
-        $filename = sprintf('Lettre au maire - %s', $mayorLetter->getId());
+        $filename = sprintf('Lettre au maire - %s', $mayorLetter->getTown()->getName());
 
         /** Path where the temp pdf are stored */
         $path = $this->getParameter('lucca_media.upload_tmp_directory') . 'pdfToPrint/';
@@ -173,6 +173,9 @@ class MayorLetterController extends AbstractController
             /** Add pdf to the final var */
             $pdf->addPDF($filePath, PdfFile::ALL_PAGES, PdfFile::ORIENTATION_PORTRAIT);
         }
+
+        // Set the title of the page
+        $fpdi->SetTitle($filename);
 
         /** Merge all the pdf into a final one, get a string in order to be able to return it to the main function */
         $merged = $merger->merge($pdf, $filename, PdfMerger::MODE_STRING);

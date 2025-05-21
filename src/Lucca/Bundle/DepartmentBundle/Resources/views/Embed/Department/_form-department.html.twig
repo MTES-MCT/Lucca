@@ -32,6 +32,9 @@
                                     <div class="col-sm-10">
                                         {{ form_widget(form.towns) }}
                                         {{ form_help(form.towns)|nl2br }}
+                                        <a href="{{ asset('examples/import_commune_example.csv') }}" download="{{ asset('examples/import_commune_example.csv') }}">
+                                            <button type="button" class="btn btn-sm btn-primary">{{ 'label.downloadFileExample' | trans }}</button>
+                                        </a>
                                     </div>
                                 </div>
                             {% endif %}

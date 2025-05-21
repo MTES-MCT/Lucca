@@ -40,6 +40,7 @@
         {#-- Cassation --#}
         {% if decision.cassationComplaint %}
             <tr>
+                <th>{{ 'text.decision.cassation'|trans }}</th>
                 <td>
                     {% if  decision.dateAnswerCassation %}{{ decision.dateAnswerCassation|date('d/m/Y') }}{% endif %}
                     <br>

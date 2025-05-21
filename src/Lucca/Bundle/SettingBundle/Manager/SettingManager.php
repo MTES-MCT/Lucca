@@ -40,7 +40,9 @@ abstract class SettingManager
 
     public static function get(string $name, $default = null): mixed
     {
-        return self::$settings[self::$department?->getCode()][$name] ?? $default;
+        /** We can get the first element of the array because there is only the settings of the current department in this array */
+        $settingsOfDepartment = reset(self::$settings);
+        return $settingsOfDepartment[$name] ?? $default;
     }
 
     public static function setAll(array $settings): void

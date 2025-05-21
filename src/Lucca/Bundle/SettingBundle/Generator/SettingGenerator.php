@@ -65,7 +65,7 @@ class SettingGenerator
      */
     public function updateCachedSetting(string $name, mixed $value, Department $department): void
     {
-        $item = $this->settingsCache->getItem(self::SETTINGS_CACHE_KEY . '.' . $department->getId());
+        $item = $this->settingsCache->getItem(self::SETTINGS_CACHE_KEY . '.' . $department->getCode());
 
         if ($item->isHit()) {
             $aDictionary = $item->get();

@@ -372,7 +372,7 @@ text:
         penalty: "Astreintes de recouvrement"
         report_folder: "Procès verbal de constatation"
         liquidations: "Etat liquidatif"
-        other_worker: "Autres intervants"
+        other_worker: "Autres intervenants"
         yes: "Oui"
         no: "Non"
 

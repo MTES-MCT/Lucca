@@ -5684,16 +5684,16 @@
         },
         {
             "name": "symfony/stimulus-bundle",
-            "version": "v2.25.1",
+            "version": "v2.25.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stimulus-bundle.git",
-                "reference": "9954aeb3c807578cc8f3c2ffc31556ba21dda804"
+                "reference": "5a6aef0646119530da862d5afa1386ade3b9ed43"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/stimulus-bundle/zipball/9954aeb3c807578cc8f3c2ffc31556ba21dda804",
-                "reference": "9954aeb3c807578cc8f3c2ffc31556ba21dda804",
+                "url": "https://api.github.com/repos/symfony/stimulus-bundle/zipball/5a6aef0646119530da862d5afa1386ade3b9ed43",
+                "reference": "5a6aef0646119530da862d5afa1386ade3b9ed43",
                 "shasum": ""
             },
             "require": {
@@ -5733,7 +5733,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/stimulus-bundle/tree/v2.25.1"
+                "source": "https://github.com/symfony/stimulus-bundle/tree/v2.25.2"
             },
             "funding": [
                 {
@@ -5749,7 +5749,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-05-19T07:20:25+00:00"
+            "time": "2025-05-19T11:54:27+00:00"
         },
         {
             "name": "symfony/stopwatch",
@@ -6344,16 +6344,16 @@
         },
         {
             "name": "symfony/ux-autocomplete",
-            "version": "v2.25.1",
+            "version": "v2.25.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-autocomplete.git",
-                "reference": "62f11dd9fd70bdc22c04db9530819471a5aca349"
+                "reference": "e78d586a4e5100bfed49e05edc844f238928e06d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-autocomplete/zipball/62f11dd9fd70bdc22c04db9530819471a5aca349",
-                "reference": "62f11dd9fd70bdc22c04db9530819471a5aca349",
+                "url": "https://api.github.com/repos/symfony/ux-autocomplete/zipball/e78d586a4e5100bfed49e05edc844f238928e06d",
+                "reference": "e78d586a4e5100bfed49e05edc844f238928e06d",
                 "shasum": ""
             },
             "require": {
@@ -6414,7 +6414,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-autocomplete/tree/v2.25.1"
+                "source": "https://github.com/symfony/ux-autocomplete/tree/v2.25.2"
             },
             "funding": [
                 {
@@ -6430,7 +6430,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-05-19T07:20:25+00:00"
+            "time": "2025-05-19T11:54:27+00:00"
         },
         {
             "name": "symfony/validator",

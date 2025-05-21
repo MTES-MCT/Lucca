@@ -7,7 +7,7 @@
 ########################
 meta:
     lucca: "Lucca"
-    lucca_long: "Lucca - Application de lutte contre la cabanisation"
+    lucca_long: 'Lucca - Application de lutte contre la cabanisation créé par <a href="https://numeric-wave.eu/" target="_blank">Numeric Wave</a>'
     website: "Site web"
     description: "Lucca est une application pour vous aider dans les dossiers contre la cabanisation."
     keywords: "lucca, cabanisation, administratif, ddtm"

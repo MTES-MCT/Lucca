@@ -10,6 +10,7 @@ label:
     code: 'Code'
     domainName: 'Nom de domaine'
     lastSyncSetting: 'Dernière synchronisation des paramètres'
+    downloadFileExample: "Télécharger le fichier d'exemple"
 link:
     department:
         show: 'Voir le département'
