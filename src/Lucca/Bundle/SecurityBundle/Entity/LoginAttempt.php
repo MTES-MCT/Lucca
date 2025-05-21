@@ -124,7 +124,7 @@ class LoginAttempt
     #[ORM\Column]
     #[Assert\NotNull(message: 'constraint.not_null')]
     #[Assert\Type(type: 'bool', message: 'constraint.type')]
-    private bool $isCleared = true;
+    private bool $isCleared = false;
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 

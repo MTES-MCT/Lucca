@@ -27,8 +27,10 @@ use Doctrine\ORM\EntityManagerInterface,
     Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken,
     Symfony\Component\Security\Http\Util\TargetPathTrait,
     Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Lucca\Bundle\SecurityBundle\Authenticator\Badge\SuperAdminBadge;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Security\Core\Exception\TooManyLoginAttemptsAuthenticationException;
+use Symfony\Component\Security\Http\RateLimiter\DefaultLoginRateLimiter;
 
 use Lucca\Bundle\AdherentBundle\Finder\AdherentFinder;
 use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
@@ -36,7 +38,8 @@ use Lucca\Bundle\SecurityBundle\Authenticator\Badge\DepartmentBadge;
 use Lucca\Bundle\SecurityBundle\Manager\LoginAttemptManager;
 use Lucca\Bundle\SecurityBundle\Exception\LoginWithoutSessionException;
 use Lucca\Bundle\UserBundle\Entity\User;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Lucca\Bundle\SecurityBundle\Authenticator\Badge\SuperAdminBadge;
+use Lucca\Bundle\SecurityBundle\Entity\LoginAttempt;
 
 /**
  * Class SimpleAuthenticator
@@ -65,6 +68,7 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
         private readonly AdherentFinder              $adherentFinder,
         private readonly UserDepartmentResolver      $userDepartmentResolver,
         private readonly ParameterBagInterface       $parameterBag,
+        private readonly DefaultLoginRateLimiter     $rateLimiter,
 
         /** Define constant to name route called after a login */
         #[Autowire(param: 'lucca_security.default_url_after_login')]
@@ -196,6 +200,26 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): RedirectResponse
     {
+        /** In case we have a TooManyLoginAttemptsAuthenticationException we need to compare it to our login attempt to check if we really need to block or not */
+        if ($exception instanceof TooManyLoginAttemptsAuthenticationException) {
+
+            /** Get the node parameter and call specific parameter on by one */
+            $parameterProtection = $this->parameterBag->get('lucca_security.protection');
+            $now = new \DateTime('now');
+            $periodScanLimit = $parameterProtection['period_max_in_min'];
+            $loginsAttempt = $this->em->getRepository(LoginAttempt::class)->findAllByIpAddressAndLoginAttemptDate(
+                $request->getClientIp(), $now->modify('-' . $periodScanLimit . ' minutes')
+            );
+
+            /** @var int $nbrTries */
+            $nbrTries = $parameterProtection['max_login_attempts'];
+
+            if ($loginsAttempt === [] || count($loginsAttempt) < $nbrTries) {
+                $this->rateLimiter->reset($request);
+                return new RedirectResponse($this->getLoginUrl($request));
+            }
+        }
+
         /** Save session messages to display them after redirection */
         $request->getSession()->set(SecurityRequestAttributes::AUTHENTICATION_ERROR, $exception);
 

@@ -27,6 +27,7 @@ services:
             - '@Lucca\Bundle\AdherentBundle\Finder\AdherentFinder'
             - '@Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver'
             - '@parameter_bag'
+            - '@security.login_throttling.main.limiter'
             - '%env(DEFAULT_URL_AFTER_LOGIN)%'
             - '%env(DEFAULT_ADMIN_URL_AFTER_LOGIN)%'
 
