@@ -46,7 +46,7 @@ class FolderByDateNamer implements FolderNamerInterface
         } else {
             $date = new DateTime('now');
         }
-        $pathDate = $department->getCode() . '/' . $date->format('Y') . '/' . $date->format('W');
+        $pathDate = $department?->getCode() ?? 'admin' . '/' . $date->format('Y') . '/' . $date->format('W');
 
         /**
          * Step 2 - Search Folder
