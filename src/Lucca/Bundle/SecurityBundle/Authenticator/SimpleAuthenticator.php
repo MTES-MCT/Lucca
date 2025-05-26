@@ -103,7 +103,7 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
         // Don't use the department badge if the request is from the admin domain
         if ($this->parameterBag->get('lucca_core.admin_domain_name') === $request->headers->get('host')) {
             $superAdminBadge = new SuperAdminBadge();
-            if ($user->hasRole('ROLE_SUPER_ADMIN')) {
+            if ($user?->hasRole('ROLE_SUPER_ADMIN')) {
                 $superAdminBadge->markResolved(); // mark the badge as resolved if the user is a super admin
             }
 
