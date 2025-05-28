@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\SecurityBundle\Controller;
 
+use Lucca\Bundle\SecurityBundle\Service\ProConnectService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,9 +26,9 @@ class SecurityController extends AbstractController
 {
     use TargetPathTrait;
 
-
     public function __construct(
         private readonly UserDepartmentResolver $userDepartmentResolver,
+        private readonly ProConnectService $proConnectService,
     )
     {
     }
@@ -56,6 +57,17 @@ class SecurityController extends AbstractController
             return $this->render('@LuccaUser/Security/badDepartment.html.twig');
         }
 
+        // Attempt to connect to ProConnect service
+        try {
+            $this->proConnectService->connect();
+
+            // Check if the connection was successful
+            if (!$this->proConnectService->isConnected()) {
+                $this->addFlash('error', 'Connection to ProConnect failed. Please try again later.');
+            }
+        } catch (\Throwable $e) {
+            $this->addFlash('error', 'Error connecting to ProConnect: ' . $e->getMessage());
+        }
 
         if ($user) {
             return $this->redirectToRoute($routeAfterLogin);

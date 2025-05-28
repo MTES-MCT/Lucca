@@ -31,6 +31,21 @@ services:
             - '%env(DEFAULT_URL_AFTER_LOGIN)%'
             - '%env(DEFAULT_ADMIN_URL_AFTER_LOGIN)%'
 
+    ## Authenticator - ProConnect authenticator to manage login action
+    lucca.security.authenticator.proconnect:
+        class: Lucca\Bundle\SecurityBundle\Authenticator\ProconnectAuthenticator
+        decoration_inner_name: "lucca.admin.authenticator"
+        public: true
+        arguments:
+            - '@http_client'
+            - '@router'
+            - '@security.user.provider.concrete.lucca_user_provider'
+            - '@request_stack'
+            - '@doctrine.orm.entity_manager'
+            - '@parameter_bag'
+            - '%env(DEFAULT_URL_AFTER_LOGIN)%'
+            - '%env(DEFAULT_ADMIN_URL_AFTER_LOGIN)%'
+
     #################################################################
     ## Security
     #################################################################

@@ -31,6 +31,9 @@
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
+            <a href="{{ path('lucca_security_sso_proconnect_connect') }}" class="btn btn-primary">
+                Connexion SSO
+            </a>
             <div class="form-group mb-4">
                 <label for="username"></label>
                 <span class="form-icon-wrapper">

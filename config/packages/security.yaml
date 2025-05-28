@@ -47,6 +47,8 @@ security:
             custom_authenticators:
                 # ADD the cas authenticator declared in this bundle
                 - lucca.security.authenticator.simple
+                # OIDC ProConnect custom authenticator
+                - Lucca\Bundle\SecurityBundle\Authenticator\ProconnectAuthenticator
 
             provider: lucca_user_provider
             
