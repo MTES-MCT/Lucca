@@ -64,3 +64,16 @@ link:
         delete: "Supprimer la tentative de login"
         approveIp: "Approuver l'ip de la tentative de login"
         backList: "Retour à la liste des tentatives de login"
+
+###############
+## proconnect SSO
+###############
+proconnect:
+    error:
+        token_not_found: "Erreur de récupération du token ProConnect."
+        access_token_missing: "Token d'accès manquant dans la réponse ProConnect."
+        email_not_found: "Aucun email trouvé dans la réponse ProConnect."
+        user_not_found: "L'%email% ne correspond à aucun utilisateur dans l'application. Veuillez contacter l'administrateur de votre DDT."
+    login:
+        signInWithProconnect: "Se connecter avec ProConnect"
+        whatIsProconnect: "Qu'est-ce que ProConnect ?"

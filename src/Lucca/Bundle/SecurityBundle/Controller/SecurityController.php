@@ -57,18 +57,6 @@ class SecurityController extends AbstractController
             return $this->render('@LuccaUser/Security/badDepartment.html.twig');
         }
 
-        // Attempt to connect to ProConnect service
-        try {
-            $this->proConnectService->connect();
-
-            // Check if the connection was successful
-            if (!$this->proConnectService->isConnected()) {
-                $this->addFlash('error', 'Connection to ProConnect failed. Please try again later.');
-            }
-        } catch (\Throwable $e) {
-            $this->addFlash('error', 'Error connecting to ProConnect: ' . $e->getMessage());
-        }
-
         if ($user) {
             return $this->redirectToRoute($routeAfterLogin);
         }

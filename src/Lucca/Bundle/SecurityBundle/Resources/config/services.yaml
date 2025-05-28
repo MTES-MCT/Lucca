@@ -71,6 +71,17 @@ services:
     lucca.security.manager.login_attempt: '@Lucca\Bundle\SecurityBundle\Manager\LoginAttemptManager'
 
     #################################################################
+    ## Srvices
+    #################################################################
+    Lucca\Bundle\SecurityBundle\Service\ProConnectService:
+        arguments:
+            $proconnectAuthUrl: '%env(PROCONNECT_AUTH_URL)%'
+            $proconnectClientId: '%env(PROCONNECT_CLIENT_ID)%'
+            $proconnectClientSecret: '%env(PROCONNECT_CLIENT_SECRET)%'
+        autowire: true
+        autoconfigure: true
+
+    #################################################################
     ## Access denied listener
     #################################################################
 

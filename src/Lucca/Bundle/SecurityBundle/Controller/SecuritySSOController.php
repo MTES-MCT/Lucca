@@ -10,11 +10,13 @@
 
 namespace Lucca\Bundle\SecurityBundle\Controller;
 
-use Lucca\Bundle\SecurityBundle\Service\ProConnectService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+
+use Lucca\Bundle\SecurityBundle\Service\ProConnectService;
 
 #[Route('/sso')]
 class SecuritySSOController extends AbstractController
@@ -30,6 +32,22 @@ class SecuritySSOController extends AbstractController
     #[Route('/connect/proconnect', name: 'lucca_security_sso_proconnect_connect', methods: ['GET'])]
     public function connect(): RedirectResponse
     {
-        return $this->proConnectService->connect();
+        try {
+            return $this->proConnectService->connect();
+        } catch (\Throwable $e) {
+            $this->addFlash('error', 'Error connecting to ProConnect: ' . $e->getMessage());
+            return $this->redirectToRoute('lucca_user_security_login');
+        }
+    }
+
+    #[Route('/connect/proconnect/check', name: 'lucca_security_connect_proconnect_check', methods: ['GET'])]
+    public function check(): Response
+    {
+        try {
+            return $this->proConnectService->check();
+        } catch (\Throwable $e) {
+            $this->addFlash('error', 'Error connecting to ProConnect: ' . $e->getMessage());
+            return $this->redirectToRoute('lucca_user_security_login');
+        }
     }
 }
