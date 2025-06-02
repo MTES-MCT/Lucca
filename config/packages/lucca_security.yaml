@@ -2,6 +2,9 @@ lucca_security:
     type: form
     default_url_after_login: '%env(DEFAULT_URL_AFTER_LOGIN)%'
     default_admin_url_after_login: '%env(DEFAULT_ADMIN_URL_AFTER_LOGIN)%'
+    proconnect_auth_url: '%env(PROCONNECT_AUTH_URL)%'
+    proconnect_client_id: '%env(PROCONNECT_CLIENT_ID)%'
+    proconnect_client_secret: '%env(PROCONNECT_CLIENT_SECRET)%'
 
     protection:
         period_max_in_min: 15

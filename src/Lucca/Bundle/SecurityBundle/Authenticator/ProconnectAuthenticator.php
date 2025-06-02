@@ -47,6 +47,12 @@ class ProconnectAuthenticator extends AbstractAuthenticator
         private readonly string                 $routeAfterLogin,
         #[Autowire(param: 'lucca_security.default_admin_url_after_login')]
         private readonly string                 $adminRouteAfterLogin,
+        #[Autowire(param: 'lucca_security.proconnect_auth_url')]
+        private string $proconnectAuthUrl,
+        #[Autowire(param: 'lucca_security.proconnect_client_id')]
+        private string $proconnectClientId,
+        #[Autowire(param: 'lucca_security.proconnect_client_secret')]
+        private string $proconnectClientSecret,
     )
     {
         $this->session = $this->requestStack->getSession();
@@ -66,13 +72,13 @@ class ProconnectAuthenticator extends AbstractAuthenticator
             throw new AuthenticationException('Invalid OIDC state.');
         }
 
-        $response = $this->httpClient->request('POST', $_ENV['PROCONNECT_AUTH_URL'] . '/token', [
+        $response = $this->httpClient->request('POST', $this->proconnectAuthUrl . '/token', [
             'body' => [
                 'grant_type' => 'authorization_code',
                 'code' => $code,
                 'redirect_uri' => $this->urlGenerator->generate('connect_proconnect_check', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                'client_id' => $_ENV['PROCONNECT_CLIENT_ID'],
-                'client_secret' => $_ENV['PROCONNECT_CLIENT_SECRET'],
+                'client_id' => $this->proconnectClientId,
+                'client_secret' => $this->proconnectClientSecret
             ],
         ]);
 
