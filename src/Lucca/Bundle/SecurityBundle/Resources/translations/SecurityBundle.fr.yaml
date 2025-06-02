@@ -71,11 +71,11 @@ link:
 proconnect:
     error:
         token_not_found: "Erreur de récupération du token ProConnect."
-        access_token_missing: "Token d'accès manquant dans la réponse ProConnect."
+        generic: "Erreur de connection avec ProConnect. Veuillez réessayer plus tard."
         email_not_found: "Aucun email trouvé dans la réponse ProConnect."
         user_not_found: "L'email '%email%' ne correspond à aucun utilisateur dans l'application. Veuillez contacter l'administrateur de votre DDT."
-        invalid_signature: "La signature du token ProConnect est invalide. Veuillez réessayer plus tard."
-        http_exception: "Erreur lors de la communication avec ProConnect. Veuillez réessayer plus tard."
+        token_expired: "Le token ProConnect a expiré. Veuillez vous reconnecter."
+        invalid_nonce: "Nonce invalide. Veuillez réessayer."
     login:
         signInWithProconnect: "Se connecter avec ProConnect"
         whatIsProconnect: "Qu'est-ce que ProConnect ?"
