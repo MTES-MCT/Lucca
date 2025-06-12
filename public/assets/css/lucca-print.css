@@ -84,6 +84,69 @@
  * Generic class
  ************************************************************/
 
+/********************
+ * Height
+ ********************/
+.mh50 {
+    max-height: 50px;
+}
+
+.mh100 {
+    max-height: 100px;
+}
+
+.mh200 {
+    max-height: 200px;
+}
+
+.h35 {
+    height: 35px;
+}
+
+.mt80 {
+    margin-top: 80px;
+}
+
+.mt50 {
+    margin-top: 50px;
+}
+
+.mt15 {
+    margin-top: 15px;
+}
+
+.mb100 {
+    margin-bottom: 100px;
+}
+
+.mb50 {
+    margin-bottom: 50px;
+}
+
+.mb25 {
+    margin-bottom: 25px;
+}
+
+.mr-1 {
+    margin-right: 15px;
+}
+
+.pt150 {
+    padding-top: 150px;
+}
+
+.pt80 {
+    padding-top: 80px;
+}
+
+.pt50 {
+    padding-top: 50px;
+}
+
+.pt15 {
+    padding-top: 15px;
+}
+
 html {
     height: 0;
 }
