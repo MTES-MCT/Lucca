@@ -49,6 +49,8 @@ class ProconnectAuthenticator extends AbstractAuthenticator
         private readonly string                 $adminRouteAfterLogin,
         #[Autowire(param: 'lucca_security.proconnect_auth_url')]
         private string $proconnectAuthUrl,
+        #[Autowire(param: 'lucca_security.proconnect_callback_url')]
+        private string $proconnectCallbackUrl,
         #[Autowire(param: 'lucca_security.proconnect_client_id')]
         private string $proconnectClientId,
         #[Autowire(param: 'lucca_security.proconnect_client_secret')]
@@ -76,7 +78,7 @@ class ProconnectAuthenticator extends AbstractAuthenticator
             'body' => [
                 'grant_type' => 'authorization_code',
                 'code' => $code,
-                'redirect_uri' => $this->urlGenerator->generate('connect_proconnect_check', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                'redirect_uri' => $this->proconnectCallbackUrl,
                 'client_id' => $this->proconnectClientId,
                 'client_secret' => $this->proconnectClientSecret
             ],
