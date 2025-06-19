@@ -28,7 +28,6 @@ use Lucca\Bundle\UserBundle\Entity\User;
 
 class ProConnectService
 {
-    private readonly string $redirectUri;
     private ?array $openIdConf;
     private readonly HttpClientInterface $httpClient;
 
@@ -46,6 +45,8 @@ class ProConnectService
         private readonly LoggerInterface            $logger,
         #[Autowire(param: 'lucca_security.proconnect_auth_url')]
         private readonly string                     $proconnectAuthUrl,
+        #[Autowire(param: 'lucca_security.proconnect_callback_url')]
+        private readonly string                     $redirectUri,
         #[Autowire(param: 'lucca_security.proconnect_client_id')]
         private readonly string                     $proconnectClientId,
         #[Autowire(param: 'lucca_security.proconnect_client_secret')]
@@ -64,8 +65,6 @@ class ProConnectService
                 'url' => $this->proconnectAuthUrl . '/.well-known/openid-configuration',
             ]);
         }
-
-        $this->redirectUri = $this->urlGenerator->generate('lucca_security_connect_proconnect_check', [], UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
 
