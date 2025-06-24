@@ -8,16 +8,16 @@ lucca_media_bundle:
 lucca_media_bundle_admin:
     resource: "@LuccaMediaBundle/Controller/Admin"
     type: attribute
-    prefix: /back-office
+    prefix: /{dep_code}/back-office
 
 ## LuccaMediaBundle Gallery
 lucca_media_bundle_gallery:
     resource: "@LuccaMediaBundle/Controller/Gallery"
     type: attribute
-    prefix: /back-office
+    prefix: /{dep_code}/back-office
 
 ## LuccaMediaBundle API
 lucca_media_bundle_api:
     resource: "@LuccaMediaBundle/Controller/Api"
     type: attribute
-    prefix: /back-office/api
+    prefix: /{dep_code}/back-office/api

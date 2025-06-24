@@ -21,7 +21,7 @@ services:
         public: true
         arguments:
             - "@doctrine.orm.entity_manager"
-            - "@router"
+            - "@router.default"
             - "@security.user_password_hasher"
             - "@lucca.security.manager.login_attempt"
             - '@Lucca\Bundle\AdherentBundle\Finder\AdherentFinder'
@@ -38,13 +38,17 @@ services:
         public: true
         arguments:
             - '@http_client'
-            - '@router'
+            - '@router.default'
             - '@security.user.provider.concrete.lucca_user_provider'
             - '@request_stack'
             - '@doctrine.orm.entity_manager'
-            - '@parameter_bag'
+            - '@Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver'
             - '%env(DEFAULT_URL_AFTER_LOGIN)%'
             - '%env(DEFAULT_ADMIN_URL_AFTER_LOGIN)%'
+            - '%env(PROCONNECT_AUTH_URL)%'
+            - '%env(PROCONNECT_CALLBACK_URL)%'
+            - '%env(PROCONNECT_CLIENT_ID)%'
+            - '%env(PROCONNECT_CLIENT_SECRET)%'
 
     #################################################################
     ## Security

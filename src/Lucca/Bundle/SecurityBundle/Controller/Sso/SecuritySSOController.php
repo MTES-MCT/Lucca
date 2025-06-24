@@ -8,17 +8,15 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\Bundle\SecurityBundle\Controller;
+namespace Lucca\Bundle\SecurityBundle\Controller\Sso;
 
+use Lucca\Bundle\SecurityBundle\Service\ProConnectService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-use Lucca\Bundle\SecurityBundle\Service\ProConnectService;
-
-#[Route('/sso')]
 class SecuritySSOController extends AbstractController
 {
     use TargetPathTrait;

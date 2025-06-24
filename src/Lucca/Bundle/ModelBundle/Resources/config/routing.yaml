@@ -2,16 +2,16 @@
 lucca_model_bundle_admin:
     resource: "@LuccaModelBundle/Controller/Admin"
     type:     attribute
-    prefix:   /back-office
+    prefix:   /{dep_code}/back-office
 
 # LuccaModelBundle Routing - ByMargin
 lucca_model_bundle_by_margin:
     resource: "@LuccaModelBundle/Controller/ByMargin"
     type:     attribute
-    prefix:   /back-office
+    prefix:   /{dep_code}/back-office
 
 # LuccaModelBundle Routing - Printing
 lucca_minute_bundle_printing:
     resource: "@LuccaModelBundle/Controller/Printing"
     type:     attribute
-    prefix:   /back-office
+    prefix:   /{dep_code}/back-office

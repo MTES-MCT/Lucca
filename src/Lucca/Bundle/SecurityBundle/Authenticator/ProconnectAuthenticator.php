@@ -11,9 +11,9 @@
 namespace Lucca\Bundle\SecurityBundle\Authenticator;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
 use Lucca\Bundle\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -40,21 +40,21 @@ class ProconnectAuthenticator extends AbstractAuthenticator
         private readonly UserProviderInterface  $userProvider,
         private readonly RequestStack           $requestStack,
         private readonly EntityManagerInterface $em,
-        private readonly ParameterBagInterface  $parameterBag,
+        private readonly UserDepartmentResolver $userDepartmentResolver,
 
         /** Define constant to name route called after a login */
         #[Autowire(param: 'lucca_security.default_url_after_login')]
-        private readonly string                 $routeAfterLogin,
+        private readonly string $routeAfterLogin,
         #[Autowire(param: 'lucca_security.default_admin_url_after_login')]
-        private readonly string                 $adminRouteAfterLogin,
+        private readonly string $adminRouteAfterLogin,
         #[Autowire(param: 'lucca_security.proconnect_auth_url')]
-        private string $proconnectAuthUrl,
+        private readonly string $proconnectAuthUrl,
         #[Autowire(param: 'lucca_security.proconnect_callback_url')]
-        private string $proconnectCallbackUrl,
+        private readonly string $proconnectCallbackUrl,
         #[Autowire(param: 'lucca_security.proconnect_client_id')]
-        private string $proconnectClientId,
+        private readonly string $proconnectClientId,
         #[Autowire(param: 'lucca_security.proconnect_client_secret')]
-        private string $proconnectClientSecret,
+        private readonly string $proconnectClientSecret,
     )
     {
         $this->session = $this->requestStack->getSession();
@@ -131,7 +131,7 @@ class ProconnectAuthenticator extends AbstractAuthenticator
         $session = $request->getSession();
         $session->set(SecurityRequestAttributes::LAST_USERNAME, $user->getEmail());
 
-        if ($this->parameterBag->get('lucca_core.admin_domain_name') === $request->headers->get('host')) {
+        if ($this->userDepartmentResolver->getCode() === 'admin') {
             return new RedirectResponse($this->urlGenerator->generate($this->adminRouteAfterLogin));
         }
 

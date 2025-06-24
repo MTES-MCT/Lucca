@@ -2,9 +2,9 @@
 lucca_user_bundle:
     resource: "@LuccaUserBundle/Controller/Admin"
     type:     attribute
-    prefix:   /back-office
+    prefix:   /{dep_code}/back-office
 
 lucca_user_bundle_profile:
     resource: "@LuccaUserBundle/Controller/Profile"
     type:     attribute
-    prefix:   /back-office
+    prefix:   /{dep_code}/back-office

@@ -101,7 +101,7 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
         $user = $this->em->getRepository(User::class)->loadUserByIdentifier($identifier);
 
         // Don't use the department badge if the request is from the admin domain
-        if ($this->parameterBag->get('lucca_core.admin_domain_name') === $request->headers->get('host')) {
+        if ($this->userDepartmentResolver->getCode() === 'admin') {
             $superAdminBadge = new SuperAdminBadge();
             if ($user?->hasRole('ROLE_SUPER_ADMIN')) {
                 $superAdminBadge->markResolved(); // mark the badge as resolved if the user is a super admin
@@ -185,12 +185,12 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
         $session = $request->getSession();
         $session->set(SecurityRequestAttributes::LAST_USERNAME, $user->getEmail());
 
-        if ($this->parameterBag->get('lucca_core.admin_domain_name') === $request->headers->get('host')) {
+        if ($this->userDepartmentResolver->getCode() === 'admin') {
             // Redirect to the admin route after login
             return new RedirectResponse($this->urlGenerator->generate($this->adminRouteAfterLogin));
         }
 
-        return new RedirectResponse($this->urlGenerator->generate($this->routeAfterLogin));
+        return new RedirectResponse($this->urlGenerator->generate($this->routeAfterLogin, ['_locale' => $request->getLocale(), 'dep_code' => $this->userDepartmentResolver->getCode()]));
     }
 
     /**
@@ -234,7 +234,7 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
      */
     protected function getLoginUrl(Request $request): string
     {
-        return $this->urlGenerator->generate($this->routeLogin);
+        return $this->urlGenerator->generate($this->routeLogin, ['_locale' => $request->getLocale(), 'dep_code' => $this->userDepartmentResolver->getCode()]);
     }
 
     public function supportsRememberMe(): void

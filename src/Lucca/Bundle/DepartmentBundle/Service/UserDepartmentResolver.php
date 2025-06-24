@@ -32,24 +32,40 @@ class UserDepartmentResolver
 
     public function getDepartment(): ?Department
     {
+        //init context
+        $this->getDepartmentContext();
+        return $this->department;
+    }
+
+    public function getCode() : ?string
+    {
+        //init context
+        $this->getDepartmentContext();
+        return $this->getDepartment()?->getCode();
+    }
+
+    private function getDepartmentContext(): void
+    {
         if ($this->department) {
-            return $this->department;
+            return;
         }
 
         /** If in case of unit test get the department by code */
         if ($this->luccaUnitTestDepCode !== 'null') {
             $this->department = $this->em->getRepository(Department::class)->findOneBy(['code' => $this->luccaUnitTestDepCode]);
+            return;
+        }
+        $currentRequest = $this->requestStack?->getMainRequest();
 
-            return $this->department;
+        $pathInfo = $currentRequest?->getPathInfo();
+
+        //extract department code from path info
+        if ($pathInfo && preg_match('/^\/([a-zA-Z0-9_-]+)\/.*/', $pathInfo, $matches)) {
+            $departmentCode = $matches[1];
+            $this->department = $this->em->getRepository(Department::class)->findOneBy(['code' => $departmentCode]);
         }
 
-        $currentRequest = $this->requestStack?->getCurrentRequest();
-        $this->department = $this->em->getRepository(Department::class)->findOneBy(['domainName' => $currentRequest?->getHost()]);
-
-        if (!$this->department) {
-            return null;
-        }
-
-        return $this->department;
     }
+
+
 }

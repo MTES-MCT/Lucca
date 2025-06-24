@@ -8,4 +8,4 @@ lucca_content_bundle:
 lucca_content_bundle_admin:
     resource: "@LuccaContentBundle/Controller/Admin"
     type:     attribute
-    prefix:   /back-office
+    prefix:   /{dep_code}/back-office

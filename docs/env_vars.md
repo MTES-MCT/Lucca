@@ -70,7 +70,6 @@ Below is a categorized explanation of each available variable.
 |----------------------------------|--------------------------------------------------------|
 | `DEFAULT_URL_AFTER_LOGIN`         | Route to redirect to after login                       |
 | `DEFAULT_ADMIN_URL_AFTER_LOGIN`   | Admin route to redirect to after login                 |
-| `LUCCA_ADMIN_DOMAIN`              | Hostname used for admin routes                         |
 | `LUCCA_STRATEGY_ASSET_VERSION`    | Front asset version for cache busting                  |
 | `LUCCA_STRATEGY_ASSET_FORCE_REFRESH` | Forces asset cache refresh                             |
 | `LUCCA_SNAPPY_FOLDER`             | Temp folder used for PDF generation                    |
