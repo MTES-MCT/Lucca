@@ -61,6 +61,12 @@ class UserDepartmentResolver
 
         //init context
         $this->getDepartmentContext();
+
+        $codeFromUrl = $this->getDepartmentCodeFromUrl();
+        if ($codeFromUrl === 'admin')
+        {
+            return $codeFromUrl;
+        }
         return $this->getDepartment()?->getCode();
     }
 
@@ -77,7 +83,7 @@ class UserDepartmentResolver
         return null;
     }
 
-    private function getDepartmentContext(bool $fromSessionOnly = false): void
+    private function getDepartmentContext(): void
     {
         if ($this->department) {
             return;
@@ -91,8 +97,6 @@ class UserDepartmentResolver
 
         $currentRequest = $this->requestStack?->getMainRequest();
 
-
-
         /** First step: check if the request is a Lucca request */
         // If no path info, we cannot determine the department to avoid errors on dev profiler for example
         if ($currentRequest && !str_starts_with($currentRequest->get('_route'), 'lucca_')) {
@@ -102,9 +106,7 @@ class UserDepartmentResolver
         //check if route needs department code
         $route = $this->router->getRouteCollection()->get($currentRequest->get('_route'));
 
-
         $routeNeedDepCode = str_contains($route?->getPath() ?? "", '{dep_code}');
-
 
         if (!$routeNeedDepCode) {
             return;
@@ -112,7 +114,7 @@ class UserDepartmentResolver
         $departmentCode = $this->getDepartmentCodeFromUrl();
 
         /** Second step: check if the department code is set in the request */
-        if ($departmentCode) {
+        if ($departmentCode && $departmentCode !== 'admin') {
             $sessionDepartmentCode = $currentRequest?->getSession()?->get('user_department_code');
             $this->department = $this->em->getRepository(Department::class)->findOneBy(['code' => $departmentCode, 'enabled' => true]);
 

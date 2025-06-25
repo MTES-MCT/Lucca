@@ -53,7 +53,6 @@ class DepartmentController extends AbstractController
         private readonly NatinfService     $natinfService,
         private readonly ModelService      $modelService,
         private readonly AdherentManager   $adherentManager,
-        private readonly SettingGenerator  $settingGenerator,
     )
     {
     }

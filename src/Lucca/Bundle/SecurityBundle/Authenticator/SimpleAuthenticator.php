@@ -194,7 +194,9 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
 
         if ($this->userDepartmentResolver->getCode() === 'admin') {
             // Redirect to the admin route after login
-            return new RedirectResponse($this->urlGenerator->generate($this->adminRouteAfterLogin));
+            return new RedirectResponse($this->urlGenerator->generate($this->adminRouteAfterLogin, [
+                'dep_code' => 'admin'
+            ]));
         }
 
         return new RedirectResponse($this->urlGenerator->generate($this->routeAfterLogin, ['dep_code' => $this->userDepartmentResolver->getCode()]));
@@ -241,7 +243,7 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
      */
     protected function getLoginUrl(Request $request): string
     {
-        return $this->urlGenerator->generate($this->routeLogin, ['_locale' => $request->getLocale(), 'dep_code' => $this->userDepartmentResolver->getCode() ?? $this->userDepartmentResolver->getCode(true)]);
+        return $this->urlGenerator->generate($this->routeLogin, ['dep_code' => $this->userDepartmentResolver->getCode() ?? $this->userDepartmentResolver->getCode(true)]);
     }
 
     public function supportsRememberMe(): void

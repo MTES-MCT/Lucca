@@ -39,6 +39,7 @@ label:
     forgotPassword: "Mot de passe oublié ?"
     legalMention: "Créé par Numeric Wave"
     badDepartement: "L'url à laquelle vous essayez d'accéder n'est pas correcte.<br>Veuillez accéder à l'url de votre département."
+    backToDepartmentHome: "Retour à l'accueil du département"
 
 ########################
 # Choice

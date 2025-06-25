@@ -43,6 +43,7 @@ class SecurityController extends AbstractController
         AuthenticationUtils $helper,
     ): Response
     {
+
         /** Get default node sor security protection */
         $routeAfterLogin = $this->getParameter('lucca_security.default_url_after_login');
 
@@ -56,7 +57,9 @@ class SecurityController extends AbstractController
             $routeAfterLogin = $this->getParameter('lucca_security.default_admin_url_after_login');
         }
 
-        if($isAdminDepartment){
+        $department = $this->userDepartmentResolver->getDepartment();
+
+        if($department === null && !$isAdminDepartment){
             return $this->render('@LuccaUser/Security/badDepartment.html.twig');
         }
 
