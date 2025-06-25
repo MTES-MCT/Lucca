@@ -27,6 +27,7 @@ title:
     tools: "Fiches outils de l'application"
     results: "Résultat(s) de recherche :"
     adminScope: "Se rendre sur l'interface d'administration"
+    selectDepartment: "Portail d'accès"
 
 ###############
 ## Label

@@ -4,7 +4,7 @@
 
 {# Title #}
 {% block lucca_title %}
-    <title> {{ 'setting.general.app.name'| setting }} | {{ 'meta.login'|trans }}</title>
+    <title> {{ 'setting.general.app.name'| setting | default('meta.lucca'|trans({}, 'ThemeStreamDashboardUiKit')) }} | {{ 'meta.login'|trans }}</title>
 {% endblock lucca_title %}
 
 

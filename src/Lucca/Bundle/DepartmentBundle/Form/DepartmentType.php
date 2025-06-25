@@ -11,7 +11,7 @@
 namespace Lucca\Bundle\DepartmentBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\{FileType, TextareaType, TextType};
+use Symfony\Component\Form\Extension\Core\Type\{CheckboxType, FileType, TextareaType, TextType};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -30,7 +30,7 @@ class DepartmentType extends AbstractType
         $builder
             ->add('code', TextType::class, array('label' => 'label.code', 'required' => true, 'attr' => array('required' => true)))
             ->add('name', TextType::class, array('label' => 'label.name', 'required' => true))
-            ->add('domainName', TextType::class, array('label' => 'label.domainName', 'required' => true, 'attr' => array('required' => true)))
+            ->add('showInHomePage', CheckboxType::class, array('label' => 'label.showInHomePage', 'required' => false))
             ->add('comment', TextareaType::class, array('label' => 'label.comment', 'required' => false, 'attr' => array('class' => 'summernote6')));
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {

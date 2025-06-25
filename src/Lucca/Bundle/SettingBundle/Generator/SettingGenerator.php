@@ -95,27 +95,29 @@ class SettingGenerator
      */
     public function getCachedSettings(?Department $department, bool $bypassCache = false): array
     {
-        $item = $this->settingsCache->getItem(self::SETTINGS_CACHE_KEY . '.' . $department?->getCode());
+        $departments = $department ? [$department] : $this->em->getRepository(Department::class)->findAllActive();
+        $aSettings = [];
 
-        if (!$item->isHit() || $bypassCache) {
-            /** Check if all parameters exist in database in order to create them */
-            try {
-                $aSettingDictionary = $this->generateMissingSettings($department);
+        foreach ($departments as $dept) {
+            $cacheKey = self::SETTINGS_CACHE_KEY . '.' . $dept->getCode();
+            $item = $this->settingsCache->getItem($cacheKey);
 
-                $item->set($aSettingDictionary);
-                $this->settingsCache->save($item);
-
-                $this->em->flush();
-            } catch (Exception $e) {
-                // An error occurred, do nothing
+            if (!$item->isHit() || $bypassCache) {
+                try {
+                    $aSettingDictionary = $this->generateMissingSettings($dept);
+                    $item->set($aSettingDictionary);
+                    $this->settingsCache->save($item);
+                    $this->em->flush();
+                } catch (Exception $e) {
+                    // Log or ignore the exception
+                }
             }
+
+            $cachedValue = $item->get();
+            $aSettings[$dept->getCode()] = is_array($cachedValue) ? $cachedValue : [];
         }
 
-        // Get cached value
-        $cachedItemValue = $item->get();
-
-        // Always return an array
-        return is_array($cachedItemValue) ? $cachedItemValue : [];
+        return $department ? $aSettings[$department->getCode()] : $aSettings;
     }
 
     /**

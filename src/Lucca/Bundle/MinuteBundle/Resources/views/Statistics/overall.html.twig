@@ -5,7 +5,7 @@
 {% import "@LuccaThemeStreamDashboardUiKit/Macro/buttonHelp.html.twig" as macroButtonHelp %}
 
 {% block lucca_title %}
-    <title>{{ 'setting.general.app.name'| setting({}, 'CoreBundle') }}
+    <title>{{ 'setting.general.app.name'| setting | default('meta.lucca'|trans({}, 'ThemeStreamDashboardUiKit')) }}
         | {{ 'statistics.overall.title'|trans }}</title>
 {% endblock lucca_title %}
 

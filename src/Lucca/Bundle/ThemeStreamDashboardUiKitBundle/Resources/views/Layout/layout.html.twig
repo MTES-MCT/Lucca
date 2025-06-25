@@ -7,7 +7,7 @@
 
     {#-- Title --#}
     {% block lucca_title %}
-        <title> {{ 'setting.general.app.name'| setting }} | {{ 'meta.website'|trans }}</title>
+        <title> {{ 'setting.general.app.name'| setting | default('meta.lucca'|trans) }} | {{ 'meta.website'|trans }}</title>
     {% endblock lucca_title %}
 
     <!-- Meta -->
@@ -89,6 +89,14 @@
                 {{'setting.general.colorR.name'|setting }} 100%);
             }
         </style>
+        {% else %}
+        <style>
+            .topnavbar {
+                background-image: linear-gradient(to right,
+                #23b7e5 0%,
+                #51c6ea 100%);
+            }
+        </style>
     {% endif %}
 
 </head>
@@ -104,7 +112,7 @@
 
     <div class="u-header-left">
         <a class="u-header-logo mx-auto" href="{{ path('lucca_core_dashboard') }}">
-            <img class="u-logo-desktop" src="{{ asset('setting.general.logo.name'|setting) }}" width="100"
+            <img class="u-logo-desktop" src="{{ asset('setting.general.logo.name'|setting|default('assets/logo/lucca-logo-texte-transparent.png')) }}" width="100"
                  alt="{{ 'setting.general.app.name'| setting }}">
         </a>
     </div>
@@ -181,7 +189,7 @@
         <div class="u-sidebar-inner">
             <header class="u-sidebar-header">
                 <a class="u-sidebar-logo" href="{{ path('lucca_core_dashboard') }}">
-                    <img class="img-fluid" src="{{ asset('setting.general.logo.name'|setting) }}"
+                    <img class="img-fluid" src="{{ asset('setting.general.logo.name'|setting|default('assets/logo/lucca-logo-texte-transparent.png')) }}"
                          alt="{{ 'setting.general.app.name'| setting }}">
                 </a>
             </header>

@@ -38,10 +38,14 @@ abstract class SettingManager
         return self::$settings[self::$department?->getCode()];
     }
 
-    public static function get(string $name, $default = null): mixed
+    public static function get(string $name, $default = null, ?string $depCode = null): mixed
     {
         /** We can get the first element of the array because there is only the settings of the current department in this array */
         $settingsOfDepartment = reset(self::$settings);
+        if ($depCode) {
+            // If a specific department code is provided, we check if it exists in the settings array
+            $settingsOfDepartment = reset(self::$settings)[$depCode] ?? [];
+        }
         return $settingsOfDepartment[$name] ?? $default;
     }
 

@@ -2,7 +2,7 @@
 {% trans_default_domain 'ContentBundle' %}
 
 {% block lucca_title %}
-    <title>{{ 'setting.general.app.name'| setting }} | {{ 'title.termsService'|trans }}</title>
+    <title>{{ 'setting.general.app.name'| setting | default('meta.lucca'|trans({}, 'ThemeStreamDashboardUiKit')) }} | {{ 'title.termsService'|trans }}</title>
 {% endblock lucca_title %}
 
 
