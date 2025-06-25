@@ -64,6 +64,7 @@ security:
     access_control:
         ## Anonymous access
 #        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/$, roles: PUBLIC_ACCESS }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/back-office/media/manager/file/(.+), role: IS_AUTHENTICATED_ANONYMOUSLY }
 

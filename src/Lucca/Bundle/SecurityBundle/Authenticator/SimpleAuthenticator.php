@@ -118,6 +118,10 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
         $department = $this->userDepartmentResolver->getDepartment();
         $departmentBadge = new DepartmentBadge($department);
 
+        //add the department code to the session
+        $session = $request->getSession();
+        $session->set('user_department_code', $department?->getCode());
+
         if ($user?->getDepartments()->contains($department)) {
             $departmentBadge->markResolved(); // mark the badge as resolved if the user is part of the department
         }
@@ -185,12 +189,15 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
         $session = $request->getSession();
         $session->set(SecurityRequestAttributes::LAST_USERNAME, $user->getEmail());
 
+        /** Store the user department code in session */
+        $session->set('user_department_code', $this->userDepartmentResolver->getCode());
+
         if ($this->userDepartmentResolver->getCode() === 'admin') {
             // Redirect to the admin route after login
             return new RedirectResponse($this->urlGenerator->generate($this->adminRouteAfterLogin));
         }
 
-        return new RedirectResponse($this->urlGenerator->generate($this->routeAfterLogin, ['_locale' => $request->getLocale(), 'dep_code' => $this->userDepartmentResolver->getCode()]));
+        return new RedirectResponse($this->urlGenerator->generate($this->routeAfterLogin, ['dep_code' => $this->userDepartmentResolver->getCode()]));
     }
 
     /**
@@ -234,7 +241,7 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
      */
     protected function getLoginUrl(Request $request): string
     {
-        return $this->urlGenerator->generate($this->routeLogin, ['_locale' => $request->getLocale(), 'dep_code' => $this->userDepartmentResolver->getCode()]);
+        return $this->urlGenerator->generate($this->routeLogin, ['_locale' => $request->getLocale(), 'dep_code' => $this->userDepartmentResolver->getCode() ?? $this->userDepartmentResolver->getCode(true)]);
     }
 
     public function supportsRememberMe(): void

@@ -62,7 +62,8 @@ class ProconnectAuthenticator extends AbstractAuthenticator
 
     public function supports(Request $request): ?bool
     {
-        return $request->attributes->get('_route') === 'connect_proconnect_check' && $request->query->has('code');
+        return false;
+//        return $request->attributes->get('_route') === 'connect_proconnect_check' && $request->query->has('code');
     }
 
     public function authenticate(Request $request): Passport
@@ -120,6 +121,7 @@ class ProconnectAuthenticator extends AbstractAuthenticator
         /** @var User $user */
         $user = $token->getUser();
         $user->setLastLogin(new \DateTime('now'));
+        $departmentCode = $this->userDepartmentResolver->getCode(true);
 
         $this->em->persist($user);
         $this->em->flush();
@@ -132,10 +134,14 @@ class ProconnectAuthenticator extends AbstractAuthenticator
         $session->set(SecurityRequestAttributes::LAST_USERNAME, $user->getEmail());
 
         if ($this->userDepartmentResolver->getCode() === 'admin') {
-            return new RedirectResponse($this->urlGenerator->generate($this->adminRouteAfterLogin));
+            return new RedirectResponse($this->urlGenerator->generate($this->adminRouteAfterLogin, [
+                'dep_code' => $departmentCode
+            ]));
         }
 
-        return new RedirectResponse($this->urlGenerator->generate($this->routeAfterLogin));
+        return new RedirectResponse($this->urlGenerator->generate($this->routeAfterLogin, [
+            'dep_code' => $departmentCode
+        ]));
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response

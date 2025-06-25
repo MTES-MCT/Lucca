@@ -11,6 +11,8 @@
 namespace Lucca\Bundle\SecurityBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
+use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Component\HttpClient\HttpClient;
@@ -43,6 +45,7 @@ class ProConnectService
         private readonly ProConnectAuthenticator    $proConnectAuthenticator,
         private readonly TranslatorInterface        $translator,
         private readonly LoggerInterface            $logger,
+        private readonly UserDepartmentResolver     $userDepartmentResolver,
         #[Autowire(param: 'lucca_security.proconnect_auth_url')]
         private readonly string                     $proconnectAuthUrl,
         #[Autowire(param: 'lucca_security.proconnect_callback_url')]
@@ -75,8 +78,6 @@ class ProConnectService
     public function connect(): RedirectResponse
     {
         try {
-
-
             $state = bin2hex(random_bytes(16));
             $nonce = bin2hex(random_bytes(16));
 
@@ -108,7 +109,9 @@ class ProConnectService
             ]);
             $session = $this->requestStack->getSession();
             $session->getFlashBag()->add('danger', $this->translator->trans('proconnect.error.generic', [], 'SecurityBundle'));
-            return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login'));
+            return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login', [
+                'dep_code' => $this->userDepartmentResolver->getCode(true)
+            ]));
         }
     }
 
@@ -120,7 +123,7 @@ class ProConnectService
     {
         $request = $this->requestStack->getCurrentRequest();
         $session = $this->requestStack->getSession();
-
+        $departmentCode = $this->userDepartmentResolver->getCode(true);
         try {
             // Get the authorization code and state from query parameters
             $code = $request->query->get('code');
@@ -156,14 +159,18 @@ class ProConnectService
             // Validate presence of ID token
             if (!isset($tokenRaw['id_token'])) {
                 $session->getFlashBag()->add('danger', $this->translator->trans('proconnect.error.token_not_found', [], 'SecurityBundle'));
-                return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login'));
+                return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login', [
+                    'dep_code' => $departmentCode
+                ]));
             }
 
             // Get access token to query userinfo endpoint
             $accessToken = $tokenRaw['access_token'] ?? null;
             if (!$accessToken) {
                 $session->getFlashBag()->add('danger', $this->translator->trans('proconnect.error.access_token_missing', [], 'SecurityBundle'));
-                return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login'));
+                return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login', [
+                    'dep_code' => $departmentCode
+                ]));
             }
 
             $userInfoEndpoint = $this->openIdConf['userinfo_endpoint'] ?? null;
@@ -190,7 +197,9 @@ class ProConnectService
                 // Check expiration
                 if (isset($decoded['exp']) && $decoded['exp'] < time()) {
                     $session->getFlashBag()->add('danger', $this->translator->trans('proconnect.error.token_expired', [], 'SecurityBundle'));
-                    return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login'));
+                    return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login', [
+                        'dep_code' => $departmentCode
+                    ]));
                 }
 
                 // Clean session after successful authentication
@@ -203,7 +212,9 @@ class ProConnectService
                     'exception' => $e,
                     'jwt' => $jwt,
                 ]);
-                return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login'));
+                return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login', [
+                    'dep_code' => $departmentCode
+                ]));
             }
 
             // Extract email from JWT claims
@@ -211,14 +222,29 @@ class ProConnectService
 
             if (!$email) {
                 $session->getFlashBag()->add('danger', $this->translator->trans('proconnect.error.email_not_found', [], 'SecurityBundle'));
-                return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login'));
+                return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login', [
+                    'dep_code' => $departmentCode
+                ]));
             }
 
             // Try to retrieve the user from database by email
             $user = $this->em->getRepository(User::class)->findOneBy(['email' => $email]);
             if (!$user) {
                 $session->getFlashBag()->add('danger', $this->translator->trans('proconnect.error.user_not_found', ['%email%' => $email], 'SecurityBundle'));
-                return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login'));
+                return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login', [
+                    'dep_code' => $departmentCode
+                ]));
+            }
+
+            $department = $user->getDepartments()->filter(function (Department $department) use ($departmentCode) {
+                return $department->getCode() === $departmentCode;
+            })->first();
+
+            if (!$department) {
+                $session->getFlashBag()->add('danger', $this->translator->trans('proconnect.error.user_not_found', ['%email%' => $email], 'SecurityBundle'));
+                return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login', [
+                    'dep_code' => $departmentCode
+                ]));
             }
 
         } catch (HttpExceptionInterface $e) {
@@ -227,13 +253,17 @@ class ProConnectService
                 'url' => $this->proconnectAuthUrl,
                 'exception' => $e,
             ]);
-            return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login'));
+            return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login', [
+                'dep_code' => $departmentCode
+            ]));
         } catch (\Throwable $e) {
             $session->getFlashBag()->add('danger', $this->translator->trans('proconnect.error.generic', [], 'SecurityBundle'));
             $this->logger->error('Unexpected error during ProConnect authentication', [
                 'exception' => $e,
             ]);
-            return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login'));
+            return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login', [
+                'dep_code' => $departmentCode
+            ]));
         }
 
         // Authenticate and log the user in

@@ -2,7 +2,7 @@
 lucca_content_bundle:
     resource: "@LuccaContentBundle/Controller"
     type:     attribute
-    prefix:   /
+    prefix:   /{dep_code}/
 
 # LuccaContentBundle Routing
 lucca_content_bundle_admin:

@@ -46,6 +46,9 @@ class SecurityController extends AbstractController
         /** Get default node sor security protection */
         $routeAfterLogin = $this->getParameter('lucca_security.default_url_after_login');
 
+        //set department code in session
+        $request->getSession()->set('department_code_from_login', $this->userDepartmentResolver->getCode());
+
         $isAdminDepartment = $this->userDepartmentResolver->getCode() === 'admin';
 
         // if user is already logged in, don't display the login page again

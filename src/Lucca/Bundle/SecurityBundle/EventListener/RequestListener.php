@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\SecurityBundle\EventListener;
 
+use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
 use Symfony\Component\HttpFoundation\RedirectResponse,
     Symfony\Component\HttpKernel\Event\RequestEvent,
     Symfony\Component\Routing\RouterInterface,
@@ -29,7 +30,8 @@ class RequestListener
     function __construct(
         private readonly ParameterBagInterface  $parameterBag,
         private readonly EntityManagerInterface $em,
-        private readonly RouterInterface        $router
+        private readonly RouterInterface        $router,
+        private readonly UserDepartmentResolver $userDepartmentResolver,
     )
     {
         $this->routes = array('lucca_user_security_login');
@@ -67,7 +69,9 @@ class RequestListener
         $nbrTries = $parameterProtection['max_login_attempts'];
 
         if (count($loginsAttempt) > $nbrTries && $event->getResponse() === null) {
-            $event->setResponse(new RedirectResponse($this->router->generate('lucca_security_ip_banned')));
+            $event->setResponse(new RedirectResponse($this->router->generate('lucca_security_ip_banned', [
+                'dep_code' => $this->userDepartmentResolver->getCode()
+            ])));
         }
     }
 }

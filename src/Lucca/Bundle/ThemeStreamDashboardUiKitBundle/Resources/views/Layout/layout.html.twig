@@ -189,7 +189,7 @@
             <nav class="u-sidebar-nav">
                 <ul class="u-sidebar-nav-menu u-sidebar-nav-menu--top-level">
 
-                    {% if app.request.headers.get('host') is not same as adminDomainName %}
+                    {% if getDepartmentCode() is not same as 'admin' %}
 
                         {#-- Menu - Public --#}
                         <li class="u-sidebar-nav-menu__item bg-light bg-light py-3 rounded">
@@ -302,7 +302,7 @@
                             <span class="badge badge-warning badge-xs float-right mr-2">{{ 'badge.admin'|trans }}</span>
                         </li>
 
-                        {% if app.request.headers.get('host') is not same as adminDomainName %}
+                        {% if getDepartmentCode() is not same as 'admin' %}
                             {#-- Menu - Dashboard Admin --#}
                             {% if 'setting.module.dashboardAdmin.name'|setting == true
                                 and app.user|isCountryAgent %}
@@ -395,7 +395,7 @@
                         {#-- End Menu - Parameters --#}
                     {% endif %}
 
-                    {% if app.user and is_granted("ROLE_SUPER_ADMIN") and app.request.headers.get('host') is same as adminDomainName %}
+                    {% if app.user and is_granted("ROLE_SUPER_ADMIN") and getDepartmentCode() is same as 'admin' %}
                         <li class="u-sidebar-nav-menu__item bg-light py-3 rounded">
                             <span class="u-sidebar-nav-menu__item-title ml-2">{{ 'menu.super_admin'|trans }}</span>
                             <span class="badge badge-danger badge-xs float-right mr-2">{{ 'badge.sa'|trans }}</span>

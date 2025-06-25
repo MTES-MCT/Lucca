@@ -61,6 +61,7 @@ services:
             - "@parameter_bag"
             - "@doctrine.orm.entity_manager"
             - "@router.default"
+            - '@Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver'
         tags:
             - { name: kernel.event_listener, event: kernel.request }
 

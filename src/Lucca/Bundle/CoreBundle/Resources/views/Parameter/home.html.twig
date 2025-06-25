@@ -17,7 +17,7 @@
     <div class="row margin-bottom-30">
         <div class="container">
 
-            {% if app.request.headers.get('host') is not same as adminDomainName %}
+            {% if getDepartmentCode() is not same as 'admin' %}
                 <div class="row">
                     <div class="col-12">
                         <h2>{{ 'title.natinf'|trans }}</h2>
@@ -145,7 +145,7 @@
                     <h2>{{ 'title.others'|trans }}</h2>
                 </div>
 
-                {% if app.request.headers.get('host') is not same as adminDomainName %}
+                {% if getDepartmentCode() is not same as 'admin' %}
                     {#-- Param - Tribunal --#}
                     <div class="col-3">
                         <div class="card card-default">
@@ -183,7 +183,7 @@
                     {#-- End Param - Partner --#}
                 {% endif %}
 
-                {% if app.request.headers.get('host') is same as adminDomainName %}
+                {% if getDepartmentCode() is same as 'admin' %}
                     {#-- Param - Log --#}
                     <div class="col-3">
                         <div class="card card-default">
@@ -222,7 +222,7 @@
                     </div> {#-- End Param - LoginAttempt --#}
                 {% endif %}
 
-                {% if app.request.headers.get('host') is not same as adminDomainName %}
+                {% if getDepartmentCode() is not same as 'admin' %}
                     {#-- Param - Setting --#}
                     <div class="col-3">
                         <div class="card card-default">
@@ -243,7 +243,7 @@
                     </div> {#-- End Param - Setting --#}
                 {% endif %}
 
-                {% if app.request.headers.get('host') is same as adminDomainName %}
+                {% if getDepartmentCode() is same as 'admin' %}
                     {#-- Param - Media --#}
                     {% include '@LuccaMedia/panel-parameters.html.twig' %}
                     {#-- End Param - Media --#}

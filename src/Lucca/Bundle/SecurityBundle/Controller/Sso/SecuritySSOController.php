@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\SecurityBundle\Controller\Sso;
 
+use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
 use Lucca\Bundle\SecurityBundle\Service\ProConnectService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,6 +24,7 @@ class SecuritySSOController extends AbstractController
 
     public function __construct(
         private readonly ProConnectService $proConnectService,
+        private readonly UserDepartmentResolver $userDepartmentResolver,
     )
     {
     }

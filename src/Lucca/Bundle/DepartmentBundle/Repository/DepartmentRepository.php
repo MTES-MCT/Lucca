@@ -70,6 +70,18 @@ class DepartmentRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+
+    public function findActiveDepartments(): array
+    {
+        $qb = $this->queryDepartment();
+
+        $this->getActiveDepartments($qb);
+
+        $qb->addOrderBy('department.code', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
     /**
      * findHelpTextByDepartment method
      *
