@@ -11,8 +11,6 @@
 namespace Lucca\Bundle\SecurityBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Lucca\Bundle\DepartmentBundle\Entity\Department;
-use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Component\HttpClient\HttpClient;
@@ -25,8 +23,10 @@ use Psr\Log\LoggerInterface;
 use Firebase\JWT\JWT;
 use Firebase\JWT\JWK;
 
-use Lucca\Bundle\SecurityBundle\Authenticator\ProconnectAuthenticator;
 use Lucca\Bundle\UserBundle\Entity\User;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
+use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
+use Lucca\Bundle\SecurityBundle\Authenticator\SimpleAuthenticator;
 
 class ProConnectService
 {
@@ -42,7 +42,7 @@ class ProConnectService
         private readonly UrlGeneratorInterface      $urlGenerator,
         private readonly UserAuthenticatorInterface $userAuthenticator,
         private readonly EntityManagerInterface     $em,
-        private readonly ProConnectAuthenticator    $proConnectAuthenticator,
+        private readonly SimpleAuthenticator        $simpleAuthenticator,
         private readonly TranslatorInterface        $translator,
         private readonly LoggerInterface            $logger,
         private readonly UserDepartmentResolver     $userDepartmentResolver,
@@ -267,7 +267,7 @@ class ProConnectService
         }
 
         // Authenticate and log the user in
-        return $this->userAuthenticator->authenticateUser($user, $this->proConnectAuthenticator, $request);
+        return $this->userAuthenticator->authenticateUser($user, $this->simpleAuthenticator, $request);
     }
 
 }

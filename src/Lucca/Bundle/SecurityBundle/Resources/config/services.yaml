@@ -31,25 +31,6 @@ services:
             - '%env(DEFAULT_URL_AFTER_LOGIN)%'
             - '%env(DEFAULT_ADMIN_URL_AFTER_LOGIN)%'
 
-    ## Authenticator - ProConnect authenticator to manage login action
-    lucca.security.authenticator.proconnect:
-        class: Lucca\Bundle\SecurityBundle\Authenticator\ProconnectAuthenticator
-        decoration_inner_name: "lucca.admin.authenticator"
-        public: true
-        arguments:
-            - '@http_client'
-            - '@router.default'
-            - '@security.user.provider.concrete.lucca_user_provider'
-            - '@request_stack'
-            - '@doctrine.orm.entity_manager'
-            - '@Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver'
-            - '%env(DEFAULT_URL_AFTER_LOGIN)%'
-            - '%env(DEFAULT_ADMIN_URL_AFTER_LOGIN)%'
-            - '%env(PROCONNECT_AUTH_URL)%'
-            - '%env(PROCONNECT_CALLBACK_URL)%'
-            - '%env(PROCONNECT_CLIENT_ID)%'
-            - '%env(PROCONNECT_CLIENT_SECRET)%'
-
     #################################################################
     ## Security
     #################################################################
@@ -84,3 +65,9 @@ services:
         class: Lucca\Bundle\SecurityBundle\EventListener\AccessDeniedHandler
         tags:
             - { name: kernel.event_listener, event: kernel.response }
+
+    #################################################################
+    ## Alias - Login throttling
+    #################################################################
+    Symfony\Component\Security\Http\RateLimiter\DefaultLoginRateLimiter:
+        alias: security.login_throttling.main.limiter

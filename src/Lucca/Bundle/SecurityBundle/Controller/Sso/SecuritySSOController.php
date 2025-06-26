@@ -36,7 +36,9 @@ class SecuritySSOController extends AbstractController
             return $this->proConnectService->connect();
         } catch (\Throwable $e) {
             $this->addFlash('error', 'Error connecting to ProConnect: ' . $e->getMessage());
-            return $this->redirectToRoute('lucca_user_security_login');
+            return $this->redirectToRoute('lucca_user_security_login', [
+                'dep_code' => $this->userDepartmentResolver->getCode(true)
+            ]);
         }
     }
 
@@ -47,7 +49,9 @@ class SecuritySSOController extends AbstractController
             return $this->proConnectService->check();
         } catch (\Throwable $e) {
             $this->addFlash('error', 'Error connecting to ProConnect: ' . $e->getMessage());
-            return $this->redirectToRoute('lucca_user_security_login');
+            return $this->redirectToRoute('lucca_user_security_login', [
+                'dep_code' => $this->userDepartmentResolver->getCode(true)
+            ]);
         }
     }
 }
