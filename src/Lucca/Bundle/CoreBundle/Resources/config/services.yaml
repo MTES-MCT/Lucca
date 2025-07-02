@@ -26,3 +26,14 @@ services:
         tags:
             - { name: doctrine.event_listener, event: preUpdate }
 
+    lucca.listener.router:
+        class: Lucca\Bundle\CoreBundle\EventListener\RouterListener
+        tags:
+            - { name: kernel.event_subscriber }
+        autowire: true
+
+    lucca.listener.exception:
+        class: Lucca\Bundle\CoreBundle\EventListener\ExceptionListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+        autowire: true

@@ -47,6 +47,21 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('authentication_api_key')
                     ->info('Key used to authenticate user on this main API.')
                 ->end()
+                ->scalarNode('proconnect_auth_url')
+                    ->defaultValue('https://proconnect.lucca.fr/auth/realms/lucca/protocol/openid-connect/auth')
+                    ->info('ProConnect authentication URL.')
+                ->end()
+                ->scalarNode('proconnect_callback_url')
+                    ->defaultValue('')
+                    ->info('ProConnect callback URL. This is the URL where ProConnect will redirect after authentication.')
+                ->end()
+                ->scalarNode('proconnect_client_id')
+                    ->defaultValue('lucca')
+                    ->info('ProConnect client ID.')
+                ->end()
+                ->scalarNode('proconnect_client_secret')
+                    ->defaultValue('')
+                    ->info('ProConnect client secret.')
             ->end();
 
         /** Add basic nodes for protection section */

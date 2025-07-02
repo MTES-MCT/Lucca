@@ -3,7 +3,7 @@
 {% block menuActive_sadmin %}active{% endblock %}
 
 {% block lucca_title %}
-    <title>{{ 'setting.general.app.name'| setting }} | {{ 'title.parameter'|trans }}</title>
+    <title>{{ 'setting.general.app.name'| setting | default('meta.lucca'|trans({}, 'ThemeStreamDashboardUiKit')) }} | {{ 'title.parameter'|trans }}</title>
 {% endblock lucca_title %}
 
 {% block lucca_header %}

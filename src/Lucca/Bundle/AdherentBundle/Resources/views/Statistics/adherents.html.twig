@@ -6,8 +6,7 @@
 {% block menuActive_statistics %}active{% endblock %}
 
 {% block lucca_title %}
-    <title>{{ 'setting.general.app.name'| setting({}, 'CoreBundle') }}
-        | {{ 'statistics.adherent.title'|trans }}</title>
+    <title>{{ 'setting.general.app.name'| setting | default('meta.lucca'|trans({}, 'ThemeStreamDashboardUiKit')) }} | {{ 'statistics.adherent.title'|trans }}</title>
 {% endblock lucca_title %}
 
 {% block lucca_header %}

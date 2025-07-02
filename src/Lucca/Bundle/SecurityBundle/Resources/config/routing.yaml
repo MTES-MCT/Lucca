@@ -2,10 +2,16 @@
 lucca_security_bundle_basic:
     resource: "@LuccaSecurityBundle/Controller"
     type: attribute
-    prefix: /
+    prefix: /{dep_code}/
 
 # LuccaSecurityBundle Routing - admin
 lucca_security_bundle_admin:
     resource: "@LuccaSecurityBundle/Controller/Admin"
     type: attribute
-    prefix: /back-office
+    prefix: /{dep_code}/back-office
+
+# LuccaSecurityBundle Routing - sso
+lucca_security_bundle_sso:
+    resource: "@LuccaSecurityBundle/Controller/Sso"
+    type: attribute
+    prefix: /sso

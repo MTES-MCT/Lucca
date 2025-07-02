@@ -2,7 +2,7 @@
 lucca_log_bundle_admin:
     resource: "@LuccaLogBundle/Controller/Admin"
     type:     attribute
-    prefix:   /back-office
+    prefix:   /{dep_code}/back-office
     
 ## LuccaLogBundle Routing - Api
 lucca_api_logt_bundle:

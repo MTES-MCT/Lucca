@@ -39,8 +39,8 @@ class Department implements LoggableInterface
     #[ORM\Column]
     private string $name;
 
-    #[ORM\Column(unique: true)]
-    private string $domainName;
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $showInHomePage = true;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment = null;
@@ -98,15 +98,15 @@ class Department implements LoggableInterface
 
         return $this;
     }
-
-    public function getDomainName(): string
+    
+    public function isShowInHomePage(): bool
     {
-        return $this->domainName;
+        return $this->showInHomePage;
     }
 
-    public function setDomainName(string $domainName): self
+    public function setShowInHomePage(bool $showInHomePage): self
     {
-        $this->domainName = $domainName;
+        $this->showInHomePage = $showInHomePage;
 
         return $this;
     }

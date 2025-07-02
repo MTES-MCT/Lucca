@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\SecurityBundle\Controller;
 
+use Lucca\Bundle\SecurityBundle\Service\ProConnectService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,9 +26,9 @@ class SecurityController extends AbstractController
 {
     use TargetPathTrait;
 
-
     public function __construct(
         private readonly UserDepartmentResolver $userDepartmentResolver,
+        private readonly ProConnectService $proConnectService,
     )
     {
     }
@@ -42,20 +43,25 @@ class SecurityController extends AbstractController
         AuthenticationUtils $helper,
     ): Response
     {
+
         /** Get default node sor security protection */
         $routeAfterLogin = $this->getParameter('lucca_security.default_url_after_login');
 
+        //set department code in session
+        $request->getSession()->set('department_code_from_login', $this->userDepartmentResolver->getCode());
+
+        $isAdminDepartment = $this->userDepartmentResolver->getCode() === 'admin';
+
         // if user is already logged in, don't display the login page again
-        if ($this->getParameter('lucca_core.admin_domain_name') === $request->headers->get('host')) {
+        if ($isAdminDepartment) {
             $routeAfterLogin = $this->getParameter('lucca_security.default_admin_url_after_login');
         }
 
         $department = $this->userDepartmentResolver->getDepartment();
 
-        if($department === null && $this->getParameter('lucca_core.admin_domain_name') !== $request->headers->get('host')){
+        if($department === null && !$isAdminDepartment){
             return $this->render('@LuccaUser/Security/badDepartment.html.twig');
         }
-
 
         if ($user) {
             return $this->redirectToRoute($routeAfterLogin);

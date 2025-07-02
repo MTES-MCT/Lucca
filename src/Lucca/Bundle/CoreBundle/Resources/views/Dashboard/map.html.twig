@@ -4,7 +4,7 @@
 {% block menuActive_map %}active{% endblock %}
 
 {% block lucca_title %}
-    <title>{{ 'setting.general.app.name'| setting }} | {{ 'title.map'|trans }}</title>
+    <title>{{ 'setting.general.app.name'| setting | default('meta.lucca'|trans({}, 'ThemeStreamDashboardUiKit')) }} | {{ 'title.map'|trans }}</title>
 {% endblock lucca_title %}
 
 {% block lucca_header %}

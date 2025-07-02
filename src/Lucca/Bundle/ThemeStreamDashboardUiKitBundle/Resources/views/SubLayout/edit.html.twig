@@ -4,7 +4,7 @@
 {% set param_topbar='gray-bg' %}
 
 {% block lucca_title %}
-    <title>{{ 'setting.general.app.name'| setting }} | {{ entity_trans }} - {{ 'title.edit'|trans }}</title>
+    <title>{{ 'setting.general.app.name'| setting | default('meta.lucca'|trans({}, 'ThemeStreamDashboardUiKit')) }} | {{ entity_trans }} - {{ 'title.edit'|trans }}</title>
 {% endblock lucca_title %}
 
 {% block lucca_header %}

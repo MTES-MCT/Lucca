@@ -1,0 +1,131 @@
+{#-- Extends view --#}
+{% extends "@LuccaThemeDocsUiKit/Layout/anonymousLayout.html.twig" %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'CoreBundle' %}
+
+
+{#Title#}
+{% block lucca_title %}
+    <title>{{ 'meta.lucca'| trans({} , 'ThemeDocsUiKitBundle') }} | {{ 'title.selectDepartment'|trans }}</title>
+{% endblock lucca_title %}
+
+
+{% block lucca_page %}
+
+    {#<div class="container-fluid my-4">#}
+    {#<div class="d-flex flex-wrap justify-content-center gap-4">#}
+    {#{% for department in departments %}#}
+    {#<div class="m-3 d-flex" style="flex: 1 1 calc(10% - 1rem); max-width: 300px; min-width: 200px;">#}
+    {#<a href="{{ path('lucca_content_dashboard', {'dep_code': department.code}) }}"#}
+    {#class="d-block ratio ratio-4x3 w-100">#}
+    {#<img src="{{ asset('setting.general.logo.name'|setting(department.code)) }}"#}
+    {#alt="{{ 'setting.general.app.name'| setting(department.code) }}"#}
+    {#class="img-fluid img-responsive logo-header"#}
+    {#style="object-fit: contain; width: 100%; height: 100%; max-height: unset!important; max-width: unset!important;">#}
+    {#{{ 'setting.general.ddtName.name'| setting(department.code) }}#}
+    {#</a>#}
+    {#</div>#}
+    {#{% endfor %}#}
+    {#</div>#}
+
+    {#<div class="m-3 d-flex flex-wrap justify-content-center" style="gap: 1rem;">#}
+    {#{% for department in departments %}#}
+    {#<div class="row" style="flex: 1 1 200px; max-width: 300px; min-width: 200px;">#}
+
+    {#<a class="h-100" href="{{ path('lucca_content_dashboard', {'dep_code': department.code}) }}">#}
+    {#<div class="col-12">#}
+    {#<img src="{{ asset('setting.general.logo.name'|setting(department.code)) }}"#}
+    {#alt="{{ 'setting.general.ddtName.name'| setting(department.code) }}"#}
+    {#class="img-fluid logo-header"#}
+    {#style="object-fit: contain; width: 100%; height: 100%;">#}
+    {##}{#</a>#}
+    {#</div>#}
+    {#<div class="col-12">#}
+    {#<a href="{{ path('lucca_content_dashboard', {'dep_code': department.code}) }}">#}
+    {#{{ 'setting.general.ddtName.name'| setting(department.code) }}#}
+    {#</a>#}
+    {#</div>#}
+
+    {#</a>#}
+    {#</div>#}
+    {#{% endfor %}#}
+    {#</div>#}
+
+    <div class="container my-5">
+        <div class="tile-wrapper">
+            {% for department in departments %}
+                <div class="tile">
+                    <a href="{{ path('lucca_content_dashboard', {'dep_code': department.code}) }}" class="text-decoration-none">
+                        <div class="card card-custom shadow-sm">
+                            <div class="card-image-container">
+                                <img src="{{ asset('setting.general.logo.name'|setting(department.code)) }}"
+                                     alt="{{ 'setting.general.ddtName.name'| setting(department.code) }}"
+                                     class="img-fluid">
+                            </div>
+                            <div class="card-text-container">
+                                <h5 class="card-title text-dark m-0">
+                                    {{ 'setting.general.ddtName.name'| setting(department.code) }}
+                                </h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {#</div>#}
+
+
+{% endblock lucca_page %}
+
+{% block lucca_css_theme %}
+    <style>
+        .card-custom {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .card-custom:hover {
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+            transform: translateY(-10px);
+        }
+
+        .card-image-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 1rem;
+        }
+
+        .card-image-container img {
+            max-height: 100px;
+            object-fit: contain;
+        }
+
+        .card-text-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .tile-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* Centre les tuiles sur la ligne */
+            gap: 2rem; /* Espace horizontal ET vertical entre les tuiles */
+        }
+
+        .tile {
+            width: 260px; /* largeur fixe pour bien centrer */
+        }
+    </style>
+{% endblock lucca_css_theme %}

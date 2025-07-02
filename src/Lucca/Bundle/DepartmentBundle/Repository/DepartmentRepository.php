@@ -70,6 +70,30 @@ class DepartmentRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+
+    public function findForHomeList(): array
+    {
+        $qb = $this->queryDepartment();
+
+        $this->getActiveDepartments($qb);
+        $qb->andWhere($qb->expr()->eq('department.showInHomePage', ':q_showInHomePage'))
+            ->setParameter(':q_showInHomePage', true);
+
+        $qb->addOrderBy('department.code', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+    public function findAllActive(): array
+    {
+        $qb = $this->queryDepartment();
+
+        $this->getActiveDepartments($qb);
+
+        $qb->addOrderBy('department.code', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
     /**
      * findHelpTextByDepartment method
      *

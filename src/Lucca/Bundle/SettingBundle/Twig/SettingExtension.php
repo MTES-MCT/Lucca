@@ -30,8 +30,8 @@ class SettingExtension extends AbstractExtension
     /**
      * Return a setting value from its name
      */
-    public function settingFilter(string $settingName): mixed
+    public function settingFilter(string $settingName, ?string $depCode = null): mixed
     {
-        return SettingManager::get($settingName);
+        return SettingManager::get($settingName, null, $depCode);
     }
 }

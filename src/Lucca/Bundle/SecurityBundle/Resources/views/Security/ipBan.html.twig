@@ -7,7 +7,7 @@
 
 {# Title #}
 {% block lucca_title %}
-    <title>{{ 'setting.general.app.name'| setting }} | {{ 'ban.title'|trans }}</title>
+    <title>{{ 'setting.general.app.name'| setting | default('meta.lucca'|trans({}, 'ThemeStreamDashboardUiKit')) }} | {{ 'ban.title'|trans }}</title>
 {% endblock lucca_title %}
 
 

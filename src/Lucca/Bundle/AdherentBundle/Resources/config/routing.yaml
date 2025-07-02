@@ -2,16 +2,16 @@
 lucca_adherent_bundle_admin:
     resource: "@LuccaAdherentBundle/Controller/Admin"
     type:     attribute
-    prefix:   /back-office
+    prefix:   /{dep_code}/back-office
 
 # LuccaAdherentBundle Routing - MyAgent
 lucca_adherent_bundle_by_company:
     resource: "@LuccaAdherentBundle/Controller/MyAgent"
     type:     attribute
-    prefix:   /back-office
+    prefix:   /{dep_code}/back-office
 
 # LuccaAdherentBundle Routing - Profile
 lucca_adherent_bundle_profile:
     resource: "@LuccaAdherentBundle/Controller/Profile"
     type:     attribute
-    prefix:   /back-office
+    prefix:   /{dep_code}/back-office

@@ -21,7 +21,7 @@ services:
         public: true
         arguments:
             - "@doctrine.orm.entity_manager"
-            - "@router"
+            - "@router.default"
             - "@security.user_password_hasher"
             - "@lucca.security.manager.login_attempt"
             - '@Lucca\Bundle\AdherentBundle\Finder\AdherentFinder'
@@ -42,6 +42,7 @@ services:
             - "@parameter_bag"
             - "@doctrine.orm.entity_manager"
             - "@router.default"
+            - '@Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver'
         tags:
             - { name: kernel.event_listener, event: kernel.request }
 
@@ -64,3 +65,9 @@ services:
         class: Lucca\Bundle\SecurityBundle\EventListener\AccessDeniedHandler
         tags:
             - { name: kernel.event_listener, event: kernel.response }
+
+    #################################################################
+    ## Alias - Login throttling
+    #################################################################
+    Symfony\Component\Security\Http\RateLimiter\DefaultLoginRateLimiter:
+        alias: security.login_throttling.main.limiter

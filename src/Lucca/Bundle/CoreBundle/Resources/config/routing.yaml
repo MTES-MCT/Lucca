@@ -1,5 +1,10 @@
 # LuccaCoreBundle Routing
-lucca_core_bundle:
+lucca_core_bundle_admin:
     resource: "@LuccaCoreBundle/Controller/"
     type:     attribute
-    prefix:   /back-office
+    prefix:   /{dep_code}/back-office
+
+lucca_core_bundle_anonymous:
+    resource: "@LuccaCoreBundle/Controller/Anonymous/"
+    type:     attribute
+    prefix:   /

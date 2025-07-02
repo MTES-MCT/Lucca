@@ -2,4 +2,4 @@
 lucca_parameter_bundle_admin:
     resource: "@LuccaParameterBundle/Controller/Admin"
     type:     attribute
-    prefix:   /back-office
+    prefix:   /{dep_code}/back-office

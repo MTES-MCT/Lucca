@@ -98,7 +98,6 @@ class InitializationDepartmentCommand extends Command
         $demoDepartment = new Department();
         $demoDepartment->setName('Démo');
         $demoDepartment->setCode('demo');
-        $demoDepartment->setDomainName('demo-lucca.local');
 
         $this->em->persist($demoDepartment);
         $this->em->flush();

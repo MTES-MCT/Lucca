@@ -8,7 +8,7 @@ label:
     name: 'Nom'
     towns: 'Communes'
     code: 'Code'
-    domainName: 'Nom de domaine'
+    showInHomePage: "Afficher sur le portail d’accueil"
     lastSyncSetting: 'Dernière synchronisation des paramètres'
     downloadFileExample: "Télécharger le fichier d'exemple"
 link:
@@ -40,7 +40,7 @@ help:
 
 nextSteps:
     createDomainName: >
-        Demander à votre service technique de créer le nom de domaine et les clefs APi pour Google Map.
+        Demander à votre service technique de créer les clefs APi pour Google Map.
     createSetting: >
         Cliquer sur le bouton pour générer les paramètres manquants. 
         Ce bouton reste visible pour vous permettre de générer les nouveaux qui pourraient être ajoutés plus tard.
