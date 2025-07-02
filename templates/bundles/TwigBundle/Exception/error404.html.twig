@@ -74,15 +74,6 @@
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
                     <li class="nav-item ml-lg-6 mb-2 mb-lg-0">
-                        {% if true or app.user and is_granted('IS_AUTHENTICATED_FULLY') %}
-                            <a href="{{ path('lucca_core_dashboard') }}" class="btn btn-lucca mb-2 mr-2">
-                                <i class="fa fa-user"></i> {{ 'header.mySpace'|trans }}
-                            </a>
-                        {% else %}
-                            <a href="{{ path('lucca_user_security_login') }}" class="btn btn-lucca mb-2 mr-2" >
-                                <i class="fa fa-user"></i>{{ 'header.login'|trans }}
-                            </a>
-                        {% endif %}
                     </li>
                 </ul>
             </div>
@@ -128,7 +119,7 @@
 
                 <p>
                     {{ 'error.404.description'|trans }} - <a
-                        href="{{ path('lucca_content_dashboard') }}">{{ 'error.home'|trans }}</a>.
+                        href="{{ path('lucca_core_home') }}">{{ 'error.home'|trans }}</a>.
                 </p>
             {% endblock lucca_page %}
         </div>
@@ -157,14 +148,6 @@
                     <span>&copy; 2017 - {{ 'now'|date('Y') }} | {{ 'meta.lucca_long'|trans|raw }}</span>
                 </p>
             </div>
-            <ul class="list-inline mb-0">
-                <li class="list-inline-item mr-1 mr-xl-2">
-                    <a href="{{ path('lucca_content_privacy_policy') }}">{{ 'footer.privacyPolicy'|trans }}</a>
-                </li>
-                <li class="list-inline-item mx-1 mx-xl-2">
-                    <a href="{{ path('lucca_content_terms_service') }}">{{ 'footer.termsService'|trans }}</a>
-                </li>
-            </ul>
         </div>
     </div>
 </footer>
