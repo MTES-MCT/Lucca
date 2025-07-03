@@ -54,7 +54,7 @@ footer:
 error:
     title: "Une erreur est survenue"
     description: "Une erreur est survenue lors de la récupération de la page demandée. Vérifiez l'adresse de la page ou retournez sur la"
-    home: "Page d'accueil"
+    home: "Portail d'accès"
     404:
         title: "Page non trouvée"
         description: "La page demandée n'as pas été trouvée. Vérifiez l'adresse de la page ou retournez sur la"
