@@ -62,11 +62,10 @@ when@prod:
     monolog:
         handlers:
             main:
-                type: rotating_file
-                path: "%kernel.logs_dir%/%kernel.environment%.log"
+                type: stream
+                path: 'php://stdout'
                 level: debug
                 channels: [ "!event", "!deprecation", "!php" ]
-                max_files: "%env(MAX_ROTATING_FILES)%"
             # uncomment to get logging in your browser
             # you may have to allow bigger header sizes in your Web server configuration
             #firephp:
@@ -84,5 +83,5 @@ when@prod:
                 # log all messages (since debug is the lowest level)
                 level: debug
                 type: stream
-                path: '%kernel.logs_dir%/%env(AUTHENTICATION_LOG)%'
+                path: 'php://stdout'
                 channels: [ "authentication" ]
