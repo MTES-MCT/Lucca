@@ -144,7 +144,7 @@
 
         let checkLetterDataFunction = function postCheckMayorLetter(data, callback) {
             $.ajax({
-                url: Routing.generate('lucca_mayor_letter_check_post', {}),
+                url: Routing.generate('lucca_mayor_letter_check_post', { 'dep_code': '{{ getDepartmentCode() }}' }),
                 type: 'POST',
                 data: JSON.stringify(data),
                 success: callback,

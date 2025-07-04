@@ -62,7 +62,8 @@
         $(document).on('click', 'a.media-trigger-btn', function (e) {
             e.preventDefault();
             let routeParams = {
-                id: $(this).attr('data-id')
+                id: $(this).attr('data-id'),
+              'dep_code': '{{ getDepartmentCode() }}'
             };
             $.ajax({
                 url: Routing.generate('lucca_media_modal_edit', routeParams),
@@ -82,7 +83,8 @@
             if (($(window).scrollTop() + $(window).height()) == $(document).height() && isLoading == false) {
                 isLoading = true;
                 let routeParams = {
-                    page: pageNbr + 1
+                    page: pageNbr + 1,
+                  'dep_code': '{{ getDepartmentCode() }}'
                 };
                 $.ajax({
                     url: Routing.generate('lucca_media_index', routeParams),

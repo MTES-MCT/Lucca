@@ -6,7 +6,7 @@ function createMarkersFolder() {
     var bds = map.getBounds();
 
     var request = $.ajax({
-        url: Routing.generate('lucca_get_folders'),
+        url: Routing.generate('lucca_get_folders', { 'dep_code': '{{ getDepartmentCode() }}' }),
         data: {
             displayResults: displayResults,
             adherent: {% if adherentId %}{{ adherentId }}{% else %}null{% endif %},
@@ -49,7 +49,6 @@ function createMarkersFolder() {
                 }
 
                 /** Create infos popup */
-                console.log(displayResults);
                 htmlInfos = generateHtmlInfos(
                     res[i]['minuteNum'],
                     "{{ path('lucca_minute_show', { 'id': 'minute.id', '_fragment' : 'folder-folder.id'}) }}"

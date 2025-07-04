@@ -83,7 +83,7 @@
             // Send files to the server
             $.ajax({
                 type: "POST",
-                url: Routing.generate('lucca_media_api_upload_files') + '?uploadMedia=true',
+                url: Routing.generate('lucca_media_api_upload_files', { 'dep_code': '{{ getDepartmentCode() }}' }) + '?uploadMedia=true',
                 data: data,
                 cache: false,
                 contentType: false,

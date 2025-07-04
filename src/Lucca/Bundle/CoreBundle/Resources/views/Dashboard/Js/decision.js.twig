@@ -8,7 +8,7 @@ function createMarkersDecisions() {
     let typeMarker = "decisions";
 
     var request = $.ajax({
-        url: Routing.generate('lucca_get_decisions'),
+        url: Routing.generate('lucca_get_decisions', { 'dep_code': '{{ getDepartmentCode() }}' }),
         data: {
             displayResults: displayResults,
             adherent: {% if adherentId %}{{ adherentId }}{% else %}null{% endif %},

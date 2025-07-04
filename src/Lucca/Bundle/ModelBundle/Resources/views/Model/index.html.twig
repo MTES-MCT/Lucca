@@ -113,7 +113,7 @@
     <script>
         $('.js-toggle-model-button').click(function () {
             $.ajax({
-                url: Routing.generate('lucca_model_enable', {'id': $(this).data("id")}),
+                url: Routing.generate('lucca_model_enable', {'id': $(this).data("id"), 'dep_code': '{{ getDepartmentCode() }}'}),
                 success: () => location.reload(),
             })
         });
