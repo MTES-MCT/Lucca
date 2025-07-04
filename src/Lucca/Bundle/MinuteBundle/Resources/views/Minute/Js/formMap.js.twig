@@ -66,7 +66,7 @@ function initMap() {
 /** Get the address by using latitude and longitude and update all the fields in the modal */
 function setAddressAndCoordinates(latLng, disableSetTown) {
     $.ajax({
-        url: Routing.generate('lucca_get_adress'),
+        url: Routing.generate('lucca_get_adress', { 'dep_code': '{{ getDepartmentCode() }}' }),
         data: {
             lat: latLng.lat,
             lng: latLng.lng
@@ -117,7 +117,7 @@ function updateMapFromAddress(disableSetTown = false) {
     var addr = $(inputAddress).val() + " " + $(selectTown).chosen().find("option:selected" ).text();
     if($(inputAddress).val() !== ""){
         var request = $.ajax({
-            url: Routing.generate('lucca_get_geocode'),
+            url: Routing.generate('lucca_get_geocode', { 'dep_code': '{{ getDepartmentCode() }}' }),
             data: {
                 address: addr
             },
@@ -172,7 +172,7 @@ function switchOpenFieldFormModal(value) {
 
 function updateTown(townName) {
     var request = $.ajax({
-        url: Routing.generate('lucca_get_townId'),
+        url: Routing.generate('lucca_get_townId', { 'dep_code': '{{ getDepartmentCode() }}' }),
         data: {
             city: townName
         },

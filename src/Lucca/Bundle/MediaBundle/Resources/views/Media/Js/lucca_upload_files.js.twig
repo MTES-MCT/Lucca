@@ -30,7 +30,7 @@ $(window).on('load', function () {
 
     for (let index = 0; index < $(self.sDropzoneMediaTag).length; index++) {
         var myDropzone = new Dropzone('#' + $(self.sDropzoneMediaTag)[index].id, {
-            url: Routing.generate('lucca_media_api_upload_files'),
+            url: Routing.generate('lucca_media_api_upload_files', { 'dep_code': '{{ getDepartmentCode() }}' }),
             addRemoveLinks: true,
             uploadMultiple: true,
             parallelUploads: 1,
@@ -127,7 +127,7 @@ let media_form = {
 
             $.ajax({
                 type: "POST",
-                url: Routing.generate('lucca_media_api_upload_files'),
+                url: Routing.generate('lucca_media_api_upload_files', { 'dep_code': '{{ getDepartmentCode() }}' }),
                 data: formData,
                 cache: false,
                 contentType: false,
@@ -154,7 +154,7 @@ let media_form = {
         if (mediaId) {
             $.ajax({
                 type: "GET",
-                url: Routing.generate('lucca_media_api_get_delete_modal'),
+                url: Routing.generate('lucca_media_api_get_delete_modal', { 'dep_code': '{{ getDepartmentCode() }}' }),
                 data: { id: mediaId, entityParent, idParent, varsMedia },
                 success: function (response) {
                     if ([ -1, 2, 3 ].includes(response)) {
@@ -190,7 +190,7 @@ let media_form = {
         if (mediaId) {
             $.ajax({
                 type: "DELETE",
-                url: Routing.generate('lucca_media_api_remove_media'),
+                url: Routing.generate('lucca_media_api_remove_media', { 'dep_code': '{{ getDepartmentCode() }}' }),
                 data: { id: mediaId, entityParent, idParent, varsMedia },
                 dataType: 'json',
                 success: function (response) {

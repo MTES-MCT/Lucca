@@ -6,7 +6,7 @@ function createMarkersUpdating() {
     var bds = map.getBounds();
 
     var request = $.ajax({
-        url: Routing.generate('lucca_get_updatings'),
+        url: Routing.generate('lucca_get_updatings', { 'dep_code': '{{ getDepartmentCode() }}' }),
         data: {
             displayResults: displayResults,
             adherent: {% if adherentId %}{{ adherentId }}{% else %}null{% endif %},

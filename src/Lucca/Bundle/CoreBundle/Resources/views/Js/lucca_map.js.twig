@@ -1,8 +1,3 @@
-/**
- * @author Alizée Meyer <alizee.m@numeric-wave.eu>
- * @type {{_init: lucca_map._init, _addListeners: lucca_map._addListeners}}
- */
-
 /** Function to create elements for map */
 function generateHtmlInfos(p_num, p_url = null, p_infos = null) {
     let html = "";
@@ -69,7 +64,7 @@ function createInfoWindow(p_id, p_marker, p_htmlInfos, p_htmlInfos2 = null) {
 
 function createFolder(latLng) {
     var request = $.ajax({
-        url: Routing.generate('lucca_create_folder'),
+        url: Routing.generate('lucca_create_folder', { 'dep_code': '{{ getDepartmentCode() }}' }),
         data: {
             lat: latLng.lat,
             lng: latLng.lng,
@@ -216,7 +211,7 @@ let lucca_map = {
         /** Execute ajax request */
         function search(addr) {
             request = $.ajax({
-                url: Routing.generate('lucca_find_address'),
+                url: Routing.generate('lucca_find_address', { 'dep_code': '{{ getDepartmentCode() }}' }),
                 data: {
                     address: addr,
                     displayResults: displayResults,

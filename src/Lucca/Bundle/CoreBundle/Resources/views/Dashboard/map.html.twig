@@ -33,8 +33,8 @@
 {% block lucca_js %}
     {{ parent() }}
 
-    <script src="{{ asset('bundles/luccacore/js/lucca_config_map.js') }}"></script>
-    <script src="{{ asset('bundles/luccacore/js/lucca_map.js') }}"></script>
+    <script>{% include '@LuccaCore/Js/lucca_config_map.js.twig' %}</script>
+    <script>{% include '@LuccaCore/Js/lucca_map.js.twig' %}</script>
 {#    <script src="{{ asset('bundles/luccathemeangle/plugins/pace/pace.min.js') }}"></script>#}
     {#-- Plugin sweet alert 2 --#}
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.js') }}"></script>

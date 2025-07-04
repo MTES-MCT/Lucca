@@ -45,10 +45,6 @@
         <link rel="stylesheet" href="{{ asset('bundles/luccathemedocsuikit/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css') }}">
     {% endblock lucca_css_head_foot %}
 
-    {#-- JS Customization --#}
-    <script src="{{ asset('assets/js/custom.js') }}"></script>
-    <script src="{{ asset('assets/js/app.js') }}"></script>
-
     {#-- Tracking scripts --#}
     {% include "@LuccaThemeStreamDashboardUiKit/Tracking/google_analytics.js.html.twig" %}
 
@@ -156,6 +152,11 @@
 <script src="{{ asset('bundles/luccathemedocsuikit/vendor/jquery-migrate/dist/jquery-migrate.min.js') }}"></script>
 <script src="{{ asset('bundles/luccathemedocsuikit/vendor/popper.js/dist/umd/popper.min.js') }}"></script>
 <script src="{{ asset('bundles/luccathemedocsuikit/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
+{#-- JS Customization --#}
+<script src="{{ asset('assets/js/custom.js') }}"></script>
+<script src="{{ asset('assets/js/app.js') }}"></script>
+
 
 <!-- JS Implementing Plugins -->
 <script src="{{ asset('bundles/luccathemedocsuikit/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js') }}"></script>

@@ -473,8 +473,8 @@
     </script>
 
     {#Modal map#}
-    <script src="{{ asset('bundles/luccacore/js/lucca_map.js') }}"></script>
-    <script src="{{ asset('bundles/luccacore/js/lucca_config_map.js') }}"></script>
+    <script>{% include '@LuccaCore/Js/lucca_map.js.twig' %}</script>
+    <script>{% include '@LuccaCore/Js/lucca_config_map.js.twig' %}</script>
 
     {#-- Plugin - Google maps --#}
     {% if 'setting.map.mapActive.name'|setting == true and minute.plot.latitude and minute.plot.longitude %}
