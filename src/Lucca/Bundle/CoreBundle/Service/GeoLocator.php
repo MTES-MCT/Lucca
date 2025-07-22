@@ -10,6 +10,7 @@
 
 namespace Lucca\Bundle\CoreBundle\Service;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 use Lucca\Bundle\CoreBundle\Utils\Canonalizer;
@@ -23,6 +24,7 @@ class GeoLocator
     public function __construct(
         private readonly Canonalizer  $canonalizer,
         private readonly RequestStack $requestStack,
+        private readonly LoggerInterface $logger,
     )
     {
         $this->google_api_geocode_key = SettingManager::get('setting.map.geocodeKey.name');
@@ -106,6 +108,9 @@ class GeoLocator
 
         if ($googleResultsDecoded->status !== 'OK') {
             $this->requestStack->getSession()->getFlashBag()->add('danger', 'Les résultats renvoyés par l\'API Google ont été rejetés - ' . $googleResultsDecoded->status);
+
+            // Log the error for debugging purposes
+            $this->logger->error('Google Maps API error for Geocode: ' . $googleResultsDecoded->status . ' for address: ' . $rawAddress . ' - error: ' . $googleResultsDecoded->error_message ?? 'No error message provided');
         } else {
             /** Take the first result - TODO clean or purpose all results founded */
             $googleFirstResult = $googleResultsDecoded->results[0];
@@ -155,6 +160,8 @@ class GeoLocator
         if ($googleResultsDecoded->status !== 'OK') {
             $this->requestStack->getSession()->getFlashBag()->add('danger', 'Les résultats renvoyés par l\'API Google ont été rejetés - ' . $googleResultsDecoded->status);
 
+            // Log the error for debugging purposes
+            $this->logger->error('Google Maps API error for Geocode: ' . $googleResultsDecoded->status . ' for address: ' . $rawAddress . ' - error: ' . $googleResultsDecoded->error_message ?? 'No error message provided');
             return null;
         }
 
@@ -192,6 +199,7 @@ class GeoLocator
         if ($googleResultsDecoded->status !== 'OK') {
             $this->requestStack->getSession()->getFlashBag()->add('danger', 'Les résultats renvoyés par l\'API Google ont été rejetés - ' . $googleResultsDecoded->status);
 
+            $this->logger->error('Google Maps API error for Geocode: ' . $googleResultsDecoded->status . ' for address: ' . $googleGeoLink . ' - error: ' . $googleResultsDecoded->error_message ?? 'No error message provided');
             return [];
         } else {
             /** Take the first result - TODO clean or purpose all results founded */
