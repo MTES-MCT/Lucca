@@ -103,6 +103,11 @@ class UserDepartmentResolver
             return;
         }
 
+        // if not in a request, we cannot determine the department
+        if (!$currentRequest) {
+            return;
+        }
+
         //check if route needs department code
         $route = $this->router->getRouteCollection()->get($currentRequest->get('_route'));
 
