@@ -56,7 +56,7 @@ class CourierEdition implements LoggableInterface
 
     /********************************************************************* Automatic Getters & Setters *********************************************************************/
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
