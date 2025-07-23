@@ -12,9 +12,11 @@ namespace Lucca\Bundle\CoreBundle\Service;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 use Lucca\Bundle\CoreBundle\Utils\Canonalizer;
 use Lucca\Bundle\SettingBundle\Manager\SettingManager;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class GeoLocator
 {
@@ -25,6 +27,7 @@ class GeoLocator
         private readonly Canonalizer  $canonalizer,
         private readonly RequestStack $requestStack,
         private readonly LoggerInterface $logger,
+        private readonly HttpClientInterface $httpClient,
     )
     {
         $this->google_api_geocode_key = SettingManager::get('setting.map.geocodeKey.name');
@@ -101,16 +104,15 @@ class GeoLocator
         $googleGeoLink .= '?key=' . $this->google_api_geocode_key . '&address=' . $fullAddress . '&sensor=false&region=fr';
 
         /** Ask to Google Maps API and get result returned */
-        $googleResultsFounded = file_get_contents($googleGeoLink);
+        $response = $this->makeHttpRequest($googleGeoLink);
 
         /** Decode Json returned by Google API */
-        $googleResultsDecoded = json_decode($googleResultsFounded);
+        $googleResultsDecoded = json_decode($response?->getContent(false) ?? '');
 
-        if ($googleResultsDecoded->status !== 'OK') {
-            $this->requestStack->getSession()->getFlashBag()->add('danger', 'Les résultats renvoyés par l\'API Google ont été rejetés - ' . $googleResultsDecoded->status);
+        if (!$response || $googleResultsDecoded->status !== 'OK') {
+            $this->requestStack->getSession()->getFlashBag()->add('danger', 'Les résultats renvoyés par l\'API Google ont été rejetés - ' . $response?->getStatusCode() ?? 'No Status code');
 
-            // Log the error for debugging purposes
-            $this->logger->error('Google Maps API error for Geocode: ' . $googleResultsDecoded->status . ' for address: ' . $rawAddress . ' - error: ' . $googleResultsDecoded->error_message ?? 'No error message provided');
+            $this->logger->error('Google Maps API error for Geocode: ' . $googleResultsDecoded?->status ?? 'No Status' . ' for address: ' . $googleGeoLink . ' - error: ' . $googleResultsDecoded?->error_message ?? 'No error message provided');
         } else {
             /** Take the first result - TODO clean or purpose all results founded */
             $googleFirstResult = $googleResultsDecoded->results[0];
@@ -152,16 +154,15 @@ class GeoLocator
         $googleGeoLink .= '?key=' . $this->google_api_geocode_key . '&address=' . $slugAddress . '&sensor=false&region=fr';
 
         /** Ask to Google Maps API and get result returned */
-        $googleResultsFounded = file_get_contents($googleGeoLink);
+        $response = $this->makeHttpRequest($googleGeoLink);
 
         /** Decode Json returned by Google API */
-        $googleResultsDecoded = json_decode($googleResultsFounded);
+        $googleResultsDecoded = json_decode($response?->getContent(false) ?? '');
 
-        if ($googleResultsDecoded->status !== 'OK') {
-            $this->requestStack->getSession()->getFlashBag()->add('danger', 'Les résultats renvoyés par l\'API Google ont été rejetés - ' . $googleResultsDecoded->status);
+        if (!$response || $googleResultsDecoded->status !== 'OK') {
+            $this->requestStack->getSession()->getFlashBag()->add('danger', 'Les résultats renvoyés par l\'API Google ont été rejetés - ' . $response?->getStatusCode() ?? 'No Status code');
 
-            // Log the error for debugging purposes
-            $this->logger->error('Google Maps API error for Geocode: ' . $googleResultsDecoded->status . ' for address: ' . $rawAddress . ' - error: ' . $googleResultsDecoded->error_message ?? 'No error message provided');
+            $this->logger->error('Google Maps API error for Geocode: ' . $googleResultsDecoded?->status ?? 'No Status' . ' for address: ' . $googleGeoLink . ' - error: ' . $googleResultsDecoded?->error_message ?? 'No error message provided');
             return null;
         }
 
@@ -191,15 +192,15 @@ class GeoLocator
         $googleGeoLink .= '?latlng=' . $lat . ',' . $lng . '&key=' . $this->google_api_geocode_key . '&sensor=true';
 
         /** Ask to Google Maps API and get result returned */
-        $googleResultsFounded = file_get_contents($googleGeoLink);
+        $response = $this->makeHttpRequest($googleGeoLink);
 
         /** Decode Json returned by Google API */
-        $googleResultsDecoded = json_decode($googleResultsFounded);
+        $googleResultsDecoded = json_decode($response?->getContent(false) ?? '');
 
-        if ($googleResultsDecoded->status !== 'OK') {
-            $this->requestStack->getSession()->getFlashBag()->add('danger', 'Les résultats renvoyés par l\'API Google ont été rejetés - ' . $googleResultsDecoded->status);
+        if (!$response || $googleResultsDecoded->status !== 'OK') {
+            $this->requestStack->getSession()->getFlashBag()->add('danger', 'Les résultats renvoyés par l\'API Google ont été rejetés - ' . $response?->getStatusCode() ?? 'No Status code');
 
-            $this->logger->error('Google Maps API error for Geocode: ' . $googleResultsDecoded->status . ' for address: ' . $googleGeoLink . ' - error: ' . $googleResultsDecoded->error_message ?? 'No error message provided');
+            $this->logger->error('Google Maps API error for Geocode: ' . $googleResultsDecoded?->status ?? 'No Status' . ' for address: ' . $googleGeoLink . ' - error: ' . $googleResultsDecoded?->error_message ?? 'No error message provided');
             return [];
         } else {
             /** Take the first result - TODO clean or purpose all results founded */
@@ -230,4 +231,36 @@ class GeoLocator
 
         return $address;
     }
+
+    /**
+     * Make an HTTP request to the given URL and handle errors gracefully.
+     */
+    private function makeHttpRequest(string $url): ?ResponseInterface
+    {
+        try {
+            $response = $this->httpClient->request('GET', $url);
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode !== 200) {
+                $this->logger->error('GeoLocator HTTP error', [
+                    'url' => $url,
+                    'status_code' => $statusCode,
+                    'response' => $response->getContent(false), // false = get body without throwing
+                ]);
+                return null;
+            }
+
+            return $response;
+        } catch (\Throwable $e) {
+            $this->logger->error('GeoLocator exception during HTTP request', [
+                'url' => $url,
+                'error_message' => $e->getMessage(),
+                'exception_type' => get_class($e),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return null;
+        }
+
+    }
+
 }
