@@ -145,6 +145,24 @@
                 </tr>
                 {#-- End - 4th row --#}
 
+                {#-- 5th row --#}
+                {% if is_granted("ROLE_DELETE_FOLDER") %}
+                    <tr class="table-danger">
+                        <th>
+                            {{ 'label.actions'|trans }}
+                            <label class="badge badge-danger">{{ 'badge.advanced'|trans }}</label>
+                        </th>
+                        <td>
+                            <a href="{{ path('lucca_updating_delete', {'minute_id': minute.id, 'id': updating.id }) }}"
+                               class="btn btn-danger btn-sm btn-labeled" title="{{ 'help.updating.delete'|trans }}">
+                                <span class="btn-label"><i class="fas fa-trash-alt"></i></span>
+                                {{ 'link.delete'|trans }}
+                            </a>
+                        </td>
+                    </tr>
+                {% endif %}
+                {#-- End - 5th row --#}
+
                 </tbody>
             </table>
 

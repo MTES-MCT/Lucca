@@ -9,6 +9,7 @@
 
 namespace Lucca\Bundle\MinuteBundle\Controller\Admin;
 
+use Lucca\Bundle\MinuteBundle\Entity\Control;
 use Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Lucca\Bundle\FolderBundle\Entity\Folder;
@@ -90,10 +91,15 @@ class UpdatingController extends AbstractController
         ));
     }
 
-    #[Route('-{id}/delete', name: 'lucca_updating_delete', methods: ['DELETE'])]
+    #[Route('-{id}/delete', name: 'lucca_updating_delete', methods: ['GET', 'DELETE'])]
     public function deleteAction(Request $request, #[MapEntity(id: 'minute_id')] Minute $minute, Updating $updating): RedirectResponse
     {
-        $em = $this->entityManager;;
+        $em = $this->entityManager;
+
+        /** @var Control $control */
+        foreach ($updating->getControls() as $control) {
+            $updating->removeControl($control);
+        }
 
         $em->remove($updating);
         $em->flush();
