@@ -16,7 +16,9 @@ framework:
         cookie_path: /
         cookie_secure: auto
         cookie_samesite: lax
-        gc_maxlifetime: 1440
+        gc_maxlifetime: 43200 # 12 hours
+        cookie_lifetime: 43200 # 12 hours
+        cookie_httponly: true
         # gc_probability/ gc_divisor = 1/100 => 1% of requests will trigger the garbage collector
         gc_probability: 1
         gc_divisor: 1
