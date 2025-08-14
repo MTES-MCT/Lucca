@@ -56,6 +56,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 ## Copy projet files
 COPY . ./
 COPY ./docker/scripts/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+COPY ./docker/php.ini /usr/local/etc/php/conf.d/custom.ini
 
 # Grant privileges to allow the entrypoint to override some configuration without being Root
 RUN chmod +x /usr/local/bin/docker-entrypoint
