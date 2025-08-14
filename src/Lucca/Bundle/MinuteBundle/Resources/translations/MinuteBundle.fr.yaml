@@ -523,6 +523,7 @@ help:
 
     updating:
         aggravated: "En cas d'aggravation de la situation, ce contrôle doit être enregistré dans le cadre 2 et un nouveau Procès Verbal d'infraction doit être rédigé."
+        delete: "Supprimer l'actualisation"
 
     closure:
         closure_close_all_data: "La clôture du dossier entraînera la clôture de tous les PV en cours relatifs au dossier."

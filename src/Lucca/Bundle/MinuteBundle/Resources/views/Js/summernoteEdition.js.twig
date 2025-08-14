@@ -37,7 +37,6 @@ $(document).ready(function () {
 
 // On checkbox click, toggle summernote input
     $('input[name*="{{ nameWidget|e('js') }}[{{ origin }}Edited]"]').click(function () {
-        console.log('input[name*="{{ nameWidget|e('js') }}[{{ origin }}Edited]"]');
         if ($('input[name*="{{ nameWidget|e('js') }}[{{ origin }}Edited]"]').is(':checked')) {
             $(id).summernote('enable');
         } else {
