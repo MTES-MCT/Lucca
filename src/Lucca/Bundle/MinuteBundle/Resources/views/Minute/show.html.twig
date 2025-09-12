@@ -364,6 +364,9 @@
         {% include '@LuccaThemeStreamDashboardUiKit/Modal/fence.html.twig' with {'name': folder.num, 'id': 'folder3-' ~ folder.id,
             'link': path('lucca_folder_fence', {'minute_id': minute.id, 'id': folder.id })} %}
 
+        {% include '@LuccaThemeStreamDashboardUiKit/Modal/deleteLink.html.twig' with {'name': folder.num, 'id': 'delete-folder3-' ~ folder.id,
+            'link': path('lucca_folder_delete', {'minute_id': minute.id, 'id': folder.id })} %}
+
         {#Modal - Reopen folder#}
         {% if is_granted("ROLE_FOLDER_OPEN") and folder.dateClosure is not null %}
             {% include '@LuccaThemeStreamDashboardUiKit/Modal/open.html.twig' with {'name': folder.num, 'id': 'open-folder3-' ~ folder.id,

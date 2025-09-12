@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -28,6 +29,7 @@ class MyAgentController extends AbstractController
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly TokenStorageInterface $tokenStorage,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
     )
     {
     }
@@ -105,7 +107,7 @@ class MyAgentController extends AbstractController
         ]);
 
         /** Check if agent is registered in Adherent profile */
-        if (!in_array($agent, $adherent->getAgents()->toArray())) {
+        if (!$this->authorizationChecker->isGranted('ROLE_ADMIN') && !in_array($agent, $adherent->getAgents()->toArray())) {
             throw new Exception('Agent is not registered in your Adherent profile.');
         }
 
@@ -144,7 +146,7 @@ class MyAgentController extends AbstractController
         ]);
 
         /** Check if agent is registered in Adherent profile */
-        if (!in_array($agent, $adherent->getAgents()->toArray())) {
+        if (!$this->authorizationChecker->isGranted('ROLE_ADMIN') && !in_array($agent, $adherent->getAgents()->toArray())) {
             throw new \Exception('Agent is not registered in your Adherent profile.');
         }
 

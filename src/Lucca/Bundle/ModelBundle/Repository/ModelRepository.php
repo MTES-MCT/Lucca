@@ -16,6 +16,7 @@ use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\CoreBundle\Repository\LuccaRepository;
 use Lucca\Bundle\ModelBundle\Entity\Model;
 use Lucca\Bundle\ParameterBundle\Entity\{Intercommunal, Service, Town};
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 class ModelRepository extends LuccaRepository
 {
@@ -62,12 +63,17 @@ class ModelRepository extends LuccaRepository
      * @throws NonUniqueResultException
      */
     public function findByDocument(string $document, Adherent $p_adherent = null, Service $p_service = null,
-                                   Intercommunal $p_intercommunal = null, Town $p_town = null): ?Model
+                                   Intercommunal $p_intercommunal = null, Town $p_town = null, Department $dept = null): ?Model
     {
         $qb = $this->queryModel();
 
         $qb->andWhere($qb->expr()->like('model.documents', ':q_document'))
             ->setParameter(':q_document', "%$document%");
+
+        if ($dept != null) {
+            $qb->andWhere($qb->expr()->eq('model.department', ':q_department'))
+                ->setParameter(':q_department', $dept);
+        }
 
         /** If adherent is defined try to find the model he create, if there is no adherent try to find default model */
         if ($p_adherent != null) {

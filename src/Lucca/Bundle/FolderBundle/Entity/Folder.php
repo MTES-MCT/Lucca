@@ -24,6 +24,7 @@ use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 #[ORM\Table(name: "lucca_minute_folder")]
 #[ORM\Entity(repositoryClass: FolderRepository::class)]
+#[ORM\UniqueConstraint(fields: ['num', 'department'])]
 class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncInterface
 {
     use TimestampableTrait;
@@ -46,7 +47,7 @@ class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncIn
     #[ORM\GeneratedValue]
     private ?int $id = null;
 
-    #[ORM\Column(length: 25, unique: true)]
+    #[ORM\Column(length: 25)]
     #[Assert\Type(type: "string", message: "constraint.type")]
     private string $num;
 
