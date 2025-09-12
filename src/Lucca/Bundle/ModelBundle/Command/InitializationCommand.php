@@ -18,6 +18,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Lucca\Bundle\ModelBundle\Entity\{Page, Model};
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 class InitializationCommand extends Command
 {
@@ -98,37 +99,43 @@ class InitializationCommand extends Command
 
         foreach (Model::getDocumentsChoice() as $document) {
             /** Search if model exist for this document - Do request in loop because we know the end of the loop */
-            $model = $this->em->getRepository(Model::class)->findByDocument($document);
+            $department = $this->em->getRepository(Department::class)->findAll();
 
-            if (!$model) {
-                $model = new Model();
+            foreach ($department as $dept){
+                $model = $this->em->getRepository(Model::class)->findByDocument($document, dept: $dept);
 
-                $model->setName($model->getLogName() . ' ' . $this->translator->trans($document, [], 'ModelBundle'));
-                $model->setType(Model::TYPE_ORIGIN);
-                $model->setLayout(Model::LAYOUT_SIMPLE);
-                $model->setDocuments([$document]);
+                if (!$model) {
+                    $model = new Model();
 
-                $page = new Page();
-                $page->setHeaderSize(20);
-                $page->setFooterSize(20);
-                $page->setLeftSize(20);
-                $page->setRightSize(20);
+                    $model->setName($model->getLogName() . ' ' . $this->translator->trans($document, [], 'ModelBundle'));
+                    $model->setType(Model::TYPE_ORIGIN);
+                    $model->setLayout(Model::LAYOUT_SIMPLE);
+                    $model->setDocuments([$document]);
+                    $model->setDepartment($dept);
 
-                $model->setRecto($page);
+                    $page = new Page();
+                    $page->setHeaderSize(20);
+                    $page->setFooterSize(20);
+                    $page->setLeftSize(20);
+                    $page->setRightSize(20);
+                    $page->setDepartment($dept);
+
+                    $model->setRecto($page);
+
+                    $this->em->persist($model);
+                    $output->writeln([
+                        'Model created for document',
+                        $document,
+                    ]);
+                } else {
+                    $output->writeln([
+                        'Default model already exist for',
+                        $document,
+                    ]);
+                }
 
                 $this->em->persist($model);
-                $output->writeln([
-                    'Model created for document',
-                    $document,
-                ]);
-            } else {
-                $output->writeln([
-                    'Default model already exist for',
-                    $document,
-                ]);
             }
-
-            $this->em->persist($model);
         }
 
         /** flush last items, detach all for doctrine and finish progress */

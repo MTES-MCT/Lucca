@@ -54,6 +54,14 @@ class FolderController extends AbstractController
         Request $request
     ): Response
     {
+        $availableControls = $minute->getControlsForFolder();
+        if(count($availableControls) === 0) {
+            $this->addFlash('warning', 'flash.control.needed');
+            return $this->redirectToRoute('lucca_minute_show', [
+                'id' => $minute->getId()
+            ]);
+        }
+
         $folder = new Folder();
 
         $folder->setMinute($minute);

@@ -301,10 +301,10 @@
                             <label class="badge badge-danger">{{ 'badge.advanced'|trans }}</label>
                         </th>
                         <td>
-                            <a href="{{ path('lucca_folder_delete', {'minute_id': minute.id, 'id': folder.id }) }}"
-                               class="btn btn-danger btn-sm btn-labeled" title="{{ 'help.folder.delete'|trans }}">
-                                <span class="btn-label"><i class="fas fa-trash-alt"></i></span>
-                                {{ 'link.delete'|trans }}
+                            <a class="btn btn-danger btn-sm btn-labeled" data-target="#delete-folder3-{{ folder.id }}"
+                               data-toggle="modal" title="{{ 'help.folder.delete'|trans }}">
+                                <span class="btn-label">
+                                    <i class="fas fa-trash-alt"></i></span> {{ 'link.delete'|trans }}
                             </a>
                         </td>
                     </tr>
