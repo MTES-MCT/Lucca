@@ -48,7 +48,9 @@ readonly class CodeGenerator
         }
 
         $prefix = $label . strtolower($baseCode) . '-';
+        $this->em->getFilters()->disable('department_filter');
         $maxCode = $this->em->getRepository(Adherent::class)->findMaxUsername($prefix);
+        $this->em->getFilters()->enable('department_filter');
 
         if ($maxCode) {
             $increment = substr($maxCode[1], -2);

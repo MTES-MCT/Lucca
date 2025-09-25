@@ -127,7 +127,7 @@ class AdherentRepository extends ServiceEntityRepository
      */
     public function findMaxUsername($prefix): mixed
     {
-        $qb = $this->queryAdherent();
+        $qb = $this->queryAdherentWithoutDepartment();
 
         $qb->andWhere($qb->expr()->like('user.username', ':username'))
             ->setParameter('username', '%' . $prefix . '%');
@@ -259,6 +259,23 @@ class AdherentRepository extends ServiceEntityRepository
             $qb->andWhere($qb->expr()->eq('department', ':q_department'))
                 ->setParameter(':q_department', $department);
         }
+
+        return $qb;
+    }
+
+    /**
+     * Classic dependencies
+     */
+    private function queryAdherentWithoutDepartment(): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('adherent')
+            ->leftJoin('adherent.user', 'user')->addSelect('user')
+            ->leftJoin('user.groups', 'groups')->addSelect('groups')
+            ->leftJoin('adherent.town', 'town')->addSelect('town')
+            ->leftJoin('adherent.intercommunal', 'intercommunal')->addSelect('intercommunal')
+            ->leftJoin('adherent.service', 'service')->addSelect('service')
+            ->leftJoin('adherent.department', 'department')
+        ;
 
         return $qb;
     }
