@@ -15,7 +15,7 @@ framework:
 #        cookie_domain: '%env(COOKIE_DOMAIN)%'
         cookie_path: /
         cookie_secure: auto
-        cookie_samesite: lax
+        cookie_samesite: 'none'
         gc_maxlifetime: 43200 # 12 hours
         cookie_lifetime: 43200 # 12 hours
         cookie_httponly: true
