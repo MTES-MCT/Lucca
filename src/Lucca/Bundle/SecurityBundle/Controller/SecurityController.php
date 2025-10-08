@@ -14,7 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
@@ -65,7 +64,7 @@ class SecurityController extends AbstractController
         }
 
         if ($user) {
-            return $this->redirect($this->generateUrl($routeAfterLogin, [], UrlGeneratorInterface::ABSOLUTE_URL));
+            return $this->redirectToRoute($routeAfterLogin);
         }
 
         // this statement solves an edge-case: if you change the locale in the login

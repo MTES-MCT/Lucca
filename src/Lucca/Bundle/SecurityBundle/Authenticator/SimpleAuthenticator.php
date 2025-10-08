@@ -196,10 +196,10 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
             // Redirect to the admin route after login
             return new RedirectResponse($this->urlGenerator->generate($this->adminRouteAfterLogin, [
                 'dep_code' => 'admin'
-            ]));
+            ], UrlGeneratorInterface::ABSOLUTE_URL));
         }
 
-        return new RedirectResponse($this->urlGenerator->generate($this->routeAfterLogin, ['dep_code' => $this->userDepartmentResolver->getCode()]));
+        return new RedirectResponse($this->urlGenerator->generate($this->routeAfterLogin, ['dep_code' => $this->userDepartmentResolver->getCode(true)], UrlGeneratorInterface::ABSOLUTE_URL));
     }
 
     /**

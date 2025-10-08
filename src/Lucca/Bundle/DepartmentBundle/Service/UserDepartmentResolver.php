@@ -51,6 +51,11 @@ class UserDepartmentResolver
         if ($fromSessionLogin) {
             $sessionDepartmentCode = $this->requestStack?->getMainRequest()?->getSession()?->get('department_code_from_login');
 
+            if ($sessionDepartmentCode === 'admin')
+            {
+                return $sessionDepartmentCode;
+            }
+
             //check if code exists in department repository
             if ($sessionDepartmentCode && $this->em->getRepository(Department::class)->findOneBy(['code' => $sessionDepartmentCode, 'enabled' => true])) {
                 return $sessionDepartmentCode;
