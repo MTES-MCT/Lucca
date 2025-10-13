@@ -93,6 +93,13 @@ class FolderController extends AbstractController
                     $this->folderManager->configureObstacleFolder($folder);
                 }
 
+                // TODO Fix the collection and remove this temp fix
+                foreach ($form->get('elements')->getData() as $element) {
+                    $element->setFolder($folder);
+                }
+
+                $folder->setElements($form->get('elements')->getData());
+
                 /** Persist folder */
                 $this->em->persist($folder);
                 $this->em->flush();
