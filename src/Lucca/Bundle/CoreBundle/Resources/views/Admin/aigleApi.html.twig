@@ -1,0 +1,60 @@
+{% extends "@LuccaThemeStreamDashboardUiKit/Layout/layout.html.twig" %}
+{% trans_default_domain 'CoreBundle' %}
+{% block menuActive_admin_dashboard %}active{% endblock %}
+
+{% block lucca_title %}
+    <title>{{ 'setting.general.app.name'| setting | default('meta.lucca'|trans({}, 'ThemeStreamDashboardUiKit')) }} | {{ 'title.aigleTester'|trans }}</title>
+{% endblock lucca_title %}
+
+{% block lucca_header %}
+    {{ 'title.aigleTester'|trans }}
+{% endblock lucca_header %}
+
+{% block lucca_page %}
+
+    <div class="row">
+        <div class="col-lg-5 col-sm-6">
+            <div class="card card-default">
+                <div class="card-header text-white">
+                    {{ 'text.testApiAigle.test_aigle.title'|trans }}
+                </div>
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        <button id="testApiBtn" class="btn btn-primary mb-3">
+                            {{ 'text.testApiAigle.test_aigle.button'|trans }}
+                        </button>
+                        <div id="apiResult" class="mt-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock lucca_page %}
+
+
+{% block lucca_js %}
+    {{ parent() }}
+
+    <script>
+      document.getElementById('testApiBtn').addEventListener('click', function() {
+        const resultDiv = document.getElementById('apiResult');
+        resultDiv.innerHTML = '{{ "text.testApiAigle.test_aigle.loading"|trans }}';
+
+        fetch('{{ path('lucca_core_api_aigle_test_connection') }}')
+          .then(response => response.json().then(data => ({ status: response.status, data })))
+          .then(({ status, data }) => {
+            if (status === 200 || status === 201) {
+              resultDiv.innerHTML = '<span class="text-success">{{ "text.testApiAigle.test_aigle.ok"|trans }}</span><br><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } else {
+              console.error(data);
+              resultDiv.innerHTML = '<span class="text-danger">{{ "text.testApiAigle.test_aigle.error"|trans() }}</span><br><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            }
+          })
+          .catch(err => {
+            resultDiv.innerHTML = '<span class="text-danger">{{ "text.testApiAigle.test_aigle.js_error"|trans }}</span><br><pre>' + err + '</pre>';
+          });
+      });
+    </script>
+{% endblock lucca_js %}
+

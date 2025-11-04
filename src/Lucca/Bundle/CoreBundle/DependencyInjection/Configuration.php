@@ -46,6 +46,12 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('google_analytics_id')
                     ->info('Configure Google Analytics id to add script and register traffic')
                 ->end()
+                ->scalarNode('aigle_api_base_url')
+                    ->info('Configure Aigle API base url to connect to Aigle services')
+                ->end()
+                ->scalarNode('aigle_api_key')
+                    ->info('Configure Aigle API key to connect to Aigle services')
+                ->end()
             ->end();
 
         return $treeBuilder;

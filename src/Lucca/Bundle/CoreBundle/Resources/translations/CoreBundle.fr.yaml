@@ -28,6 +28,7 @@ title:
     results: "Résultat(s) de recherche :"
     adminScope: "Se rendre sur l'interface d'administration"
     selectDepartment: "Portail d'accès"
+    aigleTester: "Testeur Aigle API"
 
 ###############
 ## Label
@@ -75,6 +76,7 @@ label:
     minutes: 'Statistiques sur les dossiers (Tableau)'
     total: 'Dossiers'
     ascertainment: "Rapports"
+    aigleApi: "API Aigle"
 
 badge:
     sa: "SAdmin"
@@ -84,6 +86,13 @@ text:
     noFoldersFound: "Aucun dossier trouvé !"
     createFolderGeolocalized: "Voulez vous créer un dossier ici : "
     validate: "Valider"
+    testApiAigle:
+        test_aigle.title: "Test API Aigle"
+        test_aigle.button: "Tester l'API"
+        test_aigle.loading: "Chargement..."
+        test_aigle.ok: "OK"
+        test_aigle.error: "Erreur de l'API"
+        test_aigle.js_error: "Erreur JavaScript"
 
 ###############
 ## Link
