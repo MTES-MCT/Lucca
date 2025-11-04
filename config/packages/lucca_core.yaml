@@ -6,3 +6,4 @@ lucca_core:
     lucca_unit_test_dep_code: '%env(LUCCA_UNIT_TEST_DEP_CODE)%'
     aigle_api_base_url: '%env(AIGLE_API_BASE_URL)%'
     aigle_api_key: '%env(AIGLE_API_KEY)%'
+    lucca_rest_api_key: '%env(LUCCA_REST_API_KEY)%'

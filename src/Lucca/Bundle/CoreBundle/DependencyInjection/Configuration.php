@@ -52,6 +52,13 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('aigle_api_key')
                     ->info('Configure Aigle API key to connect to Aigle services')
                 ->end()
+                ->scalarNode('aigle_api_key')
+                    ->info('Configure Aigle API key to connect to Aigle services')
+                ->end()
+                ->scalarNode('lucca_rest_api_key')
+                    ->defaultValue('')
+                    ->info('API key used to secure REST API calls.')
+                ->end()
             ->end();
 
         return $treeBuilder;

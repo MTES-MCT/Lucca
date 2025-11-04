@@ -28,6 +28,13 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        # Firewall for rest API
+        restApi:
+            pattern: ^/api/external
+            stateless: true
+            custom_authenticators:
+                - Lucca\Bundle\SecurityBundle\Authenticator\RestApiAuthenticator
+
         # Declare the main firewall and override configuration for each environment
         main:
             pattern: ^/

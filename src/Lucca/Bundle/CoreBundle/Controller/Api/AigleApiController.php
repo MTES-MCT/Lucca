@@ -16,10 +16,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController,
     Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 
-#[Route(path: '/api/aigle')]
+#[Route(path: '/aigle')]
 #[IsGranted('ROLE_ADMIN')]
 class AigleApiController extends AbstractController
 {
