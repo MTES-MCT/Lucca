@@ -60,8 +60,10 @@ class FolderController extends AbstractController
             );
         }
 
-
+        // Fetch data
         $folders = $this->em->getRepository(Folder::class)->findForRestApi($filters);
+
+        // Transform data
         $result = array_map(function($folder) {
 
             $parcels = isset($folder['plot']['parcel']) ? explode(',', $folder['plot']['parcel']) : [];

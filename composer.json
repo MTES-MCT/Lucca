@@ -16,6 +16,7 @@
         "firebase/php-jwt": "*",
         "friendsofsymfony/jsrouting-bundle": "3.5.*",
         "knplabs/knp-snappy-bundle": "*",
+        "lcobucci/jwt": "^4.2",
         "symfony/asset": "7.3.*",
         "symfony/asset-mapper": "7.3.*",
         "symfony/cache": "7.3.*",

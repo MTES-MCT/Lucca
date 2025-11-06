@@ -12,14 +12,10 @@ return [
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
     Symfony\UX\Autocomplete\AutocompleteBundle::class => ['all' => true],
     Symfony\UX\StimulusBundle\StimulusBundle::class => ['all' => true],
-
-    /** Extra Bundles */
     DAMA\DoctrineTestBundle\DAMADoctrineTestBundle::class => ['test' => true],
     FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
     Knp\Bundle\SnappyBundle\KnpSnappyBundle::class => ['all' => true],
     Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
-
-    /** Lucca Bundles */
     Lucca\Bundle\AdherentBundle\LuccaAdherentBundle::class => ['all' => true],
     Lucca\Bundle\ContentBundle\LuccaContentBundle::class => ['all' => true],
     Lucca\Bundle\CoreBundle\LuccaCoreBundle::class => ['all' => true],
