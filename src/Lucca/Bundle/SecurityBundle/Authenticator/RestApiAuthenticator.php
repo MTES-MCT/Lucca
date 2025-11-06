@@ -3,7 +3,7 @@
 namespace Lucca\Bundle\SecurityBundle\Authenticator;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Lucca\Bundle\UserBundle\Entity\User;
+use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
@@ -11,11 +11,11 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Lcobucci\JWT\Configuration;
-use Lcobucci\JWT\UnencryptedToken;
+use Lcobucci\JWT\Token\Plain;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
-use Lcobucci\JWT\Validation\Constraint\ValidAt;
 use Lcobucci\Clock\SystemClock;
 use Psr\Log\LoggerInterface;
+use Lucca\Bundle\UserBundle\Entity\User;
 
 class RestApiAuthenticator extends AbstractAuthenticator
 {
@@ -27,7 +27,6 @@ class RestApiAuthenticator extends AbstractAuthenticator
 
     public function supports(Request $request): ?bool
     {
-        // Sécurise uniquement les endpoints /api/external/ sauf /get-token
         return str_starts_with($request->getPathInfo(), '/api/external/')
             && !str_starts_with($request->getPathInfo(), '/api/external/get-token');
     }
@@ -46,16 +45,15 @@ class RestApiAuthenticator extends AbstractAuthenticator
 
         try {
             $token = $this->jwtConfig->parser()->parse($tokenString);
-            assert($token instanceof UnencryptedToken);
+            assert($token instanceof Plain); // En v5, on utilise Token\Plain pour JWT non chiffré
         } catch (\Throwable $e) {
             $this->logger->warning('Invalid JWT token (parsing failed)', ['ip' => $clientIp]);
             throw new AuthenticationException('Invalid JWT token');
         }
 
-        // Contrainte signature + validité
         $constraints = [
             new SignedWith($this->jwtConfig->signer(), $this->jwtConfig->signingKey()),
-            new ValidAt(new SystemClock(new \DateTimeZone('UTC'))),
+            new LooseValidAt(new SystemClock(new \DateTimeZone('UTC'))),
         ];
 
         if (!$this->jwtConfig->validator()->validate($token, ...$constraints)) {
@@ -84,7 +82,7 @@ class RestApiAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationSuccess(Request $request, $token, string $firewallName): ?JsonResponse
     {
-        return null; // Continue request processing
+        return null;
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?JsonResponse
