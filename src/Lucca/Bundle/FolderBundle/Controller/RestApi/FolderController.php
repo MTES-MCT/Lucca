@@ -19,6 +19,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[IsGranted('ROLE_LUCCA')]
 #[Route(path: '/folder')]
@@ -28,6 +29,7 @@ class FolderController extends AbstractController
         private readonly EntityManagerInterface $em,
         private readonly RestService            $restService,
         private readonly RouterInterface        $router,
+        private readonly TranslatorInterface   $translator,
     )
     {
     }
@@ -64,13 +66,25 @@ class FolderController extends AbstractController
         $folders = $this->em->getRepository(Folder::class)->findForRestApi($filters);
 
         // Transform data
-        $result = array_map(function($folder) {
+        $result = array_map(function($folder) use ($filters) {
 
-            $parcels = isset($folder['plot']['parcel']) ? explode(',', $folder['plot']['parcel']) : [];
-
-            $departmentCode = $folder['department']['code'] ?? null;
+            $folderParcels = isset($folder['minute']['plot']['parcel']) ? explode(',', $folder['minute']['plot']['parcel']) : [];
 
             $minute = $folder['minute'] ?? null;
+
+            // clean parcels (remove special chars)
+            $cleanFolderParcels = array_map(function($parcel) use ($minute) {
+                // remove all non-alphanumeric characters
+                return preg_replace('/[^A-Za-z0-9]/', '', $parcel);
+            }, $folderParcels);
+
+            // apply filters on parcels if any
+            $matchedParcelsWithFilters = [];
+            if (!empty($filters['plotCode'])) {
+                $matchedParcelsWithFilters = array_intersect($filters['plotCode'], $cleanFolderParcels);
+            }
+
+            $departmentCode = $folder['department']['code'] ?? null;
 
             $closure = $folder['closure'] ?? null;
             if (!$closure) {
@@ -85,11 +99,12 @@ class FolderController extends AbstractController
                 'folderNumber' => $folder['num'],
                 'folderLink' => $link,
                 'createdAt' => $folder['createdAt'] ? $folder['createdAt']->format('Y-m-d H:i:s') : null,
-                'identifiedParcels' => $parcels,
-                'allParcels' => $parcels,
-                'status' => $status,
+                'identifiedParcels' => $matchedParcelsWithFilters,
+                'allParcels' => $folderParcels,
+                'status' => $this->translator->trans($status, [], 'MinuteBundle'),
             ];
         }, $folders['data']);
+
 
         return new JsonResponse([
             'data' => $result,

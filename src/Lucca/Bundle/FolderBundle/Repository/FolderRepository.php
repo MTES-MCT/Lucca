@@ -403,26 +403,18 @@ class FolderRepository extends EntityRepository
                 $paramMiddle = 'plotCodeMiddle' . $i;
                 $paramEnd    = 'plotCodeEnd' . $i;
 
+                // Check for exact match and partial matches in a comma-separated list
                 $orX->add($qb->expr()->orX(
-                    "plot.parcel = :$paramExact",
-                    "plot.parcel LIKE :$paramStart",
-                    "plot.parcel LIKE :$paramMiddle",
-                    "plot.parcel LIKE :$paramEnd"
-                ));
-
-                $cleanColumn = "REGEXP_REPLACE(plot.parcel, '[^A-Za-z0-9]', '')";
-
-                $orX->add($qb->expr()->orX(
-                    "$cleanColumn = :$paramExact",
-                    "$cleanColumn LIKE :$paramStart",
-                    "$cleanColumn LIKE :$paramMiddle",
-                    "$cleanColumn LIKE :$paramEnd"
+                    "plot.parcel = :$paramExact",         // exact
+                    "plot.parcel LIKE :$paramStart",     // at the beginning
+                    "plot.parcel LIKE :$paramMiddle",    // in the middle
+                    "plot.parcel LIKE :$paramEnd"        // at the end
                 ));
 
                 $qb->setParameter($paramExact, $plotCode);
-                $qb->setParameter($paramStart, $plotCode . '%');
-                $qb->setParameter($paramMiddle, '%' . $plotCode . '%');
-                $qb->setParameter($paramEnd, '%' . $plotCode);
+                $qb->setParameter($paramStart, $plotCode . ',%');        // at the beginning
+                $qb->setParameter($paramMiddle, '%,' . $plotCode . ',%'); // in the middle
+                $qb->setParameter($paramEnd, '%,' . $plotCode);          // at the end
             }
 
             $qb->andWhere($orX);
