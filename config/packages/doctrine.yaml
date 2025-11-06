@@ -25,7 +25,9 @@ doctrine:
             department_filter:
                 class: Lucca\Bundle\DepartmentBundle\Doctrine\Filter\DepartmentFilter
                 enabled: false
-
+        dql:
+            string_functions:
+                REGEXP_REPLACE: Lucca\Bundle\CoreBundle\Doctrine\Functions\RegExpReplace
 when@prod:
     doctrine:
         orm:

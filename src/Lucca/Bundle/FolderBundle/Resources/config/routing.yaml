@@ -33,3 +33,9 @@ lucca_minute_bundle_by_folder:
     resource: "@LuccaFolderBundle/Controller/ByFolder"
     type:     attribute
     prefix:   /{dep_code}/back-office
+
+# LuccaFolderBundle Routing - Rest API
+lucca_folder_bundle_rest_api:
+    resource: "@LuccaFolderBundle/Controller/RestApi"
+    type:     attribute
+    prefix:   /api/external

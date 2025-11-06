@@ -78,6 +78,7 @@ class Minute implements LoggableInterface
     private Adherent $adherent;
 
     #[ORM\OneToOne(targetEntity: Plot::class, cascade: ['persist', 'remove'])]
+    #[Assert\Valid]
     #[ORM\JoinColumn(nullable: false)]
     private Plot $plot;
 
