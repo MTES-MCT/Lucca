@@ -54,6 +54,14 @@ class FolderController extends AbstractController
         Request $request
     ): Response
     {
+        $availableControls = $minute->getControlsForFolder();
+        if(count($availableControls) === 0) {
+            $this->addFlash('warning', 'flash.control.needed');
+            return $this->redirectToRoute('lucca_minute_show', [
+                'id' => $minute->getId()
+            ]);
+        }
+
         $folder = new Folder();
 
         $folder->setMinute($minute);
@@ -84,6 +92,13 @@ class FolderController extends AbstractController
                 if ($folder->getNature() === Folder::NATURE_OBSTACLE) {
                     $this->folderManager->configureObstacleFolder($folder);
                 }
+
+                // TODO Fix the collection and remove this temp fix
+                foreach ($form->get('elements')->getData() as $element) {
+                    $element->setFolder($folder);
+                }
+
+                $folder->setElements($form->get('elements')->getData());
 
                 /** Persist folder */
                 $this->em->persist($folder);

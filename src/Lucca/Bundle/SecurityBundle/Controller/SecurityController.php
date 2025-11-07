@@ -10,7 +10,6 @@
 
 namespace Lucca\Bundle\SecurityBundle\Controller;
 
-use Lucca\Bundle\SecurityBundle\Service\ProConnectService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +20,7 @@ use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 use Lucca\Bundle\UserBundle\Entity\User;
 use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
+use Lucca\Bundle\SecurityBundle\Service\ProConnectService;
 
 class SecurityController extends AbstractController
 {

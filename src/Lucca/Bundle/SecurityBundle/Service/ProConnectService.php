@@ -38,22 +38,22 @@ class ProConnectService
      * It also initializes the redirect URI dynamically.
      */
     public function __construct(
-        private readonly RequestStack               $requestStack,
-        private readonly UrlGeneratorInterface      $urlGenerator,
-        private readonly UserAuthenticatorInterface $userAuthenticator,
-        private readonly EntityManagerInterface     $em,
-        private readonly SimpleAuthenticator        $simpleAuthenticator,
-        private readonly TranslatorInterface        $translator,
-        private readonly LoggerInterface            $logger,
-        private readonly UserDepartmentResolver     $userDepartmentResolver,
+        private readonly RequestStack                  $requestStack,
+        private readonly UrlGeneratorInterface         $urlGenerator,
+        private readonly UserAuthenticatorInterface    $userAuthenticator,
+        private readonly EntityManagerInterface        $em,
+        private readonly SimpleAuthenticator           $simpleAuthenticator,
+        private readonly TranslatorInterface           $translator,
+        private readonly LoggerInterface               $logger,
+        private readonly UserDepartmentResolver        $userDepartmentResolver,
         #[Autowire(param: 'lucca_security.proconnect_auth_url')]
-        private readonly string                     $proconnectAuthUrl,
+        private readonly string                        $proconnectAuthUrl,
         #[Autowire(param: 'lucca_security.proconnect_callback_url')]
-        private readonly string                     $redirectUri,
+        private readonly string                        $redirectUri,
         #[Autowire(param: 'lucca_security.proconnect_client_id')]
-        private readonly string                     $proconnectClientId,
+        private readonly string                        $proconnectClientId,
         #[Autowire(param: 'lucca_security.proconnect_client_secret')]
-        private readonly string                     $proconnectClientSecret,
+        private readonly string                        $proconnectClientSecret,
     )
     {
         $this->httpClient = HttpClient::create();
@@ -229,7 +229,7 @@ class ProConnectService
 
             // Try to retrieve the user from database by email
             $user = $this->em->getRepository(User::class)->findOneBy(['email' => $email]);
-            if (!$user) {
+            if (!$user || ($departmentCode === 'admin' && !in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true))) {
                 $session->getFlashBag()->add('danger', $this->translator->trans('proconnect.error.user_not_found', ['%email%' => $email], 'SecurityBundle'));
                 return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login', [
                     'dep_code' => $departmentCode
@@ -240,7 +240,7 @@ class ProConnectService
                 return $department->getCode() === $departmentCode;
             })->first();
 
-            if (!$department) {
+            if (!$department && $departmentCode != 'admin') {
                 $session->getFlashBag()->add('danger', $this->translator->trans('proconnect.error.user_not_found', ['%email%' => $email], 'SecurityBundle'));
                 return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login', [
                     'dep_code' => $departmentCode
