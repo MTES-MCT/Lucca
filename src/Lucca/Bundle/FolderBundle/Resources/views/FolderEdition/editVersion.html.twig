@@ -59,9 +59,23 @@
     {{ parent() }}
 
     <script>
-        {% include '@LuccaMinute/Js/summernoteEdition.js.twig' with
-            {'param_height': 600, 'nameWidget': "", 'form': form,
-                'origin': "folder", 'isEdited': form.vars.value.folderEdited}
-        %}
+        {% include '@LuccaMinute/Js/summernoteEdition.js.twig' with {
+            'param_height': 600,
+            'nameWidget': "",
+            'form': form,
+            'toolbar': [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ],
+            'fontNames': [],
+            'fontNamesIgnoreCheck': true,
+            'origin': "folder",
+            'isEdited': form.vars.value.folderEdited
+        } %}
     </script>
 {% endblock lucca_js %}

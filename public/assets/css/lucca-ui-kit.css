@@ -1,4 +1,87 @@
 /************************************************************
+ * Font
+ ************************************************************/
+@font-face {
+    font-family: 'Marianne Medium';
+    src: url('../fonts/marianne/Marianne-Medium.eot');
+    src: url('../fonts/marianne/Marianne-Medium.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/marianne/Marianne-Medium.woff2') format('woff2'),
+    url('../fonts/marianne/Marianne-Medium.woff') format('woff'),
+    url('../fonts/marianne/Marianne-Medium.ttf') format('truetype'),
+    url('../fonts/marianne/Marianne-Medium.svg#Marianne-Medium') format('svg');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Marianne Light';
+    src: url('../fonts/marianne/Marianne-Light.eot');
+    src: url('../fonts/marianne/Marianne-Light.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/marianne/Marianne-Light.woff2') format('woff2'),
+    url('../fonts/marianne/Marianne-Light.woff') format('woff'),
+    url('../fonts/marianne/Marianne-Light.ttf') format('truetype'),
+    url('../fonts/marianne/Marianne-Light.svg#Marianne-Light') format('svg');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Marianne Regular';
+    src: url('../fonts/marianne/Marianne-Regular.eot');
+    src: url('../fonts/marianne/Marianne-Regular.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/marianne/Marianne-Regular.woff2') format('woff2'),
+    url('../fonts/marianne/Marianne-Regular.woff') format('woff'),
+    url('../fonts/marianne/Marianne-Regular.ttf') format('truetype'),
+    url('../fonts/marianne/Marianne-Regular.svg#Marianne-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Marianne Thin';
+    src: url('../fonts/marianne/Marianne-Thin.eot');
+    src: url('../fonts/marianne/Marianne-Thin.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/marianne/Marianne-Thin.woff2') format('woff2'),
+    url('../fonts/marianne/Marianne-Thin.woff') format('woff'),
+    url('../fonts/marianne/Marianne-Thin.ttf') format('truetype'),
+    url('../fonts/marianne/Marianne-Thin.svg#Marianne-Thin') format('svg');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Marianne ExtraBold';
+    src: url('../fonts/marianne/Marianne-ExtraBold.eot');
+    src: url('../fonts/marianne/Marianne-ExtraBold.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/marianne/Marianne-ExtraBold.woff2') format('woff2'),
+    url('../fonts/marianne/Marianne-ExtraBold.woff') format('woff'),
+    url('../fonts/marianne/Marianne-ExtraBold.ttf') format('truetype'),
+    url('../fonts/marianne/Marianne-ExtraBold.svg#Marianne-ExtraBold') format('svg');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Marianne Bold';
+    src: url('../fonts/marianne/Marianne-Bold.eot');
+    src: url('../fonts/marianne/Marianne-Bold.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/marianne/Marianne-Bold.woff2') format('woff2'),
+    url('../fonts/marianne/Marianne-Bold.woff') format('woff'),
+    url('../fonts/marianne/Marianne-Bold.ttf') format('truetype'),
+    url('../fonts/marianne/Marianne-Bold.svg#Marianne-Bold') format('svg'),
+    url('../fonts/marianne/MARIANNE-BOLD.OTF') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+/************************************************************
  * Generic class
  ************************************************************/
 
