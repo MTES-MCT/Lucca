@@ -33,47 +33,25 @@ class HtmlCleaner
     /**
      * Remove all font family from html
      */
-    public function removeAllFonts($p_html): array|string|null
+    public function removeAllFonts(string $html): string
     {
-        // TODO Create an array with all the regex
-        //****************************** Clean from font family ***************************************/
-        /** Remove all font family from the html
-         *  This code work only if the font family is the only one style configuration
-         *  Note : (.*?) can be replace by everything */
-        $p_html = $this->removeRegexFromHtml('/ style="font-family:(.*?);"/', $p_html);
+        // Array of regex patterns
+        $patterns = [
+            '/font-family\s*:\s*[^;"]+;?\s*/i', // Remove all font-family declarations
+            '/font-size\s*:\s*[^;"]+;?\s*/i',   // Remove all font-size declarations
+            '/<span>\s*<\/span>/i',             // Remove empty <span> tags without any attributes
+            '/style="\s*"/i'                    // Remove empty style attributes
+        ];
 
-        /** Remove all font family from the html
-         *  This code work if font family is the only configuration or not
-         *  Note : (.*?) can be replace by everything */
-        $p_html = $this->removeRegexFromHtml('/font-family:(.*?); /', $p_html);
+        // Apply all regex patterns
+        foreach ($patterns as $pattern) {
+            $html = preg_replace($pattern, '', $html);
+        }
 
-        /** Remove all font family from the html
-         *  This code work if font family is the only configuration or not
-         *  Note : (.*?) can be replace by everything */
-        $p_html = $this->removeRegexFromHtml('/font-family:(.*?);/', $p_html);
+        // Optional: remove redundant spaces left after cleaning
+        $html = preg_replace('/\s+/', ' ', $html);
 
-        //****************************** Clean from font size ***************************************/
-        /** Remove all font family from the html
-         *  This code work only if the font family is the only one style configuration
-         *  Note : (.*?) can be replace by everything */
-        $p_html = $this->removeRegexFromHtml('/ style="font-size:(.*?);"/', $p_html);
-
-        /** Remove all font family from the html
-         *  This code work if font family is the only configuration or not
-         *  Note : (.*?) can be replace by everything */
-        $p_html = $this->removeRegexFromHtml('/font-size:(.*?); /', $p_html);
-
-        /** Remove all font family from the html
-         *  This code work if font family is the only configuration or not
-         *  Note : (.*?) can be replace by everything */
-        $p_html = $this->removeRegexFromHtml('/font-size:(.*?);/', $p_html);
-
-        //****************************** Clean from empty span ***************************************/
-        /** Clean html from empty span
-         *  Note : (\W*?) can be replace by any non-word character */
-        $p_html = $this->removeRegexFromHtml('/<span>(\W*?)<\/span>/', $p_html);
-
-        return $p_html;
+        return trim($html);
     }
 
     /***************************** Functions to clean specific entity *****************************************************/

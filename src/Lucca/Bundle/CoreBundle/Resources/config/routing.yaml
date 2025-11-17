@@ -8,3 +8,15 @@ lucca_core_bundle_anonymous:
     resource: "@LuccaCoreBundle/Controller/Anonymous/"
     type:     attribute
     prefix:   /
+
+# LuccaCoreBundle Routing - API
+lucca_core_bundle_api:
+    resource: "@LuccaCoreBundle/Controller/Api/"
+    type:     attribute
+    prefix:   /{dep_code}/back-office/api
+
+# LuccaCoreBundle Routing - Rest API
+lucca_core_bundle_rest_api:
+    resource: "@LuccaCoreBundle/Controller/RestApi/"
+    type:     attribute
+    prefix:   /api/external

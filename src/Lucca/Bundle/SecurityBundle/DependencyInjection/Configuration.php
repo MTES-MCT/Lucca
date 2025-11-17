@@ -62,6 +62,19 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('proconnect_client_secret')
                     ->defaultValue('')
                     ->info('ProConnect client secret.')
+                ->end()
+                ->scalarNode('lucca_rest_api_key')
+                    ->defaultValue('secret_key')
+                    ->info('API key used to secure REST API to get tokens.')
+                ->end()
+                ->scalarNode('lucca_rest_api_username')
+                    ->defaultValue('rest_api_username')
+                    ->info('Username used to identify REST API user.')
+                ->end()
+                ->scalarNode('lucca_rest_api_jwt_expiration')
+                    ->defaultValue(14400)
+                    ->info('Expiration time (in seconds) for REST API JWT tokens.')
+                ->end()
             ->end();
 
         /** Add basic nodes for protection section */

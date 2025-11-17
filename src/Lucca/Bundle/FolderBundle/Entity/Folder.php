@@ -53,6 +53,7 @@ class Folder implements LoggableInterface, MediaAsyncInterface, MediaListAsyncIn
 
     #[ORM\ManyToOne(targetEntity: Minute::class)]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
     private Minute $minute;
 
     #[ORM\OneToOne(targetEntity: Control::class)]

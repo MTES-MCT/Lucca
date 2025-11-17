@@ -220,6 +220,22 @@
                             </div>
                         </div>
                     </div> {#-- End Param - LoginAttempt --#}
+
+                    <div class="col-3">
+                        <div class="card card-default">
+                            <div class="card-wrapper text-center">
+                                <div class="card-body">
+
+                                    <a href="{{ path('lucca_core_admin_aigle_api_index') }}"
+                                       class="link-unstyled text-danger">
+                                        <em class="fas fa-5x fa-link mb-lg"></em>
+                                        <br>
+                                        <span class="h4">{{ 'label.aigleApi'|trans }}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div> {#-- End Param - LoginAttempt --#}
                 {% endif %}
 
                 {% if getDepartmentCode() is not same as 'admin' %}

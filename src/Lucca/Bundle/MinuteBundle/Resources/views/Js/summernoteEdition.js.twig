@@ -5,6 +5,12 @@ $(document).ready(function () {
         {% if toolbar is defined %}
         toolbar: {{ toolbar|json_encode|raw }},
         {% endif %}
+        {% if fontNames is defined %}
+        fontNames: {{ fontNames|json_encode|raw }},
+        {% endif %}
+        {% if fontNamesIgnoreCheck is defined %}
+        fontNamesIgnoreCheck: {{ fontNamesIgnoreCheck|json_encode|raw }},
+        {% endif %}
         lang: 'fr-FR',
         callbacks: {
             onImageUpload: function (files) {
@@ -19,6 +25,12 @@ $(document).ready(function () {
                 }
                 wysiwyg.uploadImageContent(files[0], summernoteSelected);
             },
+            onPaste: function(e) {
+              e.preventDefault();
+              let bufferText = ((e.originalEvent || e).clipboardData).getData('text');
+              // paste as plain text
+              $(this).summernote('pasteHTML', '<span style="font-family: inherit">' + bufferText + '</span>');
+            }
         }
     });
     let id = "";

@@ -6,6 +6,9 @@ lucca_security:
     proconnect_callback_url: '%env(PROCONNECT_CALLBACK_URL)%'
     proconnect_client_id: '%env(PROCONNECT_CLIENT_ID)%'
     proconnect_client_secret: '%env(PROCONNECT_CLIENT_SECRET)%'
+    lucca_rest_api_username: '%env(LUCCA_REST_API_USERNAME)%'
+    lucca_rest_api_key: '%env(LUCCA_REST_API_KEY)%'
+    lucca_rest_api_jwt_expiration: '%env(LUCCA_REST_API_JWT_EXPIRATION)%'
 
     protection:
         period_max_in_min: 15

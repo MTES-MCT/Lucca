@@ -14,6 +14,8 @@ use Doctrine\ORM\{EntityRepository, NonUniqueResultException, QueryBuilder};
 
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\CoreBundle\Repository\AdherentRepository;
+use Lucca\Bundle\CoreBundle\Repository\ArrayLikeFilterTrait;
+use Lucca\Bundle\CoreBundle\Repository\PaginationTrait;
 use Lucca\Bundle\FolderBundle\Entity\Folder;
 use Lucca\Bundle\MinuteBundle\Entity\Control;
 use Lucca\Bundle\MinuteBundle\Entity\Minute;
@@ -22,6 +24,8 @@ class FolderRepository extends EntityRepository
 {
     /** Traits */
     use AdherentRepository;
+    use ArrayLikeFilterTrait;
+    use PaginationTrait;
 
     /*******************************************************************************************/
     /********************* Stats methods *****/
@@ -369,6 +373,69 @@ class FolderRepository extends EntityRepository
             ->setParameter('q_endId', $endId);
 
         return $qb->getQuery()->getResult();
+    }
+
+
+    /**
+     * Find Folders for Rest API with filters and pagination
+     */
+    public function findForRestApi(array $filters = []): array
+    {
+        $qb = $this->queryFolder();
+        //add left join to department
+        $qb->leftJoin('folder.department', 'department')->addSelect('department');
+
+        if (isset($filters['INSEE']) && count($filters['INSEE']) > 0) {
+            $qb->andWhere($qb->expr()->in('plot_town.code', ':inseeCode'))
+                ->setParameter('inseeCode', $filters['INSEE']);
+        }
+
+        if (isset($filters['townName'])) {
+            $qb = $this->addArrayLikeFilter($qb, 'town.name', $filters['townName']);
+        }
+
+        if (isset($filters['plotCode']) && count($filters['plotCode']) > 0) {
+            $orX = $qb->expr()->orX();
+
+            foreach ($filters['plotCode'] as $i => $plotCode) {
+                $paramExact  = 'plotCodeExact' . $i;
+                $paramStart  = 'plotCodeStart' . $i;
+                $paramMiddle = 'plotCodeMiddle' . $i;
+                $paramEnd    = 'plotCodeEnd' . $i;
+
+                // Check for exact match and partial matches in a comma-separated list
+                $orX->add($qb->expr()->orX(
+                    "plot.parcel = :$paramExact",         // exact
+                    "plot.parcel LIKE :$paramStart",     // at the beginning
+                    "plot.parcel LIKE :$paramMiddle",    // in the middle
+                    "plot.parcel LIKE :$paramEnd"        // at the end
+                ));
+
+                $qb->setParameter($paramExact, $plotCode);
+                $qb->setParameter($paramStart, $plotCode . ',%');        // at the beginning
+                $qb->setParameter($paramMiddle, '%,' . $plotCode . ',%'); // in the middle
+                $qb->setParameter($paramEnd, '%,' . $plotCode);          // at the end
+            }
+
+            $qb->andWhere($orX);
+        }
+
+        if (isset($filters['number'])) {
+            $qb->andWhere('folder.num = :number')
+                ->setParameter('number', $filters['number']);
+        }
+
+        //filter only enabled departments
+        $qb->andWhere($qb->expr()->eq('department.enabled', true));
+
+        // Pagination
+        $page = isset($filters['page']) ? (int)$filters['page'] : 1;
+        $limit = isset($filters['limit']) ? (int)$filters['limit'] : 30;
+
+        // order by createdAt desc
+        $qb->orderBy('folder.createdAt', 'DESC');
+
+        return $this->paginate($qb, $page, $limit);
     }
 
     /*******************************************************************************************/

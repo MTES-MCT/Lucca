@@ -31,3 +31,8 @@ phpstan.neon
 migration prod
 migration_prod
 ###< symfony/asset-mapper ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+/.phpunit.cache/
+###< phpunit/phpunit ###

@@ -15,3 +15,9 @@ lucca_security_bundle_sso:
     resource: "@LuccaSecurityBundle/Controller/Sso"
     type: attribute
     prefix: /sso
+
+# LuccaSecurityBundle Routing - rest api
+lucca_security_bundle_rest_api:
+    resource: "@LuccaSecurityBundle/Controller/RestApi"
+    type: attribute
+    prefix: /api/external
