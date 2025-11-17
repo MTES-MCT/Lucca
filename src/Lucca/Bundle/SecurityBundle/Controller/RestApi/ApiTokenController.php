@@ -62,13 +62,18 @@ class ApiTokenController extends AbstractController
             return new JsonResponse(['error' => 'User ' . $this->username . ' not found, please create it.'], 500);
         }
 
-        // Generate the JWT
-        $now = new DateTimeImmutable('now', new \DateTimeZone('UTC'));
-        $token = $this->jwtConfig->builder()
-            ->issuedAt($now)
-            ->expiresAt($now->modify('+' . $this->expiresIn . ' seconds'))
-            ->relatedTo($this->username)
-            ->getToken($this->jwtConfig->signer(), $this->jwtConfig->signingKey());
+        try {
+            // Generate the JWT
+            $now = new DateTimeImmutable('now', new \DateTimeZone('UTC'));
+            $token = $this->jwtConfig->builder()
+                ->issuedAt($now)
+                ->expiresAt($now->modify('+' . $this->expiresIn . ' seconds'))
+                ->relatedTo($this->username)
+                ->getToken($this->jwtConfig->signer(), $this->jwtConfig->signingKey());
+        } catch (\Exception $e) {
+            $this->logger->critical('Error generating JWT token', ['exception' => $e, 'username' => $this->username, 'ip' => $clientIp]);
+            return new JsonResponse(['error' => 'Error generating token'], 500);
+        }
 
         $this->logger->info('JWT token generated', ['username' => $this->username, 'ip' => $clientIp]);
 
