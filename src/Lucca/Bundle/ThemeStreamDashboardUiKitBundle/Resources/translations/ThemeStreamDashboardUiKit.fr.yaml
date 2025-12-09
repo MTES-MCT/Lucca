@@ -63,7 +63,7 @@ menu:
 company:
     name: "Numeric Wave"
     lucca: "Lucca"
-    version: "v4.3.0"
+    version: "v4.3.1"
 
 title:
     manage: "Gestion"
