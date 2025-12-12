@@ -33,8 +33,13 @@ class HtmlCleaner
     /**
      * Remove all font family from html
      */
-    public function removeAllFonts(string $html): string
+    public function removeAllFonts(?string $html): ?string
     {
+
+        if($html === null){
+            return null;
+        }
+
         // Array of regex patterns
         $patterns = [
             '/font-family\s*:\s*[^;"]+;?\s*/i', // Remove all font-family declarations
