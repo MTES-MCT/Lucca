@@ -76,7 +76,7 @@ class ClosureController extends AbstractController
     }
 
     #[Route('-{id}/open', name: 'lucca_minute_open', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_SUPER_ADMIN')]
+    #[IsGranted('ROLE_FOLDER_OPEN')]
     public function openAction(#[MapEntity(id: 'id')] Minute $minute): RedirectResponse
     {
         $em = $this->entityManager;;
