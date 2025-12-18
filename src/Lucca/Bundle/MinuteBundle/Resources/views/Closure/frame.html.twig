@@ -42,11 +42,11 @@
                     <th>{{ 'label.observation'|trans }}</th>
                     <td>{{ closure.observation|raw }}</td>
                 </tr>
-                {% if is_granted("ROLE_SUPER_ADMIN") %}
+                {% if is_granted("ROLE_FOLDER_OPEN") %}
                     <tr class="table-danger">
                         <th>
                             {{ 'label.actions'|trans }}
-                            <label class="badge badge-danger">{{ 'badge.sadmin'|trans }}</label>
+                            <label class="badge badge-danger">{{ 'badge.advanced'|trans }}</label>
                         </th>
                         <td>
                             <a href="{{ path('lucca_minute_open', {'id': minute.id }) }}"
