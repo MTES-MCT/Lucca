@@ -52,8 +52,13 @@ readonly class FolderChangeStatusAigleNotifier
         $parcels = array_map('trim', explode(',', $parcelRaw));
         $aigleStatus = $this->statusResolver->statusResolver($minute);
 
-        if (!$aigleStatus || empty($parcels)) {
-            $this->logger->info('No Aigle status resolved or no parcels found, skipping Aigle notification.');
+        if (!$aigleStatus) {
+            $this->logger->error('No Aigle status resolved, skipping Aigle notification.');
+            return;
+        }
+
+        if (empty($parcels)) {
+            $this->logger->error('No parcels found, maybe due to parsing error, skipping Aigle notification.');
             return;
         }
 
