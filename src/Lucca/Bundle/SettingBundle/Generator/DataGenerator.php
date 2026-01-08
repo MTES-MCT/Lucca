@@ -49,9 +49,14 @@ class DataGenerator
             'position' => 5,
             'comment' => "setting.category.control.comment"],
         [
+            'name' => "setting.category.information.name",
+            'icon' => "fas fa-info-circle",
+            'position' => 6,
+            'comment' => "setting.category.information.comment"],
+        [
             'name' => "setting.category.module.name",
             'icon' => "fas fa-chart-network",
-            'position' => 6,
+            'position' => 7,
             'comment' => "setting.category.module.comment"],
     ];
 
@@ -431,6 +436,91 @@ class DataGenerator
             'value' => 'et autres infractions à l\'urbanisme',
             'valuesAvailable' => [],
             'comment' => 'setting.general.catchphrase2.comment'],
+
+        //------------------------------
+        // INFORMATION SETTINGS
+        //------------------------------
+        [
+            'name' => "setting.information.contactHelpDashboardTitle1.name",
+            'type' => Setting::TYPE_TEXT,
+            'category' => 'setting.category.information.name',
+            'accessType' => Setting::ACCESS_TYPE_ADMIN,
+            'position' => 1,
+            'value' => 'A renseigner dans les paramètres',
+            'valuesAvailable' => [],
+            'comment' => 'setting.information.contactHelpDashboardTitle1.comment'],
+        [
+            'name' => "setting.information.contactHelpDashboardPhone1.name",
+            'type' => Setting::TYPE_TEXT,
+            'category' => 'setting.category.information.name',
+            'accessType' => Setting::ACCESS_TYPE_ADMIN,
+            'position' => 2,
+            'value' => 'A renseigner dans les paramètres',
+            'valuesAvailable' => [],
+            'comment' => 'setting.information.contactHelpDashboardPhone1.comment'],
+        [
+            'name' => "setting.information.contactHelpDashboardMail1.name",
+            'type' => Setting::TYPE_TEXT,
+            'category' => 'setting.category.information.name',
+            'accessType' => Setting::ACCESS_TYPE_ADMIN,
+            'position' => 3,
+            'value' => 'A renseigner dans les paramètres',
+            'valuesAvailable' => [],
+            'comment' => 'setting.information.contactHelpDashboardMail1.comment'],
+        [
+            'name' => "setting.information.contactHelpDashboardAddress1.name",
+            'type' => Setting::TYPE_TEXT,
+            'category' => 'setting.category.information.name',
+            'accessType' => Setting::ACCESS_TYPE_ADMIN,
+            'position' => 4,
+            'value' => 'A renseigner dans les paramètres',
+            'valuesAvailable' => [],
+            'comment' => 'setting.information.contactHelpDashboardAddress1.comment'],
+        [
+            'name' => "setting.information.contactHelpDashboardTitle2.name",
+            'type' => Setting::TYPE_TEXT,
+            'category' => 'setting.category.information.name',
+            'accessType' => Setting::ACCESS_TYPE_ADMIN,
+            'position' => 5,
+            'value' => '',
+            'valuesAvailable' => [],
+            'comment' => 'setting.information.contactHelpDashboardTitle2.comment'],
+        [
+            'name' => "setting.information.contactHelpDashboardPhone2.name",
+            'type' => Setting::TYPE_TEXT,
+            'category' => 'setting.category.information.name',
+            'accessType' => Setting::ACCESS_TYPE_ADMIN,
+            'position' => 6,
+            'value' => '',
+            'valuesAvailable' => [],
+            'comment' => 'setting.information.contactHelpDashboardPhone2.comment'],
+        [
+            'name' => "setting.information.contactHelpDashboardMail2.name",
+            'type' => Setting::TYPE_TEXT,
+            'category' => 'setting.category.information.name',
+            'accessType' => Setting::ACCESS_TYPE_ADMIN,
+            'position' => 6,
+            'value' => '',
+            'valuesAvailable' => [],
+            'comment' => 'setting.information.contactHelpDashboardMail2.comment'],
+        [
+            'name' => "setting.information.contactHelpDashboardAddress2.name",
+            'type' => Setting::TYPE_TEXT,
+            'category' => 'setting.category.information.name',
+            'accessType' => Setting::ACCESS_TYPE_ADMIN,
+            'position' => 6,
+            'value' => '',
+            'valuesAvailable' => [],
+            'comment' => 'setting.information.contactHelpDashboardAddress2.comment'],
+        [
+            'name' => "setting.information.controlPhone.name",
+            'type' => Setting::TYPE_TEXT,
+            'category' => 'setting.category.information.name',
+            'accessType' => Setting::ACCESS_TYPE_ADMIN,
+            'position' => 7,
+            'value' => 'A renseigner dans les paramètres',
+            'valuesAvailable' => [],
+            'comment' => 'setting.information.controlPhone.comment'],
 
         //------------------------------
         // MODULE ACCESS SETTINGS

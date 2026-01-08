@@ -91,6 +91,9 @@ setting:
         control:
             name: "Contrôle"
             comment: "Paramètres concernant les contrôles"
+        information:
+            name: "Informations de contact"
+            comment: "Paramètres concernant les informations de contact"
         module:
             name: "Modules"
             comment: "" #"Liste des accès aux fonctionnalités"
@@ -232,7 +235,6 @@ setting:
             name: "Contenu du courrier de rattachement personalisé ? "
             comment: "Indique s'il faut aller chercher une version personnalisée du contenu du courrier de rattachement"
 
-
     #    Settings category Control
     control:
         footer:
@@ -247,6 +249,36 @@ setting:
         convocationContent:
             name: "Contenu convocation personalisé ?"
             comment: "Indique s'il faut aller chercher une version personnalisée du contenu de la lettre de convocation"
+
+    #    Settings category information
+    information:
+        controlPhone:
+            name: "Contrôle - Numero de téléphone"
+            comment: "Numéro de téléphone de contact affiché dans les coordonnées dans les controles"
+        contactHelpDashboardTitle1:
+            name: "Tableau de bord - Coordonnées de la DDT - Titre Encadré - 1"
+            comment: "Titre du premier encadré des coordonnées de la DDT sur le tableau de bord (laisser vide pour ne pas afficher l'encadré)"
+        contactHelpDashboardMail1:
+            name: "Tableau de bord - Coordonnées de la DDT - Mail - 1"
+            comment: "Email dans le premier encadré des coordonnées de la DDT sur le tableau de bord (laisser vide pour ne pas afficher l'information)"
+        contactHelpDashboardPhone1:
+            name: "Tableau de bord - Coordonnées de la DDT - Téléphone - 1"
+            comment: "Téléphone dans le premier encadré des coordonnées de la DDT sur le tableau de bord (laisser vide pour ne pas afficher l'information)"
+        contactHelpDashboardAddress1:
+            name: "Tableau de bord - Coordonnées de la DDT - Adresse - 1"
+            comment: "Adresse dans le premier encadré des coordonnées de la DDT sur le tableau de bord (laisser vide pour ne pas afficher l'information)"
+        contactHelpDashboardTitle2:
+            name: "Tableau de bord - Coordonnées de la DDT - Titre Encadré - 2"
+            comment: "Titre du deuxième encadré des coordonnées de la DDT sur le tableau de bord (laisser vide pour ne pas afficher l'encadré)"
+        contactHelpDashboardMail2:
+            name: "Tableau de bord - Coordonnées de la DDT - Mail - 2"
+            comment: "Email dans le deuxième encadré des coordonnées de la DDT sur le tableau de bord (laisser vide pour ne pas afficher l'information)"
+        contactHelpDashboardPhone2:
+            name: "Tableau de bord - Coordonnées de la DDT - Téléphone - 2"
+            comment: "Téléphone dans le deuxième encadré des coordonnées de la DDT sur le tableau de bord (laisser vide pour ne pas afficher l'information)"
+        contactHelpDashboardAddress2:
+            name: "Tableau de bord - Coordonnées de la DDT - Adresse - 2"
+            comment: "Adresse dans le deuxième encadré des coordonnées de la DDT sur le tableau de bord (laisser vide pour ne pas afficher l'information)"
 
     #    Settings Modules
     module:
