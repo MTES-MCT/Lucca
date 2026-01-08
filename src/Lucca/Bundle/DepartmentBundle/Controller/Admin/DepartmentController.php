@@ -32,7 +32,7 @@ use Lucca\Bundle\ModelBundle\Service\ModelService;
 use Lucca\Bundle\FolderBundle\Service\NatinfService;
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\AdherentBundle\Manager\AdherentManager;
-use Lucca\Bundle\SettingBundle\Generator\SettingGenerator;
+use Lucca\Bundle\FolderBundle\Service\TagService;
 
 /**
  * Class DepartmentController
@@ -52,6 +52,7 @@ class DepartmentController extends AbstractController
         private readonly DepartmentService $departmentService,
         private readonly NatinfService     $natinfService,
         private readonly ModelService      $modelService,
+        private readonly TagService        $tagService,
         private readonly AdherentManager   $adherentManager,
     )
     {
@@ -117,6 +118,9 @@ class DepartmentController extends AbstractController
 
             // Natinf creation from JSON data file
             $this->natinfService->createForDepartment($department);
+
+            // Tag creation from JSON data file
+            $this->tagService->createForDepartment($department);
 
             // Checklist creation from JSON data file
             $this->checklistService->createForDepartment($department);

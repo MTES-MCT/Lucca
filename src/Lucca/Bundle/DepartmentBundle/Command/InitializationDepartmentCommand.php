@@ -20,6 +20,7 @@ use Lucca\Bundle\ChecklistBundle\Service\ChecklistService;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Lucca\Bundle\FolderBundle\Service\NatinfService;
 use Lucca\Bundle\ModelBundle\Service\ModelService;
+use Lucca\Bundle\FolderBundle\Service\TagService;
 
 class InitializationDepartmentCommand extends Command
 {
@@ -28,6 +29,7 @@ class InitializationDepartmentCommand extends Command
         private readonly EntityManagerInterface $em,
         private readonly ModelService      $modelService,
         private readonly NatinfService     $natinfService,
+        private readonly TagService        $tagService,
     )
     {
         parent::__construct();
@@ -104,6 +106,9 @@ class InitializationDepartmentCommand extends Command
 
         // Natinf creation from JSON data file
         $this->natinfService->createForDepartment($demoDepartment);
+
+        // Tag creation from JSON data file
+        $this->tagService->createForDepartment($demoDepartment);
 
         // Checklist creation from JSON data file
         $this->checklistService->createForDepartment($demoDepartment);
