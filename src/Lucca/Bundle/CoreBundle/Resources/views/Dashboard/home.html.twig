@@ -37,49 +37,72 @@
             {#-- End - Results search --#}
 
             {#-- Informations --#}
-            {% set infos = 'setting.general.departement.name'| setting | contact_infos %}
+            {% set info1 = {
+                'title': 'setting.information.contactHelpDashboardTitle1.name'| setting,
+                'mailto': 'setting.information.contactHelpDashboardMail1.name'| setting,
+                'phone': 'setting.information.contactHelpDashboardPhone1.name'| setting,
+                'addr': 'setting.information.contactHelpDashboardAddress1.name'| setting,
+            } %}
+
+            {% set info2 = {
+                'title': 'setting.information.contactHelpDashboardTitle2.name'| setting,
+                'mailto': 'setting.information.contactHelpDashboardMail2.name'| setting,
+                'phone': 'setting.information.contactHelpDashboardPhone2.name'| setting,
+                'addr': 'setting.information.contactHelpDashboardAddress2.name'| setting,
+            } %}
+            {% set infos = [info1, info2] %}
 
             {% for info in infos %}
-                <div class="card card-default mt-3">
-                    <div class="card-header">{{ 'title.contact'|trans }}</div>
 
-                    <div class="card-wrapper">
-                        <div class="card-body">
+                {# Skip if no title#}
+                {% if info['title'] != null %}
+                    <div class="card card-default mt-3">
+                        <div class="card-header">{{ info['title'] }}</div>
 
-                            <div class="row mt-2">
-                                <div class="col-sm-2">
-                                    <i class="fa fa-envelope fa-2x text-primary"></i>
-                                </div>
-                                <div class="col-sm-10">
-                                    <a href="mailto:{{ info['mailto'] }}">
-                                        {{ info['mailto'] }}
-                                    </a>
-                                </div>
+                        <div class="card-wrapper">
+                            <div class="card-body">
+
+                                {% if info['mailto'] != null %}
+                                    <div class="row mt-2">
+                                        <div class="col-sm-2">
+                                            <i class="fa fa-envelope fa-2x text-primary"></i>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <a href="mailto:{{ info['mailto'] }}">
+                                                {{ info['mailto'] }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+
+                                {% if info['phone'] != null %}
+                                    <div class="row  mt-2">
+                                        <div class="col-sm-2">
+                                            <i class="fa fa-phone fa-2x text-info"></i>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            {{ info['phone'] }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                {% if info['addr'] != null %}
+                                    <div class="row  mt-2">
+                                        <div class="col-sm-2">
+                                            <i class="fas fa-map-marker-alt fa-2x text-warning"></i>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <address>
+                                                {{ info['addr'] | raw }}
+                                            </address>
+                                        </div>
+                                    </div>
+                                {% endif %}
                             </div>
-
-                            <div class="row  mt-2">
-                                <div class="col-sm-2">
-                                    <i class="fa fa-phone fa-2x text-info"></i>
-                                </div>
-                                <div class="col-sm-10">
-                                    {{ info['phone'] }}
-                                </div>
-                            </div>
-
-                            <div class="row  mt-2">
-                                <div class="col-sm-2">
-                                    <i class="fas fa-map-marker-alt fa-2x text-warning"></i>
-                                </div>
-                                <div class="col-sm-10">
-                                    <address>
-                                        {{ info['addr'] | raw }}
-                                    </address>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
-                </div>
+                {% endif %}
                 {#-- End - Informations --#}
             {% endfor %}
 
