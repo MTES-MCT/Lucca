@@ -58,15 +58,26 @@ readonly class AigleApiClient
      */
     public function post(string $endpoint, array $data = []): ResponseInterface
     {
-        return $this->request('POST', $endpoint, ['json' => $data]);
+        $response = $this->request('POST', $endpoint, ['json' => $data]);
+
+        // force the response to be fetched now to catch errors early
+        $response->getStatusCode();
+
+        return $response;
     }
+
 
     /**
      * @throws TransportExceptionInterface
      */
     public function put(string $endpoint, array $data = []): ResponseInterface
     {
-        return $this->request('PUT', $endpoint, ['json' => $data]);
+        $response = $this->request('PUT', $endpoint, ['json' => $data]);
+
+        // force the response to be fetched now to catch errors early
+        $response->getStatusCode();
+
+        return $response;
     }
 
     /**
@@ -74,7 +85,12 @@ readonly class AigleApiClient
      */
     public function patch(string $endpoint, array $data = []): ResponseInterface
     {
-        return $this->request('PATCH', $endpoint, ['json' => $data]);
+        $response = $this->request('PATCH', $endpoint, ['json' => $data]);
+
+        // force the response to be fetched now to catch errors early
+        $response->getStatusCode();
+
+        return $response;
     }
 
     /**

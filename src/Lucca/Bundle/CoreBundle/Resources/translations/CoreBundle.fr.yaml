@@ -83,6 +83,10 @@ badge:
     admin: "Admin"
 
 text:
+    aigleNotificationError:
+        errorDuringNotification: "Erreur lors de la synchronisation du status du dossier avec Aigle."
+        malFormedParcelString: "Synchronisation avec Aigle : le ou les numéro(s) de parcelle sont mal formé(s), veuillez vérifier le cadre 1 du dossier."
+        noParcelsFound: "Synchronisation avec Aigle : Aucun parcelle n'a été renseigné dans le cadre 1 du dossier."
     noFoldersFound: "Aucun dossier trouvé !"
     createFolderGeolocalized: "Voulez vous créer un dossier ici : "
     validate: "Valider"

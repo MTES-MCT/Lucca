@@ -10,27 +10,33 @@
 
 namespace Lucca\Bundle\DecisionBundle\Controller\Admin;
 
-use Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Exception\ORMException;
-use Lucca\Bundle\DecisionBundle\Entity\Decision;
-use Lucca\Bundle\DecisionBundle\Form\DecisionType;
-use Lucca\Bundle\MinuteBundle\Entity\Minute;
-use Lucca\Bundle\MinuteBundle\Utils\{HtmlCleaner};
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Exception\ORMException;
+
+use Lucca\Bundle\DecisionBundle\Entity\Decision;
+use Lucca\Bundle\DecisionBundle\Form\DecisionType;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\MinuteBundle\Utils\{HtmlCleaner};
+use Lucca\Bundle\CoreBundle\Service\Aigle\MinuteChangeStatusAigleNotifier;
+use Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
+use Lucca\Bundle\CoreBundle\Exception\AigleNotificationException;
 
 #[IsGranted('ROLE_LUCCA')]
 #[Route(path: '/minute-{minute_id}/decision')]
 class DecisionController extends AbstractController
 {
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly HtmlCleaner $htmlCleaner,
-        private readonly MinuteStoryManager $minuteStoryManager,
+        private readonly EntityManagerInterface          $em,
+        private readonly HtmlCleaner                     $htmlCleaner,
+        private readonly MinuteStoryManager              $minuteStoryManager,
+        private readonly MinuteChangeStatusAigleNotifier $minuteChangeStatusAigleNotifier,
+        private readonly TranslatorInterface             $translator
     )
     {
     }
@@ -78,6 +84,12 @@ class DecisionController extends AbstractController
             $this->em->flush();
 
             $this->addFlash('success', 'flash.decision.createdSuccessfully');
+
+            try {
+                $this->minuteChangeStatusAigleNotifier->updateAigleMinuteStatus($decision->getMinute());
+            } catch (AigleNotificationException $e) {
+                $this->addFlash('danger', $e->getTranslatedMessage($this->translator));
+            }
 
             return $this->redirectToRoute('lucca_minute_show', [
                 'id' => $minute->getId(),
@@ -165,6 +177,12 @@ class DecisionController extends AbstractController
 
         $this->minuteStoryManager->manage($minute);
         $this->em->flush();
+
+        try {
+            $this->minuteChangeStatusAigleNotifier->updateAigleMinuteStatus($decision->getMinute());
+        } catch (AigleNotificationException $e) {
+            $this->addFlash('danger', $e->getTranslatedMessage($this->translator));
+        }
 
         $this->addFlash('success', 'flash.decision.deletedSuccessfully');
 

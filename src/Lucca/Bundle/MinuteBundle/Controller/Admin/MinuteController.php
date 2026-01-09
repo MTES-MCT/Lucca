@@ -10,6 +10,7 @@
 namespace Lucca\Bundle\MinuteBundle\Controller\Admin;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\{RedirectResponse, Response, Request};
 use Symfony\Component\Routing\Attribute\Route;
@@ -26,6 +27,9 @@ use Lucca\Bundle\MinuteBundle\Generator\NumMinuteGenerator;
 use Lucca\Bundle\ParameterBundle\Entity\{Intercommunal, Town};
 use Lucca\Bundle\ParameterBundle\Utils\GeneralUtils;
 use Lucca\Bundle\SettingBundle\Manager\SettingManager;
+use Lucca\Bundle\CoreBundle\Exception\AigleNotificationException;
+use Lucca\Bundle\CoreBundle\Service\Aigle\MinuteChangeStatusAigleNotifier;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/minute')]
 #[IsGranted('ROLE_USER')]
@@ -46,14 +50,16 @@ class MinuteController extends AbstractController
 
 
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly MinuteStoryManager $minuteStoryManager,
-        private readonly AdherentFinder $adherentFinder,
-        private readonly AuthorizationCheckerInterface $authorizationChecker,
-        private readonly GeneralUtils $generalUtils,
-        private readonly PlotManager $plotManager,
-        private readonly MinuteManager $minuteManager,
-        private readonly NumMinuteGenerator $numMinuteGenerator
+        private readonly EntityManagerInterface          $entityManager,
+        private readonly MinuteStoryManager              $minuteStoryManager,
+        private readonly AdherentFinder                  $adherentFinder,
+        private readonly AuthorizationCheckerInterface   $authorizationChecker,
+        private readonly GeneralUtils                    $generalUtils,
+        private readonly PlotManager                     $plotManager,
+        private readonly MinuteManager                   $minuteManager,
+        private readonly NumMinuteGenerator              $numMinuteGenerator,
+        private readonly MinuteChangeStatusAigleNotifier $minuteChangeStatusAigleNotifier,
+        private readonly TranslatorInterface             $translator
     )
     {
         $this->filterByRollingYear = SettingManager::get('setting.folder.indexFilterByRollingOrCalendarYear.name');
@@ -252,6 +258,13 @@ class MinuteController extends AbstractController
                 $em->flush();
 
                 $this->addFlash('success', 'flash.minute.createdSuccessfully');
+
+                try {
+                    $this->minuteChangeStatusAigleNotifier->updateAigleMinuteStatus($minute);
+                } catch (AigleNotificationException $e) {
+                    $this->addFlash('danger', $e->getTranslatedMessage($this->translator));
+                }
+
                 return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId()));
             }
         }
@@ -263,9 +276,6 @@ class MinuteController extends AbstractController
         ));
     }
 
-    /**
-     * @throws ORMException
-     */
     #[Route('-{id}', name: 'lucca_minute_show', methods: ['GET'])]
     #[IsGranted('ROLE_VISU')]
     public function showAction(Request $request, Minute $minute): RedirectResponse|Response
@@ -294,6 +304,13 @@ class MinuteController extends AbstractController
             $this->minuteManager->updateStatusAction($minute);
             $this->minuteStoryManager->manage($minute);
             $em->flush();
+
+            try {
+                $this->minuteChangeStatusAigleNotifier->updateAigleMinuteStatus($minute);
+            } catch (AigleNotificationException $e) {
+                $this->addFlash('danger', $e->getTranslatedMessage($this->translator));
+            }
+
         }
         /** Get Minute Story to get status of the minute */
         $minuteStory = $em->getRepository(MinuteStory::class)->findLastByMinute($minute)[0];

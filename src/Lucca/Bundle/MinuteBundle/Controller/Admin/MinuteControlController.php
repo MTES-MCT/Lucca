@@ -22,17 +22,22 @@ use Lucca\Bundle\FolderBundle\Utils\FolderManager;
 use Lucca\Bundle\MinuteBundle\Entity\{Control, Minute};
 use Lucca\Bundle\MinuteBundle\Form\MinuteControlType;
 use Lucca\Bundle\MinuteBundle\Manager\{ControlEditionManager, ControlManager, MinuteStoryManager};
+use Lucca\Bundle\CoreBundle\Exception\AigleNotificationException;
+use Lucca\Bundle\CoreBundle\Service\Aigle\MinuteChangeStatusAigleNotifier;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/minute-{minute_id}/control')]
 #[IsGranted('ROLE_LUCCA')]
 class MinuteControlController extends AbstractController
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly MinuteStoryManager $minuteStoryManager,
-        private readonly ControlManager $controlManager,
-        private readonly FolderManager $folderManager,
-        private readonly ControlEditionManager $controlEditionManager
+        private readonly EntityManagerInterface          $entityManager,
+        private readonly MinuteStoryManager              $minuteStoryManager,
+        private readonly ControlManager                  $controlManager,
+        private readonly FolderManager                   $folderManager,
+        private readonly ControlEditionManager           $controlEditionManager,
+        private readonly MinuteChangeStatusAigleNotifier $minuteChangeStatusAigleNotifier,
+        private readonly TranslatorInterface             $translator,
     )
     {
     }
@@ -79,6 +84,12 @@ class MinuteControlController extends AbstractController
                 /** update status of the minute */
                 $this->minuteStoryManager->manage($minute);
                 $em->flush();
+
+                try {
+                    $this->minuteChangeStatusAigleNotifier->updateAigleMinuteStatus($minute);
+                } catch (AigleNotificationException $e) {
+                    $this->addFlash('danger', $e->getTranslatedMessage($this->translator));
+                }
 
                 return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId(), '_fragment' => 'control-' . $control->getId()));
             }
@@ -168,6 +179,13 @@ class MinuteControlController extends AbstractController
         $em->flush();
 
         $this->addFlash('success', 'flash.control.minute.deletedSuccessfully');
+
+        try {
+            $this->minuteChangeStatusAigleNotifier->updateAigleMinuteStatus($minute);
+        } catch (AigleNotificationException $e) {
+            $this->addFlash('danger', $e->getTranslatedMessage($this->translator));
+        }
+
         return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId()));
     }
 
