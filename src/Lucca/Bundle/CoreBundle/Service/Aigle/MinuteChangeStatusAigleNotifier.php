@@ -43,7 +43,7 @@ readonly class MinuteChangeStatusAigleNotifier
         $aigleStatus = $this->statusResolver->statusResolver($minute);
 
         if (!$aigleStatus) {
-            $this->logger->warning('AigleApi: No Aigle status resolved, skipping Aigle notification.');
+            $this->logger->warning('AigleApi: No Aigle status resolved, for minute '.$minute->getNum().', with status '.$minute->getStatus().', skipping Aigle notification.');
             return;
         }
 
@@ -53,7 +53,6 @@ readonly class MinuteChangeStatusAigleNotifier
         }
 
         try {
-
             // One request pe parcel
             foreach ($parcels as $parcel) {
                 $responses[$parcel] = $this->aigleApiClient->post(
@@ -77,18 +76,20 @@ readonly class MinuteChangeStatusAigleNotifier
 
                 if ($statusCode >= 200 && $statusCode < 300) {
                     $this->logger->info(sprintf(
-                        'AigleApi: Aigle notification successful for parcel %s, in town %d: status %d, response: %s',
+                        'AigleApi: Aigle notification successful for parcel %s, in town %d: status %d, aigle status %s, response: %s',
                         $parcel,
                         $town->getName(),
                         $statusCode,
+                        $aigleStatus,
                         $content
                     ));
                 } else {
                     $this->logger->error(sprintf(
-                        'AigleApi: Aigle notification failed for parcel %s, in town %d: status %d, response: %s',
+                        'AigleApi: Aigle notification failed for parcel %s, in town %d: status %d, aigle status %s, response: %s',
                         $parcel,
                         $town->getName(),
                         $statusCode,
+                        $aigleStatus,
                         $content
                     ));
                     throw AigleNotificationException::errorDuringNotification();
