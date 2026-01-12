@@ -15,12 +15,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{RedirectResponse, Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Lucca\Bundle\FolderBundle\Entity\Folder;
 use Lucca\Bundle\FolderBundle\Utils\FolderManager;
 use Lucca\Bundle\MinuteBundle\Entity\{Control, Updating};
 use Lucca\Bundle\MinuteBundle\Form\UpdatingControlType;
 use Lucca\Bundle\MinuteBundle\Manager\{ControlEditionManager, ControlManager, MinuteStoryManager};
+use Lucca\Bundle\CoreBundle\Exception\AigleNotificationException;
+use Lucca\Bundle\CoreBundle\Service\Aigle\MinuteChangeStatusAigleNotifier;
 
 #[Route('/updating-{updating_id}/control')]
 #[IsGranted('ROLE_LUCCA')]
@@ -28,11 +31,13 @@ class UpdatingControlController extends AbstractController
 {
 
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly ControlManager         $controlManager,
-        private readonly FolderManager          $folderManager,
-        private readonly ControlEditionManager  $controlEditionManager,
-        private readonly MinuteStoryManager     $minuteStoryManager
+        private readonly EntityManagerInterface          $entityManager,
+        private readonly ControlManager                  $controlManager,
+        private readonly FolderManager                   $folderManager,
+        private readonly ControlEditionManager           $controlEditionManager,
+        private readonly MinuteStoryManager              $minuteStoryManager,
+        private readonly MinuteChangeStatusAigleNotifier $minuteChangeStatusAigleNotifier,
+        private readonly TranslatorInterface             $translator
     )
     {
     }
@@ -85,6 +90,12 @@ class UpdatingControlController extends AbstractController
             try {
                 $em->flush();
                 $this->addFlash('success', 'flash.control.updating.createdSuccessfully');
+
+                try {
+                    $this->minuteChangeStatusAigleNotifier->updateAigleMinuteStatus($control->getMinute());
+                } catch (AigleNotificationException $e) {
+                    $this->addFlash('danger', $e->getTranslatedMessage($this->translator));
+                }
 
                 if ($request->request->get('saveAndContinue') !== null)
                     return $this->redirectToRoute('lucca_updating_step1', array(
@@ -193,6 +204,13 @@ class UpdatingControlController extends AbstractController
         $em->flush();
 
         $this->addFlash('success', 'flash.control.updating.deletedSuccessfully');
+
+        try {
+            $this->minuteChangeStatusAigleNotifier->updateAigleMinuteStatus($control->getMinute());
+        } catch (AigleNotificationException $e) {
+            $this->addFlash('danger', $e->getTranslatedMessage($this->translator));
+        }
+
         return $this->redirectToRoute('lucca_minute_show', array('id' => $updating->getMinute()->getId()));
     }
 }

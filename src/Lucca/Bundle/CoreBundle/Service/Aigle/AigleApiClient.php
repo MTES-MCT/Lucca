@@ -7,21 +7,21 @@
  * For more information, please refer to the LICENSE file at the root of the project.
  */
 
-namespace Lucca\Bundle\CoreBundle\Service;
+namespace Lucca\Bundle\CoreBundle\Service\Aigle;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
-class AigleApiClient
+readonly class AigleApiClient
 {
     public function __construct(
-        private readonly HttpClientInterface $client,
+        private HttpClientInterface $client,
         #[Autowire(param: 'lucca_core.aigle_api_base_url')]
-        private readonly string $baseUrl,
+        private string              $baseUrl,
         #[Autowire(param: 'lucca_core.aigle_api_key')]
-        private readonly string $apiKey,
+        private string              $apiKey,
     ) {
     }
     /**
@@ -58,15 +58,26 @@ class AigleApiClient
      */
     public function post(string $endpoint, array $data = []): ResponseInterface
     {
-        return $this->request('POST', $endpoint, ['json' => $data]);
+        $response = $this->request('POST', $endpoint, ['json' => $data]);
+
+        // force the response to be fetched now to catch errors early
+        $response->getStatusCode();
+
+        return $response;
     }
+
 
     /**
      * @throws TransportExceptionInterface
      */
     public function put(string $endpoint, array $data = []): ResponseInterface
     {
-        return $this->request('PUT', $endpoint, ['json' => $data]);
+        $response = $this->request('PUT', $endpoint, ['json' => $data]);
+
+        // force the response to be fetched now to catch errors early
+        $response->getStatusCode();
+
+        return $response;
     }
 
     /**
@@ -74,7 +85,12 @@ class AigleApiClient
      */
     public function patch(string $endpoint, array $data = []): ResponseInterface
     {
-        return $this->request('PATCH', $endpoint, ['json' => $data]);
+        $response = $this->request('PATCH', $endpoint, ['json' => $data]);
+
+        // force the response to be fetched now to catch errors early
+        $response->getStatusCode();
+
+        return $response;
     }
 
     /**

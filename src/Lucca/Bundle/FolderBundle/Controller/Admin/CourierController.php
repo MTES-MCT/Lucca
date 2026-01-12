@@ -18,21 +18,26 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Lucca\Bundle\FolderBundle\Form\CourierType;
 use Lucca\Bundle\FolderBundle\Entity\Courier;
 use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Lucca\Bundle\MinuteBundle\Utils\HtmlCleaner;
 use Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
+use Lucca\Bundle\CoreBundle\Exception\AigleNotificationException;
+use Lucca\Bundle\CoreBundle\Service\Aigle\MinuteChangeStatusAigleNotifier;
 
 #[IsGranted('ROLE_LUCCA')]
 #[Route(path: '/minute-{minute_id}/courier')]
 class CourierController extends AbstractController
 {
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly HtmlCleaner $htmlCleaner,
-        private readonly MinuteStoryManager $minuteStoryManager,
+        private readonly EntityManagerInterface          $em,
+        private readonly HtmlCleaner                     $htmlCleaner,
+        private readonly MinuteStoryManager              $minuteStoryManager,
+        private readonly MinuteChangeStatusAigleNotifier $minuteChangeStatusAigleNotifier,
+        private readonly TranslatorInterface             $translator
     )
     {
     }
@@ -65,6 +70,12 @@ class CourierController extends AbstractController
             /** update status of the minute */
             $this->minuteStoryManager->manage($minute);
             $this->em->flush();
+
+            try {
+                $this->minuteChangeStatusAigleNotifier->updateAigleMinuteStatus($minute);
+            } catch (AigleNotificationException $e) {
+                $this->addFlash('danger', $e->getTranslatedMessage($this->translator));
+            }
 
             if ($request->request->get('saveAndContinue') !== null) {
                 return $this->redirectToRoute('lucca_courier_manual_judicial', [

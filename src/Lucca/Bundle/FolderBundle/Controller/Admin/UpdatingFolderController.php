@@ -18,6 +18,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Lucca\Bundle\FolderBundle\Entity\{Courier, Folder};
 use Lucca\Bundle\FolderBundle\Form\{FolderType, UpdatingFolderType};
@@ -25,18 +26,22 @@ use Lucca\Bundle\FolderBundle\Generator\NumFolderGenerator;
 use Lucca\Bundle\FolderBundle\Utils\{CourierEditionManager, FolderEditionManager, FolderManager};
 use Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
 use Lucca\Bundle\MinuteBundle\Entity\{Minute, Updating};
+use Lucca\Bundle\CoreBundle\Exception\AigleNotificationException;
+use Lucca\Bundle\CoreBundle\Service\Aigle\MinuteChangeStatusAigleNotifier;
 
 #[IsGranted('ROLE_LUCCA')]
 #[Route(path: '/minute-{minute_id}/updating-{updating_id}/folder')]
 class UpdatingFolderController extends AbstractController
 {
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly FolderManager $folderManager,
-        private readonly FolderEditionManager $folderEditionManager,
-        private readonly MinuteStoryManager $minuteStoryManager,
-        private readonly NumFolderGenerator $numFolderGenerator,
-        private readonly CourierEditionManager $courierEditionManager,
+        private readonly EntityManagerInterface          $em,
+        private readonly FolderManager                   $folderManager,
+        private readonly FolderEditionManager            $folderEditionManager,
+        private readonly MinuteStoryManager              $minuteStoryManager,
+        private readonly NumFolderGenerator              $numFolderGenerator,
+        private readonly CourierEditionManager           $courierEditionManager,
+        private readonly MinuteChangeStatusAigleNotifier $minuteChangeStatusAigleNotifier,
+        private readonly TranslatorInterface             $translator
     )
     {
     }
@@ -87,6 +92,12 @@ class UpdatingFolderController extends AbstractController
                 $this->em->flush();
 
                 $this->addFlash('success', 'flash.folder.createdSuccessfully');
+
+                try {
+                    $this->minuteChangeStatusAigleNotifier->updateAigleMinuteStatus($minute);
+                } catch (AigleNotificationException $e) {
+                    $this->addFlash('danger', $e->getTranslatedMessage($this->translator));
+                }
                 return $this->redirectToRoute('lucca_minute_show', ['id' => $minute->getId()]);
             }
         }
@@ -165,6 +176,12 @@ class UpdatingFolderController extends AbstractController
 
         $this->addFlash('success', 'flash.folder.deletedSuccessfully');
 
+        try {
+            $this->minuteChangeStatusAigleNotifier->updateAigleMinuteStatus($minute);
+        } catch (AigleNotificationException $e) {
+            $this->addFlash('danger', $e->getTranslatedMessage($this->translator));
+        }
+
         return $this->redirectToRoute('lucca_minute_show', ['id' => $minute->getId()]);
     }
 
@@ -207,6 +224,12 @@ class UpdatingFolderController extends AbstractController
         $this->em->flush();
 
         $this->addFlash('danger', 'flash.folder.closeSuccessfully');
+
+        try {
+            $this->minuteChangeStatusAigleNotifier->updateAigleMinuteStatus($minute);
+        } catch (AigleNotificationException $e) {
+            $this->addFlash('danger', $e->getTranslatedMessage($this->translator));
+        }
 
         return $this->redirectToRoute('lucca_minute_show', ['id' => $minute->getId()]);
     }

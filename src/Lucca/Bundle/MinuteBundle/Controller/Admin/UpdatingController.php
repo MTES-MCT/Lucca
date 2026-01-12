@@ -9,15 +9,7 @@
 
 namespace Lucca\Bundle\MinuteBundle\Controller\Admin;
 
-use Lucca\Bundle\MinuteBundle\Entity\Control;
-use Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Lucca\Bundle\FolderBundle\Entity\Folder;
-use Lucca\Bundle\MinuteBundle\Entity\Minute;
-use Lucca\Bundle\MinuteBundle\Entity\Updating;
-use Lucca\Bundle\MinuteBundle\Form\UpdatingType;
-use Lucca\Bundle\MinuteBundle\Generator\NumUpdatingGenerator;
-use Lucca\Bundle\MinuteBundle\Utils\HtmlCleaner;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -26,6 +18,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
+use Lucca\Bundle\FolderBundle\Entity\Folder;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\MinuteBundle\Entity\Updating;
+use Lucca\Bundle\MinuteBundle\Form\UpdatingType;
+use Lucca\Bundle\MinuteBundle\Generator\NumUpdatingGenerator;
+use Lucca\Bundle\MinuteBundle\Utils\HtmlCleaner;
+use Lucca\Bundle\CoreBundle\Exception\AigleNotificationException;
+use Lucca\Bundle\CoreBundle\Service\Aigle\MinuteChangeStatusAigleNotifier;
+use Lucca\Bundle\MinuteBundle\Entity\Control;
+use Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
 
 #[Route('/minute-{minute_id}/updating')]
 #[IsGranted('ROLE_LUCCA')]
@@ -33,10 +37,12 @@ class UpdatingController extends AbstractController
 {
 
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly MinuteStoryManager     $minuteStoryManager,
-        private readonly HtmlCleaner            $htmlCleaner,
-        private readonly NumUpdatingGenerator   $numUpdatingGenerator
+        private readonly EntityManagerInterface          $entityManager,
+        private readonly MinuteStoryManager              $minuteStoryManager,
+        private readonly HtmlCleaner                     $htmlCleaner,
+        private readonly NumUpdatingGenerator            $numUpdatingGenerator,
+        private readonly MinuteChangeStatusAigleNotifier $minuteChangeStatusAigleNotifier,
+        private readonly TranslatorInterface             $translator
     ) {
     }
 
@@ -55,6 +61,12 @@ class UpdatingController extends AbstractController
         $this->addFlash('success', 'flash.updating.createdSuccessfully');
         $em->persist($updating);
         $em->flush();
+
+        try {
+            $this->minuteChangeStatusAigleNotifier->updateAigleMinuteStatus($minute);
+        } catch (AigleNotificationException $e) {
+            $this->addFlash('danger', $e->getTranslatedMessage($this->translator));
+        }
 
         return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId(), '_fragment' => 'updating-' . $updating->getId()));
     }
@@ -106,6 +118,12 @@ class UpdatingController extends AbstractController
 
         $this->minuteStoryManager->manage($minute);
         $em->flush();
+
+        try {
+            $this->minuteChangeStatusAigleNotifier->updateAigleMinuteStatus($minute);
+        } catch (AigleNotificationException $e) {
+            $this->addFlash('danger', $e->getTranslatedMessage($this->translator));
+        }
 
         $this->addFlash('success', 'flash.updating.deletedSuccessfully');
         return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId()));

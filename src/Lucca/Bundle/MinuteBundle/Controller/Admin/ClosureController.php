@@ -9,13 +9,7 @@
 
 namespace Lucca\Bundle\MinuteBundle\Controller\Admin;
 
-use Lucca\Bundle\MinuteBundle\Manager\ClosureManager;
-use Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Lucca\Bundle\MinuteBundle\Entity\Closure;
-use Lucca\Bundle\MinuteBundle\Entity\Minute;
-use Lucca\Bundle\MinuteBundle\Form\ClosureType;
-use Lucca\Bundle\MinuteBundle\Utils\HtmlCleaner;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,6 +17,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
+use Lucca\Bundle\MinuteBundle\Entity\Closure;
+use Lucca\Bundle\MinuteBundle\Entity\Minute;
+use Lucca\Bundle\MinuteBundle\Form\ClosureType;
+use Lucca\Bundle\MinuteBundle\Utils\HtmlCleaner;
+use Lucca\Bundle\CoreBundle\Exception\AigleNotificationException;
+use Lucca\Bundle\CoreBundle\Service\Aigle\MinuteChangeStatusAigleNotifier;
+use Lucca\Bundle\MinuteBundle\Manager\ClosureManager;
+use Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
 
 #[Route('/minute')]
 #[IsGranted('ROLE_LUCCA')]
@@ -30,10 +34,12 @@ class ClosureController extends AbstractController
 {
 
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly MinuteStoryManager $minuteStoryManager,
-        private readonly ClosureManager $closureManager,
-        private readonly htmlCleaner $htmlCleaner
+        private readonly EntityManagerInterface          $entityManager,
+        private readonly MinuteStoryManager              $minuteStoryManager,
+        private readonly ClosureManager                  $closureManager,
+        private readonly htmlCleaner                     $htmlCleaner,
+        private readonly MinuteChangeStatusAigleNotifier $minuteChangeStatusAigleNotifier,
+        private readonly TranslatorInterface             $translator
     )
     {
     }
@@ -63,6 +69,12 @@ class ClosureController extends AbstractController
             /** update status of the minute */
             $this->minuteStoryManager->manage($minute);
             $em->flush();
+
+            try {
+                $this->minuteChangeStatusAigleNotifier->updateAigleMinuteStatus($minute);
+            } catch (AigleNotificationException $e) {
+                $this->addFlash('danger', $e->getTranslatedMessage($this->translator));
+            }
 
             $this->addFlash('info', 'flash.closure.closedSuccessfully');
             return $this->redirectToRoute('lucca_minute_show', array('id' => $minute->getId(), '_fragment' => 'closure-' . $closure->getId()));

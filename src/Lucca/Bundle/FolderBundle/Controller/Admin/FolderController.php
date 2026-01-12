@@ -18,26 +18,31 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-use Lucca\Bundle\FolderBundle\Entity\{ElementChecked, Folder, Natinf, Tag};
+use Lucca\Bundle\FolderBundle\Entity\{Folder, Natinf, Tag};
 use Lucca\Bundle\FolderBundle\Form\{FolderStep1Type, FolderStep2Type, FolderStep3Type, FolderType};
 use Lucca\Bundle\FolderBundle\Generator\NumFolderGenerator;
 use Lucca\Bundle\FolderBundle\Utils\{FolderEditionManager, FolderManager};
 use Lucca\Bundle\MinuteBundle\Entity\Minute;
 use Lucca\Bundle\MinuteBundle\Manager\MinuteStoryManager;
 use Lucca\Bundle\MinuteBundle\Utils\HtmlCleaner;
+use Lucca\Bundle\CoreBundle\Exception\AigleNotificationException;
+use Lucca\Bundle\CoreBundle\Service\Aigle\MinuteChangeStatusAigleNotifier;
 
 #[IsGranted('ROLE_LUCCA')]
 #[Route(path: '/minute-{minute_id}/folder')]
 class FolderController extends AbstractController
 {
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly FolderManager          $folderManager,
-        private readonly NumFolderGenerator     $numFolderGenerator,
-        private readonly FolderEditionManager   $folderEditionManager,
-        private readonly MinuteStoryManager     $minuteStoryManager,
-        private readonly HtmlCleaner            $htmlCleaner,
+        private readonly EntityManagerInterface          $em,
+        private readonly FolderManager                   $folderManager,
+        private readonly NumFolderGenerator              $numFolderGenerator,
+        private readonly FolderEditionManager            $folderEditionManager,
+        private readonly MinuteStoryManager              $minuteStoryManager,
+        private readonly HtmlCleaner                     $htmlCleaner,
+        private readonly MinuteChangeStatusAigleNotifier $minuteChangeStatusAigleNotifier,
+        private readonly TranslatorInterface             $translator
     )
     {
     }
@@ -109,6 +114,14 @@ class FolderController extends AbstractController
                 $this->em->flush();
 
                 $this->addFlash('success', 'flash.folder.createdSuccessfully');
+
+                try {
+                    $this->minuteChangeStatusAigleNotifier->updateAigleMinuteStatus($minute);
+                } catch (AigleNotificationException $e) {
+                    $this->addFlash('danger', $e->getTranslatedMessage($this->translator));
+                } catch (\Throwable $e) {
+                    $this->addFlash('danger', 'flash.aigle.notification_error');
+                }
 
                 if ($request->request->get('saveAndContinue') !== null) {
                     return $this->redirectToRoute('lucca_folder_step1', [
@@ -366,6 +379,12 @@ class FolderController extends AbstractController
 
         $this->addFlash('success', 'flash.folder.deletedSuccessfully');
 
+        try {
+            $this->minuteChangeStatusAigleNotifier->updateAigleMinuteStatus($minute);
+        } catch (AigleNotificationException $e) {
+            $this->addFlash('danger', $e->getTranslatedMessage($this->translator));
+        }
+
         return $this->redirectToRoute('lucca_minute_show', ['id' => $minute->getId()]);
     }
 
@@ -385,8 +404,6 @@ class FolderController extends AbstractController
 
     /**
      * Close a Folder entity.
-     *
-     * @throws Exception
      */
     #[Route(path: '-{id}/close', name: 'lucca_folder_fence')]
     #[IsGranted('ROLE_LUCCA')]
@@ -405,6 +422,12 @@ class FolderController extends AbstractController
         $this->em->flush();
 
         $this->addFlash('success', 'flash.folder.closeSuccessfully');
+
+        try {
+            $this->minuteChangeStatusAigleNotifier->updateAigleMinuteStatus($minute);
+        } catch (AigleNotificationException $e) {
+            $this->addFlash('danger', $e->getTranslatedMessage($this->translator));
+        }
 
         return $this->redirectToRoute('lucca_minute_show', ['id' => $minute->getId()]);
     }
