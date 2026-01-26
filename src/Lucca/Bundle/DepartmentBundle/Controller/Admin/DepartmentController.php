@@ -114,7 +114,7 @@ class DepartmentController extends AbstractController
             $em->flush();
 
             // Towns CSV parsing
-            $this->departmentService->createTownsFromFile($uploadedFile, $department);
+            $this->departmentService->createOrUpdateTownsFromFile($uploadedFile, $department);
 
             // Natinf creation from JSON data file
             $this->natinfService->createForDepartment($department);
@@ -164,13 +164,42 @@ class DepartmentController extends AbstractController
      */
     #[Route(path: '-{id}/edit', name: 'lucca_department_admin_edit', defaults: ['_locale' => 'fr'], methods: ['GET', 'POST'])]
     #[IsGranted("ROLE_SUPER_ADMIN")]
-    public function editAction(Request $request, Department $department, ManagerRegistry $doctrine): Response
+    public function editAction(Request $request, Department $department, ManagerRegistry $doctrine, ValidatorInterface $validator): Response
     {
         $em = $doctrine->getManager();
 
         $form = $this->createForm(DepartmentType::class, $department);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $uploadedFile */
+            $uploadedFile = $request->files->get('lucca_departmentBundle_department')['towns'];
+
+            if ($uploadedFile) {
+                $violations = $validator->validate(
+                    $uploadedFile,
+                    new File([
+                        'mimeTypes' => ['text/csv']
+                    ])
+                );
+
+                if ($violations->count() > 0) {
+                    foreach ($violations as $violation) {
+                        $this->addFlash('danger', $violation->getMessage());
+                    }
+
+                    return $this->render('@LuccaDepartment/Admin/Department/edit.html.twig', [
+                        'form' => $form->createView(),
+                        'department' => $department,
+                    ]);
+                }
+
+                // UPDATE Towns CSV parsing
+                $this->departmentService->createOrUpdateTownsFromFile($uploadedFile, $department);
+
+                //add flash message
+                $this->addFlash('success', 'flash.department.towns.update.success');
+            }
+
             $em->persist($department);
             $em->flush();
             $this->addFlash('success', 'flash.department.update.success');

@@ -30,7 +30,8 @@ title:
 
 help:
     towns: |
-        Fichier au format CSV séparé par des virgules contenant la liste des communes
+        Fichier au format CSV séparé par des virgules contenant la liste des communes, si des communes existent déjà dans le département,
+        elle seront mise à jour par celles du fichier en se basant sur le code INSEE.
         -- La première ligne doit contenir les en-têtes de colonnes
         - 1ère colonne: code INSEE de la commune
         - 2e colonne: code postal de la commune
