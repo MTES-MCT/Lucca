@@ -2,8 +2,12 @@
 ## Domain : FlashMessages
 ## Lang : FR
 ####################################
+
 flash:
     department:
+        towns:
+            update:
+                success: 'Communes mises à jour'
         update:
             success: 'Département mis à jour'
             error: 'Erreur lors de la mise à jour du département'
