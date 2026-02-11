@@ -10,13 +10,19 @@
 
 namespace Lucca\Bundle\SettingBundle\Twig;
 
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 use Lucca\Bundle\SettingBundle\Manager\SettingManager;
 
 class SettingExtension extends AbstractExtension
-{
+{    public function __construct(
+        private readonly UrlGeneratorInterface $urlGenerator,
+    )
+    {
+    }
     /**
      * Get twig filters
      */
@@ -24,6 +30,7 @@ class SettingExtension extends AbstractExtension
     {
         return [
             new TwigFilter('setting', [$this, 'settingFilter']),
+            new TwigFilter('settingMediaUrl', [$this, 'settingMediaUrlFilter']),
         ];
     }
 
@@ -33,5 +40,21 @@ class SettingExtension extends AbstractExtension
     public function settingFilter(string $settingName, ?string $depCode = null): mixed
     {
         return SettingManager::get($settingName, null, $depCode);
+    }
+    public function settingMediaUrlFilter(string $settingName, ?string $default = null, ?string $depCode = null): ?string
+    {
+        $fileName = SettingManager::get($settingName, null, $depCode);
+
+        if (!$fileName) {
+            return null;
+        }
+
+        try {
+            return $this->urlGenerator->generate('lucca_media_show', [
+                'p_fileName' => $fileName,
+            ]);
+        } catch (ExceptionInterface $e) {
+            return null;
+        }
     }
 }

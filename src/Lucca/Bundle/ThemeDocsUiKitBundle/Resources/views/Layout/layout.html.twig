@@ -149,7 +149,7 @@
             <div class="col-lg-3 col-xs-4 col-12">
                 <div class="animated fadeInLeft">
                     <a href={{ 'setting.general.urlGouv.name'|setting }}>
-                        <img src="{{ path('lucca_media_show', {'p_fileName': 'setting.general.prefectureLogo.name'|setting }) }}"
+                        <img src="{{ 'setting.general.prefectureLogo.name'|settingMediaUrl }}"
                              class="img-responsive logo-header" alt="{{ 'header.prefecture'|trans }}">
                     </a>
                 </div>
@@ -169,7 +169,7 @@
                 <div class="animated fadeInRight">
                     {% if 'setting.general.app.name'| setting != '-' %}
                         <a href="{{ path('lucca_content_dashboard') }}">
-                            {#                            <img src="{{ asset('setting.general.logo.name'|setting) }}" #}
+                            {#                            <img src="{{ 'setting.general.logo.name'|settingMediaUrl }}" #}
                             {#                                 class="img-responsive logo-header" alt="{{ 'setting.general.app.name'| setting }}"> #}
                         </a>
                     {% endif %}

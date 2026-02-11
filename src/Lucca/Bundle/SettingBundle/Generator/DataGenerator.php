@@ -169,11 +169,12 @@ class DataGenerator
             'comment' => 'setting.general.emailLegaleDepartement.comment'],
         [
             'name' => "setting.general.logo.name",
-            'type' => Setting::TYPE_TEXT,
+            'type' => Setting::TYPE_MEDIA,
+            'extraParams' => ['accept' => 'image/*', 'isPublic' => true],
             'category' => 'setting.category.general.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 6,
-            'value' => 'assets/logo/lucca-logo-texte-transparent.png',
+            'value' => null,
             'valuesAvailable' => [],
             'comment' => 'setting.general.logo.comment'],
         [
