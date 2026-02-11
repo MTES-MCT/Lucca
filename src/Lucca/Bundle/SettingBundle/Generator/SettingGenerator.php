@@ -103,14 +103,14 @@ class SettingGenerator
             $item = $this->settingsCache->getItem($cacheKey);
 
             if (!$item->isHit() || $bypassCache) {
-                try {
+//                try {
                     $aSettingDictionary = $this->generateMissingSettings($dept);
                     $item->set($aSettingDictionary);
                     $this->settingsCache->save($item);
                     $this->em->flush();
-                } catch (Exception $e) {
-                    // Log or ignore the exception
-                }
+//                } catch (Exception $e) {
+//                    // Log or ignore the exception
+//                }
             }
 
             $cachedValue = $item->get();
@@ -137,7 +137,7 @@ class SettingGenerator
                 $databaseResponse = $this->em->getRepository(Setting::class)->findAllOptimized($department);
 
                 // Ensure the database response is an array.
-                if (is_array($databaseResponse)) {
+                if (!empty($databaseResponse)) {
                     $aName = array_column($databaseResponse, 'name');
                     $aCastValue = array_map(function ($row) {
                         return Setting::castValue($row['type'], $row['value']);
@@ -158,7 +158,7 @@ class SettingGenerator
         // Check all settings in the settings array
         foreach ($this->settings as $setting) {
             $this->insertOrUpdateSetting($setting['type'], $setting['category'], $setting['accessType'], $setting['position'],
-                $setting['name'], $setting['value'], $setting['comment'], $department, $setting['valuesAvailable']
+                $setting['name'], $setting['value'], $setting['comment'], $department, $setting['valuesAvailable'], $setting['extraParams'] ?? null
             );
         }
 
@@ -203,7 +203,7 @@ class SettingGenerator
      *
      * @throws Exception
      */
-    public function insertOrUpdateSetting($type, $_category, $accessType, $position, $name, $value, $description, $department, $values = null): bool
+    public function insertOrUpdateSetting($type, $_category, $accessType, $position, $name, $value, $description, $department, $values = null, ?array $extraParams = null): bool
     {
         // Try to find the required category
         /** @var Category $category */
@@ -218,15 +218,20 @@ class SettingGenerator
             return false;
         }
 
+        /** Create a new Setting if it doesn't exist yet */
         if (!is_array($this->aDatabaseSettingDictionary) || array_key_exists($name, $this->aDatabaseSettingDictionary) === false) {
             // Insert the new Setting
             $setting = new Setting($name, $type, $category, $accessType, $position, $value, $description, $values);
             $setting->setDepartment($department);
+            $setting->setExtraParam($extraParams);
 
             $this->em->persist($setting);
             $this->aOutputDictionary[$setting->getName()] = Setting::castValue($setting->getType(), $setting->getValue());
+
+        /** Update the Setting if it already exist with new values */
         } else {
-            $this->aSettingToUpdateCallbacks[$name] = function (Setting $setting) use ($name, $type, $category, $accessType, $position, $value, $description, $values, $department) {
+
+            $this->aSettingToUpdateCallbacks[$name] = function (Setting $setting) use ($name, $type, $category, $accessType, $position, $value, $description, $values, $department, $extraParams) {
                 /** Update only the values that don't have an impact on given value */
                 $setting->setName($name);
                 $setting->setType($type);
@@ -235,6 +240,7 @@ class SettingGenerator
                 $setting->setPosition($position);
                 $setting->setComment($description);
                 $setting->setDepartment($department);
+                $setting->setExtraParam($extraParams);
                 if ($type === Setting::TYPE_LIST) {
                     $setting->setvaluesAvailable(implode(';', $values));
                 }

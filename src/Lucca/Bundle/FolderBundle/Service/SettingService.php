@@ -28,7 +28,7 @@ readonly class SettingService
 
         foreach ($settings as $setting) {
             $this->settingGenerator->insertOrUpdateSetting($setting['type'], $setting['category'], $setting['accessType'], $setting['position'],
-                $setting['name'], $setting['value'], $setting['comment'], $setting['valuesAvailable'], $department,
+                $setting['name'], $setting['value'], $setting['comment'], $setting['valuesAvailable'], $department, null, $setting['extraParams']
             );
         }
 

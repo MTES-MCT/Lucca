@@ -35,7 +35,7 @@ class Media implements LoggableInterface
     #[ORM\Column]
     #[Assert\Type(type: 'string', message: 'constraint.type')]
     #[Assert\Length(min: 2, max: 255, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
-    private string $name;
+    private string $name = '';
 
     #[ORM\Column]
     #[Assert\Type(type: 'string', message: 'constraint.type')]

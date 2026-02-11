@@ -50,7 +50,7 @@ class AdherentEditType extends AbstractType
             ->add('unitAttachment', TextType::class, array('label' => 'label.unitAttachment', 'required' => false))
             ->add('emailPublic', TextType::class, array('label' => 'label.emailPublic', 'required' => false))
             ->add('logo', MediaQuickType::class, array(
-                'label' => 'label.logo', 'required' => false,
+                'label' => 'label.logo', 'required' => false, 'accept' => 'image/*'
             ));
 
         $builder

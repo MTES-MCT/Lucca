@@ -10,7 +10,7 @@
 
 namespace Lucca\Bundle\MediaBundle\Form\Media;
 
-use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
+use Symfony\Component\Form\{AbstractType, FormBuilderInterface, FormEvent, FormEvents};
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
@@ -41,20 +41,17 @@ class MediaQuickType extends AbstractType
             $builder
                 ->add('files', DropzoneType::class, ['label' => 'label.uploadFile', 'mapped' => false, 'required' => false]);
         }
-        elseif ($options['isImage']) {
+        elseif ($options['accept']) {
             $builder
                 ->add('file', FileType::class, ['label' => 'label.uploadFile', 'mapped' => false, 'required' => false,
                     'attr' => [
                         'class' => 'mediaFile',
-                            'accept' => 'image/*'
+                            'accept' => $options['accept']
                     ],
                     'constraints' => [
-                        new File([
-                            'mimeTypes' => [
-                                'image/*',
-                            ],
-                            'mimeTypesMessage' => 'Le fichier doit être une image.',
-                        ])
+                        new File(mimeTypes: [
+                            $options['accept']
+                        ], mimeTypesMessage: 'Le type du fichier n\'est pas le bon.')
                     ],
                 ])
                 ->addEventSubscriber($this->mediaFormListener);
@@ -78,6 +75,7 @@ class MediaQuickType extends AbstractType
             'required' => true,
             'multiple' => false,
             'isImage' => false,
+            'accept' => null,
         ]);
     }
 

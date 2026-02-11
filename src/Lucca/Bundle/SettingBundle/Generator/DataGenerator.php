@@ -64,6 +64,17 @@ class DataGenerator
     // setting.categoryName.parameterName.name
     // categoryName -> name of the category in the previous array
     // parameterName -> name of the parameter
+    // name -> name of the setting
+    // type -> type of the setting (text, bool, media, list, color, float)
+    // category -> category of the setting (see previous array)
+    // accessType -> access type of the setting (see Setting::ACCESS_TYPE_* constants)
+    // position -> position of the setting in the category
+    // value -> default value of the setting
+    // valuesAvailable -> list of possible values for the setting (only for list and bool types)
+    // comment -> comment of the setting
+    // extraParams -> extra parameters for the setting
+    //                      (for media type can be specified the type of media accepted and if it's public or not)
+    //                      (for other can be specified if required or not => default is false)
     public array $settings = [
         //------------------------------
         // GENERAL SETTINGS
@@ -75,8 +86,19 @@ class DataGenerator
             'accessType' => Setting::ACCESS_TYPE_ADMIN,
             'position' => 0,
             'value' => 'Lucca',
+            'extraParams' => ['required' => true],
             'valuesAvailable' => [],
             'comment' => 'setting.general.app.comment'],
+        [
+            'name' => "setting.general.prefectureLogo.name",
+            'type' => Setting::TYPE_MEDIA,
+            'extraParams' => ['accept' => 'image/*', 'isPublic' => true],
+            'category' => 'setting.category.general.name',
+            'accessType' => Setting::ACCESS_TYPE_ADMIN,
+            'position' => 0,
+            'value' => null,
+            'valuesAvailable' => [],
+            'comment' => 'setting.general.prefectureLogo.comment'],
         [
             'name' => "setting.general.bannerTop.name",
             'type' => Setting::TYPE_TEXT,
@@ -85,6 +107,7 @@ class DataGenerator
             'position' => 0,
             'value' => '',
             'valuesAvailable' => [],
+            'extraParams' => ['required' => true],
             'comment' => 'setting.general.bannerTop.comment'],
         [
             'name' => "setting.general.departement.name",
@@ -93,6 +116,7 @@ class DataGenerator
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 1,
             'value' => 'A renseigner dans les paramètres',
+            'extraParams' => ['required' => true],
             'valuesAvailable' => [
                 '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17',
                 '18', '19', '2A', '2B', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33',
@@ -111,6 +135,7 @@ class DataGenerator
             'position' => 2,
             'value' => '#23b7e5',
             'valuesAvailable' => [],
+            'extraParams' => ['required' => true],
             'comment' => 'setting.general.colorL.comment'],
         [
             'name' => "setting.general.colorR.name",
@@ -120,6 +145,7 @@ class DataGenerator
             'position' => 3,
             'value' => '#51c6ea',
             'valuesAvailable' => [],
+            'extraParams' => ['required' => true],
             'comment' => 'setting.general.colorR.comment'],
         [
             'name' => "setting.general.emailGlobal.name",
@@ -129,6 +155,7 @@ class DataGenerator
             'position' => 4,
             'value' => 'A renseigner dans les paramètres',
             'valuesAvailable' => [],
+            'extraParams' => ['required' => true],
             'comment' => 'setting.general.emailGlobal.comment'],
         [
             'name' => "setting.general.emailLegaleDepartement.name",
@@ -138,6 +165,7 @@ class DataGenerator
             'position' => 5,
             'value' => 'A renseigner dans les paramètres',
             'valuesAvailable' => [],
+            'extraParams' => ['required' => true],
             'comment' => 'setting.general.emailLegaleDepartement.comment'],
         [
             'name' => "setting.general.logo.name",
@@ -155,6 +183,7 @@ class DataGenerator
             'accessType' => Setting::ACCESS_TYPE_ADMIN,
             'position' => 7,
             'value' => 'A renseigner dans les paramètres',
+            'extraParams' => ['required' => true],
             'valuesAvailable' => [],
             'comment' => 'setting.general.ddtName.comment'],
         //------------------------------
@@ -381,6 +410,7 @@ class DataGenerator
             'accessType' => Setting::ACCESS_TYPE_ADMIN,
             'position' => 26,
             'value' => "A renseigner dans les paramètres",
+            'extraParams' => ['required' => true],
             'valuesAvailable' => [],
             'comment' => 'setting.general.url.comment'],
         [
@@ -390,6 +420,7 @@ class DataGenerator
             'accessType' => Setting::ACCESS_TYPE_ADMIN,
             'position' => 27,
             'value' => "A renseigner dans les paramètres",
+            'extraParams' => ['required' => true],
             'valuesAvailable' => [],
             'comment' => 'setting.general.urlGouv.comment'],
         [
@@ -448,6 +479,7 @@ class DataGenerator
             'accessType' => Setting::ACCESS_TYPE_ADMIN,
             'position' => 1,
             'value' => 'A renseigner dans les paramètres',
+            'extraParams' => ['required' => true],
             'valuesAvailable' => [],
             'comment' => 'setting.information.contactHelpDashboardTitle1.comment'],
         [
@@ -457,6 +489,7 @@ class DataGenerator
             'accessType' => Setting::ACCESS_TYPE_ADMIN,
             'position' => 2,
             'value' => 'A renseigner dans les paramètres',
+            'extraParams' => ['required' => true],
             'valuesAvailable' => [],
             'comment' => 'setting.information.contactHelpDashboardPhone1.comment'],
         [
@@ -466,6 +499,7 @@ class DataGenerator
             'accessType' => Setting::ACCESS_TYPE_ADMIN,
             'position' => 3,
             'value' => 'A renseigner dans les paramètres',
+            'extraParams' => ['required' => true],
             'valuesAvailable' => [],
             'comment' => 'setting.information.contactHelpDashboardMail1.comment'],
         [
@@ -475,6 +509,7 @@ class DataGenerator
             'accessType' => Setting::ACCESS_TYPE_ADMIN,
             'position' => 4,
             'value' => 'A renseigner dans les paramètres',
+            'extraParams' => ['required' => true],
             'valuesAvailable' => [],
             'comment' => 'setting.information.contactHelpDashboardAddress1.comment'],
         [
@@ -520,6 +555,7 @@ class DataGenerator
             'accessType' => Setting::ACCESS_TYPE_ADMIN,
             'position' => 7,
             'value' => 'A renseigner dans les paramètres',
+            'extraParams' => ['required' => true],
             'valuesAvailable' => [],
             'comment' => 'setting.information.controlPhone.comment'],
 

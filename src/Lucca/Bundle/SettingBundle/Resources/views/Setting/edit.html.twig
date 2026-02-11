@@ -15,7 +15,7 @@
     {{ form_start(edit_form) }}
     {{ form_errors(edit_form) }}
 
-    {#-- Panel - main --#}
+    {#- - Panel - main - -#}
     <div class="col-6">
         <div class="card card-default">
             <div class="card-header">
@@ -25,7 +25,12 @@
             <div class="card-wrapper">
                 <div class="card-body">
                     <div class="col-12">
-                        {{ form_row(edit_form.value, { 'id': 'value_selectors'} ) }}
+
+                        {% if setting.type is constant('TYPE_MEDIA', setting) %}
+                            {{ form_row(edit_form.media, { 'id': 'value_media'} ) }}
+                        {% else %}
+                            {{ form_row(edit_form.value, { 'id': 'value_selectors'} ) }}
+                        {% endif %}
 
                         <a href="{{ path('lucca_setting_show', { 'id': setting.id }) }}"
                            class="btn btn-secondary btn-lg" title="{{ 'link.setting.show'|trans }}">
@@ -40,7 +45,7 @@
         </div>
 
     </div>
-    {#-- End Panel - main --#}
+    {#- - End Panel - main - -#}
     {{ form_rest(edit_form) }}
     {{ form_end(edit_form) }}
 
@@ -49,7 +54,7 @@
 {% block lucca_css %}
     {{ parent() }}
 
-    {#-- Plugin - Colorpicker --#}
+    {#- - Plugin - Colorpicker - -#}
     {% if setting.type is constant('TYPE_COLOR', setting) %}
         <link href="{{ asset('plugins/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css') }}"
               rel="stylesheet">

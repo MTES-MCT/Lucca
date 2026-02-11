@@ -62,6 +62,7 @@ choice:
             color: "Couleur"
             admin: "Administrateur"
             superAdmin: "Super Administrateur"
+            media: "Media"
         accessType:
             superAdmin: "Super administrateur"
             admin: "Administrateur"
@@ -101,6 +102,9 @@ setting:
     #    Define all the settings order by category
     #    Settings category general
     general:
+        prefectureLogo:
+            name: "Logo de la prefecture"
+            comment: "Logo affiché dans le bandeau en haut à gauche de sur le site web public."
         colorL:
             name: "Couleur bandeau gauche"
             comment: "Ce paramètre permet de changer la couleur du bandeau à gauche en haut de l'application."

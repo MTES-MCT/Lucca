@@ -45,10 +45,10 @@ class BlocType extends AbstractType
             ->add('color', ColorType::class, ['label' => 'label.color', 'required' => false,
                 'attr' => ['class' => 'form-control']])
             ->add('backgroundImg', MediaQuickType::class, [
-                'label' => 'label.backgroundImg', 'required' => false, 'isImage' => true
+                'label' => 'label.backgroundImg', 'required' => false, 'accept' => 'image/*'
             ])
             ->add('media', MediaQuickType::class, [
-                'label' => 'label.media', 'required' => false, 'isImage' => true
+                'label' => 'label.media', 'required' => false, 'accept' => 'image/*'
             ])
         ;
     }

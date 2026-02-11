@@ -12,6 +12,7 @@ namespace Lucca\Bundle\SettingBundle\Controller\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
+use Lucca\Bundle\SettingBundle\Manager\SettingManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -90,6 +91,8 @@ class SettingController extends AbstractController
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $setting->getMedia()?->setPublic($setting->getExtraParam()['isPublic'] ?? false);
+
             $this->em->persist($setting);
             $this->em->flush();
 

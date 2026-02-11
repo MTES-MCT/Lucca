@@ -88,6 +88,8 @@
                                                                                 {{ setting.value|boolean }}
                                                                             {% elseif setting.type is constant('TYPE_COLOR', setting) %}
                                                                                 <p style="color:{{ setting.value }}"> {{ setting.value }}</p>
+                                                                            {% elseif setting.type is constant('TYPE_MEDIA', setting)%}
+                                                                                <p>{{ setting.media|mediaTag(50) }}</p>
                                                                             {% else %}
                                                                                 {{ setting.value }}
                                                                             {% endif %}
