@@ -11,6 +11,7 @@
 namespace Lucca\Bundle\FolderBundle\Repository;
 
 use Doctrine\ORM\{EntityRepository, NonUniqueResultException, QueryBuilder};
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 class TagRepository extends EntityRepository
 {
@@ -27,6 +28,21 @@ class TagRepository extends EntityRepository
         if ($category)
             $qb->andWhere($qb->expr()->eq('tag.category', ':q_category'))
                 ->setParameter(':q_category', $category);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Find all tags by department and nums use for initialization
+     */
+    public function findAllByDepartmentAndNums(Department $department, array $nums): array
+    {
+        $qb = $this->queryTag();
+        $qb->andWhere($qb->expr()->eq('tag.department', ':q_department'))
+            ->setParameter(':q_department', $department);
+        $qb->andWhere($qb->expr()->isNotNull('tag.num'));
+        $qb->andWhere($qb->expr()->in('tag.num', ':q_num'))
+            ->setParameter(':q_num', $nums);
 
         return $qb->getQuery()->getResult();
     }

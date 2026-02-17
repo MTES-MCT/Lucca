@@ -11,6 +11,7 @@
 namespace Lucca\Bundle\FolderBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Lucca\Bundle\FolderBundle\Entity\Tag;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -70,12 +71,20 @@ readonly class NatinfService
             // Re-attach the department entity if detached by a clean
             $department = $this->em->getReference(Department::class, $department->getId());
             foreach ($natinfChunk as $natinf) {
+
                 $newNatinf = new Natinf();
                 $newNatinf->setNum($natinf['num']);
                 $newNatinf->setQualification($natinf['qualification']);
                 $newNatinf->setDefinedBy($natinf['definedBy']);
                 $newNatinf->setRepressedBy($natinf['repressedBy']);
                 $newNatinf->setDepartment($department);
+
+                // Set tags if exist
+                $tags = $this->em->getRepository(Tag::class)->findAllByDepartmentAndNums($department, $natinf['tags_num_link']);
+
+                foreach ($tags as $tag) {
+                    $newNatinf->addTag($tag);
+                }
 
                 $this->em->persist($newNatinf);
             }

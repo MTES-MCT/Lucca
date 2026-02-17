@@ -1,0 +1,210 @@
+[
+  {
+    "sentence": "<p>Une construction à usage d'XXX d'une superficie d'environ X m² de plain pied (ou édifiée sur X niveaux comprenant X appartements )  et une annexe d'environ X m² servant de garage située XXXXXXXX. <br></p><p>Un agrandissement d'une ouverture de type (baie vitrée, porte, fenêtre) en façade d'une dimension de x m par x m.</p>",
+    "tag_num": 1
+  },
+  {
+    "sentence": "L'article R421-9 du code de l'urbanisme soumet à déclaration préalable les constructions dont l'emprise au sol est supérieure à 5 m² et dont la hauteur est inférieure à 12 m et la surface de plancher intérieure à 20 m². Aucune déclaration préalable n'\u0092a été&nbsp; obtenue pour cette construction.",
+    "tag_num": 1
+  },
+  {
+    "sentence": "M. X ne respecte pas les dispositions du permis de construire n° XXXXXX accordé le 00/00/00. Les modifications substantielles concernant notamment la construction d\u0092'un X au lieu d\u0092'un X ont été opérées. Il se trouve donc en infraction avec les dispositions du code de l'urbanisme et de l'arrêté de permis de construire susvisé.",
+    "tag_num": 1
+  },
+  {
+    "sentence": "<p>Le changement de destination d'une construction à usage de X en X d'une \r\nsuperficie de X m² et l'ouverture de X fenêtres (X côtés Sud,&nbsp; X côté \r\nNord, X côté Est et X côté Ouest) d'une dimension approximative de&nbsp; X m \r\npar X&nbsp; m</p>",
+    "tag_num": 1
+  },
+  {
+    "sentence": "<p>La construction de X bâtis faisant office de -<span style=\"background-color: rgb(255, 255, 0);\">chenils, hangars, local technique, cuisine d'été .....</span>- de dimensions X m de long, sur X m de large soit une emprise au sol d'environ X m² avec une hauteur de X m.<br></p>",
+    "tag_num": 1
+  },
+  {
+    "sentence": "<p>X constructions d'une emprise respective de X m², X m² X m²..... servant de <span style=\"background-color: rgb(255, 255, 0);\">locaux techniques, hangars, abris pour les animaux etc..</span><br></p>",
+    "tag_num": 1
+  },
+  {
+    "sentence": "<p>Une construction en cours de rénovation d'une emprise au sol de X m² avec :</p><ul><li><u>Sur la façade Sud </u>: <span style=\"background-color: rgb(255, 255, 0);\">(citer les ouvertures avec leurs dimensions)</span></li><li><u>Sur la façade Ouest</u> : <span style=\"background-color: rgb(255, 255, 0);\">(citer les ouvertures avec leurs dimensions)</span></li><li><u>Sur la façade Nord</u> : <span style=\"background-color: rgb(255, 255, 0);\">(citer les ouvertures avec leurs dimensions)</span></li><li><u>Sur la façade Est</u> : <span style=\"background-color: rgb(255, 255, 0);\">(citer les ouvertures avec leurs dimensions)</span></li></ul><p>La hauteur du bâtiment est de X m au faîtage et de X m en bordure de tuile.<br></p>",
+    "tag_num": 1
+  },
+  {
+    "sentence": "Des travaux d'aménagement sur une construction existante non conforme au permis de construire n° xxxxxx délivré le xxxxxxx. Ces travaux consistent à l'agrandissement de la partie principale d'une surface de X m² et le non respect de l'aspect extérieur et des prospects.",
+    "tag_num": 2
+  },
+  {
+    "sentence": "La démolition d'une construction à usage de XX sans demander d'autorisation d'urbanisme.<br>",
+    "tag_num": 3
+  },
+  {
+    "sentence": "<p>Une clôture d'environ X m de long sur une  hauteur de 2 m, en parpaings (en XX), surmontée d'un grillage maillé d'une hauteur de X cm . </p>",
+    "tag_num": 4
+  },
+  {
+    "sentence": "Une clôture en grillage doublée sur X mètres de bardage métallique, d'une hauteur variant de X m à X m . Une clôture composée d'une rangée de parpaings avec grillage sur piquet en fer. Des brises-vue type canisse sont apposées sur le grillage. La clôture comprend un portail de X m sur X m (ou un portillon de Xm de large) pour permettre l'accès des voitures (ou piétons) à la parcelle.",
+    "tag_num": 4
+  },
+  {
+    "sentence": "L'abattage d'arbres sur une superficie d'environ x m² (ou ha) effectué sans autorisation est en infraction aux dispositions de l'article L. 421-4 du code de l'urbanisme. L'article R421-23 par. g) du code de l'urbanisme précise que les coupes et abattages d'arbres dans les bois, forêts ou parcs situés sur le territoire de communes où l'établissement d'un plan local d'urbanisme a été prescrit, ainsi que dans tout espace boisé classé en application de l'article L. 113-1  sont soumis à déclaration préalable.",
+    "tag_num": 5
+  },
+  {
+    "sentence": "La division foncière de la parcelle n° xxxxx d'une superficie de X m² en X lots de X m² chacun sans autorisation préalable\u0085... L'article L115-3 du code de l'urbanisme précise que dans les parties de communes nécessitant une protection particulière en raison de la qualité des sites, des milieux naturels et des paysages, le conseil municipal peut décider, par délibération motivée, de soumettre, à l'intérieur de zones qu'il délimite, à la déclaration préalable prévue par l'article L. 421-4, les divisions volontaires, en propriété ou en jouissance, d'une propriété foncière, par ventes ou locations simultanées ou successives qui ne sont pas soumises à un permis d'aménager. Par délibération en date du XXXX la commune a usé de cette prérogative et a décidé de soumettre à autorisation les divisions foncières en application de l'article L115-3 du code de l'urbanisme.",
+    "tag_num": 7
+  },
+  {
+    "sentence": "La réalisation d'affouillement des sols d'une superficie approximative de xxxx m² et d'une profondeur d'environ xxx m sans autorisation.",
+    "tag_num": 8
+  },
+  {
+    "sentence": "L'article R421-23 du code de l'urbanisme soumet à déclaration préalable tout travaux d'affouillement des sols dont la profondeur dépasserait 2 m et d'une superficie supérieure ou égale à 100 m². L'article R421-19 du code de l'urbanisme soumet à permis d'aménager tout travaux d'affouillement des sols dont la profondeur dépasserait 2 m et d'une superficie de 2 ha ou plus",
+    "tag_num": 8
+  },
+  {
+    "sentence": "Le seuil de profondeur maximale défini par le code de l'urbanisme ne doit pas être entendu comme une valeur moyenne mais comme une limite que les affouillements ne doivent jamais excéder pour être entrepris sans autorisation. L'importance de ces affouillements sur la parcelle  remet en cause sa destination à savoir une zone XXXXX.",
+    "tag_num": 8
+  },
+  {
+    "sentence": "La réalisation d'exhaussement des sols d'une superficie approximative de xxxx m² et d'une  hauteur d'environ xxx m sans autorisatio.",
+    "tag_num": 9
+  },
+  {
+    "sentence": "L'article R421-23 du code de l'urbanisme soumet à déclaration préalable tout travaux d'exhaussement de sols dont la hauteur dépasserait 2 m et d'une superficie d'au moins 100 m²\r\nConsidérant que l'article R421-19 du code de l'urbanisme soumet à permis d'aménager tout travaux d'exhaussement de sols dont la hauteur dépasserait 2 m et d'une superficie supérieure ou également à de 2 ha",
+    "tag_num": 9
+  },
+  {
+    "sentence": "Le seuil de hauteur maximale défini par le code de l'urbanisme ne doit pas être entendu comme une valeur moyenne mais comme une limite que les exhaussements ne doivent jamais excéder pour être entrepris sans autorisation. L'importance de ces exhaussements sur la parcelle  remet en cause sa destination à savoir une zone XXXXX.",
+    "tag_num": 9
+  },
+  {
+    "sentence": "La présence d'une construction édifiée sur une partie d'\u0092une unité foncière qui a fait l'\u0092objet d\u0092'une division sans demande préalable d'un permis de construire. L\u0092'article L442-2 du code de l\u0092'urbanisme précise que la demande de permis de construire tient lieu de déclaration préalable de lotissement dès lors que la demande indique que le terrain est issu d'\u0092une division.",
+    "tag_num": 10
+  },
+  {
+    "sentence": "Deux véhicules légers, immatriculés \u0085. 1 fourgon de couleur \u0085. immatriculé \u0085., 1 remorque équipée de mécanisme à moteur, une remorque PL, remplie de pièces mécaniques, Une voiture de marque \u0085 couleur \u0085. immatriculée \u0085.., un camping-car de  marque \u0085 couleur \u0085. immatriculé \u0085..,, un camion frigorifique aménagé en pièce habitable (couchage et douche/sanitaire) de  marque \u0085 couleur \u0085. immatriculé \u0085.., un chassis de remorque",
+    "tag_num": 14
+  },
+  {
+    "sentence": "<p>L'article R421-23 précise que doivent être précédés d'une déclaration préalable les aires de stationnement ouvertes au public, les dépôts de véhicules et les garages collectifs de caravanes lorsqu'ils sont susceptibles de contenir de dix à quarante-neuf unités. </p><p>Or, il est relevé sur la parcelle plus de 10 véhicules et caravanes.</p>",
+    "tag_num": 14
+  },
+  {
+    "sentence": "Une caravane de type xxxxx, de marque xxxxxxx, de couleur verte, d'une dimension d'environ x m de large par x m de long, immatriculée xxxxxxx, ayant gardé ses moyens de mobilité (roues et barre de traction),",
+    "tag_num": 19
+  },
+  {
+    "sentence": "L'installation d'une caravane pour une durée supérieure à trois mois par an doit faire l'objet d'une demande de déclaration préalable en application de l'article R421-23 d) du code de l'urbanisme et que ladite caravane est installée sur ce terrain depuis plus de trois mois comme le démontrent les photos jointes au présent procès-verbal (<span style=\"background-color: rgb(255, 255, 0);\">ou comme le démontrent les vues aériennes ci-jointes</span>)",
+    "tag_num": 19
+  },
+  {
+    "sentence": "La création d'un camping de x emplacements de 300 m² chacun non équipés de branchements électriques. Cet aménagement ne possède pas de point d'eau potable extérieur et de bloc sanitaire. Je note également l'absence de blocs sanitaires, d'équipements anti-incendie (bornes) et d'éclairage extérieur",
+    "tag_num": 20
+  },
+  {
+    "sentence": "L'article R421-19 du code de l'urbanisme soumet à permis d'aménager  la création d'un terrain de camping permettant l'accueil de plus de vingt personnes ou de plus de six hébergements de loisirs constitués de tentes, de caravanes, de résidences mobiles de loisirs ou d'habitations légères de loisirs",
+    "tag_num": 20
+  },
+  {
+    "sentence": "Une yourte de x m² de superficie pourvue d\u0092équipements intérieurs tels que des blocs cuisine et sanitaires. Un tuyau de poêle dépasse du toit de la yourte. Considérant que la yourte telle que décrite est assimilée à une habitation légère de loisirs",
+    "tag_num": 21
+  },
+  {
+    "sentence": "L'installation d'une résidence mobile de loisirs d'une dimension d'environ 3 m. de large par 7m de long, soit une superficie d'environ 21 m², de couleur blanche, avec l'adjonction d'une terrasse en bois d'environ 10 m² couverte faisant office de cuisine d'été. Cette structure dispose de ses roues d'origine ou cette structure est posé sur des blocs. Elle est installée à côté d'une construction et à 3 m. de la clôture mitoyenne avec la parcelle xxxx.",
+    "tag_num": 22
+  },
+  {
+    "sentence": "L'article R111-42 du code de l'urbanisme précise que les résidences mobiles de loisirs ne peuvent être installées que dans les parcs résidentiels de loisirs,les villages de vacances et les terrains de camping",
+    "tag_num": 22
+  },
+  {
+    "sentence": "La présence d\u0092une habitation légère de loisirs d\u0092une superficie d\u0092environ x m² (x m. de lange par x m. de long) de couleur xxx, installée sur une dalle en béton d\u0092environ x m². Une terrasse est attenante à la structure d\u0092une superficie d\u0092environ x m².",
+    "tag_num": 23
+  },
+  {
+    "sentence": "L'\u0092article R111-32 du code de l\u0092urbanisme précise que les habitations légères de loisirs sont soumises au droit commun des constructions lorsqu'\u0092elles sont implantées en dehors des emplacements prévus à cet effet.",
+    "tag_num": 23
+  },
+  {
+    "sentence": "La création d\u0092un parc résidentiel de loisirs exploités comprenant x habitations légères de loisirs, x résidences mobiles de loisirs et x caravanes.",
+    "tag_num": 24
+  },
+  {
+    "sentence": "La présence d'un camion toupie immatriculé xxx en activité ainsi qu'un véhicule de marque xxx immatriculé xxx stationné dans la parcelle. Sur place, malgré l'arrêté interruptif de travaux n° 123/2017 notifié le \u0085\u0085 par la police municipale, nous constatons pour la deuxième fois la présence d'ouvriers en train d'effectuer des travaux. Ces travaux ont été relevés une première fois par procès-verbal d'infraction à l'urbanisme n° XXXX/XXX adressé à M. Le procureur de la République du Tribunal de Perpignan le XXXXXX. Il s'agit de la construction d'une bâtisse d'une emprise au sol d'environ 150 m². A ce jour, les murs et le toit sont réalisés.",
+    "tag_num": 25
+  },
+  {
+    "sentence": "La commune est soumise au règlement national d'urbanisme et que seuls peuvent être autorisés en dehors des parties urbanisées de la commune\r\n(article L.111-4 du code de l'urbanisme)\r\n1° l'adaptation, le changement de destination, la réfection, l'extension des constructions existantes ou la construction de bâtiments nouveaux à usage d'habitation à l'intérieur du périmètre regroupant les bâtiments d'une ancienne exploitation agricole, dans le respect des traditions architecturales locales,\r\n2° Les constructions et installations nécessaires à l'exploitation agricole, à des équipements collectifs ... à la réalisation d'aires d'accueil ou de terrains de passage des gens du voyage, à la mise en valeur des ressources naturelles et à la réalisation d'opérations d'intérêt national,\r\n3° Les constructions et installations incompatibles avec le voisinage des zones habitées et l'extension mesurée des constructions et installations existantes ,\r\n4° Les constructions ou installations, sur délibération motivée du conseil municipal si celui-ci considère que l'intérêt de la commune, en particulier pour éviter une diminution de la population communale, le justifie \u0085.",
+    "tag_num": 26
+  },
+  {
+    "sentence": "La construction irrégulière est située en dehors des parties urbanisées de la commune et que sa destination  ne correspond pas aux constructions autorisées par l\u0092'article L111-4 du code de l'\u0092urbanisme.",
+    "tag_num": 26
+  },
+  {
+    "sentence": "La commune est dotée d'une carte communale qui délimite les secteurs où les constructions sont autorisées et les secteurs où les constructions ne sont pas admises, à l'exception de l'adaptation, du changement de destination, de la réfection ou de l'extension des constructions existantes ou des constructions et installations nécessaires à des équipements collectifs dès lors qu'elles ne sont pas incompatibles avec l'exercice d'une activité agricole, pastorale ou forestière sur le terrain sur lequel elles sont implantées et qu'elles ne portent pas atteinte à la sauvegarde des espaces naturels et des paysages, à l'exploitation agricole ou forestière et à la mise en valeur des ressources naturelles (article L161-4 du code de l'urbanisme).",
+    "tag_num": 27
+  },
+  {
+    "sentence": "La construction irrégulière est située en dehors des parties urbanisées de la commune et que sa destination ne correspond pas aux constructions autorisées par l\u0092article  L161-4 du code de l'urbanisme.",
+    "tag_num": 27
+  },
+  {
+    "sentence": "La parcelle est située en zone <span style=\"background-color: rgb(255, 255, 0);\">A </span>(<span style=\"background-color: rgb(255, 255, 0);\">agricole</span>) du plan local d'urbanisme approuvé le xxxx, modifié le&nbsp;xxxxx. La zone A est une zone à protéger en raison du potentiel agronomique, biologique ou économique des terres agricoles. Le règlement de la zone <span style=\"background-color: rgb(255, 255, 0);\">A </span>interdit en son article 1 «&nbsp;occupations et utilisations du sol interdites&nbsp;» toutes occupations ou utilisations de sols non liées aux activités permises à l'article A-2\u0085.",
+    "tag_num": 28
+  },
+  {
+    "sentence": "La parcelle est située en zone <span style=\"background-color: rgb(255, 255, 0);\">N </span>(<span style=\"background-color: rgb(255, 255, 0);\">Naturelle</span>) du plan local d'urbanisme approuvé le xxxx, modifié le&nbsp;xxxxx. La zone N est une zone à protéger. Le règlement de la zone N interdit en son article 1 «&nbsp;occupations et utilisations du sol interdites&nbsp;» toutes occupations ou utilisations de sols non liées aux activités permises à l'article N-2\u0085.",
+    "tag_num": 28
+  },
+  {
+    "sentence": "La parcelle est située en zone I aléa fort et zone d'écoulement majeur du plan de prévention des risques naturels prévisible approuvé le xxxxxx par arrêté préfectoral n° xxxxxxf complété par un porter à connaissance du préfet le XXXXX mis en révision le XXXXX par arrêté préfectoral n° xxxxx et que dans ce secteur les hauteurs d\u0092eau sont comprises entre x m et x m",
+    "tag_num": 29
+  },
+  {
+    "sentence": "Le règlement du <span style=\"background-color: rgb(255, 255, 0);\">PPRNP </span>en son article 1 interdit&nbsp;toute occupation du sol favorisant le développement de l'hébergement etc. , le dépôt divers de véhicules et caravanes, les garages et abris divers&nbsp;;Considérant que le règlement du plan de prévention des risques fixe une côte de référence à + 1,20 m au au-dessus du terrain naturel pour les projets en zone d'aléa moyen et fixe la liste des utilisation et occupations des sols autorisées sous conditions",
+    "tag_num": 29
+  },
+  {
+    "sentence": "<p>Par ailleurs, la commune de <span style=\"background-color: rgb(255, 255, 0);\">xxxxxx </span>est dotée d'un plan de prévention\r\n des risques d'inondation (PPRI) approuvé le <span style=\"background-color: rgb(255, 255, 0);\">xxxxxx </span>qui classe \r\nla parcelle pour partie en zone XXX, secteur inondable soumis à un\r\n aléa (faible, modéré ou fort) pour la submersion marine et le débordement fluvial où les \r\nenjeux sont (faible, modéré ou fort) et pour partie en zone rouge XXX, \r\nsecteur inondable d'aléa (faible, modéré ou fort) et à enjeux (faible, modéré ou fort).</p>",
+    "tag_num": 29
+  },
+  {
+    "sentence": "La pratique du camping et le stationnement de caravanes en dehors des terrains aménagés à cet effet est interdite dans certaines zones de la commune par l'arrêté municipal du xx/xx/xxxx, cette pratique étant de nature à porter atteinte à la salubrité, à la sécurité ou à la tranquillité publiques, aux paysages naturels ou urbains, à la conservation des perspectives monumentales, à la . conservation des milieux naturels ou à l'exercice des activités agricoles et forestières.",
+    "tag_num": 30
+  },
+  {
+    "sentence": "Cette interdiction a été portée à la connaissance du public par affichage en mairie et par apposition de panneaux aux points d'accès habituels aux zones visées par cette interdiction.",
+    "tag_num": 30
+  },
+  {
+    "sentence": "Les sites inscrits ont pour objectif la conservation ou la préservation d'espaces naturels ou bâtis présentant un intérêt certain au regard des critères prévus par la loi (artistique, historique, scientifique, légendaire ou pittoresque). Considérant que le site inscrit constitue une garantie minimale de protection en soumettant tout changement d'aspect du site à déclaration préalable et qu'il a pour conséquence que tout propriétaire ou occupant doit informer l'administration quatre mois à l'avance de leur intention de procéder à des travaux autres que ceux qui correspondent à l'exploitation courante des fonds ruraux et à l'entretien normal des constructions.",
+    "tag_num": 31
+  },
+  {
+    "sentence": "Les sites classés ont pour objectif la conservation ou la préservation d'espaces naturels ou bâtis présentant un intérêt certain au regard des critères prévus par la loi (artistique, historique, scientifique, légendaire ou pittoresque). Considérant que le site classé  est une protection forte qui correspond à la volonté du strict maintien en l'état du site désigné qui n'exclut ni la gestion ni la valorisation du site.Il a pour conséquence que tout propriétaire ou occupant est tenu à la délivrance d'une autorisation pour toute modification de l'aspect d'un site (travaux d'urbanisme, remembrement, abattage d'arbres...).",
+    "tag_num": 32
+  },
+  {
+    "sentence": "Les espaces boisés classés ont pour objectif la protection ou la création de boisements ou d'espaces verts, particulièrement en milieu urbain ou péri-urbain. Ils concernent les bois, forêts et parcs, qu'ils relèvent ou non du régime forestier, qu'ils soient enclos ou non et attenants ou non à des habitations. Ce classement peut également s'appliquer à des arbres isolés, des haies ou réseaux de haies, des plantations d'alignements. Le classement en espaces boisés empêche les changements d'affectation ou les modes d'occupation du sol de nature à compromettre la conservation, la protection ou la création des boisements.",
+    "tag_num": 33
+  },
+  {
+    "sentence": "Les Espaces Naturels Sensibles (ENS) ont pour objectif de préserver la qualité des sites, des paysages, des milieux naturels et des champs d'expansion des crues et d'assurer la sauvegarde des habitats naturels, mais également d'aménager ces espaces pour être ouverts au public, sauf exception justifiée par la fragilité du milieu naturel",
+    "tag_num": 34
+  },
+  {
+    "sentence": "Les réserves naturelles sont des territoires protégés par une réglementation ministérielle dans l\u0092objectif de conserver leurs richesses naturelles. L\u0092article L332-9 du code de l\u0092environnement précise que les territoires classés en réserve naturelle ne peuvent être ni détruits ni modifiés dans leur état ou dans leur aspect, sauf autorisation spéciale du conseil régional pour les réserves naturelles régionales, ou du représentant de l'Etat ou du ministre chargé de la protection de la nature pour les réserves naturelles nationales. Considérant que la construction réalisée sans autorisation est située dans le périmètre de la réserve naturelle de XXXXXX et qu\u0092en l\u0092état un permis de construire aurait dû être demandé.",
+    "tag_num": 37
+  },
+  {
+    "sentence": "La commune est soumise aux dispositions de la loi littoral qui constitue le principal cadre législatif spécifiquement destiné à la protection du littoral. Ces dispositions sont applicables à toute personne, exécution de tous travaux, constructions, installations de caravanes et par conséquent structures de loisirs. L'implantation de résidences mobiles de loisirs ou/et d'\u0092habitations légères de loisirs est soumise au principe d'extension de l'urbanisation en continuité de l'urbanisation existante et ne peut, en tout état de cause, être  autorisée dans ce territoire communal",
+    "tag_num": 40
+  },
+  {
+    "sentence": "La commune est soumise aux dispositions applicables de la loi Montagne qui constitue le principal cadre législatif spécifiquement destiné à la protection des territoires de montagne.\nCes dispositions sont applicables à toute personne publique ou privée pour l'exécution de tous travaux, constructions, défrichements, plantations, aménagements, installations et travaux divers, la création de lotissements, l'ouverture de terrains de camping ou de stationnement de caravanes, l'établissement de clôtures, la réalisation de remontées mécaniques et l'aménagement de pistes, l'ouverture des carrières, la recherche et l'exploitation des minerais et les installations classées pour la protection de l'environnement.(L122-2 du code de l'urbanisme)\nLa loi montagne impose le principe d'extension de l'urbanisation en continuité de l'urbanisation existante c'est-à-dire que l'urbanisation est réalisée en continuité avec les villages et hameaux, sous réserve de l'adaptation, du changement de destination, de la réfection ou de l'extension limitée des constructions existantes, ainsi que de la construction d'annexes, de taille limitée, à ces constructions, et de la réalisation d'installations ou d'équipements publics incompatibles avec le voisinage des zones habitées. L'implantation de structures de loisirs est soumise à ce principe et ne peut en tout état de cause être autorisée dans ce territoire communal\n",
+    "tag_num": 41
+  },
+  {
+    "sentence": "Nous avons également constaté sur la parcelle ce qui suit : une table et des chaises, un groupe électrogène, des batteries, des bouteilles de gaz, divers outils, des panneaux photovoltaïque,  des tonnes à eau\u0085.. un dépôt d'environ 50 pneus , des bidons,  un barbecue, un jacuzzi, des bancs, des tas de bois, une bétonnière, dépôt de matériaux divers, stockage de bois de chauffage sur palette d'environ 8 m³, des palettes en bois (35 m de longueur sur 1,70 m de hauteur, soit environ 70 palettes), un puits maçonné en pierre diamètre 2m hauteur 0,6 m, des gabions (L 3,4 m, l 0,40 m, h 0,7 m)",
+    "tag_num": 47
+  }
+]

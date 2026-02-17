@@ -33,6 +33,7 @@ use Lucca\Bundle\FolderBundle\Service\NatinfService;
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\AdherentBundle\Manager\AdherentManager;
 use Lucca\Bundle\FolderBundle\Service\TagService;
+use Lucca\Bundle\FolderBundle\Service\ProposalService;
 
 /**
  * Class DepartmentController
@@ -53,6 +54,7 @@ class DepartmentController extends AbstractController
         private readonly NatinfService     $natinfService,
         private readonly ModelService      $modelService,
         private readonly TagService        $tagService,
+        private readonly ProposalService   $proposalService,
         private readonly AdherentManager   $adherentManager,
     )
     {
@@ -116,11 +118,14 @@ class DepartmentController extends AbstractController
             // Towns CSV parsing
             $this->departmentService->createOrUpdateTownsFromFile($uploadedFile, $department);
 
+            // Tag creation from JSON data file (need to be created before proposals and natinfs)
+            $this->tagService->createForDepartment($department);
+
+            // Proposal creation from JSON data file
+            $this->proposalService->createForDepartment($department);
+
             // Natinf creation from JSON data file
             $this->natinfService->createForDepartment($department);
-
-            // Tag creation from JSON data file
-            $this->tagService->createForDepartment($department);
 
             // Checklist creation from JSON data file
             $this->checklistService->createForDepartment($department);

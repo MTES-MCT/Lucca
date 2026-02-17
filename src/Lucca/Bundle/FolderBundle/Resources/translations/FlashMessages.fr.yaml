@@ -57,6 +57,10 @@ flash:
         data:
             notFound: "Le fichier de données natinfs n'a pas été trouvé"
             invalidJSON: "Le fichier de données natinfs n'est pas un JSON valide"
+    proposal:
+        data:
+            notFound: "Le fichier de données natinfs n'a pas été trouvé"
+            invalidJSON: "Le fichier de données natinfs n'est pas un JSON valide"
 
     folderSigned:
         createdSuccessfully: "Le PV signé a bien été ajouté."

@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
-use Lucca\Bundle\FolderBundle\Entity\Natinf;
 
 readonly class TagService
 {
