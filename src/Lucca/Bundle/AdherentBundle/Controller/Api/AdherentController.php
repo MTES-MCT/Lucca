@@ -44,19 +44,19 @@ class AdherentController extends AbstractController
             ->searchAdherentsForDatatable($params);
 
         // format final result
-        $result['data'] = array_map(function($item) {
+        $result['data'] = array_map(function(Adherent $adherent) {
             return [
-                'officialName' => trim(($item['firstname'] ?? '') . ' ' . ($item['name'] ?? '')),
-                'email'        => $item['user']['email'] ?? '-',
-                'phone'        => $item['phone'] ?? $item['mobile'] ?? '-',
-                'location'     => $item['service']['name'] ?? $item['intercommunal']['name'] ?? $item['town']['name'] ?? '-',
-                'address'      => implode(' ', [$item['address'] ?? '', $item['zipCode'] ?? '', $item['city'] ?? '']),
-                'username'     => $item['user']['username'] ?? '-',
-                'groups'       => !empty($item['user']['groups']) ? implode('<br>', array_column($item['user']['groups'], 'name')) : '',
-                'logo'         => $this->booleanExtension->booleanFilter(isset($item['logo'])),
-                'actions'      => $this->renderView('@LuccaAdherent/Adherent/_actions.html.twig', [
-                    'id' => $item['id'],
-                    'enabled' => $item['enabled']
+                'officialName' => $adherent->getOfficialName(),
+                'email' => $adherent->getUser()->getEmail(),
+                'phone' => $adherent->getPhone() ?? '-',
+                'location' => $adherent->getService()?->getName() ?? $adherent->getIntercommunal()?->getName() ?? $adherent->getTown()?->getName() ?? '-',
+                'address' => $adherent->getOfficialAddressInline(),
+                'username' => $adherent->getUser()->getUsername(),
+                'groups' => implode('<br>', array_map(fn($g) => $g->getName(), $adherent->getUser()->getGroups()->toArray())),
+                'logo' => $this->booleanExtension->booleanFilter($adherent->getLogo()),
+                'actions' => $this->renderView('@LuccaAdherent/Adherent/_actions.html.twig', [
+                    'id' => $adherent->getId(),
+                    'enabled' => $adherent->isEnabled()
                 ])
             ];
         }, $result['data']);

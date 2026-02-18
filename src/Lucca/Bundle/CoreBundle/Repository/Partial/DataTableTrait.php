@@ -11,6 +11,9 @@ trait DataTableTrait
     {
         $rootAlias = $qb->getRootAliases()[0];
 
+        // Select only distinct entities to avoid duplicate rows
+        $qb->select('DISTINCT ' . $rootAlias);
+
         // 1. Total Count (Before any search filters)
         $countQb = clone $qb;
         $countQb->select("COUNT(DISTINCT $rootAlias.id)");
@@ -22,7 +25,7 @@ trait DataTableTrait
             $orX = $qb->expr()->orX();
             foreach ($params['columns'] ?? [] as $i => $col) {
                 if ($col['searchable'] === 'true' && !empty($col['data']) && $col['data'] !== 'actions') {
-                    $fieldName = strpos($col['data'], '.') === false ? "$rootAlias.{$col['data']}" : $col['data'];
+                    $fieldName = !str_contains($col['data'], '.') ? "$rootAlias.{$col['data']}" : $col['data'];
                     $orX->add($qb->expr()->like($fieldName, ":global_search_$i"));
                     $qb->setParameter("global_search_$i", "%$searchValue%");
                 }
@@ -36,7 +39,7 @@ trait DataTableTrait
 
             // If an individual column search is provided
             if (!empty($colSearchValue) && $col['searchable'] === 'true' && !empty($col['data'])) {
-                $fieldName = strpos($col['data'], '.') === false ? "$rootAlias.{$col['data']}" : $col['data'];
+                $fieldName = !str_contains($col['data'], '.') ? "$rootAlias.{$col['data']}" : $col['data'];
 
                 // We use andWhere here because column filters are cumulative
                 $qb->andWhere($qb->expr()->like($fieldName, ":col_search_$i"));
@@ -51,7 +54,7 @@ trait DataTableTrait
             $dir = (isset($params['order'][0]['dir']) && strtolower($params['order'][0]['dir']) === 'desc') ? 'DESC' : 'ASC';
 
             if ($colName && $colName !== 'actions') {
-                $fieldName = strpos($colName, '.') === false ? "$rootAlias.$colName" : $colName;
+                $fieldName = !str_contains($colName, '.') ? "$rootAlias.$colName" : $colName;
                 $qb->orderBy($fieldName, $dir);
             }
         }
@@ -68,7 +71,7 @@ trait DataTableTrait
             'draw'            => (int)($params['draw'] ?? 1),
             'recordsTotal'    => $recordsTotal,
             'recordsFiltered' => count($paginator),
-            'data'            => $qb->getQuery()->getArrayResult(),
+            'data'            => $qb->getQuery()->getResult(),
         ];
     }
 }
