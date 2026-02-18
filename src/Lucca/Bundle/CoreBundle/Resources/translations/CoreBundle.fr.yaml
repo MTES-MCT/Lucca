@@ -56,6 +56,8 @@ label:
     setting: "Paramètres d'application"
     department: "Département"
     filetype: "Parcourir"
+    datatable:
+        search: "Rechercher"
 
     filters:
         minutesSpotted: "Signalement"
