@@ -26,7 +26,7 @@ lucca_minute_bundle_dashboard:
 lucca_minute_bundle_api:
     resource: "@LuccaFolderBundle/Controller/Api"
     type:     attribute
-    prefix:   /{dep_code}/back-office
+    prefix:   /{dep_code}/api
 
 # LuccaFolderBundle Routing - By Folder
 lucca_minute_bundle_by_folder:

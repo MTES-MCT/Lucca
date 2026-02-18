@@ -20,4 +20,4 @@ lucca_adherent_bundle_profile:
 lucca_adherent_bundle_api:
     resource: "@LuccaAdherentBundle/Controller/Api"
     type:     attribute
-    prefix:   /{dep_code}/back-office
+    prefix:   /{dep_code}/api
