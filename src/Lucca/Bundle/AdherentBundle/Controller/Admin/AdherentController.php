@@ -44,11 +44,7 @@ class AdherentController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function indexAction(): Response
     {
-        $adherents = $this->em->getRepository(Adherent::class)->findAll();
-
-        return $this->render('@LuccaAdherent/Adherent/index.html.twig', [
-            'adherents' => $adherents
-        ]);
+        return $this->render('@LuccaAdherent/Adherent/index.html.twig');
     }
 
     /**
