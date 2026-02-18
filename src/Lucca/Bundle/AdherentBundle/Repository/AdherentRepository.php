@@ -17,9 +17,11 @@ use Doctrine\ORM\{NonUniqueResultException, NoResultException, QueryBuilder};
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
 use Lucca\Bundle\UserBundle\Entity\User;
+use Lucca\Bundle\CoreBundle\Repository\Partial\DataTableTrait;
 
 class AdherentRepository extends ServiceEntityRepository
 {
+    use DataTableTrait;
     public function __construct(
         ManagerRegistry                         $mr,
         private readonly UserDepartmentResolver $userDepartmentResolver,
@@ -75,6 +77,123 @@ class AdherentRepository extends ServiceEntityRepository
             ->setParameter(':q_state', $enabled);
 
         return (int)$qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * Custom server-side processing for Adherents DataTable.
+     * Handles virtual fields (officialName, location) for both global and individual column searching.
+     *
+     * @param array $params Raw DataTables request parameters
+     * @return array Formatted results for DataTables
+     */
+    public function searchAdherentsForDatatable(array $params): array
+    {
+        // Initialize QueryBuilder with base joins
+        $qb = $this->queryAdherent();
+        $qb->leftJoin('adherent.logo', 'logo')->addSelect('logo');
+
+        $rootAlias = $qb->getRootAliases()[0];
+
+        // --- 1. CUSTOM ORDERING INTERCEPTION ---
+        // Manually handle sorting for virtual or joined columns
+        if (isset($params['order'][0])) {
+            $colIndex = $params['order'][0]['column'];
+            $colName = $params['columns'][$colIndex]['data'];
+            $dir = $params['order'][0]['dir'];
+
+            $virtualColumns = ['officialName', 'location', 'email', 'username', 'groups', 'actions'];
+
+            if (in_array($colName, $virtualColumns)) {
+                switch ($colName) {
+                    case 'officialName':
+                        $qb->orderBy("$rootAlias.name", $dir)->addOrderBy("$rootAlias.firstname", $dir);
+                        break;
+                    case 'location':
+                        $qb->orderBy("town.name", $dir);
+                        break;
+                    case 'email':
+                        $qb->orderBy("user.email", $dir);
+                        break;
+                    case 'username':
+                        $qb->orderBy("user.username", $dir);
+                        break;
+                    case 'groups':
+                        $qb->orderBy("groups.name", $dir);
+                        break;
+                    case 'actions':
+                        $qb->orderBy("$rootAlias.enabled", $dir);
+                        break;
+                }
+                // Prevent the Trait from attempting to sort again
+                unset($params['order']);
+            }
+        }
+
+        // --- 2. INDIVIDUAL COLUMN SEARCH INTERCEPTION ---
+        // Loop through columns to catch specific searches from header inputs
+        foreach ($params['columns'] as $key => $col) {
+            $colSearch = $col['search']['value'] ?? null;
+
+            if (!empty($colSearch)) {
+                $colName = $col['data'];
+
+                // Handle virtual fields specifically for individual column filtering
+                if (in_array($colName, ['officialName', 'location', 'email', 'groups', 'username'])) {
+                    if ($colName === 'officialName') {
+                        $qb->andWhere($qb->expr()->orX(
+                            $qb->expr()->like("$rootAlias.firstname", ":col_search_$key"),
+                            $qb->expr()->like("$rootAlias.name", ":col_search_$key")
+                        ));
+                    } elseif ($colName === 'location') {
+                        $qb->andWhere($qb->expr()->orX(
+                            $qb->expr()->like("service.name", ":col_search_$key"),
+                            $qb->expr()->like("intercommunal.name", ":col_search_$key"),
+                            $qb->expr()->like("town.name", ":col_search_$key")
+                        ));
+                    } elseif ($colName === 'email') {
+                        $qb->andWhere($qb->expr()->like("user.email", ":col_search_$key"));
+                    } elseif ($colName === 'groups') {
+                        $qb->andWhere($qb->expr()->like("groups.name", ":col_search_$key"));
+                    } elseif ($colName === 'username') {
+                        $qb->andWhere($qb->expr()->like("user.username", ":col_search_$key"));
+                    }
+
+                    $qb->setParameter("col_search_$key", "%$colSearch%");
+
+                    // CRITICAL: Clear the search value for this column so the Trait ignores it
+                    $params['columns'][$key]['search']['value'] = '';
+                }
+            }
+        }
+
+        // --- 3. GLOBAL SEARCH INTERCEPTION ---
+        $searchValue = $params['search']['value'] ?? null;
+
+        if (!empty($searchValue)) {
+            // Apply global search across all relevant fields (including virtual/joined ones)
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->like("$rootAlias.firstname", ":g_search"),
+                    $qb->expr()->like("$rootAlias.name", ":g_search"),
+                    $qb->expr()->like("$rootAlias.phone", ":g_search"),
+                    $qb->expr()->like("$rootAlias.city", ":g_search"),
+                    $qb->expr()->like("$rootAlias.address", ":g_search"),
+                    $qb->expr()->like("$rootAlias.zipcode", ":g_search"),
+                    $qb->expr()->like("service.name", ":g_search"),
+                    $qb->expr()->like("intercommunal.name", ":g_search"),
+                    $qb->expr()->like("town.name", ":g_search"),
+                    $qb->expr()->like("user.username", ":g_search"),
+                    $qb->expr()->like("user.email", ":g_search"),
+                    $qb->expr()->like("groups.name", ":g_search")
+                )
+            )->setParameter('g_search', '%' . $searchValue . '%');
+
+            // Clear global search so the Trait doesn't conflict with our custom logic
+            $params['search']['value'] = '';
+        }
+
+        // Delegate pagination and final execution to the Generic Trait
+        return $this->findForDatatable($qb, $params);
     }
 
     /*******************************************************************************************/
