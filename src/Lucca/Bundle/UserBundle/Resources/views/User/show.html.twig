@@ -9,74 +9,138 @@
 
 
 {% block lucca_panels %}
+    <div class="row">
+        {#- - Panel - main - -#}
+        <div class="col-6">
 
-    {#-- Panel - main --#}
-    <div class="col-6">
+            <div class="card card-default">
+                <div class="card-header">
+                    {{ 'title.show'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ user.name }}</b>
+                </div>
 
-        <div class="card card-default">
-            <div class="card-header">
-                {{ 'title.show'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ user.name }}</b>
+                <div class="card-wrapper">
+                    <div class="card-body">
+
+                        <div class="col-12">
+                            <table class="table table-striped table-hover">
+                                <tbody>
+                                <tr>
+                                    <th><i class="fa fa-user"></i> {{ 'label.username'|trans }}</th>
+                                    <td>{{ user.username }}</td>
+                                </tr>
+                                <tr>
+                                    <th><i class="fa fa-envelope"></i> {{ 'label.email'|trans }}</th>
+                                    <td><a href="mailto:{{ user.email }}"> {{ user.email }}</a></td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.name'|trans }}</th>
+                                    <td>{{ user.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.groups'|trans }}</th>
+                                    <td>
+                                        {% for group in user.groups %}
+                                            {{ group.name }}
+                                            {% if not loop.last %}<br>{% endif %}
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.enabled'|trans }}</th>
+                                    <td>{% if user.enabled %}<i class="fa fa-check"></i>{% else %}<i
+                                            class="fas fa-times"></i>{% endif %} </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'label.lastLogin'|trans }}</th>
+                                    <td>{% if user.lastLogin %}{{ user.lastLogin|date('d/m/Y h:i:s') }}{% endif %}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-12">
+                            <a class="btn btn-secondary btn-lg" href="{{ path('lucca_user_index') }}"
+                               title="{{ 'link.back'|trans }}"><i class="fa fa-reply"></i></a>
+
+                            <a class="btn btn-warning btn-lg"
+                               href="{{ path('lucca_user_edit', { 'id': user.id }) }}"
+                               title="{{ 'link.edit'|trans }}"><i class="fas fa-pencil-alt"></i></a>
+
+                            <a class="btn btn-danger btn-lg pull-right" data-toggle="modal"
+                               data-target=".delWin" title="{{ 'link.delete'|trans }}">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
             </div>
+        </div>
+        {#- - End Panel - main - -#}
 
-            <div class="card-wrapper">
-                <div class="card-body">
+        {#- - Panel - Adhérents - -#}
+        <div class="col-6">
+            <div class="card card-default">
+                <div class="card-header">
+                    <i class="fa fa-users"></i> {{ 'label.adherents'|trans([], 'AdherentBundle') }}
+                </div>
 
-                    <div class="col-12">
-                        <table class="table table-striped table-hover">
-                            <tbody>
-                            <tr>
-                                <th><i class="fa fa-user"></i> {{ 'label.username'|trans }}</th>
-                                <td>{{ user.username }}</td>
-                            </tr>
-                            <tr>
-                                <th><i class="fa fa-envelope"></i> {{ 'label.email'|trans }}</th>
-                                <td><a href="mailto:{{ user.email }}"> {{ user.email }}</a></td>
-                            </tr>
-                            <tr>
-                                <th>{{ 'label.name'|trans }}</th>
-                                <td>{{ user.name }}</td>
-                            </tr>
-                            <tr>
-                                <th>{{ 'label.groups'|trans }}</th>
-                                <td>
-                                    {% for group in user.groups %}
-                                        {{ group.name }}
-                                        {% if not loop.last %}<br>{% endif %}
+                <div class="card-wrapper">
+                    <div class="card-body">
+                        {% if user.adherents is not empty %}
+                            <div class="col-12">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>{{ 'label.name'|trans([], 'AdherentBundle') }}</th>
+                                        <th>{{ 'label.department'|trans([], 'DepartmentBundle') }}</th>
+                                        <th>{{ 'label.function'|trans([], 'AdherentBundle') }}</th>
+                                        <th>{{ 'label.actions'|trans([], 'AdherentBundle') }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for adherent in user.adherents %}
+                                        <tr>
+                                            <td>{{ adherent.firstname }} {{ adherent.name }}</td>
+                                            <td>
+                                                {% if adherent.department %}
+                                                    <span class="badge badge-info">{{ adherent.department.formLabel }}</span>
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ adherent.function|trans([], 'AdherentBundle') }}</td>
+                                            <td>
+                                                {% if adherent.enabled %}
+                                                    <a href="{{ path('lucca_adherent_disable', { 'id': adherent.id }) }}"
+                                                       class="btn btn-info btn-sm"
+                                                       title="{{ 'link.adherent.disable'|trans({}, 'AdherentBundle') }}">
+                                                        <i class="fa fa-toggle-on"></i>
+                                                    </a>
+                                                {% else %}
+                                                    <a href="{{ path('lucca_adherent_enable', { 'id': adherent.id }) }}"
+                                                       class="btn btn-danger btn-sm"
+                                                       title="{{ 'link.adherent.enable'|trans({}, 'AdherentBundle') }}">
+                                                        <i class="fa fa-toggle-off"></i>
+                                                    </a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
                                     {% endfor %}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>{{ 'label.enabled'|trans }}</th>
-                                <td>{% if user.enabled %}<i class="fa fa-check"></i>{% else %}<i
-                                        class="fas fa-times"></i>{% endif %} </td>
-                            </tr>
-                            <tr>
-                                <th>{{ 'label.lastLogin'|trans }}</th>
-                                <td>{% if user.lastLogin %}{{ user.lastLogin|date('d/m/Y h:i:s') }}{% endif %}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info">
+                                {{ 'text.noAdherentsLink'|trans }}
+                            </div>
+                        {% endif %}
                     </div>
-
-                    <div class="col-12">
-                        <a class="btn btn-secondary btn-lg" href="{{ path('lucca_user_index') }}"
-                           title="{{ 'link.back'|trans }}"><i class="fa fa-reply"></i></a>
-
-                        <a class="btn btn-warning btn-lg"
-                           href="{{ path('lucca_user_edit', { 'id': user.id }) }}"
-                           title="{{ 'link.edit'|trans }}"><i class="fas fa-pencil-alt"></i></a>
-
-                        <a class="btn btn-danger btn-lg pull-right" data-toggle="modal"
-                           data-target=".delWin" title="{{ 'link.delete'|trans }}">
-                            <i class="fas fa-times"></i>
-                        </a>
-                    </div>
-
                 </div>
             </div>
         </div>
     </div>
-    {#-- End Panel - main --#}
+    {#- - End Panel - Adhérents - -#}
 {% endblock lucca_panels %}
 
 {% block lucca_modal %}
