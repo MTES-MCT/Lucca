@@ -11,6 +11,7 @@ label:
     showInHomePage: "Afficher sur le portail d’accueil"
     lastSyncSetting: 'Dernière synchronisation des paramètres'
     downloadFileExample: "Télécharger le fichier d'exemple"
+    departments: 'Départements'
 link:
     department:
         show: 'Voir le département'

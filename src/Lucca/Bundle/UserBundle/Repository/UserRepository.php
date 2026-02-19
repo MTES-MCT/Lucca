@@ -17,9 +17,12 @@ use Symfony\Component\Security\Core\User\{PasswordUpgraderInterface, PasswordAut
 
 use Lucca\Bundle\CoreBundle\Repository\LuccaRepository;
 use Lucca\Bundle\UserBundle\Entity\User;
+use Lucca\Bundle\CoreBundle\Repository\Partial\DataTableTrait;
 
 class UserRepository extends LuccaRepository implements PasswordUpgraderInterface, UserLoaderInterface
 {
+    use DataTableTrait;
+
     /**
      * Find User who can authenticated
      * By username or email
@@ -94,6 +97,56 @@ class UserRepository extends LuccaRepository implements PasswordUpgraderInterfac
 
             return null;
         }
+    }
+
+    /**
+     * Custom datatable search for Users with Adherent Departments
+     */
+    public function searchUsersForDatatable(array $params): array
+    {
+        $qb = $this->queryUser()
+            // Important: Join Adherents and their Departments
+            ->leftJoin('user.adherents', 'adherents')->addSelect('adherents')
+            ->leftJoin('adherents.department', 'dept')->addSelect('dept');
+
+        $rootAlias = $qb->getRootAliases()[0];
+
+        // --- 1. ORDERING ---
+        if (isset($params['order'][0])) {
+            $colIndex = $params['order'][0]['column'];
+            $colName = $params['columns'][$colIndex]['data'];
+            $dir = $params['order'][0]['dir'];
+
+            // Handling virtual or joined columns
+            if (in_array($colName, ['groups', 'departments', 'actions', 'enabled'])) {
+                if ($colName === 'departments') {
+                    $qb->orderBy("dept.name", $dir);
+                } elseif ($colName === 'groups') {
+                    $qb->orderBy("groups.name", $dir);
+                } elseif ($colName === 'actions' || $colName === 'enabled') {
+                    $qb->orderBy("$rootAlias.enabled", $dir);
+                }
+                unset($params['order']);
+            }
+        }
+
+        // --- 2. SEARCH ---
+        $searchValue = $params['search']['value'] ?? null;
+        if (!empty($searchValue)) {
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->like("$rootAlias.username", ":g_search"),
+                    $qb->expr()->like("$rootAlias.email", ":g_search"),
+                    $qb->expr()->like("$rootAlias.name", ":g_search"),
+                    $qb->expr()->like("dept.name", ":g_search"),
+                    $qb->expr()->like("groups.name", ":g_search")
+                )
+            )->setParameter('g_search', '%' . $searchValue . '%');
+
+            $params['search']['value'] = '';
+        }
+
+        return $this->findForDatatable($qb, $params);
     }
 
     /*******************************************************************************************/

@@ -39,11 +39,7 @@ class UserController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function indexAction(): Response
     {
-        $users = $this->em->getRepository(User::class)->findAll();
-
-        return $this->render('@LuccaUser/User/index.html.twig', [
-            'users' => $users
-        ]);
+        return $this->render('@LuccaUser/User/index.html.twig');
     }
 
     /**
