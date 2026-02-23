@@ -2,72 +2,114 @@
 
 ![Lucca logo](public/assets/logo/lucca-color.png)
 
-A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework, with full HTTP/2, HTTP/3 and HTTPS support.
+Application d'assistance a la cabanisation et autres infractions d'urbanisme.
+
+**Stack** : Symfony 7.4 / PHP 8.4 / MariaDB 11.8 / Caddy 2
 
 ## Architecture & DevOps
 
-Lucca uses a containerized architecture based on three main services:
-* **PHP (php-fpm)**: The Symfony core (PHP 8.4) including Composer and wkhtmltopdf.
-* **Caddy**: A modern web server acting as a reverse proxy and managing HTTPS.
-* **Database**: MariaDB server (version 11.8.1).
+Lucca utilise une architecture conteneurisee basee sur trois services principaux :
+* **PHP (php-fpm)** : Le coeur Symfony (PHP 8.4) incluant Composer et wkhtmltopdf.
+* **Caddy** : Serveur web moderne faisant office de reverse proxy et gerant le HTTPS.
+* **Database** : Serveur MariaDB (version 11.8.1).
 
-### Environment Configuration
-The project relies on a hierarchy of `.env` files:
-* **.env**: Default parameters (Host, DB, Storage paths in `/srv/docs/`).
-* **.env.dev / .env.prod**: Environment-specific settings.
-* **.env.local**: Local overrides (**non-versioned**), used for secrets like API keys and passwords.
+### Configuration de l'environnement
+Le projet repose sur une hierarchie de fichiers `.env` :
+* **.env** : Parametres par defaut (Host, DB, chemins de stockage dans `/srv/docs/`).
+* **.env.dev / .env.prod** : Parametres specifiques a l'environnement.
+* **.env.local** : Surcharges locales (**non versionne**), utilise pour les secrets comme les cles API et mots de passe.
 
-## Getting Started - Local Dev
+## Demarrage rapide (Docker)
 
-1. Run `docker-compose up -d`.
-2. Run `docker exec -it lucca_php bash`.
-    1. Run `COMPOSER_MEMORY_LIMIT=-1 composer install`.
-    2. Run `php bin/console fos:js-routing:dump --format=json --target=assets/routes.json`.
-    3. Run `php bin/console asset-map:compile`.
-    4. Run `php bin/console lucca:init:media`.
-    5. Run `php bin/console lucca:init:department`.
-    6. Run `php bin/console doctrine:migrations:migrate`.
-3. Create a new user and a new adherent in the database.
-4. Add `lucca.local` to your OS host file pointing to `127.0.0.1`.
-5. Open `https://localhost:8027` (Port defined in the `docker-compose.override.yml`).
+Prerequis : [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-### Infrastructure Nuances (Legacy)
-The project contains specific references to the **Numeric Wave** infrastructure:
-* **Network**: The project uses an external network named `nw-lan-dev`. If it does not exist, create it: `docker network create nw-lan-dev`.
-* **Volumes**: A mount point to `../lucca-v2.doc` is present in `docker-compose.yml` for media storage.
-* **Ports**: In development, MariaDB is exposed on port `33066`.
+```bash
+make install
+```
 
-## Launch in Production
+C'est tout. Ajoutez `127.0.0.1 lucca.local` dans votre `/etc/hosts`, puis accedez a **https://lucca.local**.
 
-To launch the project in production, use the specific configuration file:
+Credentials : `superadmin` / `superadmin`
 
-1. Define your environment variables (`APP_SECRET`, `MYSQL_PASSWORD`, etc.) in your system or a `.env.local` file.
-2. Execute:
-   ```bash
-   docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-   ```
-3. Containers will have the `_prod` suffix (e.g., `php_lucca_prod`) and use an isolated internal network `lucca-network`.
+> Au premier acces, acceptez le [certificat TLS auto-genere](https://stackoverflow.com/a/15076602/1352334) (cliquez "Avance" puis "Continuer").
+
+## Demarrage rapide (natif, sans Docker)
+
+Prerequis : PHP 8.2+, Composer, MariaDB, [Symfony CLI](https://symfony.com/download), wkhtmltopdf
+
+```bash
+cp .env.local.example .env.local
+# Editez .env.local avec vos parametres de BDD
+
+make install-native
+make native-db-setup
+make serve
+```
+
+L'application est accessible sur **https://127.0.0.1:8000**.
+
+## Commandes disponibles
+
+Lancez `make` ou `make help` pour voir toutes les commandes :
+
+| Commande | Description |
+|---|---|
+| `make install` | Installation complete Docker (build + BDD + fixtures) |
+| `make start` / `make stop` | Demarrer / arreter les containers |
+| `make shell` | Ouvrir un shell dans le container PHP |
+| `make logs` | Voir les logs Docker |
+| `make db-migrate` | Lancer les migrations |
+| `make db-fixtures` | Charger les fixtures |
+| `make db-init` | Reset complet de la BDD (avec confirmation) |
+| `make tests` | Lancer tous les tests |
+| `make test-bundle BUNDLE=UserBundle` | Tester un bundle specifique |
+| `make cc` | Vider le cache Symfony |
+| `make assets` | Recompiler les assets |
 
 ## Migrations
-- Create a new migration: `php bin/console doctrine:migrations:diff`
-- Apply migrations: `php bin/console doctrine:migrations:migrate`
-- Revert: `php bin/console doctrine:migrations:migrate prev`
 
-## Unit Testing
-Run unit tests with memory limit bypass:
-- `php -d memory_limit=-1 bin/phpunit src`
-- Specific bundle: `php -d memory_limit=-1 bin/phpunit src/Lucca/Bundle/DepartmentBundle`
+```bash
+make db-migrate                                      # Appliquer les migrations
+make shell                                           # Puis dans le container :
+php bin/console doctrine:migrations:diff             # Creer une migration
+php bin/console doctrine:migrations:migrate prev     # Revenir en arriere
+php bin/console doctrine:migrations:status           # Voir le statut
+```
 
-## Docs
+## Tests
 
-1. [Initialization project](docs/initialization_lucca.md)
-2. [Environment vars](docs/env_vars.md)
+```bash
+make tests                           # Tous les tests
+make test-bundle BUNDLE=UserBundle   # Un bundle specifique
+```
 
-**Lucca Commands:**
+## Lancement en production
 
-* Change a user password: `lucca:user:change-password`
-* Unban specific IP address: `lucca:security:unban`
+```bash
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+```
+
+Les containers auront le suffixe `_prod` (ex. `php_lucca_prod`) et utiliseront un reseau interne isole `lucca-network`.
+
+## Commandes Lucca
+
+| Commande | Description |
+|---|---|
+| `lucca:init:setting` | Initialiser les parametres |
+| `lucca:init:media` | Initialiser le bundle media |
+| `lucca:init:department` | Initialiser un departement demo |
+| `lucca:user:change-password` | Changer le mot de passe d'un utilisateur |
+| `lucca:security:unban` | Debannir une adresse IP |
+
+## Documentation
+
+- [Variables d'environnement](docs/env_vars.md)
+- [Configuration email](docs/email.md)
+- [Deploiement production](docs/production_deploy.md)
+- [Initialisation des bundles](docs/initialization_lucca.md)
+- [Reseau Docker multi-projets](docs/docker_network_developper.md)
 
 ## Credits
 
-Created by [Numeric Wave](https://numeric-wave.eu).
+Cree par [Numeric Wave](https://numeric-wave.eu).
+Licence AGPL-3.0-or-later.
