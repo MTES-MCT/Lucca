@@ -86,7 +86,7 @@ class AdherentRepository extends ServiceEntityRepository
      * @param array $params Raw DataTables request parameters
      * @return array Formatted results for DataTables
      */
-    public function searchAdherentsForDatatable(array $params): array
+    public function searchAdherentsForDatatable(array $params, bool $isAdminScope = false): array
     {
         // Initialize QueryBuilder with base joins
         $qb = $this->queryAdherent();
@@ -102,6 +102,10 @@ class AdherentRepository extends ServiceEntityRepository
             $dir = $params['order'][0]['dir'];
 
             $virtualColumns = ['officialName', 'location', 'email', 'username', 'groups', 'actions'];
+
+            if ($isAdminScope) {
+                $virtualColumns[] = 'department';
+            }
 
             if (in_array($colName, $virtualColumns)) {
                 switch ($colName) {
@@ -123,6 +127,9 @@ class AdherentRepository extends ServiceEntityRepository
                     case 'actions':
                         $qb->orderBy("$rootAlias.enabled", $dir);
                         break;
+                    case 'department':
+                        $qb->orderBy("department.name", $dir);
+                        break;
                 }
                 // Prevent the Trait from attempting to sort again
                 unset($params['order']);
@@ -137,8 +144,14 @@ class AdherentRepository extends ServiceEntityRepository
             if (!empty($colSearch)) {
                 $colName = $col['data'];
 
+                $virtualFields = ['officialName', 'location', 'email', 'username', 'groups'];
+
+                if ($isAdminScope) {
+                    $virtualFields[] = 'department';
+                }
+
                 // Handle virtual fields specifically for individual column filtering
-                if (in_array($colName, ['officialName', 'location', 'email', 'groups', 'username'])) {
+                if (in_array($colName, $virtualFields)) {
                     if ($colName === 'officialName') {
                         $qb->andWhere($qb->expr()->orX(
                             $qb->expr()->like("$rootAlias.firstname", ":col_search_$key"),
@@ -156,6 +169,11 @@ class AdherentRepository extends ServiceEntityRepository
                         $qb->andWhere($qb->expr()->like("groups.name", ":col_search_$key"));
                     } elseif ($colName === 'username') {
                         $qb->andWhere($qb->expr()->like("user.username", ":col_search_$key"));
+                    } elseif ($colName === 'department') {
+                        $qb->andWhere($qb->expr()->orX(
+                            $qb->expr()->like("department.name", ":col_search_$key"),
+                            $qb->expr()->like("department.code", ":col_search_$key")
+                        ));
                     }
 
                     $qb->setParameter("col_search_$key", "%$colSearch%");

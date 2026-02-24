@@ -39,13 +39,20 @@ class AdherentController extends AbstractController
     {
         $params = $request->request->all();
 
+        //get query params
+        $isAdminScope = filter_var(
+            $request->query->get('isAdminScope', false),
+            FILTER_VALIDATE_BOOLEAN
+        );
+
         // call repository method
         $result = $this->entityManager->getRepository(Adherent::class)
-            ->searchAdherentsForDatatable($params);
+            ->searchAdherentsForDatatable($params, $isAdminScope);
 
         // format final result
-        $result['data'] = array_map(function(Adherent $adherent) {
-            return [
+        $result['data'] = array_map(function(Adherent $adherent) use ($isAdminScope) {
+
+            $value = [
                 'officialName' => $adherent->getOfficialName(),
                 'email' => $adherent->getUser()->getEmail(),
                 'phone' => $adherent->getPhone() ?? '-',
@@ -59,6 +66,13 @@ class AdherentController extends AbstractController
                     'enabled' => $adherent->isEnabled()
                 ])
             ];
+
+            if ($isAdminScope) {
+                $value['department'] = $adherent->getDepartment()->formLabel();
+            }
+
+            return $value;
+
         }, $result['data']);
 
         return new JsonResponse($result);

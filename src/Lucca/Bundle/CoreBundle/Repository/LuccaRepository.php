@@ -11,6 +11,7 @@
 namespace Lucca\Bundle\CoreBundle\Repository;
 
 use Doctrine\ORM\{EntityRepository, NonUniqueResultException, NoResultException, QueryBuilder};
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 class LuccaRepository extends EntityRepository
 {
@@ -51,6 +52,17 @@ class LuccaRepository extends EntityRepository
         $qb->where($qb->expr()->eq('entity.enabled', ':q_state'))
             ->setParameter(':q_state', $enabled);
 
+        return $qb;
+    }
+
+    public function getValuesActiveByDepartment(?Department $department = null, bool $enabled = true): QueryBuilder
+    {
+        $qb = $this->getValuesActive($enabled);
+
+        if ($department !== null) {
+            $qb->andWhere($qb->expr()->eq('entity.department', ':q_department'))
+                ->setParameter(':q_department', $department);
+        }
         return $qb;
     }
 

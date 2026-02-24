@@ -69,7 +69,7 @@ class Adherent implements LoggableInterface, MediaAsyncInterface
 
     #[ORM\ManyToOne(targetEntity: Department::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private Department $department;
+    private ?Department $department = null;
 
     #[ORM\Column(length: 60, nullable: true)]
     #[Assert\Length(min: 2, max: 60, minMessage: 'constraint.length.min', maxMessage: 'constraint.length.max')]
@@ -124,6 +124,17 @@ class Adherent implements LoggableInterface, MediaAsyncInterface
     public function __construct()
     {
         $this->agents = new ArrayCollection();
+    }
+
+    public function __clone(): void
+    {
+        $this->id = null;
+        $this->agents = new ArrayCollection();
+        $this->logo = null;
+        $this->intercommunal = null;
+        $this->department = null;
+        $this->town = null;
+        $this->service = null;
     }
 
     /**
@@ -322,7 +333,7 @@ class Adherent implements LoggableInterface, MediaAsyncInterface
         return $this;
     }
 
-    public function getDepartment(): Department
+    public function getDepartment(): ?Department
     {
         return $this->department;
     }

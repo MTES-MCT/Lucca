@@ -8,16 +8,22 @@
 {% set entity_trans='entity.adherent'|trans %}
 {% block menuActive_adherent %}active{% endblock %}
 
+{% if isAdminScope is not defined %}
+    {% set isAdminScope = false %}
+{% endif %}
 
 {% block lucca_list %}
 
     <table
         class="table adherentTable table-hover w-100 responsive js-datatable-server-side"
-        data-url="{{ path('lucca_adherent_api_list_datatable') }}"
-    >
+        data-url="{{ path('lucca_adherent_api_list_datatable', { 'isAdminScope': isAdminScope }) }}">
+
         <thead>
         <tr>
             {#- - data-data maps to the keys returned by your Controller's array_map - -#}
+            {% if isAdminScope %}
+            <th data-data="department" data-column-searchable="true"><i class="fas fa-map-pin"></i> {{ 'label.department'|trans([], 'DepartmentBundle') }}</th>
+            {% endif %}
             <th data-data="officialName" data-column-searchable="true"><i class="fa fa-male"></i> {{ 'label.name'|trans }}</th>
             <th data-data="email" data-column-searchable="true"><i class="fa fa-at"></i> {{ 'label.email'|trans }}</th>
             <th data-data="phone" data-column-searchable="true"><i class="fa fa-phone"></i> {{ 'label.phone'|trans }}</th>
@@ -40,6 +46,9 @@
         <tfoot>
         <tr>
             {#- - Footer inputs for individual column searching - -#}
+            {% if isAdminScope %}
+            <th></th>
+            {% endif %}
             <th></th>
             <th></th>
             <th></th>

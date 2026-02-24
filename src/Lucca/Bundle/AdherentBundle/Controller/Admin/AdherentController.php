@@ -12,6 +12,7 @@ namespace Lucca\Bundle\AdherentBundle\Controller\Admin;
 
 use Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\{Request, Response};
@@ -44,7 +45,9 @@ class AdherentController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function indexAction(): Response
     {
-        return $this->render('@LuccaAdherent/Adherent/index.html.twig');
+        return $this->render('@LuccaAdherent/Adherent/index.html.twig', [
+            'isAdminScope' => $this->userDepartmentResolver->getDepartment() === null,
+        ]);
     }
 
     /**
@@ -98,6 +101,7 @@ class AdherentController extends AbstractController
         return $this->render('@LuccaAdherent/Adherent/show.html.twig', [
             'adherent' => $adherent,
             'delete_form' => $deleteForm->createView(),
+            'isAdminScope' => $this->userDepartmentResolver->getDepartment() === null,
         ]);
     }
 
@@ -167,7 +171,7 @@ class AdherentController extends AbstractController
     #[Route(path: '/{id}/disable', name: 'lucca_adherent_disable', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[Route(path: '/{id}/enable', name: 'lucca_adherent_enable', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function enableAction(Adherent $adherent): Response
+    public function enableAction(Request $request, Adherent $adherent): Response
     {
         if ($adherent->getUser()->isEnabled()) {
             $adherent->setEnabled(false);
@@ -182,6 +186,12 @@ class AdherentController extends AbstractController
         $this->em->persist($adherent);
         $this->em->flush();
 
-        return $this->redirectToRoute('lucca_adherent_index');
+        //redirect to referer if exists
+        $referer = $request->headers->get('referer');
+        if ($referer) {
+            return $this->redirect($referer);
+        }
+
+        return $this->redirectToRoute('lucca_adherent_show', ['id' => $adherent->getId()]);
     }
 }

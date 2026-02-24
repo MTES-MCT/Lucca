@@ -1,0 +1,51 @@
+{#-- Extends view --#}
+{% extends '@LuccaThemeStreamDashboardUiKit/SubLayout/show.html.twig' %}
+
+{#-- Translation domain --#}
+{% trans_default_domain 'AdherentBundle' %}
+
+{#-- Parameters --#}
+{% set entity_trans='entity.adherent'|trans %}
+{% block menuActive_adherent %}active{% endblock %}
+
+{% if isAdminScope is not defined %}
+    {% set isAdminScope = false %}
+{% endif %}
+
+{% block lucca_panels %}
+
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+            <div class="card card-default">
+                <div class="card-header">
+                    {{ 'title.show'|trans({}, 'ThemeStreamDashboardUiKit') }} - <b>{{ adherent.name }}</b>
+                </div>
+
+                <div class="card-wrapper">
+                    <div class="card-body">
+
+                        <div class="col-12">
+                            {{ form_start(form) }}
+                            {{ form_errors(form) }}
+                            {{ form_row(form.department) }}
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock lucca_panels %}
+
+
+{% block lucca_css %}
+    {{ parent() }}
+{% endblock lucca_css %}
+
+
+{% block lucca_modal %}
+    {{ parent() }}
+    {% include '@LuccaThemeStreamDashboardUiKit/Modal/delete.html.twig' with {'id': adherent.name, 'name': adherent.name, 'delForm': delete_form} %}
+{% endblock lucca_modal %}

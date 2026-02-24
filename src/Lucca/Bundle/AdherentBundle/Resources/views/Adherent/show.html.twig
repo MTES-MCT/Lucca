@@ -8,6 +8,9 @@
 {% set entity_trans='entity.adherent'|trans %}
 {% block menuActive_adherent %}active{% endblock %}
 
+{% if isAdminScope is not defined %}
+    {% set isAdminScope = false %}
+{% endif %}
 
 {% block lucca_panels %}
 
@@ -30,6 +33,12 @@
                                     <th><i class="fa fa-user"></i> {{ 'label.name'|trans }}</th>
                                     <td>{{ adherent.officialName }}</td>
                                 </tr>
+                                {% if isAdminScope %}
+                                <tr>
+                                    <th><i class="fas fa-map-pin"></i> {{ 'label.department'|trans([], 'DepartmentBundle') }}</th>
+                                    <td>{{ adherent.department.formLabel }}</td>
+                                </tr>
+                                {% endif %}
                                 <tr>
                                     <th>{{ 'label.enabled'|trans }}</th>
                                     <td>{{ adherent.enabled|boolean }}</td>
@@ -104,6 +113,13 @@
                                data-target=".delWin" title="{{ 'link.adherent.delete'|trans }}">
                                 <i class="fas fa-times"></i>
                             </a>
+
+                            {% if isAdminScope %}
+
+                                <a class="btn btn-primary btn-lg pull-right" href="{{ path('lucca_adherent_duplicate', { 'id': adherent.id }) }}"
+                                   title="{{ 'link.adherent.duplicate'|trans }}"><i class="fas fa-copy"></i></a>
+
+                            {% endif %}
                         </div>
 
                     </div>
@@ -129,7 +145,16 @@
                                         <tbody>
                                         <tr>
                                             <th><i class="fa fa-user"></i> {{ 'label.username'|trans }}</th>
-                                            <td>{{ adherent.user.username }}</td>
+                                            <td>
+                                                {% if isAdminScope  %}
+                                                <a href="{{ path('lucca_user_show', { 'id': adherent.user.id }) }}"
+                                                   class="text-bold" title="{{ 'link.show'|trans([], 'UserBundle') }}">
+                                                    <i class="fas fa-external-link-alt fa-xs"></i> {{ adherent.user.username }}
+                                                </a>
+                                                {% else %}
+                                                {{ adherent.user.username }}
+                                                {% endif %}
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th><i class="fa fa-envelope"></i> {{ 'label.email'|trans }}</th>
