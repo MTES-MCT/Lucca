@@ -173,25 +173,28 @@ class AdherentController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function enableAction(Request $request, Adherent $adherent): Response
     {
-        if ($adherent->getUser()->isEnabled()) {
+        if ($adherent->isEnabled()) {
             $adherent->setEnabled(false);
+
+            // Safety: If you want to disable the global login as well
             $adherent->getUser()->setEnabled(false);
+
             $this->addFlash('success', 'flash.adherent.disabledSuccessfully');
         } else {
             $adherent->setEnabled(true);
             $adherent->getUser()->setEnabled(true);
+
             $this->addFlash('info', 'flash.adherent.enabledSuccessfully');
         }
 
         $this->em->persist($adherent);
+        $this->em->persist($adherent->getUser()); // Ensure User is also persisted
         $this->em->flush();
 
-        //redirect to referer if exists
+        // Redirect to referer if exists
         $referer = $request->headers->get('referer');
-        if ($referer) {
-            return $this->redirect($referer);
-        }
 
-        return $this->redirectToRoute('lucca_adherent_show', ['id' => $adherent->getId()]);
+        // Note: Headers must be set on the Response object, not the Request
+        return $referer ? $this->redirect($referer) : $this->redirectToRoute('lucca_adherent_show', ['id' => $adherent->getId()]);
     }
 }

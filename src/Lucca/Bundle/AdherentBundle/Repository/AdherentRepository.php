@@ -12,6 +12,7 @@ namespace Lucca\Bundle\AdherentBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Doctrine\ORM\{NonUniqueResultException, NoResultException, QueryBuilder};
 
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
@@ -212,6 +213,29 @@ class AdherentRepository extends ServiceEntityRepository
 
         // Delegate pagination and final execution to the Generic Trait
         return $this->findForDatatable($qb, $params);
+    }
+
+    /**
+     * Fast security check to verify if a user has an active membership in a specific department.
+     * Returns true only if the Adherent record exists and is enabled.
+     */
+    public function isUserActiveInDepartment(User $user, Department $department): bool
+    {
+        $qb = $this->createQueryBuilder('adherent');
+
+        $qb->select($qb->expr()->count('adherent.id'))
+            ->where($qb->expr()->eq('adherent.user', ':q_user'))
+            ->andWhere($qb->expr()->eq('adherent.department', ':q_department'))
+            ->andWhere($qb->expr()->eq('adherent.enabled', ':q_enabled'))
+            ->setParameter('q_user', $user)
+            ->setParameter('q_department', $department)
+            ->setParameter('q_enabled', true);
+
+        try {
+            return (int) $qb->getQuery()->getSingleScalarResult() > 0;
+        } catch (NoResultException | NonUniqueResultException) {
+            return false;
+        }
     }
 
     /*******************************************************************************************/
