@@ -37,7 +37,6 @@ use Lucca\Bundle\FolderBundle\Service\TagService;
 use Lucca\Bundle\FolderBundle\Service\ProposalService;
 use Lucca\Bundle\DepartmentBundle\Service\GeoApiService;
 use Lucca\Bundle\UserBundle\Entity\User;
-use Lucca\Bundle\SettingBundle\Generator\SettingGenerator;
 
 /**
  * Class DepartmentController
@@ -61,7 +60,6 @@ class DepartmentController extends AbstractController
         private readonly ProposalService   $proposalService,
         private readonly AdherentManager   $adherentManager,
         private readonly LoggerInterface   $logger,
-        private readonly SettingGenerator  $settingGenerator,
 
     )
     {

@@ -11,7 +11,7 @@ namespace Lucca\Bundle\DepartmentBundle\Service;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
-use Lucca\Bundle\ParameterBundle\Entity\{Town, Intercommunal, Service};
+use Lucca\Bundle\ParameterBundle\Entity\{Town, Intercommunal, Service, Tribunal};
 use Doctrine\ORM\EntityManagerInterface;
 
 readonly class GeoApiService
@@ -39,6 +39,9 @@ readonly class GeoApiService
 
         // 3. Import Jurisdictions
         $this->importTribunals($department);
+
+        // 4. Import State Services
+        $this->importStateServices($department);
     }
 
     public function hydrateNameDepartment(Department $department): void
@@ -68,6 +71,17 @@ readonly class GeoApiService
             $interco->setCode($data['code']);
             $interco->setDepartment($department);
             $interco->setEnabled(true);
+
+            if (isset($props['codeInsee'])) {
+                $town = $this->em->getRepository(Town::class)->findOneBy([
+                    'code' => $props['codeInsee'],
+                    'department' => $department
+                ]);
+
+                if ($town) {
+                    $interco->setOffice($town);
+                }
+            }
 
             $this->em->persist($interco);
         }
@@ -121,7 +135,7 @@ readonly class GeoApiService
     }
 
     /**
-     * Import Tribunals and link them to Town entities
+     * Import Tribunals and map address properties from API
      */
     private function importTribunals(Department $department): void
     {
@@ -136,15 +150,16 @@ readonly class GeoApiService
         foreach ($data['features'] as $feature) {
             $props = $feature['properties'];
 
-            $service = $this->em->getRepository(Service::class)->findOneBy([
+            $tribunal = $this->em->getRepository(Tribunal::class)->findOneBy([
                 'name' => $props['nom'],
                 'department' => $department
-            ]) ?? new Service();
+            ]) ?? new Tribunal();
 
-            $service->setName($props['nom']);
-            $service->setCode($props['codeInsee']);
-            $service->setDepartment($department);
-            $service->setEnabled(true);
+            $tribunal->setName($props['nom']);
+            $tribunal->setCode($props['codeInsee']);
+            $tribunal->setDepartment($department);
+            $tribunal->setEnabled(true);
+            $tribunal->setCountry('FR'); // Default to France
 
             // Find the Town entity using the codeInsee to link as Office
             if (isset($props['codeInsee'])) {
@@ -154,11 +169,80 @@ readonly class GeoApiService
                 ]);
 
                 if ($town) {
-                    $service->setOffice($town);
+                    $tribunal->setOffice($town);
                 }
             }
 
-            $this->em->persist($service);
+            // Set address if exists in API properties
+            if (!empty($props['adresses'])) {
+                $mainAddress = $props['adresses'][0]; // Take the first address available
+
+                // Extract multi-line address from 'lignes' array
+                $streetAddress = isset($mainAddress['lignes']) ? implode(', ', $mainAddress['lignes']) : null;
+                $tribunal->setAddress(mb_substr($streetAddress, 0, 80)); // Truncate to match entity length
+
+                $tribunal->setZipCode($mainAddress['codePostal'] ?? null);
+                $tribunal->setCity($mainAddress['commune'] ?? null);
+            }
+
+            $this->em->persist($tribunal);
+        }
+
+        $this->em->flush();
+    }
+
+    /**
+     * Import State Services (Gendarmerie, DDTM, etc.)
+     */
+    private function importStateServices(Department $department): void
+    {
+        $this->ensureManaged($department);
+
+        // List of pivot codes for State Services
+        // You can add more from: https://api.gouv.fr/les-api/api-etablissements-publics
+        $pivots = ['gendarmerie', 'ddt', 'prefecture'];
+
+        foreach ($pivots as $pivot) {
+            $url = sprintf('https://etablissements-publics.api.gouv.fr/v3/departements/%s/%s', $department->getCode(), $pivot);
+
+            try {
+                $response = $this->httpClient->request('GET', $url);
+                $data = $response->toArray();
+            } catch (\Exception $e) {
+                // Some departments might not have specific services, we skip silently
+                continue;
+            }
+
+            if (!isset($data['features'])) continue;
+
+            foreach ($data['features'] as $feature) {
+                $props = $feature['properties'];
+
+                // Check if service already exists for this department
+                $service = $this->em->getRepository(Service::class)->findOneBy([
+                    'name' => $props['nom'],
+                    'department' => $department
+                ]) ?? new Service();
+
+                $service->setName(mb_substr($props['nom'], 0, 100)); // Constraint: max 100
+                $service->setCode($props['codeInsee'] ?? $department->getCode());
+                $service->setDepartment($department);
+                $service->setEnabled(true);
+
+                // Link to Town (office) if codeInsee is available
+                if (isset($props['codeInsee'])) {
+                    $town = $this->em->getRepository(Town::class)->findOneBy([
+                        'code' => $props['codeInsee'],
+                        'department' => $department
+                    ]);
+
+                    if ($town) {
+                        $service->setOffice($town);
+                    }
+                }
+
+                $this->em->persist($service);
+            }
         }
 
         $this->em->flush();
