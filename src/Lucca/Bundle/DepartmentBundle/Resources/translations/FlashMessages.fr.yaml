@@ -6,6 +6,7 @@
 flash:
     department:
         apiGouv:
+            unavailable: "Le service api.gouv.fr est actuellement indisponible. Veuillez réessayer plus tard."
             importSuccess: "Les données ont été importées avec succès depuis api.gouv.fr"
             importError: "Une erreur est survenue lors de l'import des données depuis api.gouv.fr"
         towns:

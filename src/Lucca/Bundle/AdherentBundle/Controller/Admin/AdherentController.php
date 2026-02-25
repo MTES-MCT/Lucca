@@ -175,15 +175,9 @@ class AdherentController extends AbstractController
     {
         if ($adherent->isEnabled()) {
             $adherent->setEnabled(false);
-
-            // Safety: If you want to disable the global login as well
-            $adherent->getUser()->setEnabled(false);
-
             $this->addFlash('success', 'flash.adherent.disabledSuccessfully');
         } else {
             $adherent->setEnabled(true);
-            $adherent->getUser()->setEnabled(true);
-
             $this->addFlash('info', 'flash.adherent.enabledSuccessfully');
         }
 

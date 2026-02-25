@@ -110,7 +110,22 @@ class DepartmentController extends AbstractController
                 $department->setName($department->getCode());
             }
 
-            // 1. FIRST: Persist and Flush to get a DB ID
+            // 0. FIRST Check API availability
+            if ($autoImport) {
+                try {
+                    $geoApiService->checkApisAvailability($department->getCode());
+                } catch (\Exception $e) {
+                    $this->addFlash('danger', 'flash.department.apiGouv.unavailable');
+                    $this->logger->critical('Failed to check API Gouv availability: {message}', [
+                        'message' => $e->getMessage()
+                    ]);
+                    return $this->render('@LuccaDepartment/Admin/Department/new.html.twig', [
+                        'form' => $form->createView(),
+                    ]);
+                }
+            }
+
+            // 1. Persist and Flush to get a DB ID
             $em->persist($department);
             $em->flush();
 

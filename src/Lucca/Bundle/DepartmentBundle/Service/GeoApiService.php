@@ -9,6 +9,7 @@
 
 namespace Lucca\Bundle\DepartmentBundle\Service;
 
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Lucca\Bundle\ParameterBundle\Entity\{Town, Intercommunal, Service, Tribunal};
@@ -17,6 +18,8 @@ use Doctrine\ORM\EntityManagerInterface;
 readonly class GeoApiService
 {
     private const BATCH_SIZE = 500;
+    private const BASE_URL_GEO = 'https://geo.api.gouv.fr';
+    private const BASE_URL_PUBLIC = 'https://etablissements-publics.api.gouv.fr/v3';
 
     public function __construct(
         private HttpClientInterface    $httpClient,
@@ -44,9 +47,32 @@ readonly class GeoApiService
         $this->importStateServices($department);
     }
 
+    /**
+     * Verifies that the required APIs are responsive before starting the process.
+     * @throws \Exception
+     */
+    public function checkApisAvailability(string $code = '34'): void
+    {
+        $testUrls = [
+            'Geo API' => self::BASE_URL_GEO . '/departements/' . $code,
+            'Public Establishments API' => self::BASE_URL_PUBLIC . '/departements/' . $code . '/tgi'
+        ];
+
+        foreach ($testUrls as $name => $url) {
+            try {
+                $response = $this->httpClient->request('GET', $url, ['timeout' => 5]);
+                if ($response->getStatusCode() !== 200) {
+                    throw new \Exception(sprintf("Error %s on %s", $response->getStatusCode(), $name));
+                }
+            } catch (\Exception | TransportExceptionInterface $e) {
+                throw new \Exception(sprintf("API %s with url %s is not available", $name, $url), 0, $e);
+            }
+        }
+    }
+
     public function hydrateNameDepartment(Department $department): void
     {
-        $url = sprintf('https://geo.api.gouv.fr/departements/%s', $department->getCode());
+        $url = sprintf('%s/departements/%s', self::BASE_URL_GEO, $department->getCode());
         $response = $this->httpClient->request('GET', $url);
         $data = $response->toArray();
         $department->setName($data['nom']);
@@ -59,7 +85,7 @@ readonly class GeoApiService
     {
         $this->ensureManaged($department);
 
-        $url = sprintf('https://geo.api.gouv.fr/epcis?codeDepartement=%s', $department->getCode());
+        $url = sprintf('%s/epcis?codeDepartement=%s', self::BASE_URL_GEO, $department->getCode());
         $response = $this->httpClient->request('GET', $url);
         $epcis = $response->toArray();
 
@@ -96,7 +122,7 @@ readonly class GeoApiService
     {
         $this->ensureManaged($department);
 
-        $url = sprintf('https://geo.api.gouv.fr/departements/%s/communes?fields=nom,code,codesPostaux,codeEpci', $department->getCode());
+        $url = sprintf('%s/departements/%s/communes?fields=nom,code,codesPostaux,codeEpci', self::BASE_URL_GEO, $department->getCode());
         $response = $this->httpClient->request('GET', $url);
         $towns = $response->toArray();
 
@@ -141,7 +167,7 @@ readonly class GeoApiService
     {
         $this->ensureManaged($department);
 
-        $url = sprintf('https://etablissements-publics.api.gouv.fr/v3/departements/%s/tgi', $department->getCode());
+        $url = sprintf('%s/departements/%s/tgi', self::BASE_URL_PUBLIC, $department->getCode());
         $response = $this->httpClient->request('GET', $url);
         $data = $response->toArray();
 
@@ -159,7 +185,7 @@ readonly class GeoApiService
             $tribunal->setCode($props['codeInsee']);
             $tribunal->setDepartment($department);
             $tribunal->setEnabled(true);
-            $tribunal->setCountry('FR'); // Default to France
+            $tribunal->setCountry('FR');
 
             // Find the Town entity using the codeInsee to link as Office
             if (isset($props['codeInsee'])) {
@@ -175,12 +201,9 @@ readonly class GeoApiService
 
             // Set address if exists in API properties
             if (!empty($props['adresses'])) {
-                $mainAddress = $props['adresses'][0]; // Take the first address available
-
-                // Extract multi-line address from 'lignes' array
+                $mainAddress = $props['adresses'][0];
                 $streetAddress = isset($mainAddress['lignes']) ? implode(', ', $mainAddress['lignes']) : null;
-                $tribunal->setAddress(mb_substr($streetAddress, 0, 80)); // Truncate to match entity length
-
+                $tribunal->setAddress(mb_substr($streetAddress, 0, 80));
                 $tribunal->setZipCode($mainAddress['codePostal'] ?? null);
                 $tribunal->setCity($mainAddress['commune'] ?? null);
             }
@@ -203,7 +226,7 @@ readonly class GeoApiService
         $pivots = ['gendarmerie', 'ddt', 'prefecture'];
 
         foreach ($pivots as $pivot) {
-            $url = sprintf('https://etablissements-publics.api.gouv.fr/v3/departements/%s/%s', $department->getCode(), $pivot);
+            $url = sprintf('%s/departements/%s/%s', self::BASE_URL_PUBLIC, $department->getCode(), $pivot);
 
             try {
                 $response = $this->httpClient->request('GET', $url);
@@ -224,7 +247,7 @@ readonly class GeoApiService
                     'department' => $department
                 ]) ?? new Service();
 
-                $service->setName(mb_substr($props['nom'], 0, 100)); // Constraint: max 100
+                $service->setName(mb_substr($props['nom'], 0, 100));
                 $service->setCode($props['codeInsee'] ?? $department->getCode());
                 $service->setDepartment($department);
                 $service->setEnabled(true);
