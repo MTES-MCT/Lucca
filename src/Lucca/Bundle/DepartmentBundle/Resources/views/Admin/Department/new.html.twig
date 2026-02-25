@@ -35,16 +35,35 @@
 
 {% block lucca_js %}
     {{ parent() }}
-
-    {#-- Plugin - Summernote --#}
-    {% include "@LuccaThemeStreamDashboardUiKit/Plugins/summernote.js.html.twig" %}
-
     <script src="{{ asset('assets/js/bs-custom-file-input.min.js') }}"></script>
     <script>
         $(document).ready(function () {
-            bsCustomFileInput.init()
-        })
-    </script>
+            bsCustomFileInput.init();
 
-{% endblock lucca_js %}
+            const $autoImportCheckbox = $('.toggle-import-mode');
+            const $manualFields = $('#manual-fields-container');
+            const $nameInput = $('input[name*="[name]"]');
+            const $townsInput = $('input[name*="[towns]"]');
+
+            function toggleFields() {
+                if ($autoImportCheckbox.is(':checked')) {
+                    $manualFields.slideUp();
+                    $nameInput.val('');
+                    //disabled required attribute on name input
+                    $nameInput.attr('required', false);
+                    $townsInput.attr('required', false);
+
+                } else {
+                    $manualFields.slideDown();
+                    //enabled required attribute on name input
+                    $nameInput.attr('required', true);
+                    $townsInput.attr('required', true);
+                }
+            }
+
+            $autoImportCheckbox.on('change', toggleFields);
+            toggleFields(); // Init on load
+        });
+    </script>
+{% endblock %}
 

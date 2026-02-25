@@ -16,31 +16,62 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
+use Symfony\Component\Validator\Constraints\Regex;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 class DepartmentType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $isNew = $builder->getData()->getId() === null;
 
         $builder
-            ->add('code', TextType::class, array('label' => 'label.code', 'required' => true, 'attr' => array('required' => true)))
-            ->add('name', TextType::class, array('label' => 'label.name', 'required' => true))
-            ->add('showInHomePage', CheckboxType::class, array('label' => 'label.showInHomePage', 'required' => false))
-            ->add('comment', TextareaType::class, array('label' => 'label.comment', 'required' => false, 'attr' => array('class' => 'summernote6')));
+            // Added Regex for department codes (01-99, 2A, 2B, 971-976)
+            ->add('code', TextType::class, [
+                'label' => 'label.code',
+                'required' => true,
+                'attr' => [
+                    'placeholder' => 'ex: 35, 2A, 974',
+                    'data-target' => 'dep-code'
+                ],
+                'constraints' => [
+                    new Regex(pattern: '/^([0-9]{2,3}|2A|2B)$/', message: 'validator.department.invalidCode')
+                ]
+            ])
+            ->add('name', TextType::class, [
+                'label' => 'label.name',
+                'required' => true,
+                'row_attr' => ['class' => 'manual-field']
+            ])
+            ->add('comment', TextareaType::class, [
+                'label' => 'label.comment',
+                'required' => false,
+                'attr' => ['class' => 'summernote6'],
+                'row_attr' => ['class' => 'manual-field']
+            ]);
+
+        if ($isNew) {
+            // Checkbox to toggle between API Gouv and Manual import
+            $builder->add('autoImport', CheckboxType::class, [
+                'label' => 'label.autoImportApiGouv',
+                'mapped' => false,
+                'required' => false,
+                'data' => true, // Default checked
+                'attr' => ['class' => 'toggle-import-mode']
+            ]);
+        } else {
+            $builder->add('showInHomePage', CheckboxType::class, ['label' => 'label.showInHomePage', 'required' => false]);
+        }
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-            $data = $event->getData();
             $form = $event->getForm();
-
-                $form->add('towns', FileType::class, array(
-                    'label' => 'label.towns', 'required' => $data->getId() === null, 'mapped' => false, 'help' => 'help.towns',
-                    'attr' => array('accept' => '.csv', 'class' => 'custom-file'),
-                ));
+            $form->add('towns', FileType::class, [
+                'label' => 'label.towns',
+                'required' => true,
+                'mapped' => false,
+                'attr' => ['accept' => '.csv', 'class' => 'custom-file'],
+                'row_attr' => ['class' => 'manual-field csv-upload-field']
+            ]);
         });
     }
 
@@ -55,9 +86,6 @@ class DepartmentType extends AbstractType
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'lucca_departmentBundle_department';
