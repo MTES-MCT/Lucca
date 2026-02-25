@@ -1,16 +1,17 @@
 <?php
 /*
- * copyright (c) 2025. numeric wave
+ * copyright (c) 2025-2026. numeric wave
  *
  * Affero General Public License (agpl) v3
  *
  * for more information, please refer to the license file at the root of the project.
  */
+
 namespace Lucca\Bundle\DepartmentBundle\Service;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
-use Lucca\Bundle\ParameterBundle\Entity\{Town, Intercommunal, Service, Tag};
+use Lucca\Bundle\ParameterBundle\Entity\{Town, Intercommunal, Service};
 use Doctrine\ORM\EntityManagerInterface;
 
 readonly class GeoApiService
@@ -22,8 +23,14 @@ readonly class GeoApiService
         private EntityManagerInterface $em
     ) {}
 
+    /**
+     * Main entry point for department data import
+     */
     public function importDataForDepartment(Department $department): void
     {
+        // 0. Update the department name from API
+        $this->hydrateNameDepartment($department);
+
         // 1. Import EPCIs
         $this->importIntercommunals($department);
 
@@ -42,8 +49,13 @@ readonly class GeoApiService
         $department->setName($data['nom']);
     }
 
+    /**
+     * Import Intercommunals (EPCI) linked to the department
+     */
     private function importIntercommunals(Department $department): void
     {
+        $this->ensureManaged($department);
+
         $url = sprintf('https://geo.api.gouv.fr/epcis?codeDepartement=%s', $department->getCode());
         $response = $this->httpClient->request('GET', $url);
         $epcis = $response->toArray();
@@ -63,8 +75,13 @@ readonly class GeoApiService
         $this->em->flush();
     }
 
+    /**
+     * Import Towns with batch processing to optimize memory
+     */
     private function importTowns(Department $department): void
     {
+        $this->ensureManaged($department);
+
         $url = sprintf('https://geo.api.gouv.fr/departements/%s/communes?fields=nom,code,codesPostaux,codeEpci', $department->getCode());
         $response = $this->httpClient->request('GET', $url);
         $towns = $response->toArray();
@@ -95,7 +112,6 @@ readonly class GeoApiService
                 $this->em->persist($town);
                 $i++;
 
-                // Batch processing to optimize memory and performance
                 if (($i % self::BATCH_SIZE) === 0) {
                     $this->flushAndClear($department);
                 }
@@ -104,11 +120,12 @@ readonly class GeoApiService
         $this->flushAndClear($department);
     }
 
+    /**
+     * Import Tribunals and link them to Town entities
+     */
     private function importTribunals(Department $department): void
     {
-        if (!$this->em->contains($department)) {
-            $department = $this->em->find(Department::class, $department->getId());
-        }
+        $this->ensureManaged($department);
 
         $url = sprintf('https://etablissements-publics.api.gouv.fr/v3/departements/%s/tgi', $department->getCode());
         $response = $this->httpClient->request('GET', $url);
@@ -129,14 +146,13 @@ readonly class GeoApiService
             $service->setDepartment($department);
             $service->setEnabled(true);
 
-            // FIX: Find the Town entity using the codeInsee
+            // Find the Town entity using the codeInsee to link as Office
             if (isset($props['codeInsee'])) {
                 $town = $this->em->getRepository(Town::class)->findOneBy([
                     'code' => $props['codeInsee'],
                     'department' => $department
                 ]);
 
-                // We must pass the Town OBJECT, not the name string
                 if ($town) {
                     $service->setOffice($town);
                 }
@@ -149,8 +165,18 @@ readonly class GeoApiService
     }
 
     /**
+     * Ensure the department is managed by the EntityManager (prevents detached entity errors)
+     */
+    private function ensureManaged(Department &$department): void
+    {
+        if (!$this->em->contains($department)) {
+            $department = $this->em->find(Department::class, $department->getId());
+        }
+    }
+
+    /**
      * Flush changes and clear EntityManager to free memory
-     * Then re-attach the department entity
+     * Then re-fetch/re-attach the department entity
      */
     private function flushAndClear(Department &$department): void
     {

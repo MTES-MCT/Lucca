@@ -103,14 +103,14 @@ class SettingGenerator
             $item = $this->settingsCache->getItem($cacheKey);
 
             if (!$item->isHit() || $bypassCache) {
-//                try {
+                try {
                     $aSettingDictionary = $this->generateMissingSettings($dept);
                     $item->set($aSettingDictionary);
                     $this->settingsCache->save($item);
                     $this->em->flush();
-//                } catch (Exception $e) {
-//                    // Log or ignore the exception
-//                }
+                } catch (Exception $e) {
+                    // Log or ignore the exception
+                }
             }
 
             $cachedValue = $item->get();
@@ -280,6 +280,9 @@ class SettingGenerator
                 }
             }
             unset($name, $setting);
+
+            // Update last sync date
+            $department->setLastSyncSetting(new \DateTime());
         }
     }
 }
