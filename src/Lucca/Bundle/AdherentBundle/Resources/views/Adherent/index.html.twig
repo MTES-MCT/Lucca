@@ -7,6 +7,7 @@
 {#- - Parameters - -#}
 {% set entity_trans='entity.adherent'|trans %}
 {% block menuActive_adherent %}active{% endblock %}
+{% block menuActive_adherent_admin %}active{% endblock %}
 
 {% if isAdminScope is not defined %}
     {% set isAdminScope = false %}
