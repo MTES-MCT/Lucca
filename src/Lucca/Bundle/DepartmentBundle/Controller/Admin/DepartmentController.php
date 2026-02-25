@@ -94,7 +94,6 @@ class DepartmentController extends AbstractController
     public function newAction(
         Request                $request,
         EntityManagerInterface $em,
-        ValidatorInterface     $validator,
         GeoApiService          $geoApiService
     ): Response
     {
