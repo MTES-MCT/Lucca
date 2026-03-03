@@ -71,9 +71,13 @@ class AdherentController extends AbstractController
             $this->adherentManager->initNewAdherent($adherent);
 
             /** Send Email Subscription with new password - get the plain password filled in form */
-            $this->mailer->sendSubscriptionToAdherent(
+            $isSent = $this->mailer->sendSubscriptionToAdherent(
                 $adherent, $form->get('user')->get('plainPassword')->getData()
             );
+
+            if (!$isSent) {
+                $this->addFlash('danger', 'flash.mail.adherentSubscription.sendFail');
+            }
 
             $this->em->persist($adherent);
             $this->em->flush();
