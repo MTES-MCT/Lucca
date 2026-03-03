@@ -10,9 +10,10 @@
 
 namespace Lucca\Bundle\DepartmentBundle\Controller\Admin;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
-use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -33,6 +34,9 @@ use Lucca\Bundle\FolderBundle\Service\NatinfService;
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\AdherentBundle\Manager\AdherentManager;
 use Lucca\Bundle\FolderBundle\Service\TagService;
+use Lucca\Bundle\FolderBundle\Service\ProposalService;
+use Lucca\Bundle\DepartmentBundle\Service\GeoApiService;
+use Lucca\Bundle\UserBundle\Entity\User;
 
 /**
  * Class DepartmentController
@@ -53,7 +57,10 @@ class DepartmentController extends AbstractController
         private readonly NatinfService     $natinfService,
         private readonly ModelService      $modelService,
         private readonly TagService        $tagService,
+        private readonly ProposalService   $proposalService,
         private readonly AdherentManager   $adherentManager,
+        private readonly LoggerInterface   $logger,
+
     )
     {
     }
@@ -75,74 +82,118 @@ class DepartmentController extends AbstractController
 
     /**
      * Creates a new Department entity.
+     * Uses Geo Gouv API if no CSV file is provided.
      * @param Request $request
-     * @param ManagerRegistry $doctrine
+     * @param EntityManagerInterface $em
      * @param ValidatorInterface $validator
+     * @param GeoApiService $geoApiService
      * @return Response
-     * @throws Exception
      */
     #[Route(path: '/new', name: 'lucca_department_admin_new', defaults: ['_locale' => 'fr'], methods: ['GET', 'POST'])]
     #[IsGranted("ROLE_SUPER_ADMIN")]
-    public function newAction(Request $request, ManagerRegistry $doctrine, ValidatorInterface $validator): Response
+    public function newAction(
+        Request                $request,
+        EntityManagerInterface $em,
+        GeoApiService          $geoApiService
+    ): Response
     {
         $department = new Department();
-        $em = $doctrine->getManager();
-
         $form = $this->createForm(DepartmentType::class, $department);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $uploadedFile */
-            $uploadedFile = $request->files->get('lucca_departmentBundle_department')['towns'];
-            $violations = $validator->validate(
-                $uploadedFile,
-                new File([
-                    'mimeTypes' => ['text/csv']
-                ])
-            );
+            $autoImport = $form->has('autoImport') && $form->get('autoImport')->getData();
+            $uploadedFile = $form->get('towns')->getData();
 
-            if ($violations->count() > 0) {
-                foreach ($violations as $violation) {
-                    $this->addFlash('danger', $violation->getMessage());
-                }
-
-                return $this->render('@LuccaDepartment/Admin/Department/new.html.twig', [
-                    'form' => $form->createView(),
-                ]);
+            if ($department->getName() === null) {
+                // Set default name to code if not set
+                $department->setName($department->getCode());
             }
 
+            // 0. FIRST Check API availability
+            if ($autoImport) {
+                try {
+                    $geoApiService->checkApisAvailability($department->getCode());
+                } catch (\Exception $e) {
+                    $this->addFlash('danger', 'flash.department.apiGouv.unavailable');
+                    $this->logger->critical('Failed to check API Gouv availability: {message}', [
+                        'message' => $e->getMessage()
+                    ]);
+                    return $this->render('@LuccaDepartment/Admin/Department/new.html.twig', [
+                        'form' => $form->createView(),
+                    ]);
+                }
+            }
+
+            // 1. Persist and Flush to get a DB ID
             $em->persist($department);
             $em->flush();
 
-            // Towns CSV parsing
-            $this->departmentService->createOrUpdateTownsFromFile($uploadedFile, $department);
+            // 2. Logic decision
+            if ($autoImport) {
+                try {
+                    // Import Towns, EPCI, Tribunals (contains clear() calls)
+                    $geoApiService->importDataForDepartment($department);
 
-            // Natinf creation from JSON data file
-            $this->natinfService->createForDepartment($department);
+                    // CRITICAL: Re-fetch department because clear() detached it
+                    $department = $em->find(Department::class, $department->getId());
 
-            // Tag creation from JSON data file
-            $this->tagService->createForDepartment($department);
+                    // Sync the object with the new DB state (Official Name, etc.)
+                    if ($department) {
+                        $em->refresh($department);
+                    }
 
-            // Checklist creation from JSON data file
-            $this->checklistService->createForDepartment($department);
+                    $this->addFlash('info', 'flash.department.apiGouv.importSuccess');
+                } catch (\Exception $e) {
+                    $this->logger->critical('Failed to import data from API Gouv for department {code}: {message}', [
+                        'code' => $department->getCode(),
+                        'message' => $e->getMessage()
+                    ]);
+                    $this->addFlash('danger', 'flash.department.apiGouv.importError');
 
-            // Model creation from JSON data file
-            $this->modelService->createForDepartment($department);
+                    // Re-fetch even on error to allow the script to continue safely
+                    $department = $em->find(Department::class, $department->getId());
+                }
+            } else {
+                // Manual Path
+                if ($uploadedFile) {
+                    $this->departmentService->createOrUpdateTownsFromFile($uploadedFile, $department);
+                }
+            }
 
-            /** Find Adherent by connected User */
-            $user = $this->getUser();
-            $adherent = $em->getRepository(Adherent::class)->findOneBy([
-                'user' => $user
-            ]);
-            $this->adherentManager->cloneAdherent($adherent, $department);
+            // 3. Initialize department resources (Tags, Proposals, Natinfs, etc.)
+            // Ensure department is managed before calling these services
+            if ($department) {
+                $this->initializeDepartmentResources($department);
 
-            $this->addFlash('success', 'flash.department.create.success');
+                // 4. Link the current User as an Adherent
+                /** @var User $user */
+                $user = $this->getUser();
+                $adherent = $em->getRepository(Adherent::class)->findOneBy(['user' => $user]);
+                if ($adherent) {
+                    $this->adherentManager->cloneAdherent($adherent, $department);
+                }
 
-            return $this->redirectToRoute('lucca_department_admin_show', ['id' => $department->getId()]);
+                $this->addFlash('success', 'flash.department.create.success');
+                return $this->redirectToRoute('lucca_department_admin_show', ['id' => $department->getId()]);
+            }
         }
 
         return $this->render('@LuccaDepartment/Admin/Department/new.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * Internal helper to handle secondary resource creation
+     */
+    private function initializeDepartmentResources(Department $department): void
+    {
+        $this->tagService->createForDepartment($department);
+        $this->proposalService->createForDepartment($department);
+        $this->natinfService->createForDepartment($department);
+        $this->checklistService->createForDepartment($department);
+        $this->modelService->createForDepartment($department);
     }
 
     /**

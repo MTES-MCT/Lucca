@@ -12,6 +12,7 @@ namespace Lucca\Bundle\DepartmentBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -123,34 +124,50 @@ class UserDepartmentResolver
         }
         $departmentCode = $this->getDepartmentCodeFromUrl();
 
-        /** Second step: check if the department code is set in the request */
         if ($departmentCode && $departmentCode !== 'admin') {
-            $sessionDepartmentCode = $currentRequest?->getSession()?->get('user_department_code');
-            $this->department = $this->em->getRepository(Department::class)->findOneBy(['code' => $departmentCode, 'enabled' => true]);
 
-            //if department code is same of the session return the department from session to optimize the request
-            if ($sessionDepartmentCode === $departmentCode) {
-                return;
+            // 1. Department Retrieval: We attempt to retrieve the Department entity based on the code from the URL.
+            $this->department = $this->em->getRepository(Department::class)->findOneBy([
+                'code' => $departmentCode,
+                'enabled' => true
+            ]);
+
+            if (!$this->department) {
+                throw new DepartmentNotFoundException("Department not found: $departmentCode");
             }
 
+            /**
+             * EXCEPTION FOR LOGIN ROUTE
+             * We allow access to the login page even if the user membership is inactive.
+             * This allows the SecurityController to handle logic/messages for inactive users.
+             */
             if ($currentRequest->get('_route') === 'lucca_user_security_login') {
                 return;
             }
 
             $user = $this->tokenStorage->getToken()?->getUser();
 
-            //check if the user use the department
-            if ($user instanceof User && $this->department && !$user->getDepartments()->contains($this->department)) {
-                $depCode = $this->department?->getCode() ?? 'null';
-                throw new UnauthorizedDepartmentAccessException(
-                    "User {$user->getUsername()} does not have access to department {$depCode}."
-                );
-            }
+            if ($user instanceof User) {
+                // Bypass for Super Admin
+                if (in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
+                    return;
+                }
 
-            if (!$this->department) {
-                throw new DepartmentNotFoundException("Department not found: $departmentCode");
+                // 2. Security Check: Verify if the user has an ACTIVE Adherent account
+                $isActive = $this->em->getRepository(Adherent::class)
+                    ->isUserActiveInDepartment($user, $this->department);
+
+                if (!$isActive) {
+                    // We clear the context and deny access
+                    $this->department = null;
+                    throw new UnauthorizedDepartmentAccessException(
+                        sprintf("User %s is inactive for department %s.",
+                            $user->getUserIdentifier(),
+                            $departmentCode
+                        )
+                    );
+                }
             }
         }
-
     }
 }

@@ -6,3 +6,6 @@ constraint:
     unique:
         department:
             code: "Un département avec ce code existe déja."
+validator:
+    department:
+        invalidCode: "Le code du département n'est pas valide, il doit être composé de 2 chiffres ou de 2 chiffres suivis d'une lettre (pour les départements d'outre-mer)."

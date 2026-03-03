@@ -48,7 +48,6 @@ class DepartmentAdvancedController extends AbstractController
         try {
             $this->settingGenerator->generateMissingSettings($department);
             $this->addFlash('success', 'flash.settings.updatedSuccessfully');
-            $department->setLastSyncSetting(new \DateTime());
             $em = $doctrine->getManager();
             $em->persist($department);
             $em->flush();

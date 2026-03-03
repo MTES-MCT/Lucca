@@ -20,4 +20,4 @@ lucca_media_bundle_gallery:
 lucca_media_bundle_api:
     resource: "@LuccaMediaBundle/Controller/Api"
     type: attribute
-    prefix: /{dep_code}/back-office/api
+    prefix: /{dep_code}/api

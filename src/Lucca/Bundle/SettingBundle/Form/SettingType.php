@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\{
     TextareaType,
     TextType,
 };
+use Lucca\Bundle\MediaBundle\Form\Media\MediaQuickType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Lucca\Bundle\SettingBundle\Entity\Setting;
@@ -35,6 +36,7 @@ class SettingType extends AbstractType
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 /** @var Setting $setting */
                 $setting = $event->getData();
+                $extraParam = $setting->getExtraParam() ?? [];
                 $form = $event->getForm();
 
                 switch ($setting->getType())
@@ -42,7 +44,7 @@ class SettingType extends AbstractType
                     /** Integer type -> no scale */
                     case Setting::TYPE_INTEGER :
                         $form->add('value', IntegerType::class, array(
-                            'label' => 'label.value', 'required' => true, 'scale' => 0,
+                            'label' => 'label.value', 'required' => $extraParam['required'] ?? false, 'scale' => 0,
                             'attr' => array(
                                 'class' => 'touchSpinInput',
                             ),
@@ -53,7 +55,7 @@ class SettingType extends AbstractType
                     case Setting::TYPE_FLOAT :
                         $form->add('value', NumberType::class, array(
                             'label' => 'label.value',
-                            'scale' => 3, 'required' => true,
+                            'scale' => 3, 'required' => $extraParam['required'] ?? false,
                             'attr' => array(
                                 'class' => 'touchSpinInputFloat',
                             ),
@@ -64,7 +66,7 @@ class SettingType extends AbstractType
                     case Setting::TYPE_PERCENT:
                         $form->add('value', PercentType::class, array(
                             'label' => 'label.value',
-                            'required' => true,
+                            'required' => $extraParam['required'] ?? false,
                         ));
                         $setting->setValue($setting->getValue());
                         break;
@@ -73,7 +75,7 @@ class SettingType extends AbstractType
                     case Setting::TYPE_TEXT:
                         $form->add('value', TextType::class, array(
                             'label' => 'label.value',
-                            'required' => true,
+                            'required' => $extraParam['required'] ?? false,
                         ));
                         $setting->setValue($setting->getValue());
                         break;
@@ -100,7 +102,7 @@ class SettingType extends AbstractType
                     case Setting::TYPE_TEXT_LARGE:
                     $form->add('value', TextareaType::class, array(
                         'label' => 'label.value',
-                        'required' => true,
+                        'required' => $extraParam['required'] ?? false,
                         'attr' => [
                             'rows' => 20,
                             'style' => 'background-color: #fcfcfc',
@@ -109,10 +111,12 @@ class SettingType extends AbstractType
                         ],
                         'trim' => false,
                     ));
-                    $setting->setValue($setting->getValue());
+                    case Setting::TYPE_MEDIA:
+                        $form->add('media', MediaQuickType::class, ['label' => 'label.value', 'required' => $extraParam['required'] ?? false, 'accept' => $extraParam['accept'] ?? null]);
                     break;
                 }
             });
+
     }
 
     /**

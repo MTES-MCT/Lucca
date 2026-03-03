@@ -40,6 +40,7 @@ use Lucca\Bundle\SecurityBundle\Exception\LoginWithoutSessionException;
 use Lucca\Bundle\UserBundle\Entity\User;
 use Lucca\Bundle\SecurityBundle\Authenticator\Badge\SuperAdminBadge;
 use Lucca\Bundle\SecurityBundle\Entity\LoginAttempt;
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 
 /**
  * Class SimpleAuthenticator
@@ -122,10 +123,17 @@ class SimpleAuthenticator extends AbstractLoginFormAuthenticator
         $session = $request->getSession();
         $session->set('user_department_code', $department?->getCode());
 
-        if ($user?->getDepartments()->contains($department)) {
-            $departmentBadge->markResolved(); // mark the badge as resolved if the user is part of the department
+        /**
+         * Check if an ACTIVE Adherent record exists
+         * for this User and this Department.
+         */
+        if ($user && $department) {
+            $isActive = $this->em->getRepository(Adherent::class)
+                ->isUserActiveInDepartment($user, $department);
+            if ($isActive) {
+                $departmentBadge->markResolved();
+            }
         }
-
         /**
          * Create a new Passport to transport these data
          *

@@ -3,6 +3,7 @@
 ## Lang : FR
 ####################################
 label:
+    autoImportApiGouv: 'Importer automatiquement les données depuis api.gouv.fr'
     department: 'Département'
     comment: 'Commentaire'
     name: 'Nom'
@@ -11,6 +12,7 @@ label:
     showInHomePage: "Afficher sur le portail d’accueil"
     lastSyncSetting: 'Dernière synchronisation des paramètres'
     downloadFileExample: "Télécharger le fichier d'exemple"
+    departments: 'Départements'
 link:
     department:
         show: 'Voir le département'
@@ -29,6 +31,9 @@ title:
     nextSteps: "Étapes suivantes"
 
 help:
+    autoImportApiGouvDescription: >
+        En activant cette option, les données du département seront automatiquement importées depuis api.gouv.fr.
+        Les données importées comprennent les communes, les intercommunalités, les tribunaux.
     towns: |
         Fichier au format CSV séparé par des virgules contenant la liste des communes, si des communes existent déjà dans le département,
         elle seront mise à jour par celles du fichier en se basant sur le code INSEE.

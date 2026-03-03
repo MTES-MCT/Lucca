@@ -1,0 +1,71 @@
+{% trans_default_domain 'CoreBundle' %}
+
+$(document).ready(function() {
+
+    {% if selector is defined %}
+    {% set datatableSelector = selector %}
+    {% else %}
+    {% set datatableSelector = '.dataTable' %}
+    {% endif %}
+
+    $('{{ datatableSelector }}').each(function() {
+        const tableElement = $(this);
+        const columns = [];
+
+        // 1. Build columns configuration
+        tableElement.find('thead th').each(function() {
+            columns.push({
+                data: $(this).data('data'),
+                searchable: $(this).data('searchable') !== false,
+                orderable: $(this).data('orderable') !== false,
+                // Custom attribute to toggle individual column input
+                columnSearchable: $(this).data('column-searchable') === true
+            });
+        });
+
+        const table = tableElement.DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: tableElement.data('url'),
+                type: "POST"
+            },
+            columns: columns,
+            order: [[0, 'asc']],
+            pageLength: 10,
+            lengthMenu: [10, 25, 50, 100],
+            language: {
+                url: "{{ asset('plugins/dataTables/lang/dataTables.' ~ app.request.locale ~ '.json') }}"
+            },
+            initComplete: function () {
+                const api = this.api();
+
+                api.columns().every(function () {
+                    const column = this;
+                    const colConfig = columns[column.index()];
+
+                    // Only add input if columnSearchable is explicitly true in HTML
+                    if (colConfig.columnSearchable) {
+                        const title = $(column.header()).text().trim();
+                        const input = $('<input type="text" class="form-control form-control-sm mt-2" placeholder="{{ 'label.datatable.search'|trans }}..."/>');
+
+                        // Append to header (under the title)
+                        input.appendTo($(column.header()));
+
+                        // Prevent sorting when clicking inside the input field
+                        input.on('click', function(e) {
+                            e.stopPropagation();
+                        });
+
+                        // Handle search on input
+                        input.on('keyup change clear', function (e) {
+                            if (column.search() !== this.value) {
+                                column.search(this.value).draw();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+});

@@ -26,4 +26,4 @@ lucca_minute_bundle_printing:
 lucca_minute_bundle_api:
     resource: "@LuccaMinuteBundle/Controller/Api"
     type:     attribute
-    prefix:   /{dep_code}/back-office
+    prefix:   /{dep_code}/api

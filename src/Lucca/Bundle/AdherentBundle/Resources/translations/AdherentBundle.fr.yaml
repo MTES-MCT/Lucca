@@ -45,6 +45,8 @@ label:
     logo: "Logo (affiché sur document)"
     countAdherent: "Nombre d'adhérents"
     townMinute: "Commune dossiers"
+    department: "Département"
+    selectDepartment: "Sélectionner un département"
     no: 'Non'
     yes: 'Oui'
 
@@ -94,6 +96,7 @@ link:
         delete: "Supprimer l'adhérent"
         enable: "Activer l'adhérent"
         disable: "Désactiver l'adhérent"
+        duplicate: "Dupliquer l'adhérent"
 
     agent:
         new: "Créer un agent"

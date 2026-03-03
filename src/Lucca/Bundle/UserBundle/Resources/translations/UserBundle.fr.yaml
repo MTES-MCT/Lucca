@@ -66,3 +66,5 @@ link:
     print: "Imprimer"
     enable: "Activer"
     disable: "Désactiver"
+text:
+    noAdherentsLink: "Il n'y a aucun adherent reliés à ce compte utilisateur"

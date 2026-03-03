@@ -37,7 +37,7 @@ class Department implements LoggableInterface
     private string $code;
 
     #[ORM\Column]
-    private string $name;
+    private ?string $name = null;
 
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true])]
     private bool $showInHomePage = true;
@@ -98,7 +98,7 @@ class Department implements LoggableInterface
 
         return $this;
     }
-    
+
     public function isShowInHomePage(): bool
     {
         return $this->showInHomePage;

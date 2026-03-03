@@ -14,8 +14,10 @@ namespace Lucca\Bundle\DepartmentBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
+use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\CoreBundle\Repository\ToggleableRepository;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
+use Lucca\Bundle\UserBundle\Entity\User;
 
 class DepartmentRepository extends EntityRepository
 {
@@ -53,7 +55,35 @@ class DepartmentRepository extends EntityRepository
         return $qb;
     }
 
+    public function getNoExistingForAdherents(User $user): QueryBuilder
+    {
+        $qb = $this->queryDepartment();
+        $rootAlias = $qb->getRootAliases()[0];
+
+
+        $subQb = $this->getEntityManager()->createQueryBuilder();
+        $subQb->select('dist_dept.id')
+            ->from(Adherent::class, 'adh')
+            ->join('adh.department', 'dist_dept')
+            ->where('adh.user = :user');
+
+        $qb->andWhere($qb->expr()->notIn("$rootAlias.id", $subQb->getDQL()))
+            ->setParameter('user', $user);
+
+        return $qb;
+    }
+
     /*******************************************************************************************/
+    /********************* Find methods *****/
+    /*******************************************************************************************/
+
+    public function findNoExistingForAdherents(User $user): array
+    {
+        $qb = $this->getNoExistingForAdherents($user);
+        return $qb->getQuery()->getResult();
+    }
+
+        /*******************************************************************************************/
     /********************* Override basic methods *****/
     /*******************************************************************************************/
 

@@ -37,6 +37,14 @@ readonly class SummaryAdherentSubscriptionMailer
     {
         $email = new TemplatedEmail();
 
+        $senderEmailAddress = SettingManager::get('setting.general.app.name');
+        $senderName = SettingManager::get('setting.general.emailGlobal.name');
+
+        //check email is set and good format and name is set
+        if (!filter_var($senderEmailAddress, FILTER_VALIDATE_EMAIL) || empty($senderName)) {
+            return false;
+        }
+
         /** Step I - Build parameter : from -> array(email => name) */
         $from = new Address(
             SettingManager::get('setting.general.emailGlobal.name'), SettingManager::get('setting.general.app.name')

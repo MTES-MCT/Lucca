@@ -13,6 +13,8 @@ namespace Lucca\Bundle\SettingBundle\Entity;
 use Exception;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Lucca\Bundle\MediaBundle\Entity\Media;
+use Lucca\Bundle\MediaBundle\Entity\MediaAsyncInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Lucca\Bundle\LogBundle\Entity\LoggableInterface;
@@ -24,7 +26,7 @@ use Lucca\Bundle\SettingBundle\Repository\SettingRepository;
     columns: ['name', 'department_id']
 )]
 #[ORM\Table(name: 'lucca_setting')]
-class Setting implements LoggableInterface
+class Setting implements LoggableInterface, MediaAsyncInterface
 {
     /** Setting TYPE constants */
     const TYPE_INTEGER = 'choice.setting.type.integer';
@@ -35,6 +37,7 @@ class Setting implements LoggableInterface
     const TYPE_BOOL = 'choice.setting.type.boolean';
     const TYPE_LIST = 'choice.setting.type.list';
     const TYPE_COLOR = 'choice.setting.type.color';
+    const TYPE_MEDIA = 'choice.setting.type.media';
 
     /** Setting access type constant */
     const ACCESS_TYPE_SUPER_ADMIN = 'choice.setting.accessType.superAdmin';
@@ -63,6 +66,7 @@ class Setting implements LoggableInterface
         Setting::TYPE_LIST,
         Setting::TYPE_COLOR,
         Setting::TYPE_TEXT_LARGE,
+        Setting::TYPE_MEDIA,
     ], message: 'constraint.choice')]
     private string $type;
 
@@ -95,6 +99,13 @@ class Setting implements LoggableInterface
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $extraParam = null;
+
+    //cascade persist and delete
+    #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist', 'remove']), ORM\JoinColumn(nullable: true), ORM\JoinColumn(onDelete: 'SET NULL')]
+    private ?media $media = null;
 
     /************************************************************************ Custom functions ************************************************************************/
 
@@ -150,12 +161,31 @@ class Setting implements LoggableInterface
             case self::TYPE_COLOR:
             case self::TYPE_LIST:
             case self::TYPE_TEXT:
+            case self::TYPE_MEDIA:
             case self::TYPE_TEXT_LARGE:
                 $output = $value;
                 break;
         }
 
         return $output;
+    }
+
+    public function setMedia(?Media $media): self
+    {
+        $this->media = $media;
+        $this->value = $media?->getNameCanonical();
+
+        return $this;
+    }
+
+    public function getAsyncMedia(): ?Media
+    {
+        return $this->media;
+    }
+
+    public function setAsyncMedia(?Media $media = null): MediaAsyncInterface
+    {
+        return $this->setMedia($media);
     }
 
     /**
@@ -278,4 +308,19 @@ class Setting implements LoggableInterface
 
         return $this;
     }
+    public function getMedia(): ?Media
+    {
+        return $this->media;
+    }
+
+    public function getExtraParam(): ?array
+    {
+        return $this->extraParam;
+    }
+    public function setExtraParam(?array $extraParam): self
+    {
+        $this->extraParam = $extraParam;
+        return $this;
+    }
+
 }

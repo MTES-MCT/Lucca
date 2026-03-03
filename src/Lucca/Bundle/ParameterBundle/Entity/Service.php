@@ -51,6 +51,13 @@ class Service implements LoggableInterface
 
     /************************************************************************ Custom functions ************************************************************************/
 
+    public function __clone(): void
+    {
+        $this->id = null;
+        $this->department = null;
+        $this->office = null;
+    }
+
     /**
      * Get label display on form
      */

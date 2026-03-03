@@ -12,6 +12,7 @@ namespace Lucca\Bundle\SettingBundle\Manager;
 
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Lucca\Bundle\DepartmentBundle\Service\UserDepartmentResolver;
+use Lucca\Bundle\SettingBundle\Entity\Setting;
 use Lucca\Bundle\SettingBundle\Generator\SettingGenerator;
 
 /**
@@ -52,5 +53,12 @@ abstract class SettingManager
     public static function setAll(array $settings): void
     {
         self::$settings[self::$department?->getCode()] = $settings;
+    }
+
+    public static function manageMediaSettings(Setting $setting): void
+    {
+        if ($setting->getMedia()) {
+            $setting->setValue($setting->getMedia()->getId());
+        }
     }
 }

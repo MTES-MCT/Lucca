@@ -21,6 +21,7 @@ use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Lucca\Bundle\FolderBundle\Service\NatinfService;
 use Lucca\Bundle\ModelBundle\Service\ModelService;
 use Lucca\Bundle\FolderBundle\Service\TagService;
+use Lucca\Bundle\FolderBundle\Service\ProposalService;
 
 class InitializationDepartmentCommand extends Command
 {
@@ -30,6 +31,7 @@ class InitializationDepartmentCommand extends Command
         private readonly ModelService      $modelService,
         private readonly NatinfService     $natinfService,
         private readonly TagService        $tagService,
+        private readonly ProposalService   $proposalService,
     )
     {
         parent::__construct();
@@ -104,11 +106,14 @@ class InitializationDepartmentCommand extends Command
         $this->em->persist($demoDepartment);
         $this->em->flush();
 
+        // Tag creation from JSON data file (need to be created before proposals and natinfs)
+        $this->tagService->createForDepartment($demoDepartment);
+
+        // Proposal creation from JSON data file
+        $this->proposalService->createForDepartment($demoDepartment);
+
         // Natinf creation from JSON data file
         $this->natinfService->createForDepartment($demoDepartment);
-
-        // Tag creation from JSON data file
-        $this->tagService->createForDepartment($demoDepartment);
 
         // Checklist creation from JSON data file
         $this->checklistService->createForDepartment($demoDepartment);

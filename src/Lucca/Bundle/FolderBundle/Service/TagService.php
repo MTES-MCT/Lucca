@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2025. Numeric Wave
+ * Copyright (c) 2025-2026. Numeric Wave
  *
  * Affero General Public License (AGPL) v3
  *
@@ -15,28 +15,39 @@ use Lucca\Bundle\FolderBundle\Entity\Tag;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
-
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
-use Lucca\Bundle\FolderBundle\Entity\Natinf;
 
 readonly class TagService
 {
+    private const BATCH_SIZE = 100;
+
     public function __construct(
         private EntityManagerInterface $em,
         private ParameterBagInterface $parameterBag,
         private RequestStack $requestStack,
         private TranslatorInterface $translator,
-    )
-    {
-    }
+    ) {}
 
+    /**
+     * Create tags for a specific department
+     */
     public function createForDepartment(Department $department): void
     {
+
+        if (!$this->em->isOpen()) {
+            // Si ça dump ici, le coupable est le service appelé AVANT (GeoApiService)
+            dd("L'EntityManager est déjà fermé avant de commencer les Tags !");
+        }
         $tags = $this->readTags();
 
-        $this->insertTags($department, $tags);
+        if ($tags) {
+            $this->insertTags($department, $tags);
+        }
     }
 
+    /**
+     * Read tags from the JSON data file
+     */
     public function readTags(): ?array
     {
         $projectDir = $this->parameterBag->get('kernel.project_dir');
@@ -62,22 +73,51 @@ readonly class TagService
         return $data;
     }
 
+    /**
+     * Insert tags into database using batch processing
+     */
     private function insertTags(Department $department, array $tags): void
     {
-        // Re-attach the department entity if detached by a clean
-        $department = $this->em->getReference(Department::class, $department->getId());
-
-        foreach ($tags as $tag) {
-            $newTag = new Tag();
-            $newTag->setNum($tag['num']);
-            $newTag->setName($tag['name']);
-            $newTag->setCategory($tag['category']);
-            $newTag->setDepartment($department);
-
-            $this->em->persist($newTag);
+        // 1. On s'assure que le département est bien "attaché"
+        if (!$this->em->contains($department)) {
+            $department = $this->em->find(Department::class, $department->getId());
         }
 
+        $i = 0;
+        foreach ($tags as $tagData) {
+            // 2. RECHERCHE D'EXISTENCE (Clé unique : num + department)
+            // On cherche si ce tag existe déjà pour éviter le crash SQL
+            $tag = $this->em->getRepository(Tag::class)->findOneBy([
+                'num' => $tagData['num'],
+                'department' => $department
+            ]) ?? new Tag();
+
+            $tag->setNum($tagData['num']);
+            $tag->setName($tagData['name']);
+            $tag->setCategory($tagData['category']);
+            $tag->setDepartment($department);
+            $tag->setEnabled(true);
+
+            $this->em->persist($tag);
+            $i++;
+
+            if (($i % self::BATCH_SIZE) === 0) {
+                $this->flushAndClear($department);
+            }
+        }
+
+        $this->flushAndClear($department);
+    }
+
+    /**
+     * Flush pending changes, clear the Identity Map and re-attach the main department entity
+     */
+    private function flushAndClear(Department &$department): void
+    {
         $this->em->flush();
         $this->em->clear();
+
+        // Re-fetch the department as it becomes detached after em->clear()
+        $department = $this->em->find(Department::class, $department->getId());
     }
 }

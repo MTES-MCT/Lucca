@@ -4,6 +4,7 @@
 
 flash:
     adherent:
+        noDepartmentAvailableForDuplication: "Aucun département n'est disponible pour la duplication."
         createdSuccessfully: "L'adhérent a bien été créé."
         updatedSuccessfully: "L'adhérent a bien été modifié."
         deletedSuccessfully: "L'adhérent a bien été supprimé."

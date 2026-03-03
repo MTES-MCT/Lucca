@@ -15,3 +15,9 @@ lucca_adherent_bundle_profile:
     resource: "@LuccaAdherentBundle/Controller/Profile"
     type:     attribute
     prefix:   /{dep_code}/back-office
+
+# LuccaAdherentBundle Routing - API
+lucca_adherent_bundle_api:
+    resource: "@LuccaAdherentBundle/Controller/Api"
+    type:     attribute
+    prefix:   /{dep_code}/api

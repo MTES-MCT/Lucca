@@ -4,6 +4,11 @@ lucca_user_bundle:
     type:     attribute
     prefix:   /{dep_code}/back-office
 
+lucca_user_bundle_api:
+    resource: "@LuccaUserBundle/Controller/Api"
+    type:     attribute
+    prefix:   /{dep_code}/api
+
 lucca_user_bundle_profile:
     resource: "@LuccaUserBundle/Controller/Profile"
     type:     attribute

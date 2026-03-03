@@ -112,7 +112,7 @@
 
     <div class="u-header-left">
         <a class="u-header-logo mx-auto" href="{{ path('lucca_core_dashboard') }}">
-            <img class="u-logo-desktop" src="{{ asset('setting.general.logo.name'|setting|default('assets/logo/lucca-logo-texte-transparent.png')) }}" width="100"
+            <img class="u-logo-desktop" src="{{ 'setting.general.logo.name'|settingMediaUrl|default(asset('assets/logo/lucca-logo-texte-transparent.png')) }}" width="100"
                  alt="{{ 'setting.general.app.name'| setting }}">
         </a>
     </div>
@@ -189,7 +189,7 @@
         <div class="u-sidebar-inner">
             <header class="u-sidebar-header">
                 <a class="u-sidebar-logo" href="{{ path('lucca_core_dashboard') }}">
-                    <img class="img-fluid" src="{{ asset('setting.general.logo.name'|setting|default('assets/logo/lucca-logo-texte-transparent.png')) }}"
+                    <img class="img-fluid" src="{{ 'setting.general.logo.name'|settingMediaUrl|default(asset('assets/logo/lucca-logo-texte-transparent.png')) }}"
                          alt="{{ 'setting.general.app.name'| setting }}">
                 </a>
             </header>
@@ -445,6 +445,15 @@
                                 <i class="fas fa-map-pin u-sidebar-nav-menu__item-icon"></i>
                                 <span class="u-sidebar-nav-menu__item-title">{{ 'menu.department'|trans }}</span>
                                 <span class="u-sidebar-nav-menu__indicator"></span>
+                            </a>
+                        </li>
+
+                        {#-- Menu - Adherent --#}
+                        <li class="u-sidebar-nav-menu__item">
+                            <a class="u-sidebar-nav-menu__link {% block menuActive_adherent_admin %}{% endblock %}"
+                               href="{{ path('lucca_adherent_index') }}" title="{{ 'menu.adherent'|trans }}">
+                                <i class="fas fa-user u-sidebar-nav-menu__item-icon"></i>
+                                <span class="u-sidebar-nav-menu__item-title">{{ 'menu.adherent'|trans }}</span>
                             </a>
                         </li>
                     {% endif %}

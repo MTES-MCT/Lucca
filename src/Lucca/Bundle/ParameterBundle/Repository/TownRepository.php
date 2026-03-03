@@ -156,6 +156,7 @@ class TownRepository extends LuccaRepository
     {
         return $this->createQueryBuilder('town')
             ->leftJoin('town.intercommunal', 'intercommunal')->addSelect('intercommunal')
+            ->leftJoin('town.department', 'department')->addSelect('department')
         ;
     }
 }
