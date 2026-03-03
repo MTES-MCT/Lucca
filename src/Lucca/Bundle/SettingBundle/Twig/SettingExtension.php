@@ -41,7 +41,7 @@ class SettingExtension extends AbstractExtension
     {
         return SettingManager::get($settingName, null, $depCode);
     }
-    public function settingMediaUrlFilter(string $settingName, ?string $default = null, ?string $depCode = null): ?string
+    public function settingMediaUrlFilter(string $settingName, ?string $depCode = null): ?string
     {
         $fileName = SettingManager::get($settingName, null, $depCode);
 

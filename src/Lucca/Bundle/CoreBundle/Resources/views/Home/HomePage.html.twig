@@ -12,46 +12,6 @@
 
 
 {% block lucca_page %}
-
-    {#<div class="container-fluid my-4">#}
-    {#<div class="d-flex flex-wrap justify-content-center gap-4">#}
-    {#{% for department in departments %}#}
-    {#<div class="m-3 d-flex" style="flex: 1 1 calc(10% - 1rem); max-width: 300px; min-width: 200px;">#}
-    {#<a href="{{ path('lucca_content_dashboard', {'dep_code': department.code}) }}"#}
-    {#class="d-block ratio ratio-4x3 w-100">#}
-    {#<img src="{{ 'setting.general.logo.name'|settingMediaUrl(department.code) }}"#}
-    {#alt="{{ 'setting.general.app.name'| setting(department.code) }}"#}
-    {#class="img-fluid img-responsive logo-header"#}
-    {#style="object-fit: contain; width: 100%; height: 100%; max-height: unset!important; max-width: unset!important;">#}
-    {#{{ 'setting.general.ddtName.name'| setting(department.code) }}#}
-    {#</a>#}
-    {#</div>#}
-    {#{% endfor %}#}
-    {#</div>#}
-
-    {#<div class="m-3 d-flex flex-wrap justify-content-center" style="gap: 1rem;">#}
-    {#{% for department in departments %}#}
-    {#<div class="row" style="flex: 1 1 200px; max-width: 300px; min-width: 200px;">#}
-
-    {#<a class="h-100" href="{{ path('lucca_content_dashboard', {'dep_code': department.code}) }}">#}
-    {#<div class="col-12">#}
-    {#<img src="{{ 'setting.general.logo.name'|settingMediaUrl(department.code) }}"#}
-    {#alt="{{ 'setting.general.ddtName.name'| setting(department.code) }}"#}
-    {#class="img-fluid logo-header"#}
-    {#style="object-fit: contain; width: 100%; height: 100%;">#}
-    {##}{#</a>#}
-    {#</div>#}
-    {#<div class="col-12">#}
-    {#<a href="{{ path('lucca_content_dashboard', {'dep_code': department.code}) }}">#}
-    {#{{ 'setting.general.ddtName.name'| setting(department.code) }}#}
-    {#</a>#}
-    {#</div>#}
-
-    {#</a>#}
-    {#</div>#}
-    {#{% endfor %}#}
-    {#</div>#}
-
     <div class="container my-5">
         <div class="tile-wrapper">
             {% for department in departments %}
@@ -74,8 +34,6 @@
             {% endfor %}
         </div>
     </div>
-
-    {#</div>#}
 
 
 {% endblock lucca_page %}
