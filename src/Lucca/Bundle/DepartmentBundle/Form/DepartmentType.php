@@ -91,13 +91,13 @@ class DepartmentType extends AbstractType
             ]);
         });
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) use ($isNew) {
             $form = $event->getForm();
             // Initial state for towns field (before submit)
             if (!$form->has('towns')) {
                 $form->add('towns', FileType::class, [
                     'label' => 'label.towns',
-                    'required' => true,
+                    'required' => $isNew,
                     'mapped' => false,
                     'attr' => ['accept' => '.csv', 'class' => 'custom-file'],
                     'row_attr' => ['class' => 'manual-field csv-upload-field']
