@@ -40,7 +40,7 @@ class Department implements LoggableInterface
     private ?string $name = null;
 
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true])]
-    private bool $showInHomePage = true;
+    private bool $showInHomePage = false;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment = null;

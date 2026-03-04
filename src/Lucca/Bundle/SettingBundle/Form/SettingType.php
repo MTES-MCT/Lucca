@@ -44,7 +44,7 @@ class SettingType extends AbstractType
                     /** Integer type -> no scale */
                     case Setting::TYPE_INTEGER :
                         $form->add('value', IntegerType::class, array(
-                            'label' => 'label.value', 'required' => $extraParam['required'] ?? false, 'scale' => 0,
+                            'label' => 'label.value', 'required' => $extraParam['required'] ?? false,
                             'attr' => array(
                                 'class' => 'touchSpinInput',
                             ),

@@ -10,12 +10,19 @@
 
 namespace Lucca\Bundle\AdherentBundle\Finder;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Lucca\Bundle\AdherentBundle\Entity\Adherent;
 use Lucca\Bundle\MediaBundle\Entity\Media;
 use Lucca\Bundle\SettingBundle\Manager\SettingManager;
 
 readonly class LogoFinder
 {
+    public function __construct(
+        private EntityManagerInterface $em
+    )
+    {
+    }
+
     /**
      * Define specific logo who was used
      */
@@ -27,7 +34,10 @@ readonly class LogoFinder
 
         $officialLogo = SettingManager::get('setting.pdf.logo.name');
         if ($officialLogo) {
-            return $officialLogo;
+            $media = $this->em->getRepository(Media::class)->findOneFileByName($officialLogo);
+            if ($media) {
+                return $media;
+            }
         }
 
         return null;

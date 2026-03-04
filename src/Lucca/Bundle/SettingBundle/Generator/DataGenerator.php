@@ -240,11 +240,12 @@ class DataGenerator
         //------------------------------
         [
             'name' => "setting.pdf.logo.name",
-            'type' => Setting::TYPE_TEXT,
+            'type' => Setting::TYPE_MEDIA,
+            'extraParams' => ['accept' => 'image/*', 'isPublic' => true],
             'category' => 'setting.category.pdf.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 13,
-            'value' => '/assets/logo/logo-color.png',
+            'value' => null,
             'valuesAvailable' => [],
             'comment' => 'setting.pdf.logo.comment'],
         [
@@ -404,6 +405,16 @@ class DataGenerator
         //------------------------------
         // GENERAL - URL SETTINGS
         //------------------------------
+        [
+            'name' => "setting.general.websiteFooter.name",
+            'type' => Setting::TYPE_TEXT,
+            'category' => 'setting.category.general.name',
+            'accessType' => Setting::ACCESS_TYPE_ADMIN,
+            'position' => 25,
+            'value' => "A renseigner dans les paramètres",
+            'extraParams' => ['required' => true],
+            'valuesAvailable' => [],
+            'comment' => 'setting.general.websiteFooter.comment'],
         [
             'name' => "setting.general.url.name",
             'type' => Setting::TYPE_TEXT,
