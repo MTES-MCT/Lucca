@@ -39,7 +39,6 @@ class UserController extends AbstractController
         $result['data'] = array_map(function(User $user) use ($booleanExtension) {
             $depts = [];
             foreach ($user->getAdherents() as $adherent) {
-                dump($adherent->getDepartment()->getName());
                 if ($adherent->getDepartment()) {
                     $depts[] = $adherent->getDepartment()->getName();
                 }

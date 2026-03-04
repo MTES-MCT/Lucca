@@ -33,11 +33,6 @@ readonly class TagService
      */
     public function createForDepartment(Department $department): void
     {
-
-        if (!$this->em->isOpen()) {
-            // Si ça dump ici, le coupable est le service appelé AVANT (GeoApiService)
-            dd("L'EntityManager est déjà fermé avant de commencer les Tags !");
-        }
         $tags = $this->readTags();
 
         if ($tags) {
