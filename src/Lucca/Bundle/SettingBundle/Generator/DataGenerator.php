@@ -405,6 +405,16 @@ class DataGenerator
         // GENERAL - URL SETTINGS
         //------------------------------
         [
+            'name' => "setting.general.websiteFooter.name",
+            'type' => Setting::TYPE_TEXT,
+            'category' => 'setting.category.general.name',
+            'accessType' => Setting::ACCESS_TYPE_ADMIN,
+            'position' => 25,
+            'value' => "A renseigner dans les paramètres",
+            'extraParams' => ['required' => true],
+            'valuesAvailable' => [],
+            'comment' => 'setting.general.websiteFooter.comment'],
+        [
             'name' => "setting.general.url.name",
             'type' => Setting::TYPE_TEXT,
             'category' => 'setting.category.general.name',
