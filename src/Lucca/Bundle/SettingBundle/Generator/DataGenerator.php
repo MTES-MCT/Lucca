@@ -240,11 +240,12 @@ class DataGenerator
         //------------------------------
         [
             'name' => "setting.pdf.logo.name",
-            'type' => Setting::TYPE_TEXT,
+            'type' => Setting::TYPE_MEDIA,
+            'extraParams' => ['accept' => 'image/*', 'isPublic' => true],
             'category' => 'setting.category.pdf.name',
             'accessType' => Setting::ACCESS_TYPE_SUPER_ADMIN,
             'position' => 13,
-            'value' => '/assets/logo/logo-color.png',
+            'value' => null,
             'valuesAvailable' => [],
             'comment' => 'setting.pdf.logo.comment'],
         [
