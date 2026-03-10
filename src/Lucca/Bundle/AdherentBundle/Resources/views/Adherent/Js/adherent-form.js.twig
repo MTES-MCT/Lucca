@@ -1,0 +1,60 @@
+/**
+ * Handle radio buttons for location authority selection
+ */
+$('input[name="parameter"]').click(function () {
+    $(".field-parameter").hide('slow');
+
+    switch ($(this).val()) {
+        case 'town':
+            $("#field-town").show('slow');
+            break;
+        case 'intercommunal':
+            $("#field-intercommunal").show('slow');
+            break;
+        case 'service':
+            $("#field-service").show('slow');
+            break;
+    }
+});
+
+/**
+ * Handle dynamic Department change to update dependent lists
+ */
+document.addEventListener('change', function (e) {
+    if (e.target && e.target.id === 'lucca_adherent_type_department') {
+        const form = e.target.closest('form');
+        const formData = new FormData(form);
+
+        fetch(window.location.href, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+
+                // We target the containers (wrappers) instead of the select elements directly
+                // to ensure we replace the entire form row (labels, widgets, and errors).
+                const containersToUpdate = [
+                    'field-town',
+                    'field-service',
+                    'field-intercommunal'
+                ];
+
+                containersToUpdate.forEach(containerId => {
+                    const oldContainer = document.getElementById(containerId);
+                    const newContainer = doc.getElementById(containerId);
+
+                    if (oldContainer && newContainer) {
+                        // Update the HTML content
+                        oldContainer.innerHTML = newContainer.innerHTML;
+                    }
+                });
+            })
+            .catch(error => console.error('Error during dynamic update:', error));
+    }
+});

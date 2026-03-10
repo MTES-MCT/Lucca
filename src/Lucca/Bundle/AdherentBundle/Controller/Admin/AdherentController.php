@@ -62,8 +62,15 @@ class AdherentController extends AbstractController
         $adherent = new Adherent();
         $department = $this->userDepartmentResolver->getDepartment();
 
-        $form = $this->createForm(AdherentType::class, $adherent);
+        $form = $this->createForm(AdherentType::class, $adherent, [
+            'showDepartment' => $department == null,
+        ]);
+
         $form->handleRequest($request);
+
+        if ($department == null) {
+            $department = $adherent->getDepartment();
+        }
 
         if ($form->isSubmitted() && $form->isValid() &&
             $this->adherentManager->checkPrerequisites($adherent, $department, true)) {
@@ -119,6 +126,10 @@ class AdherentController extends AbstractController
         $editForm = $this->createForm(AdherentEditType::class, $adherent);
         $editForm->handleRequest($request);
         $department = $this->userDepartmentResolver->getDepartment();
+
+        if ($department == null) {
+            $department = $adherent->getDepartment();
+        }
 
         if ($editForm->isSubmitted() && $editForm->isValid() &&
             $this->adherentManager->checkPrerequisites($adherent, $department)) {
