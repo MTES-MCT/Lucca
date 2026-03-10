@@ -123,4 +123,7 @@
 
 {% block lucca_js %}
     {{ parent() }}
+    <script>
+        {% include "@LuccaAdherent/Adherent/Js/adherent-form.js.twig" %}
+    </script>
 {% endblock lucca_js %}

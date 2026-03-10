@@ -29,6 +29,9 @@ readonly class MinuteChangeStatusAigleNotifier
      */
     public function updateAigleMinuteStatus(Minute $minute): void
     {
+        if (!$this->aigleApiClient->apiAreSet()) {
+            return;
+        }
 
         $parcelRaw = $minute->getPlot()?->getParcel();
         $town = $minute->getPlot()->getTown();

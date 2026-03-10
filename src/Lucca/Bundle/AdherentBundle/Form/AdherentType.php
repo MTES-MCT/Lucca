@@ -7,6 +7,7 @@ use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Lucca\Bundle\DepartmentBundle\Repository\DepartmentRepository;
 use Lucca\Bundle\MediaBundle\Form\Media\MediaQuickType;
 use Lucca\Bundle\ParameterBundle\Entity\{Intercommunal, Service, Town};
+use Lucca\Bundle\UserBundle\Entity\User;
 use Lucca\Bundle\ParameterBundle\Repository\{TownRepository, IntercommunalRepository, ServiceRepository};
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\{AbstractType, FormBuilderInterface, FormEvent, FormEvents, FormInterface};
@@ -24,7 +25,7 @@ class AdherentType extends AbstractType
         $builder
             ->add('name', TextType::class, ['label' => 'label.name'])
             ->add('enabled', CheckboxType::class, ['label' => 'label.enabled', 'required' => false])
-            ->add('firstname', TextType::class, ['label' => 'label.firstname'])
+            ->add('firstname', TextType::class, ['label' => 'label.firstname', 'empty_data' => ''])
             ->add('function', ChoiceType::class, [
                 'choices' => [
                     Adherent::FUNCTION_MAYOR => Adherent::FUNCTION_MAYOR,
@@ -57,10 +58,15 @@ class AdherentType extends AbstractType
                 'placeholder' => 'label.selectDepartment',
                 'autocomplete' => true,
                 'query_builder' => function (DepartmentRepository $er) use ($user) {
-                    return $er->getNoExistingForAdherents($user);
+                    if ($user instanceof User)
+                        return $er->getNoExistingForAdherents($user);
+                    else
+                        return $er->getValuesActive();
                 }
             ]);
-        } else {
+        }
+
+        if ($isNew && !$user) {
             $builder->add('user', UserType::class, ['required' => true]);
         }
 

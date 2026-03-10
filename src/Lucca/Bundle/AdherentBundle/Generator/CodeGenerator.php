@@ -35,7 +35,7 @@ readonly class CodeGenerator
      */
     public function generate(Adherent $entity): string
     {
-        $label = strtolower(SettingManager::get('setting.general.prefixUsername.name')) . "-";
+        $label = strtolower(SettingManager::get('setting.general.prefixUsername.name', 'lucca')) . "-";
 
         if ($entity->getTown()) {
             $baseCode = $entity->getTown()->getCode();
@@ -48,9 +48,19 @@ readonly class CodeGenerator
         }
 
         $prefix = $label . strtolower($baseCode) . '-';
-        $this->em->getFilters()->disable('department_filter');
+
+        $filters = $this->em->getFilters();
+        $isFilterEnabled = $filters->isEnabled('department_filter');
+
+        if ($isFilterEnabled) {
+            $filters->disable('department_filter');
+        }
+
         $maxCode = $this->em->getRepository(Adherent::class)->findMaxUsername($prefix);
-        $this->em->getFilters()->enable('department_filter');
+
+        if ($isFilterEnabled) {
+            $filters->enable('department_filter');
+        }
 
         if ($maxCode) {
             $increment = substr($maxCode[1], -2);

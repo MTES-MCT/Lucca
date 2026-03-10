@@ -24,6 +24,14 @@ readonly class AigleApiClient
         private string              $apiKey,
     ) {
     }
+    public function apiAreSet(): bool
+    {
+        if (empty($this->baseUrl) || empty($this->apiKey) || $this->baseUrl == 'null' || $this->apiKey == 'null') {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Generic request method
      * @throws TransportExceptionInterface

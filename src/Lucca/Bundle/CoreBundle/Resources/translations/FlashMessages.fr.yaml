@@ -1,0 +1,8 @@
+####################################
+## Flash Domain
+## locale: fr
+####################################
+
+flash:
+    aigleApi:
+        apiNotSet: "L'API Aigle n'est pas configurée, veuillez verifier les variables d'environnement."
