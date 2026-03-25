@@ -1,0 +1,17 @@
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+
+parameters:
+    # Start at level 5 – increase progressively
+    level: 5
+
+    paths:
+        - src/
+
+    symfony:
+        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+
+    # Ignore patterns (adjust as needed)
+    ignoreErrors: []
+

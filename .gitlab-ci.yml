@@ -1,45 +1,165 @@
+#
+# GitLab CI/CD – Lucca v2
+#
+# Fully self-contained pipeline: only public Docker Hub images.
+# No custom images, no external templates, no production stage.
+# Stages: lint → scan → tests
+#
+# All sensitive / environment-specific values are driven by CI/CD
+# variables (Settings > CI/CD > Variables). The defaults below are
+# safe fallbacks for local / CI testing only.
+#
+
+# ── Global variables (override via CI/CD settings) ───────
 variables:
-    REGISTRY_IMAGE_PATH: 'nw/lucca-v2'
-    CONTAINERS_TO_BUILD: 'php-fpm,caddy'
-    DUMP_TO_IMPORT: 'http://db.tec2.numeric-wave.local:8080/lucca-v2_dump.zip'
-    PHP_VERSION: '8.2'
-    PHP_BRANCH: 'main'
-    CADDY_VERSION: '2'
-    CADDY_BRANCH: 'main'
-    MAIN_VERSION: '8.2-2'
-    PHP_MEMORY_LIMIT: '512M'
-    
-    # These should be defined in GitLab CI/CD settings (masked if sensitive)
-    APP_SECRET: ${APP_SECRET}
-    MYSQL_DATABASE: ${MYSQL_DATABASE}
-    MYSQL_USER: ${MYSQL_USER}
-    MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    MYSQL_HOST: ${MYSQL_HOST}
+    PHP_IMAGE: "${PHP_IMAGE:-php:8.4-cli}"
+    PHP_MEMORY_LIMIT: "${PHP_MEMORY_LIMIT:-512M}"
+
+    MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:-root}"
+    MYSQL_DATABASE: "${MYSQL_DATABASE:-lucca_test}"
+    MYSQL_USER: "${MYSQL_USER:-lucca}"
+    MYSQL_PASSWORD: "${MYSQL_PASSWORD:-lucca}"
+    MYSQL_HOST: "${MYSQL_HOST:-mariadb}"
+
+    APP_ENV: "${APP_ENV:-test}"
+    APP_SECRET: "${APP_SECRET:-ci-secret-placeholder}"
+    DATABASE_URL: "mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${MYSQL_HOST}:3306/${MYSQL_DATABASE}?serverVersion=mariadb-11.4.0"
+
+    COMPOSER_HOME: "/tmp/composer"
 
 stages:
-    - build
+    - lint
     - scan
     - tests
-    - sbom
-    - production
 
-include:
-    -   project: 'nw/gitlab-ci'
-        ref: main
-        file: '/build/docker_build.yml'
-    -   project: 'nw/gitlab-ci'
-        ref: main
-        file: '/scan/docker_scan_trivy.yml'
-    -   project: 'nw/gitlab-ci'
-        ref: main
-        file: '/sbom/docker_sbom.yml'
-    -   project: 'nw/gitlab-ci'
-        ref: main
-        file: '/tests/docker_paratest.yml'
-    -   project: 'nw/gitlab-ci'
-        ref: main
-        file: '/tests/docker_phpunit.yml'
-    -   project: 'nw/gitlab-ci'
-        ref: main
-        file: '/production/docker_build_push_prod.yml'
+# ── Shared Composer cache ────────────────────────────────
+.composer-cache: &composer-cache
+    cache:
+        key: composer-${CI_COMMIT_REF_SLUG}
+        paths:
+            - vendor/
+            - ${COMPOSER_HOME}/cache/
+        policy: pull-push
+
+# ─────────────────────────────────────────────────────────
+#  Base PHP setup (extensions + Composer)
+#  Does NOT depend on MariaDB → used by the lint job.
+# ─────────────────────────────────────────────────────────
+.php-base-setup: &php-base-setup
+    - |
+        apt-get update -qq
+        apt-get install -yqq --no-install-recommends \
+            git unzip libzip-dev libicu-dev \
+            libpng-dev libjpeg62-turbo-dev libfreetype6-dev
+        docker-php-ext-configure intl
+        docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg
+        docker-php-ext-install -j"$(nproc)" pdo_mysql zip intl gd
+        curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+        composer install --prefer-dist --no-progress --no-interaction --no-scripts
+
+# ─────────────────────────────────────────────────────────
+#  Full PHP setup (base + wait for MariaDB)
+#  Used by jobs that require a MariaDB service.
+# ─────────────────────────────────────────────────────────
+.php-db-setup: &php-db-setup
+    - *php-base-setup
+    - |
+        apt-get install -yqq --no-install-recommends mariadb-client
+        for i in $(seq 1 30); do
+            if mariadb -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" -e "SELECT 1" "$MYSQL_DATABASE" >/dev/null 2>&1; then
+                echo "✔ MariaDB ready"; break
+            fi
+            echo "⏳ Waiting for MariaDB… ($i/30)"
+            sleep 1
+        done
+
+# ─────────────────────────────────────────────────────────
+#  Lint: YAML, Twig, Container
+#  No database required.
+# ─────────────────────────────────────────────────────────
+lint:
+    stage: lint
+    image: $PHP_IMAGE
+    <<: *composer-cache
+    before_script:
+        - *php-base-setup
+        - php bin/console cache:warmup
+    script:
+        - php bin/console lint:yaml config --parse-tags
+        - php bin/console lint:twig templates
+        - php bin/console lint:container
+    rules:
+        - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+        - if: $CI_COMMIT_BRANCH
+
+# ─────────────────────────────────────────────────────────
+#  PHPStan: static analysis
+#  No database required.
+# ─────────────────────────────────────────────────────────
+phpstan:
+    stage: scan
+    image: $PHP_IMAGE
+    <<: *composer-cache
+    before_script:
+        - *php-base-setup
+        - php bin/console cache:warmup
+    script:
+        - vendor/bin/phpstan analyse --no-progress --error-format=gitlab > phpstan-report.json || true
+        - vendor/bin/phpstan analyse --no-progress
+    artifacts:
+        when: always
+        reports:
+            codequality: phpstan-report.json
+        expire_in: 7 days
+    rules:
+        - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+        - if: $CI_COMMIT_BRANCH
+
+# ─────────────────────────────────────────────────────────
+#  PHP CS Fixer: coding standards check (dry-run)
+#  No database required.
+# ─────────────────────────────────────────────────────────
+php-cs-fixer:
+    stage: scan
+    image: $PHP_IMAGE
+    <<: *composer-cache
+    before_script:
+        - *php-base-setup
+    script:
+        - vendor/bin/php-cs-fixer fix --dry-run --diff --format=gitlab > cs-report.json || true
+        - vendor/bin/php-cs-fixer fix --dry-run --diff
+    artifacts:
+        when: always
+        reports:
+            codequality: cs-report.json
+        expire_in: 7 days
+    rules:
+        - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+        - if: $CI_COMMIT_BRANCH
+
+# ─────────────────────────────────────────────────────────
+#  PHPUnit tests
+# ─────────────────────────────────────────────────────────
+phpunit:
+    stage: tests
+    image: $PHP_IMAGE
+    <<: *composer-cache
+    services:
+        -   name: mariadb:11-noble
+            alias: mariadb
+    before_script:
+        - *php-db-setup
+        - php bin/console doctrine:migrations:migrate --no-interaction
+        - php bin/console doctrine:fixtures:load --no-interaction --append || true
+    script:
+        - php -d memory_limit=$PHP_MEMORY_LIMIT vendor/bin/phpunit --testdox
+    artifacts:
+        when: always
+        reports:
+            junit: var/log/junit.xml
+        paths:
+            - var/log/
+        expire_in: 7 days
+    rules:
+        - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+        - if: $CI_COMMIT_BRANCH
