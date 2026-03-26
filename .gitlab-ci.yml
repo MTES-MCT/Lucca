@@ -59,19 +59,19 @@ stages:
         composer install --prefer-dist --no-progress --no-interaction --no-scripts
 
 # ─────────────────────────────────────────────────────────
-#  Full PHP setup (base + wait for MariaDB)
-#  Used by jobs that require a MariaDB service.
+#  Full PHP setup (base + wait for MariaDB service)
+#  Used by jobs that declare a MariaDB sidecar service.
 # ─────────────────────────────────────────────────────────
 .php-db-setup: &php-db-setup
     - *php-base-setup
     - |
         apt-get install -yqq --no-install-recommends mariadb-client
         for i in $(seq 1 30); do
-            if mariadb -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" -e "SELECT 1" "$MYSQL_DATABASE" >/dev/null 2>&1; then
+            if mariadb -h "$MYSQL_HOST" -P "$MYSQL_PORT" -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" -e "SELECT 1" "$MYSQL_DATABASE" >/dev/null 2>&1; then
                 echo "✔ MariaDB ready"; break
             fi
-            echo "⏳ Waiting for MariaDB… ($i/30)"
-            sleep 1
+            echo "⏳ Waiting for MariaDB service… ($i/30)"
+            sleep 2
         done
 
 # ─────────────────────────────────────────────────────────
@@ -105,8 +105,8 @@ phpstan:
         - *php-base-setup
         - php -d memory_limit=$PHP_MEMORY_LIMIT bin/console cache:warmup
     script:
-        - vendor/bin/phpstan analyse --no-progress --error-format=gitlab > phpstan-report.json || true
-        - vendor/bin/phpstan analyse --no-progress
+        - vendor/bin/phpstan analyse --no-progress --memory-limit=$PHP_MEMORY_LIMIT --error-format=gitlab > phpstan-report.json || true
+        - vendor/bin/phpstan analyse --no-progress --memory-limit=$PHP_MEMORY_LIMIT
     artifacts:
         when: always
         reports:

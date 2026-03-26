@@ -10,7 +10,8 @@ parameters:
         - src/
 
     symfony:
-        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+        # Run "php bin/console cache:warmup --env=test" before analysing
+        containerXmlPath: var/cache/test/App_KernelTestDebugContainer.xml
 
     # Ignore patterns (adjust as needed)
     ignoreErrors: []
