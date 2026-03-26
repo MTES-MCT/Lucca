@@ -73,7 +73,7 @@ readonly class UserManager
     /**
      * Update User entity and hash this password
      */
-    public function updateUser(User|UserInterface $user): bool
+    public function updateUser(User $user): bool
     {
         if ($user->getPlainPassword() !== null) {
             $this->changePasswordUser($user, $user->getPlainPassword());
