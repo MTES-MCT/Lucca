@@ -210,7 +210,7 @@ class ProConnectService
                 $session->getFlashBag()->add('danger', $this->translator->trans('proconnect.error.generic', [], 'SecurityBundle'));
                 $this->logger->error('Failed to decode or verify JWT from ProConnect', [
                     'exception' => $e,
-                    'jwt' => $jwt,
+                    'jwt' => $jwt ?? null,
                 ]);
                 return new RedirectResponse($this->urlGenerator->generate('lucca_user_security_login', [
                     'dep_code' => $departmentCode

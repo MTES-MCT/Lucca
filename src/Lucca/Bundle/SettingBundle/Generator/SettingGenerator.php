@@ -13,9 +13,8 @@ namespace Lucca\Bundle\SettingBundle\Generator;
 use Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Cache\InvalidArgumentException;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
-use Symfony\Contracts\Cache\CacheInterface;
 
 use Lucca\Bundle\SettingBundle\Entity\{Category, Setting};
 use Lucca\Bundle\SettingBundle\Manager\SettingManager;
@@ -43,7 +42,7 @@ class SettingGenerator
         protected readonly EntityManagerInterface $em,
 //        protected readonly AdapterInterface       $cache,
         protected readonly DataGenerator          $dataGenerator,
-        protected readonly CacheInterface         $settingsCache,
+        protected readonly CacheItemPoolInterface  $settingsCache,
     )
     {
         $this->settings = $dataGenerator->settings;
