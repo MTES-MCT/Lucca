@@ -88,7 +88,7 @@ class LuccaCleanHtmlCommand extends Command
             '-----------------------------------------------',
         ]);
 
-        return true;
+        return Command::SUCCESS;
     }
 
     /***************************** Main function *****************************************************/

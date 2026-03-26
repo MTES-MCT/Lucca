@@ -98,9 +98,9 @@ readonly class GeoApiService
             $interco->setDepartment($department);
             $interco->setEnabled(true);
 
-            if (isset($props['codeInsee'])) {
+            if (isset($data['codeInsee'])) {
                 $town = $this->em->getRepository(Town::class)->findOneBy([
-                    'code' => $props['codeInsee'],
+                    'code' => $data['codeInsee'],
                     'department' => $department
                 ]);
 

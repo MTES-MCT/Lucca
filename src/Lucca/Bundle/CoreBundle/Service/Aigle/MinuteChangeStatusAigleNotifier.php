@@ -50,7 +50,7 @@ readonly class MinuteChangeStatusAigleNotifier
             return;
         }
 
-        if (empty($parcels)) {
+        if ($parcels === ['']) {
             $this->logger->error('AigleApi: No parcels found, maybe due to parsing error, skipping Aigle notification.');
             throw AigleNotificationException::malFormedParcelString($parcelRaw);
         }

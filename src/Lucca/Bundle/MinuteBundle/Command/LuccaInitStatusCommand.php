@@ -105,7 +105,7 @@ class LuccaInitStatusCommand extends Command
             '-----------------------------------------------',
         ]);
 
-        return true;
+        return Command::SUCCESS;
     }
 
     /**

@@ -5,9 +5,11 @@ namespace Lucca\Bundle\FolderBundle\Service;
 use Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
+use Lucca\Bundle\CoreBundle\Utils\Canonalizer;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
 use Lucca\Bundle\MediaBundle\Entity\{Category, Folder};
 use Lucca\Bundle\SettingBundle\Generator\{SettingGenerator, DataGenerator};
@@ -18,6 +20,9 @@ readonly class SettingService
         private DataGenerator          $dataGenerator,
         private EntityManagerInterface $em,
         private SettingGenerator       $settingGenerator,
+        private Canonalizer            $canonalizer,
+        #[Autowire(param: 'lucca_media.upload_directory')]
+        private string                 $upload_dir,
     )
     {
     }
@@ -28,7 +33,7 @@ readonly class SettingService
 
         foreach ($settings as $setting) {
             $this->settingGenerator->insertOrUpdateSetting($setting['type'], $setting['category'], $setting['accessType'], $setting['position'],
-                $setting['name'], $setting['value'], $setting['comment'], $setting['valuesAvailable'], $department, null, $setting['extraParams']
+                $setting['name'], $setting['value'], $setting['comment'], $department, $setting['valuesAvailable'], $setting['extraParams']
             );
         }
 

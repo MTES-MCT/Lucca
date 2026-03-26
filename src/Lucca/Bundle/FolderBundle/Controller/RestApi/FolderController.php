@@ -73,7 +73,7 @@ class FolderController extends AbstractController
             $minute = $folder['minute'] ?? null;
 
             // clean parcels (remove special chars)
-            $cleanFolderParcels = array_map(function($parcel) use ($minute) {
+            $cleanFolderParcels = array_map(function($parcel) {
                 // remove all non-alphanumeric characters
                 return preg_replace('/[^A-Za-z0-9]/', '', $parcel);
             }, $folderParcels);

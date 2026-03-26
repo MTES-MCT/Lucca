@@ -102,7 +102,6 @@ class departmentAccessVoter extends Voter
             }
 
             /** Check if current adherent has a department */
-            /** @var Department $department */
             if ($currentAdherent->getDepartment()->getCode() === $subDomainKey) {
                 return true;
             }

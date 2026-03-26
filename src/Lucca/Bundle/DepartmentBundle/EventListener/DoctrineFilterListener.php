@@ -11,6 +11,7 @@
 namespace Lucca\Bundle\DepartmentBundle\EventListener;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Lucca\Bundle\DepartmentBundle\Doctrine\Filter\DepartmentFilter;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
@@ -39,10 +40,11 @@ readonly class DoctrineFilterListener
             }
 
             if ($department) {
+                /** @var DepartmentFilter $filter */
                 $filter = $this->em->getFilters()->enable('department_filter');
                 $filter->setParameter('department', $department->getId());
 
-                // Injecter manuellement le RequestStack dans le filtre
+                // Inject department ID into the filter
                 $filter->setDepartmentId($department->getId());
             }
         }
