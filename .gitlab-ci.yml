@@ -84,7 +84,7 @@ lint:
     <<: *composer-cache
     before_script:
         - *php-base-setup
-        - php bin/console cache:warmup
+        - php -d memory_limit=$PHP_MEMORY_LIMIT bin/console cache:warmup
     script:
         - php bin/console lint:yaml config --parse-tags
         - php bin/console lint:twig templates
@@ -103,7 +103,7 @@ phpstan:
     <<: *composer-cache
     before_script:
         - *php-base-setup
-        - php bin/console cache:warmup
+        - php -d memory_limit=$PHP_MEMORY_LIMIT bin/console cache:warmup
     script:
         - vendor/bin/phpstan analyse --no-progress --error-format=gitlab > phpstan-report.json || true
         - vendor/bin/phpstan analyse --no-progress
