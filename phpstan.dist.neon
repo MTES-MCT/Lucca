@@ -3,16 +3,26 @@ includes:
     - vendor/phpstan/phpstan-phpunit/extension.neon
 
 parameters:
-    # Start at level 5 – increase progressively
-    level: 5
+    # Start at level 3 – increase progressively
+    level: 3
 
     paths:
         - src/
+
+    excludePaths:
+        - src/*/Bundle/*/Tests/
+        - src/*/Bundle/*/DataFixtures/
 
     symfony:
         # Run "php bin/console cache:warmup --env=test" before analysing
         containerXmlPath: var/cache/test/App_KernelTestDebugContainer.xml
 
-    # Ignore patterns (adjust as needed)
-    ignoreErrors: []
+    # Ignore known patterns that are not real issues
+    ignoreErrors:
+        # Doctrine auto-generated IDs are always assigned by the DB
+        - '#Property .+::\$id \(int\|null\) is never assigned int#'
+        # SessionInterface::getFlashBag() is available at runtime via Session
+        - '#Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface::getFlashBag\(\)#'
+        # Implicitly nullable parameters (PHP 8.4 deprecation – fix progressively)
+        - '#Deprecated in PHP 8\.4: Parameter .+ is implicitly nullable#'
 

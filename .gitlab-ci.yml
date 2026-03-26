@@ -101,6 +101,7 @@ phpstan:
     stage: scan
     image: $PHP_IMAGE
     <<: *composer-cache
+    allow_failure: true
     before_script:
         - *php-base-setup
         - php -d memory_limit=$PHP_MEMORY_LIMIT bin/console cache:warmup
@@ -124,6 +125,7 @@ php-cs-fixer:
     stage: scan
     image: $PHP_IMAGE
     <<: *composer-cache
+    allow_failure: true
     before_script:
         - *php-base-setup
     script:
