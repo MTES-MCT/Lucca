@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\FolderBundle\Entity\Courier;
 use Lucca\Bundle\FolderBundle\Entity\CourierHumanEdition;
 use Lucca\Bundle\MinuteBundle\Entity\Minute;
@@ -40,13 +40,13 @@ class CourierControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_courier_manual_judicial', [
+            new UrlTestDefinition($router->generate('lucca_courier_manual_judicial', [
                 'minute_id' => $minuteCourierJudicial->getId(), 'id' => $courierJudicial->getId(),
             ])),
-            new UrlTest($router->generate('lucca_courier_manual_ddtm', [
+            new UrlTestDefinition($router->generate('lucca_courier_manual_ddtm', [
                 'minute_id' => $minuteCourierDdtm->getId(), 'id' => $courierDdtm->getId(),
             ])),
-            new UrlTest($router->generate('lucca_courier_manual_offender', [
+            new UrlTestDefinition($router->generate('lucca_courier_manual_offender', [
                 'minute_id' => $minuteCourierHumanEdition->getId(), 'id' => $courierHumanEdition->getCourier()->getId()
             ])),
         ];

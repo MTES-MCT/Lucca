@@ -84,10 +84,7 @@
         "psr-4": {
             "App\\": "src/",
             "Lucca\\Bundle\\": "src/Lucca/Bundle"
-        },
-        "exclude-from-classmap": [
-            "src/Lucca/*/*/Tests/"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {

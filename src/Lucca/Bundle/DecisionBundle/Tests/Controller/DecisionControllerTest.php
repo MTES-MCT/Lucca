@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\DecisionBundle\Entity\Decision;
 
 class DecisionControllerTest extends BasicLuccaTestCase
@@ -31,10 +31,10 @@ class DecisionControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_decision_new', [
+            new UrlTestDefinition($router->generate('lucca_decision_new', [
                 'minute_id' => $decision->getMinute()->getId(), 'id' => $decision->getId(),
             ])),
-            new UrlTest($router->generate('lucca_decision_edit', [
+            new UrlTestDefinition($router->generate('lucca_decision_edit', [
                 'minute_id' => $decision->getMinute()->getId(), 'id' => $decision->getId(),
             ])),
         ];

@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\FolderBundle\Entity\Folder;
 
 class FolderControllerTest extends BasicLuccaTestCase
@@ -31,10 +31,10 @@ class FolderControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_folder_doc', [
+            new UrlTestDefinition($router->generate('lucca_folder_doc', [
                 'minute_id' => $folder->getMinute()->getId(), 'id' => $folder->getId(),
             ])),
-            new UrlTest($router->generate('lucca_control_letter', [
+            new UrlTestDefinition($router->generate('lucca_control_letter', [
                 'minute_id' => $folder->getMinute()->getId(), 'id' => $folder->getId(),
             ])),
         ];

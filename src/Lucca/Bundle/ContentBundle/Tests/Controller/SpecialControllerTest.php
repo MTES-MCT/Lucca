@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 
 class SpecialControllerTest extends BasicLuccaTestCase
 {
@@ -25,8 +25,8 @@ class SpecialControllerTest extends BasicLuccaTestCase
     {
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_content_privacy_policy'), 200),
-            new UrlTest($router->generate('lucca_content_terms_service'), 200),
+            new UrlTestDefinition($router->generate('lucca_content_privacy_policy'), 200),
+            new UrlTestDefinition($router->generate('lucca_content_terms_service'), 200),
         ];
     }
 }

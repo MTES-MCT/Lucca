@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\MediaBundle\Entity\Gallery;
 
 class GalleryControllerTest extends BasicLuccaTestCase
@@ -31,12 +31,12 @@ class GalleryControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_media_gallery_index')),
-            new UrlTest($router->generate('lucca_media_gallery_new', ['id' => $gallery->getId()])),
-            new UrlTest($router->generate('lucca_media_gallery_show', ['id' => $gallery->getId()])),
-            new UrlTest($router->generate('lucca_media_gallery_edit', ['id' => $gallery->getId()])),
-            new UrlTest($router->generate('lucca_media_gallery_disable', ['id' => $gallery->getId()]), 302, 302),
-            new UrlTest($router->generate('lucca_media_gallery_enable', ['id' => $gallery->getId()]), 302, 302),
+            new UrlTestDefinition($router->generate('lucca_media_gallery_index')),
+            new UrlTestDefinition($router->generate('lucca_media_gallery_new', ['id' => $gallery->getId()])),
+            new UrlTestDefinition($router->generate('lucca_media_gallery_show', ['id' => $gallery->getId()])),
+            new UrlTestDefinition($router->generate('lucca_media_gallery_edit', ['id' => $gallery->getId()])),
+            new UrlTestDefinition($router->generate('lucca_media_gallery_disable', ['id' => $gallery->getId()]), 302, 302),
+            new UrlTestDefinition($router->generate('lucca_media_gallery_enable', ['id' => $gallery->getId()]), 302, 302),
         ];
     }
 }

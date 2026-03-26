@@ -15,7 +15,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\AdherentBundle\Entity\{Adherent, Agent};
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 
 class MyAgentControllerTest extends BasicLuccaTestCase
 {
@@ -36,17 +36,17 @@ class MyAgentControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_myagent_index')),
-            new UrlTest($router->generate('lucca_myagent_new', [
+            new UrlTestDefinition($router->generate('lucca_myagent_index')),
+            new UrlTestDefinition($router->generate('lucca_myagent_new', [
                 'id' => $agent->getId(), 'adh_id'=> $adherent->getId()
             ])),
-            new UrlTest($router->generate('lucca_myagent_edit', [
+            new UrlTestDefinition($router->generate('lucca_myagent_edit', [
                 'id' => $agent->getId(), 'adh_id'=> $adherent->getId()
             ])),
-            new UrlTest($router->generate('lucca_myagent_enable', [ // disable
+            new UrlTestDefinition($router->generate('lucca_myagent_enable', [ // disable
                 'id' => $agent->getId(), 'adh_id'=> $adherent->getId()
             ]), 302, 302),
-            new UrlTest($router->generate('lucca_myagent_enable', [
+            new UrlTestDefinition($router->generate('lucca_myagent_enable', [
                 'id' => $agent->getId(), 'adh_id'=> $adherent->getId()
             ]), 302, 302),
         ];

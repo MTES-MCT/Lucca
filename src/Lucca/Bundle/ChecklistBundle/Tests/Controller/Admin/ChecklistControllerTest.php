@@ -15,7 +15,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\ChecklistBundle\Entity\Checklist;
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 
 class ChecklistControllerTest extends BasicLuccaTestCase
 {
@@ -31,12 +31,12 @@ class ChecklistControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_checklist_index')),
-            new UrlTest($router->generate('lucca_checklist_new')),
-            new UrlTest($router->generate('lucca_checklist_show', ['id' => $checklist->getId()])),
-            new UrlTest($router->generate('lucca_checklist_edit', ['id' => $checklist->getId()])),
-            new UrlTest($router->generate('lucca_checklist_enable', ['id' => $checklist->getId()]), 302, 302), // disable
-            new UrlTest($router->generate('lucca_checklist_enable', ['id' => $checklist->getId()]), 302, 302),
+            new UrlTestDefinition($router->generate('lucca_checklist_index')),
+            new UrlTestDefinition($router->generate('lucca_checklist_new')),
+            new UrlTestDefinition($router->generate('lucca_checklist_show', ['id' => $checklist->getId()])),
+            new UrlTestDefinition($router->generate('lucca_checklist_edit', ['id' => $checklist->getId()])),
+            new UrlTestDefinition($router->generate('lucca_checklist_enable', ['id' => $checklist->getId()]), 302, 302), // disable
+            new UrlTestDefinition($router->generate('lucca_checklist_enable', ['id' => $checklist->getId()]), 302, 302),
         ];
     }
 }

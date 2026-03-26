@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\MediaBundle\Entity\Media;
 
 class MediaControllerTest extends BasicLuccaTestCase
@@ -31,9 +31,9 @@ class MediaControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_media_index')),
-            new UrlTest($router->generate('lucca_media_disable', ['id' => $media->getId()]), 302, 302),
-            new UrlTest($router->generate('lucca_media_enable', ['id' => $media->getId()]), 302, 302),
+            new UrlTestDefinition($router->generate('lucca_media_index')),
+            new UrlTestDefinition($router->generate('lucca_media_disable', ['id' => $media->getId()]), 302, 302),
+            new UrlTestDefinition($router->generate('lucca_media_enable', ['id' => $media->getId()]), 302, 302),
         ];
     }
 }

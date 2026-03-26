@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\MediaBundle\Entity\{Category, Extension, Media};
 
 class MediaControllerTest extends BasicLuccaTestCase
@@ -33,9 +33,9 @@ class MediaControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_media_api_meta_datas', ['categoryId' => $category->getId()])),
-            new UrlTest($router->generate('lucca_media_api_meta_datas_by_extension', ['extension' => $extension->getId()])),
-            new UrlTest($router->generate('lucca_media_api_get_delete_modal', ['id' => $media->getId()])),
+            new UrlTestDefinition($router->generate('lucca_media_api_meta_datas', ['categoryId' => $category->getId()])),
+            new UrlTestDefinition($router->generate('lucca_media_api_meta_datas_by_extension', ['extension' => $extension->getId()])),
+            new UrlTestDefinition($router->generate('lucca_media_api_get_delete_modal', ['id' => $media->getId()])),
         ];
     }
 }

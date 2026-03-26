@@ -13,7 +13,7 @@ namespace Lucca\Bundle\MinuteBundle\Tests\Controller\ManualEdit;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
 use Lucca\Bundle\MinuteBundle\Entity\{Control, Minute};
 
@@ -35,10 +35,10 @@ class ControlControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_control_access_manual', [
+            new UrlTestDefinition($router->generate('lucca_control_access_manual', [
                 'minute_id' => $minute->getId(), 'id' => $control->getId(),
             ])),
-            new UrlTest($router->generate('lucca_control_convocation_manual', [
+            new UrlTestDefinition($router->generate('lucca_control_convocation_manual', [
                 'minute_id' => $minute->getId(), 'id' => $control->getId(),
             ])),
         ];

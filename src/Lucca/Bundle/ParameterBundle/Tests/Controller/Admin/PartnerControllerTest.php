@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\ParameterBundle\Entity\Partner;
 
 class PartnerControllerTest extends BasicLuccaTestCase
@@ -31,12 +31,12 @@ class PartnerControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_partner_index')),
-            new UrlTest($router->generate('lucca_partner_new')),
-            new UrlTest($router->generate('lucca_partner_show', ['id' => $partner->getId()])),
-            new UrlTest($router->generate('lucca_partner_edit', ['id' => $partner->getId()])),
-            new UrlTest($router->generate('lucca_partner_enable', ['id' => $partner->getId()]), 302, 302), // disable
-            new UrlTest($router->generate('lucca_partner_enable', ['id' => $partner->getId()]), 302, 302),
+            new UrlTestDefinition($router->generate('lucca_partner_index')),
+            new UrlTestDefinition($router->generate('lucca_partner_new')),
+            new UrlTestDefinition($router->generate('lucca_partner_show', ['id' => $partner->getId()])),
+            new UrlTestDefinition($router->generate('lucca_partner_edit', ['id' => $partner->getId()])),
+            new UrlTestDefinition($router->generate('lucca_partner_enable', ['id' => $partner->getId()]), 302, 302), // disable
+            new UrlTestDefinition($router->generate('lucca_partner_enable', ['id' => $partner->getId()]), 302, 302),
         ];
     }
 }

@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\FolderBundle\Entity\Courier;
 
 class CourierControllerTest extends BasicLuccaTestCase
@@ -32,22 +32,22 @@ class CourierControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-//            new UrlTest($router->generate('lucca_courier_offender_print', [
+//            new UrlTestDefinition($router->generate('lucca_courier_offender_print', [
 //                'minute_id' => $minute->getId(), 'id' => $courier->getId(),
 //            ]), 302, 302),
-//            new UrlTest($router->generate('lucca_courier_offender_preprint', [
+//            new UrlTestDefinition($router->generate('lucca_courier_offender_preprint', [
 //                'minute_id' => $minute->getId(), 'id' => $courier->getId(),
 //            ]), 302, 302),
-//            new UrlTest($router->generate('lucca_courier_judicial_print', [
+//            new UrlTestDefinition($router->generate('lucca_courier_judicial_print', [
 //                'minute_id' => $minute->getId(), 'id' => $courier->getId(),
 //            ]), 302, 302),
-//            new UrlTest($router->generate('lucca_courier_judicial_preprint', [
+//            new UrlTestDefinition($router->generate('lucca_courier_judicial_preprint', [
 //                'minute_id' => $minute->getId(), 'id' => $courier->getId(),
 //            ]), 302, 302),
-//            new UrlTest($router->generate('lucca_courier_ddtm_print', [
+//            new UrlTestDefinition($router->generate('lucca_courier_ddtm_print', [
 //                'minute_id' => $minute->getId(), 'id' => $courier->getId(),
 //            ]), 302, 302),
-//            new UrlTest($router->generate('lucca_courier_ddtm_preprint', [
+//            new UrlTestDefinition($router->generate('lucca_courier_ddtm_preprint', [
 //                'minute_id' => $minute->getId(), 'id' => $courier->getId(),
 //            ]), 302, 302),
         ];

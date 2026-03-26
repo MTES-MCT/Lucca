@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\SettingBundle\Entity\Setting;
 
 class SettingControllerTest extends BasicLuccaTestCase
@@ -31,9 +31,9 @@ class SettingControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_setting_index')),
-            new UrlTest($router->generate('lucca_setting_edit', ['id' => $setting->getId()])),
-            new UrlTest($router->generate('lucca_setting_show', ['id' => $setting->getId()])),
+            new UrlTestDefinition($router->generate('lucca_setting_index')),
+            new UrlTestDefinition($router->generate('lucca_setting_edit', ['id' => $setting->getId()])),
+            new UrlTestDefinition($router->generate('lucca_setting_show', ['id' => $setting->getId()])),
         ];
     }
 }
