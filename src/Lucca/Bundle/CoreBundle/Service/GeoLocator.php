@@ -199,7 +199,7 @@ class GeoLocator
 
         if (!$response || $googleResultsDecoded->status !== 'OK') {
             $this->requestStack->getSession()->getFlashBag()->add('danger', 'Les résultats renvoyés par l\'API Google ont été rejetés - ' . $response?->getStatusCode() ?? 'No Status code' );
-            if($googleResultsDecoded->error_message)
+            if($googleResultsDecoded?->error_message)
                 $this->requestStack->getSession()->getFlashBag()->add('danger', 'Erreur technique : ' . $googleResultsDecoded->error_message);
 
             $this->logger->error('Google Maps API error for Geocode: ' . $googleResultsDecoded?->status ?? 'No Status' . ' for address: ' . $googleGeoLink . ' - error: ' . $googleResultsDecoded?->error_message ?? 'No error message provided');
