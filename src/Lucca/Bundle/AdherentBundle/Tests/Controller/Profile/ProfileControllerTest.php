@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 
 class ProfileControllerTest extends BasicLuccaTestCase
 {
@@ -25,8 +25,8 @@ class ProfileControllerTest extends BasicLuccaTestCase
     {
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_adherent_profile_show')),
-            new UrlTest($router->generate('lucca_adherent_profile_edit')),
+            new UrlTestDefinition($router->generate('lucca_adherent_profile_show')),
+            new UrlTestDefinition($router->generate('lucca_adherent_profile_edit')),
         ];
     }
 }

@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\LogBundle\Entity\Log;
 
 class LogControllerTest extends BasicLuccaTestCase
@@ -31,8 +31,8 @@ class LogControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_log_index')),
-            new UrlTest($router->generate('lucca_log_show', ['id' => $log->getId()])),
+            new UrlTestDefinition($router->generate('lucca_log_index')),
+            new UrlTestDefinition($router->generate('lucca_log_show', ['id' => $log->getId()])),
         ];
     }
 }

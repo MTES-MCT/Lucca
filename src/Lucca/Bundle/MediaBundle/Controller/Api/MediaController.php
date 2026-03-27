@@ -121,7 +121,6 @@ class MediaController extends AbstractController
 
         // Loop on files
         foreach ($filesUploaded as $key => $file) {
-            /** @var File $fileToUpload */
             $fileToUpload = new UploadedFile($file['file']['tmp_name'],
                 $file['file']['name'],
                 $file['file']['type'],

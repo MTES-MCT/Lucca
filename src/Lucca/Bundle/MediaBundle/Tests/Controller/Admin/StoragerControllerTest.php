@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\MediaBundle\Entity\Storager;
 
 class StoragerControllerTest extends BasicLuccaTestCase
@@ -31,12 +31,12 @@ class StoragerControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_media_storager_index')),
-            new UrlTest($router->generate('lucca_media_storager_new', ['id' => $storager->getId()])),
-            new UrlTest($router->generate('lucca_media_storager_show', ['id' => $storager->getId()])),
-            new UrlTest($router->generate('lucca_media_storager_edit', ['id' => $storager->getId()])),
-            new UrlTest($router->generate('lucca_media_storager_disable', ['id' => $storager->getId()]), 302, 302),
-            new UrlTest($router->generate('lucca_media_storager_enable', ['id' => $storager->getId()]), 302, 302),
+            new UrlTestDefinition($router->generate('lucca_media_storager_index')),
+            new UrlTestDefinition($router->generate('lucca_media_storager_new', ['id' => $storager->getId()])),
+            new UrlTestDefinition($router->generate('lucca_media_storager_show', ['id' => $storager->getId()])),
+            new UrlTestDefinition($router->generate('lucca_media_storager_edit', ['id' => $storager->getId()])),
+            new UrlTestDefinition($router->generate('lucca_media_storager_disable', ['id' => $storager->getId()]), 302, 302),
+            new UrlTestDefinition($router->generate('lucca_media_storager_enable', ['id' => $storager->getId()]), 302, 302),
         ];
     }
 }

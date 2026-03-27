@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 
 class DashboardControllerTest extends BasicLuccaTestCase
 {
@@ -25,7 +25,7 @@ class DashboardControllerTest extends BasicLuccaTestCase
     {
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_content_dashboard'), 200),
+            new UrlTestDefinition($router->generate('lucca_content_dashboard'), 200),
         ];
     }
 }

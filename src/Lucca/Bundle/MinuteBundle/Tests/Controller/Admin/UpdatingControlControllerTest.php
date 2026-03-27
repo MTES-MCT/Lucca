@@ -13,7 +13,7 @@ namespace Lucca\Bundle\MinuteBundle\Tests\Controller\Admin;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
 use Lucca\Bundle\MinuteBundle\Entity\{Control, Updating};
 
@@ -35,8 +35,8 @@ class UpdatingControlControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_updating_control_new', ['updating_id' => $updating->getId()])),
-            new UrlTest($router->generate('lucca_updating_control_edit', [
+            new UrlTestDefinition($router->generate('lucca_updating_control_new', ['updating_id' => $updating->getId()])),
+            new UrlTestDefinition($router->generate('lucca_updating_control_edit', [
                 'updating_id' => $updating->getId() , 'id' => $control->getId(),
             ])),
         ];

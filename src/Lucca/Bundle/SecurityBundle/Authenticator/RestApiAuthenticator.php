@@ -72,7 +72,7 @@ class RestApiAuthenticator extends AbstractAuthenticator
                 $user = $this->entityManager->getRepository(User::class)
                     ->findOneBy(['username' => $userIdentifier]);
                 if (!$user) {
-                    $this->logger->warning('User not found for JWT token', ['user' => $userIdentifier]);
+                    $this->logger->warning('User not found for JWT token', ['user' => $userIdentifier, 'ip' => $clientIp]);
                     throw new AuthenticationException('User ' . $userIdentifier . ' not found.');
                 }
                 return $user;

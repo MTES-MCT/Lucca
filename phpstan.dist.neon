@@ -1,0 +1,44 @@
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+
+parameters:
+    # Start at level 3 – increase progressively
+    level: 3
+
+    paths:
+        - src/
+
+    excludePaths:
+        analyseAndScan:
+            - */Tests/*
+            - */DataFixtures/*
+
+    symfony:
+        # Run "php bin/console cache:warmup --env=test" before analysing
+        containerXmlPath: var/cache/test/App_KernelTestDebugContainer.xml
+
+    # Ignore known patterns that are not real issues
+    ignoreErrors:
+        # Doctrine repositories: PHPStan can't resolve custom repository methods via $em->getRepository()
+        - '#Call to an undefined method Doctrine\\ORM\\EntityRepository<.+>::\w+\(\)#'
+        # SessionInterface::getFlashBag() is available at runtime via Session
+        - '#Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface::getFlashBag\(\)#'
+        # Implicitly nullable parameters (PHP 8.4 deprecation – fix progressively)
+        - '#Deprecated in PHP 8\.4: Parameter .+ is implicitly nullable#'
+        # Doctrine auto-generated IDs are always assigned by the DB
+        -
+            message: '#Property .+::\$id \(int\|null\) is never assigned int#'
+            reportUnmatched: false
+        # by-ref $department nullable patterns
+        - '#Parameter &\$department by-ref type of method .+ expects .+, .+\|null given#'
+        # PHPDoc parse errors in legacy code
+        - '#PHPDoc tag @var has invalid value#'
+        - '#PHPDoc tag @param has invalid value#'
+        - '#PHPDoc tag @var .+ does not match#'
+        - '#PHPDoc tag @var .+ does not exist#'
+        - '#PHPDoc tag @param references unknown parameter#'
+        - '#PHPDoc tag @return with type .+ is not subtype of native type#'
+
+    reportUnmatchedIgnoredErrors: false
+

@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\FolderBundle\Entity\Folder;
 use Lucca\Bundle\MinuteBundle\Entity\Updating;
 
@@ -37,13 +37,13 @@ class UpdatingFolderControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_updating_folder_new', [
+            new UrlTestDefinition($router->generate('lucca_updating_folder_new', [
                 'minute_id' => $minute->getId(), 'updating_id' => $updating->getId()
             ])),
-            new UrlTest($router->generate('lucca_updating_folder_edit', [
+            new UrlTestDefinition($router->generate('lucca_updating_folder_edit', [
                 'minute_id' => $minute->getId(), 'updating_id' => $updating->getId(), 'id' => $folder->getId()
             ])),
-            new UrlTest($router->generate('lucca_updating_folder_fence', [
+            new UrlTestDefinition($router->generate('lucca_updating_folder_fence', [
                 'minute_id' => $minute->getId(), 'updating_id' => $updating->getId(), 'id' => $folder->getId()
             ]), 302, 302),
         ];

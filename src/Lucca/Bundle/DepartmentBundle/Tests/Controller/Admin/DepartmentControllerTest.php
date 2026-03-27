@@ -19,7 +19,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Lucca\Bundle\DepartmentBundle\Entity\Department;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 
 /**
  * Class DepartmentControllerTest
@@ -42,14 +42,14 @@ class DepartmentControllerTest extends BasicLuccaTestCase
 
         /** Urls who was analyzed */
         return array(
-            new UrlTest($router->generate('lucca_department_admin_index', array()),
+            new UrlTestDefinition($router->generate('lucca_department_admin_index', array()),
             ),
-            new UrlTest($router->generate('lucca_department_admin_new', array(),
+            new UrlTestDefinition($router->generate('lucca_department_admin_new', array(),
                 302, 200, 'GET', true),
             ),
-            new UrlTest($router->generate('lucca_department_admin_show', array('id' => $entity->getId())),
+            new UrlTestDefinition($router->generate('lucca_department_admin_show', array('id' => $entity->getId())),
             ),
-            new UrlTest($router->generate('lucca_department_admin_edit', array('id' => $entity->getId())),
+            new UrlTestDefinition($router->generate('lucca_department_admin_edit', array('id' => $entity->getId())),
                 302, 302, 'GET', true
             ),
         );

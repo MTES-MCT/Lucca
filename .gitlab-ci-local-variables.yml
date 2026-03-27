@@ -1,0 +1,5 @@
+# Local overrides for gitlab-ci-local
+# MariaDB is embedded in the container, no external DB needed
+# DO NOT commit this file
+
+

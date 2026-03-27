@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\MinuteBundle\Entity\Control;
 
 class ControlControllerTest extends BasicLuccaTestCase
@@ -36,10 +36,10 @@ class ControlControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-//            new UrlTest($router->generate('lucca_control_access_print', [
+//            new UrlTestDefinition($router->generate('lucca_control_access_print', [
 //                'minute_id' => $folder->getMinute()->getId(), 'id' => $folder->getId(),
 //            ]), 302, $attemptedCode),
-//            new UrlTest($router->generate('lucca_control_letter_print', [
+//            new UrlTestDefinition($router->generate('lucca_control_letter_print', [
 //                'minute_id' => $folder->getMinute()->getId(), 'id' => $folder->getId(),
 //            ]), 302, $attemptedCode),
         ];

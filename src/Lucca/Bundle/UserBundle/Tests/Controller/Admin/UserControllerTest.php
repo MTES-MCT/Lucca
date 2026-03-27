@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\UserBundle\Entity\User;
 
 class UserControllerTest extends BasicLuccaTestCase
@@ -31,12 +31,12 @@ class UserControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_user_index')),
-            new UrlTest($router->generate('lucca_user_new')),
-            new UrlTest($router->generate('lucca_user_show', ['id' => $user->getId()])),
-            new UrlTest($router->generate('lucca_user_edit', ['id' => $user->getId()])),
-            new UrlTest($router->generate('lucca_user_enable', ['id' => $user->getId()]), 302, 302), // disable
-            new UrlTest($router->generate('lucca_user_enable', ['id' => $user->getId()]), 302, 302),
+            new UrlTestDefinition($router->generate('lucca_user_index')),
+            new UrlTestDefinition($router->generate('lucca_user_new')),
+            new UrlTestDefinition($router->generate('lucca_user_show', ['id' => $user->getId()])),
+            new UrlTestDefinition($router->generate('lucca_user_edit', ['id' => $user->getId()])),
+            new UrlTestDefinition($router->generate('lucca_user_enable', ['id' => $user->getId()]), 302, 302), // disable
+            new UrlTestDefinition($router->generate('lucca_user_enable', ['id' => $user->getId()]), 302, 302),
         ];
     }
 }

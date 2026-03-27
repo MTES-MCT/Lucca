@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\MediaBundle\Entity\Category;
 
 class CategoryControllerTest extends BasicLuccaTestCase
@@ -31,12 +31,12 @@ class CategoryControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_media_category_index')),
-            new UrlTest($router->generate('lucca_media_category_new', ['id' => $category->getId()])),
-            new UrlTest($router->generate('lucca_media_category_show', ['id' => $category->getId()])),
-            new UrlTest($router->generate('lucca_media_category_edit', ['id' => $category->getId()])),
-            new UrlTest($router->generate('lucca_media_category_disable', ['id' => $category->getId()]), 302, 302),
-            new UrlTest($router->generate('lucca_media_category_enable', ['id' => $category->getId()]), 302, 302),
+            new UrlTestDefinition($router->generate('lucca_media_category_index')),
+            new UrlTestDefinition($router->generate('lucca_media_category_new', ['id' => $category->getId()])),
+            new UrlTestDefinition($router->generate('lucca_media_category_show', ['id' => $category->getId()])),
+            new UrlTestDefinition($router->generate('lucca_media_category_edit', ['id' => $category->getId()])),
+            new UrlTestDefinition($router->generate('lucca_media_category_disable', ['id' => $category->getId()]), 302, 302),
+            new UrlTestDefinition($router->generate('lucca_media_category_enable', ['id' => $category->getId()]), 302, 302),
         ];
     }
 }

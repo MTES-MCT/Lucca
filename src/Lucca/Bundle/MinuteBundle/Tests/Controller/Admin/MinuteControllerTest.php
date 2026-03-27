@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\MinuteBundle\Entity\Minute;
 
 class MinuteControllerTest extends BasicLuccaTestCase
@@ -31,10 +31,10 @@ class MinuteControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_minute_index')),
-            new UrlTest($router->generate('lucca_minute_new')),
-            new UrlTest($router->generate('lucca_minute_show', ['id' => $minute->getId()])),
-            new UrlTest($router->generate('lucca_minute_edit', ['id' => $minute->getId()])),
+            new UrlTestDefinition($router->generate('lucca_minute_index')),
+            new UrlTestDefinition($router->generate('lucca_minute_new')),
+            new UrlTestDefinition($router->generate('lucca_minute_show', ['id' => $minute->getId()])),
+            new UrlTestDefinition($router->generate('lucca_minute_edit', ['id' => $minute->getId()])),
         ];
     }
 }

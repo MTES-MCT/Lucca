@@ -59,7 +59,7 @@ readonly class AdherentManager
         $this->synchronizeUserEntity($adherent, $adherent->getUser());
         $this->manageLogo($adherent);
 
-        $this->userManager->updateUser($adherent->getUser(), false);
+        $this->userManager->updateUser($adherent->getUser());
 
         return $adherent;
     }

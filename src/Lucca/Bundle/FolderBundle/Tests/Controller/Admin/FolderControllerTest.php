@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\FolderBundle\Entity\Folder;
 
 class FolderControllerTest extends BasicLuccaTestCase
@@ -33,34 +33,34 @@ class FolderControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_folder_new', [
+            new UrlTestDefinition($router->generate('lucca_folder_new', [
                 'minute_id' => $folder->getMinute()->getId(),
             ])),
-            new UrlTest($router->generate('lucca_folder_step1', [
+            new UrlTestDefinition($router->generate('lucca_folder_step1', [
                 'minute_id' => $folder->getMinute()->getId(), 'id' => $folder->getId(),
             ])),
-            new UrlTest($router->generate('lucca_folder_step2', [
+            new UrlTestDefinition($router->generate('lucca_folder_step2', [
                 'minute_id' => $folder->getMinute()->getId(), 'id' => $folder->getId(),
             ])),
-            new UrlTest($router->generate('lucca_folder_step3', [
+            new UrlTestDefinition($router->generate('lucca_folder_step3', [
                 'minute_id' => $folder->getMinute()->getId(), 'id' => $folder->getId(),
             ])),
-            new UrlTest($router->generate('lucca_folder_edit', [
+            new UrlTestDefinition($router->generate('lucca_folder_edit', [
                 'minute_id' => $folder->getMinute()->getId(), 'id' => $folder->getId(),
             ])),
-            new UrlTest($router->generate('lucca_folder_fence', [
+            new UrlTestDefinition($router->generate('lucca_folder_fence', [
                 'minute_id' => $folder->getMinute()->getId(), 'id' => $folder->getId(),
             ]), 302, 302),
-            new UrlTest($router->generate('lucca_folder_fence', [
+            new UrlTestDefinition($router->generate('lucca_folder_fence', [
                 'minute_id' => $folder->getMinute()->getId(), 'id' => $folder->getId(),
             ]), 302, 302),
-            new UrlTest($router->generate('lucca_folder_open', [
+            new UrlTestDefinition($router->generate('lucca_folder_open', [
                 'minute_id' => $folder->getMinute()->getId(), 'id' => $folder->getId(),
             ]), 302, 302),
-            new UrlTest($router->generate('lucca_folder_reread', [
+            new UrlTestDefinition($router->generate('lucca_folder_reread', [
                 'minute_id' => $folder->getMinute()->getId(), 'id' => $folder->getId(),
             ]), 302, 302),
-            new UrlTest($router->generate('lucca_folder_unreread', [
+            new UrlTestDefinition($router->generate('lucca_folder_unreread', [
                 'minute_id' => $folder->getMinute()->getId(), 'id' => $folder->getId(),
             ]), 302, 302),
         ];

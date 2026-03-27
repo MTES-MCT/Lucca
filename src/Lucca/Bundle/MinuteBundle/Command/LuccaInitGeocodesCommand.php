@@ -106,7 +106,7 @@ class LuccaInitGeocodesCommand extends Command
             '-----------------------------------------------',
         ]);
 
-        return true;
+        return Command::SUCCESS;
     }
 
     /**

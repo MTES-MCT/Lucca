@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\ContentBundle\Entity\Page;
 
 class PageControllerTest extends BasicLuccaTestCase
@@ -31,7 +31,7 @@ class PageControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_content_page', [
+            new UrlTestDefinition($router->generate('lucca_content_page', [
                 'slug' => $page->getSlug(),
             ]), 200, 200),
         ];

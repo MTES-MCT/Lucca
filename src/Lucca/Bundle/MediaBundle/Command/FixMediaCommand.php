@@ -96,7 +96,7 @@ class FixMediaCommand extends Command
             '-----------------------------------------------',
         ]);
 
-        return true;
+        return Command::SUCCESS;
     }
 
     /**

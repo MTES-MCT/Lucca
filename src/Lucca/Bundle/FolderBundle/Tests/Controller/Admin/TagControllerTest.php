@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\FolderBundle\Entity\Tag;
 
 class TagControllerTest extends BasicLuccaTestCase
@@ -31,12 +31,12 @@ class TagControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_tag_index')),
-            new UrlTest($router->generate('lucca_tag_new')),
-            new UrlTest($router->generate('lucca_tag_show', ['id' => $folder->getId()])),
-            new UrlTest($router->generate('lucca_tag_edit', ['id' => $folder->getId()])),
-            new UrlTest($router->generate('lucca_tag_enable', ['id' => $folder->getId()]), 302, 302), // disable
-            new UrlTest($router->generate('lucca_tag_enable', ['id' => $folder->getId()]), 302, 302),
+            new UrlTestDefinition($router->generate('lucca_tag_index')),
+            new UrlTestDefinition($router->generate('lucca_tag_new')),
+            new UrlTestDefinition($router->generate('lucca_tag_show', ['id' => $folder->getId()])),
+            new UrlTestDefinition($router->generate('lucca_tag_edit', ['id' => $folder->getId()])),
+            new UrlTestDefinition($router->generate('lucca_tag_enable', ['id' => $folder->getId()]), 302, 302), // disable
+            new UrlTestDefinition($router->generate('lucca_tag_enable', ['id' => $folder->getId()]), 302, 302),
         ];
     }
 }

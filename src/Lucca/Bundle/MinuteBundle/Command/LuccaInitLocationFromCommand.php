@@ -84,7 +84,7 @@ class LuccaInitLocationFromCommand extends Command
             '-----------------------------------------------',
         ]);
 
-        return true;
+        return Command::SUCCESS;
     }
 
     /**

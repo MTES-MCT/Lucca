@@ -82,7 +82,7 @@ class InitializationDepartmentCommand extends Command
             'End: ' . $now->format('d-m-Y H:i:s'),
         ]);
 
-        return true;
+        return Command::SUCCESS;
     }
 
     protected function initDepartmentBundle(): void

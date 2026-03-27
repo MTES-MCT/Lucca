@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\FolderBundle\Entity\Folder;
 
 class FolderSignedControllerTest extends BasicLuccaTestCase
@@ -33,10 +33,10 @@ class FolderSignedControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_folderSigned_new', [
+            new UrlTestDefinition($router->generate('lucca_folderSigned_new', [
                 'minute_id' => $folder->getMinute()->getId(), 'folder_id' => $folder->getId(),
             ])),
-            new UrlTest($router->generate('lucca_folderSigned_edit', [
+            new UrlTestDefinition($router->generate('lucca_folderSigned_edit', [
                 'minute_id' => $folder->getMinute()->getId(), 'folder_id' => $folder->getId(),
             ])),
         ];

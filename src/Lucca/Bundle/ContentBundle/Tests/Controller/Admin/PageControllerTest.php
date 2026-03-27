@@ -15,7 +15,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\ContentBundle\Entity\Page;
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 
 class PageControllerTest extends BasicLuccaTestCase
 {
@@ -31,12 +31,12 @@ class PageControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_page_index')),
-            new UrlTest($router->generate('lucca_page_new')),
-            new UrlTest($router->generate('lucca_page_show', ['id' => $page->getId()])),
-            new UrlTest($router->generate('lucca_page_edit', ['id' => $page->getId()])),
-            new UrlTest($router->generate('lucca_page_enable', ['id' => $page->getId()]), 302, 302), // disable
-            new UrlTest($router->generate('lucca_page_enable', ['id' => $page->getId()]), 302, 302),
+            new UrlTestDefinition($router->generate('lucca_page_index')),
+            new UrlTestDefinition($router->generate('lucca_page_new')),
+            new UrlTestDefinition($router->generate('lucca_page_show', ['id' => $page->getId()])),
+            new UrlTestDefinition($router->generate('lucca_page_edit', ['id' => $page->getId()])),
+            new UrlTestDefinition($router->generate('lucca_page_enable', ['id' => $page->getId()]), 302, 302), // disable
+            new UrlTestDefinition($router->generate('lucca_page_enable', ['id' => $page->getId()]), 302, 302),
         ];
     }
 }

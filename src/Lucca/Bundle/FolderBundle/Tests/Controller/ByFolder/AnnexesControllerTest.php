@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\FolderBundle\Entity\Folder;
 
 class AnnexesControllerTest extends BasicLuccaTestCase
@@ -34,7 +34,7 @@ class AnnexesControllerTest extends BasicLuccaTestCase
         /** Urls to test */
         return [
             // see setting.module.annexes.name
-            new UrlTest($router->generate('lucca_annexes_edit', [
+            new UrlTestDefinition($router->generate('lucca_annexes_edit', [
                 'minute_id' => $folder->getMinute()->getId(), 'folder_id' => $folder->getId(),
             ]), 302, 302),
         ];

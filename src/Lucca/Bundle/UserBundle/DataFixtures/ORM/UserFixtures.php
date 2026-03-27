@@ -34,7 +34,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
         $users = [
             ['username' => 'admin', 'email' => 'admin@domain.tld', 'name' => 'Admin', 'group' => $adminGroup, 'password' => 'password'],
-            ['username' => 'user', 'email' => 'admin@domain.tld', 'name' => 'User', 'group' => $userGroup, 'password' => 'password'],
+            ['username' => 'user', 'email' => 'user@domain.tld', 'name' => 'User', 'group' => $userGroup, 'password' => 'password'],
         ];
 
         foreach ($users as $user) {
@@ -42,7 +42,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $newUser->setUsername($user['username']);
             $newUser->setEmail($user['email']);
             $newUser->setName($user['name']);
-            $newUser->setIsEnabled(true);
+            $newUser->setEnabled(true);
             $newUser->setPlainPassword($user['password']);
             $newUser->addGroup($user['group']);
 

@@ -41,7 +41,6 @@ readonly class CourierEditionManager
             return $courier;
         }
 
-        /** @var Human $humans linked to Folder */
         $humans = $this->selectHumans($courier->getFolder());
 
         /** 1 - Loop for Humans defined in Minute list */
@@ -83,7 +82,6 @@ readonly class CourierEditionManager
      */
     public function createEditions(Courier $courier): Courier
     {
-        /** @var Human $humans linked to Folder */
         $humans = $this->selectHumans($courier->getFolder());
 
         /** 1 - Loop for Humans defined in Minute list */

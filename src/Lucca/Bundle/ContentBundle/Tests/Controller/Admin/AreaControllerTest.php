@@ -15,7 +15,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\ContentBundle\Entity\Area;
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 
 class AreaControllerTest extends BasicLuccaTestCase
 {
@@ -31,12 +31,12 @@ class AreaControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_area_index')),
-            new UrlTest($router->generate('lucca_area_new')),
-            new UrlTest($router->generate('lucca_area_show', ['id' => $area->getId()])),
-            new UrlTest($router->generate('lucca_area_edit', ['id' => $area->getId()])),
-            new UrlTest($router->generate('lucca_area_enable', ['id' => $area->getId()]), 302, 302), // disable
-            new UrlTest($router->generate('lucca_area_enable', ['id' => $area->getId()]), 302, 302),
+            new UrlTestDefinition($router->generate('lucca_area_index')),
+            new UrlTestDefinition($router->generate('lucca_area_new')),
+            new UrlTestDefinition($router->generate('lucca_area_show', ['id' => $area->getId()])),
+            new UrlTestDefinition($router->generate('lucca_area_edit', ['id' => $area->getId()])),
+            new UrlTestDefinition($router->generate('lucca_area_enable', ['id' => $area->getId()]), 302, 302), // disable
+            new UrlTestDefinition($router->generate('lucca_area_enable', ['id' => $area->getId()]), 302, 302),
         ];
     }
 }

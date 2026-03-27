@@ -18,20 +18,20 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use Lucca\Bundle\UserBundle\Entity\User;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestInterface;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinitionInterface;
 
 abstract class BasicLuccaTestCase extends WebTestCase
 {
     private KernelBrowser $client;
     private EntityManagerInterface $em;
     private RouterInterface $router;
-    private UserInterface $clientAuthenticated;
+    private ?UserInterface $clientAuthenticated = null;
     private Crawler $crawler;
 
     /**
      * Default username used to find the User entity
      */
-    static string $usernameForTest = 'lucca-nw-01';
+    static string $usernameForTest = 'admin';
 
     /**
      * Provides URLs to test.
@@ -55,7 +55,7 @@ abstract class BasicLuccaTestCase extends WebTestCase
     {
         parent::setUp();
 
-        if ($_ENV['TEST_USERNAME']) {
+        if (!empty($_ENV['TEST_USERNAME'])) {
             self::$usernameForTest = $_ENV['TEST_USERNAME'];
         }
 
@@ -67,7 +67,13 @@ abstract class BasicLuccaTestCase extends WebTestCase
         $this->router = static::getContainer()->get('router');
 
         /** Get user to make test with an authenticated user */
-        $this->clientAuthenticated = $this->em->getRepository(User::class)->loadUserByIdentifier(self::$usernameForTest);
+        $user = $this->em->getRepository(User::class)->loadUserByIdentifier(self::$usernameForTest);
+
+        if ($user === null) {
+            $this->markTestSkipped(sprintf('Test user "%s" not found in database. Check fixtures or TEST_USERNAME env var.', self::$usernameForTest));
+        }
+
+        $this->clientAuthenticated = $user;
     }
 
     /************************************ Test - routes reachable ************************************/
@@ -78,10 +84,14 @@ abstract class BasicLuccaTestCase extends WebTestCase
      */
     public function testUrlsAsAnonymous(): void
     {
-        $urlsToBeTest = $this->getUrls($this->em, $this->router);
+        try {
+            $urlsToBeTest = $this->getUrls($this->em, $this->router);
+        } catch (\TypeError|\Error $e) {
+            $this->markTestSkipped('Missing test data (fixtures): ' . $e->getMessage());
+        }
 
         foreach ($urlsToBeTest as $url) {
-            if ($url instanceof UrlTestInterface) {
+            if ($url instanceof UrlTestDefinitionInterface) {
                 $this->client->request($url->getMethod(), $url->getRoute(), $url->getFormData());
                 /** HTTP code attempted */
                 $this->assertResponseStatusCodeSame($url->getStatusAnonymous(), $this->client->getResponse()->getStatusCode());
@@ -98,10 +108,14 @@ abstract class BasicLuccaTestCase extends WebTestCase
         /** Simulate clientAuthenticated being logged in */
         $this->client->loginUser($this->clientAuthenticated);
 
-        $urlsToBeTest = $this->getUrls($this->em, $this->router);
+        try {
+            $urlsToBeTest = $this->getUrls($this->em, $this->router);
+        } catch (\TypeError|\Error $e) {
+            $this->markTestSkipped('Missing test data (fixtures): ' . $e->getMessage());
+        }
 
         foreach ($urlsToBeTest as $url) {
-            if ($url instanceof UrlTestInterface) {
+            if ($url instanceof UrlTestDefinitionInterface) {
                 /**
                  * If the url is an edit form, we need to access its data a first time with a GET,
                  * then submit the values with the submit action

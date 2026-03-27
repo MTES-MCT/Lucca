@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Lucca\Bundle\CoreBundle\Tests\Abstract\BasicLuccaTestCase;
-use Lucca\Bundle\CoreBundle\Tests\Model\UrlTest;
+use Lucca\Bundle\CoreBundle\Tests\Model\UrlTestDefinition;
 use Lucca\Bundle\ParameterBundle\Entity\Intercommunal;
 
 class IntercommunalControllerTest extends BasicLuccaTestCase
@@ -31,12 +31,12 @@ class IntercommunalControllerTest extends BasicLuccaTestCase
 
         /** Urls to test */
         return [
-            new UrlTest($router->generate('lucca_intercommunal_index')),
-            new UrlTest($router->generate('lucca_intercommunal_new')),
-            new UrlTest($router->generate('lucca_intercommunal_show', ['id' => $intercommunal->getId()])),
-            new UrlTest($router->generate('lucca_intercommunal_edit', ['id' => $intercommunal->getId()])),
-            new UrlTest($router->generate('lucca_intercommunal_enable', ['id' => $intercommunal->getId()]), 302, 302), // disable
-            new UrlTest($router->generate('lucca_intercommunal_enable', ['id' => $intercommunal->getId()]), 302, 302),
+            new UrlTestDefinition($router->generate('lucca_intercommunal_index')),
+            new UrlTestDefinition($router->generate('lucca_intercommunal_new')),
+            new UrlTestDefinition($router->generate('lucca_intercommunal_show', ['id' => $intercommunal->getId()])),
+            new UrlTestDefinition($router->generate('lucca_intercommunal_edit', ['id' => $intercommunal->getId()])),
+            new UrlTestDefinition($router->generate('lucca_intercommunal_enable', ['id' => $intercommunal->getId()]), 302, 302), // disable
+            new UrlTestDefinition($router->generate('lucca_intercommunal_enable', ['id' => $intercommunal->getId()]), 302, 302),
         ];
     }
 }
